@@ -17,7 +17,7 @@
 
 @property (nonatomic, retain) NSNumber *isChecked;
 @property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSDecimalNumber *quantity;
+@property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
 
 @end

@@ -18,7 +18,7 @@
 #pragma mark NSManagedObject overrides
 
 - (void)awakeFromInsert {
-    [self setQuantity:[NSDecimalNumber numberWithInt:0]];
+    [self setQuantity:[NSNumber numberWithInt:0]];
     [self setIsChecked:INT_OBJ(0)];
 }
 
