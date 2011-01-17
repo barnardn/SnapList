@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class MetaListItem;
-@class Schedule;
+@class Category;
 
 @interface MetaList : NSManagedObject {
 
@@ -20,7 +20,7 @@
 @property (nonatomic, retain) NSString *listID;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSSet *items;
-@property (nonatomic, retain) Schedule *schedule;
-@property (nonatomic, retain) NSString *category;
+@property (nonatomic, retain) Category *category;
+@property (nonatomic, retain) NSNumber *colorCode;
 
 @end

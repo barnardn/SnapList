@@ -8,12 +8,12 @@
 
 #import "MetaList.h"
 #import "MetaListItem.h"
-#import "Schedule.h"
+#import "Category.h"
 #import "NSStringExtensions.h"
 
 @implementation MetaList
 
-@dynamic name, listID, dateCreated, items, schedule, category;
+@dynamic name, listID, dateCreated, items, category, colorCode;
 
 
 #pragma mark -

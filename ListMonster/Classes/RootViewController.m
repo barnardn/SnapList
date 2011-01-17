@@ -6,9 +6,11 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import "RootViewController.h"
+#import "ListEditViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
+#import "NSStringExtensions.h"
+#import "RootViewController.h"
 
 @interface RootViewController()
 
@@ -22,7 +24,7 @@
 @synthesize appDelegate, resultsController;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark Initializers
 
 - (id)init {
     
@@ -60,14 +62,53 @@
     [super dealloc];
 }
 
-/*
+#pragma mark -
+#pragma mark View lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
 }
+
+- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
+    [super setEditing:inEditMode animated:animated];
+    if (inEditMode) {
+        UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
+        [[self navigationItem] setLeftBarButtonItem:addBtn];
+        [addBtn release];
+    } else {
+        [[self navigationItem] setLeftBarButtonItem:nil];
+        DLog(@"in edit mode");
+    }
+
+}
+
+- (void)addList:(id)sender {
+    ListEditViewController *listEdit = [[ListEditViewController alloc] initWithList:nil];
+    [listEdit setDelegate:self];
+    [self presentModalViewController:listEdit animated:YES];
+    [listEdit release];
+/*
+    DLog(@"add button pressed");
+    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
+    NSEntityDescription *listDesc = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
+    MetaList *newList = [[MetaList alloc] initWithEntity:listDesc insertIntoManagedObjectContext:moc];
+    [newList setName:@"New List"];
+    [newList setListID:[NSString stringWithUUID]];
+    [newList release];
+    NSError *err;
+    [moc save:&err];
 */
+}
+
+#pragma mark -
+#pragma mark List Edit Protocol delegate
+
+- (void)didFinishEditingList:(MetaList *)aList {
+    // do something with aList
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,13 +128,6 @@
 /*
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
 
@@ -127,7 +161,8 @@
 
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList {
     [[cell textLabel] setText:[metaList name]];
-    [[cell detailTextLabel] setText:[metaList category]];
+    NSString *catName = [[metaList category] name];
+    [[cell detailTextLabel] setText:catName];
 }
 
 

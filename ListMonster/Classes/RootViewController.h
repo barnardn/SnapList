@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "ListEditViewController.h"
 
 @class ListMonsterAppDelegate;
 
-@interface RootViewController : UITableViewController {
+@interface RootViewController : UITableViewController <ListEditProtocol> {
     ListMonsterAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
 }
