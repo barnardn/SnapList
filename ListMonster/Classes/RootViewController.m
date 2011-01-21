@@ -90,17 +90,7 @@
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
     [evc release];
-/*
-    DLog(@"add button pressed");
-    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
-    NSEntityDescription *listDesc = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
-    MetaList *newList = [[MetaList alloc] initWithEntity:listDesc insertIntoManagedObjectContext:moc];
-    [newList setName:@"New List"];
-    [newList setListID:[NSString stringWithUUID]];
-    [newList release];
-    NSError *err;
-    [moc save:&err];
-*/
+
 }
 
 #pragma mark -
