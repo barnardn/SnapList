@@ -25,9 +25,11 @@
 - (NSManagedObjectModel *)managedObjectModel;
 - (NSManagedObjectContext *)managedObjectContext;
 - (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest;
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName;
 
 - (NSString *)documentsFolder;
 
++ (ListMonsterAppDelegate *)sharedAppDelegate;
 
 @end
 

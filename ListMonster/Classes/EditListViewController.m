@@ -6,6 +6,7 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import "CategoryViewController.h"
 #import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
@@ -35,6 +36,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", @"list back button")
+                                                                style:UIBarButtonItemStylePlain 
+                                                               target:nil action:nil];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    [backBtn release];
 }
 
 /*
@@ -105,14 +111,10 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
+
+    CategoryViewController *cvc = [[CategoryViewController alloc] initWithCategory:nil];
+    [[self navigationController] pushViewController:cvc animated:YES];
+    [cvc release];
 }
 
 
@@ -169,7 +171,6 @@
 
 - (UITableViewCell *)cellAsCategoryCell:(UITableViewCell *)cell {
     
-//    NSArray *categories = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Category" orderedBy:@"name"];
     Category *category = [[self theList] category];
     if (!category) {
         [[cell textLabel] setText:NSLocalizedString(@"Select Category", @"select a category prompt")];

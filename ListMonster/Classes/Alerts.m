@@ -7,7 +7,6 @@
 //
 
 #import "Alerts.h"
-#import "UiHelper.h"
 #import "RegexKitLite.h"
 
 #pragma mark -

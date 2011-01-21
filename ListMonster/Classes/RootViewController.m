@@ -6,7 +6,8 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import "ListEditViewController.h"
+//#import "ListEditViewController.h"
+#import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "NSStringExtensions.h"
@@ -31,7 +32,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self)
         return nil;
-    [self setAppDelegate:APP_DELEGATE(ListMonsterAppDelegate)];
+    [self setAppDelegate:[ListMonsterAppDelegate sharedAppDelegate]];
     NSFetchRequest *allLists = [self allListsFetchRequest];
     NSFetchedResultsController *c = [appDelegate fetchedResultsControllerWithFetchRequest:allLists];
     [self setResultsController:c];
@@ -84,10 +85,11 @@
 }
 
 - (void)addList:(id)sender {
-    ListEditViewController *listEdit = [[ListEditViewController alloc] initWithList:nil];
-    [listEdit setDelegate:self];
-    [self presentModalViewController:listEdit animated:YES];
-    [listEdit release];
+    
+    EditListViewController *evc = [[EditListViewController alloc] init];
+    edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
+    [self presentModalViewController:edListNav animated:YES];
+    [evc release];
 /*
     DLog(@"add button pressed");
     NSManagedObjectContext *moc = [appDelegate managedObjectContext];

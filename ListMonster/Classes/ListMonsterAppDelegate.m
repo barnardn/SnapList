@@ -9,10 +9,25 @@
 #import "ListMonsterAppDelegate.h"
 #import "RootViewController.h"
 
+static ListMonsterAppDelegate *appDelegateInstance;
+
 @implementation ListMonsterAppDelegate
 
 @synthesize window, navController;
 
+- (id)init {
+    
+    if (appDelegateInstance) {
+        return appDelegateInstance;
+    }
+    self = [super init];
+    appDelegateInstance = self;
+    return self;
+}
+
++ (ListMonsterAppDelegate *)sharedAppDelegate {
+    return appDelegateInstance;
+}
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -169,6 +184,31 @@
     }
     return [frc autorelease];
 }
+
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName {
+    
+    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
+    [fetchReq setEntity:entity];
+    if (attributeName) {
+        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sd];
+        [fetchReq setSortDescriptors:sortDescriptors];
+    }
+    NSError *error = nil;
+    NSArray *resultSet = [moc executeFetchRequest:fetchReq error:&error];
+    [fetchReq release];
+    if (!resultSet) {
+        DLog(@"Error fetching all instances of %@ sorted by %@", entityName, attributeName);
+    }
+    return resultSet;
+    
+    
+    
+    
+}
+
 
 
 

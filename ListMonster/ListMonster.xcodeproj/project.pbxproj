@@ -13,9 +13,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
+		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
 		49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* Category.m */; };
-		49AD7A5A12E382FF006E6AC6 /* ListEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A5812E382FF006E6AC6 /* ListEditViewController.m */; };
-		49AD7A5D12E38316006E6AC6 /* ListEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A5C12E38316006E6AC6 /* ListEditView.xib */; };
 		49AD7A9012E39FF7006E6AC6 /* 0x000000.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8812E39FF7006E6AC6 /* 0x000000.png */; };
 		49AD7A9112E39FF7006E6AC6 /* 0x00b800.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8912E39FF7006E6AC6 /* 0x00b800.png */; };
 		49AD7A9212E39FF7006E6AC6 /* 0x0000ff.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8A12E39FF7006E6AC6 /* 0x0000ff.png */; };
@@ -33,6 +33,7 @@
 		49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1812512C9366A0066B454 /* NSStringExtensions.m */; };
 		49F1814B12C958F20066B454 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1814912C958F20066B454 /* RootViewController.m */; };
 		49F1814E12C959B50066B454 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F1814D12C959B50066B454 /* RootView.xib */; };
+		49F9710E12E9090E002D7B13 /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F9710D12E9090E002D7B13 /* CategoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,11 +46,12 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ListMonster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMonster_Prefix.pch; sourceTree = "<group>"; };
+		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
+		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
+		49A0206912E5276C005B1D0E /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		49A0206A12E5276C005B1D0E /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		49AD7A4C12E380D9006E6AC6 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		49AD7A4D12E380D9006E6AC6 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
-		49AD7A5712E382FF006E6AC6 /* ListEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListEditViewController.h; sourceTree = "<group>"; };
-		49AD7A5812E382FF006E6AC6 /* ListEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListEditViewController.m; sourceTree = "<group>"; };
-		49AD7A5912E382FF006E6AC6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/ListEditView.xib; sourceTree = "<group>"; };
 		49AD7A8812E39FF7006E6AC6 /* 0x000000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x000000.png; sourceTree = "<group>"; };
 		49AD7A8912E39FF7006E6AC6 /* 0x00b800.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x00b800.png; sourceTree = "<group>"; };
 		49AD7A8A12E39FF7006E6AC6 /* 0x0000ff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x0000ff.png; sourceTree = "<group>"; };
@@ -74,6 +76,8 @@
 		49F1814812C958F20066B454 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		49F1814912C958F20066B454 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
+		49F9710C12E9090E002D7B13 /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
+		49F9710D12E9090E002D7B13 /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ListMonster-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ListMonster-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +105,7 @@
 				49F180EA12C91C800066B454 /* DataModel */,
 				1D3623240D0F684500981E51 /* ListMonsterAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ListMonsterAppDelegate.m */,
+				49A0206812E52756005B1D0E /* ThirdParty */,
 				49F1814712C958880066B454 /* ViewControllers */,
 			);
 			path = Classes;
@@ -142,7 +147,6 @@
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
-				49AD7A5C12E38316006E6AC6 /* ListEditView.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
 			);
@@ -158,6 +162,15 @@
 				49F180E212C914340066B454 /* CoreData.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		49A0206812E52756005B1D0E /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				49A0206912E5276C005B1D0E /* RegexKitLite.h */,
+				49A0206A12E5276C005B1D0E /* RegexKitLite.m */,
+			);
+			name = ThirdParty;
 			sourceTree = "<group>";
 		};
 		49AD7A8712E39FDD006E6AC6 /* ColorSwatches */ = {
@@ -204,8 +217,10 @@
 			children = (
 				49F1814812C958F20066B454 /* RootViewController.h */,
 				49F1814912C958F20066B454 /* RootViewController.m */,
-				49AD7A5712E382FF006E6AC6 /* ListEditViewController.h */,
-				49AD7A5812E382FF006E6AC6 /* ListEditViewController.m */,
+				49A0205312E5256A005B1D0E /* EditListViewController.h */,
+				49A0205412E5256A005B1D0E /* EditListViewController.m */,
+				49F9710C12E9090E002D7B13 /* CategoryViewController.h */,
+				49F9710D12E9090E002D7B13 /* CategoryViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -261,7 +276,6 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				49F1814E12C959B50066B454 /* RootView.xib in Resources */,
-				49AD7A5D12E38316006E6AC6 /* ListEditView.xib in Resources */,
 				49AD7A9012E39FF7006E6AC6 /* 0x000000.png in Resources */,
 				49AD7A9112E39FF7006E6AC6 /* 0x00b800.png in Resources */,
 				49AD7A9212E39FF7006E6AC6 /* 0x0000ff.png in Resources */,
@@ -289,22 +303,16 @@
 				49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */,
 				49F1814B12C958F20066B454 /* RootViewController.m in Sources */,
 				49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */,
-				49AD7A5A12E382FF006E6AC6 /* ListEditViewController.m in Sources */,
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
+				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
+				49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */,
+				49F9710E12E9090E002D7B13 /* CategoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		49AD7A5C12E38316006E6AC6 /* ListEditView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				49AD7A5912E382FF006E6AC6 /* English */,
-			);
-			name = ListEditView.xib;
-			sourceTree = "<group>";
-		};
 		49F1814D12C959B50066B454 /* RootView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -354,6 +362,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 			};
@@ -368,6 +377,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 			};
