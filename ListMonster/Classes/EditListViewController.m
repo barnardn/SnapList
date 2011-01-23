@@ -18,7 +18,7 @@
 
 @implementation EditListViewController
 
-@synthesize theList, editablePropertyKeys, selectedSubview;
+@synthesize theList, editablePropertyKeys, selectedSubview, modalParent;
 
 #pragma mark -
 #pragma mark Initialization
@@ -100,6 +100,19 @@
     [self setSelectedSubview:nil];
     [[self tableView] reloadData];
 }
+
+#pragma mark -
+#pragma mark button item actions
+
+- (void)cancelPresssed:(id)sender {
+    [[self modalParent] modalViewCancelPressed];
+}
+
+
+- (void)donePressed:(id)sender {
+    [[self modalParent] modalViewDonePressedWithReturnValue:nil];
+}
+
 
 /*
 - (void)viewDidAppear:(BOOL)animated {

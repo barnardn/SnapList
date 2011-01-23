@@ -6,6 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "Alerts.h"
 #import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListColor.h"
@@ -93,10 +94,10 @@
     [newList setName:NSLocalizedString(@"New List", @"default new list name")];
     [newList setColor:[self blackColor]];
     EditListViewController *evc = [[EditListViewController alloc] initWithList:newList];
+    [evc setModalParent:self];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
     [evc release];
-
 }
 
 - (ListColor *)blackColor {
@@ -110,13 +111,23 @@
 }
 
 #pragma mark -
-#pragma mark List Edit Protocol delegate
+#pragma mark modal view protocol methods
 
-- (void)didFinishEditingList:(MetaList *)aList {
-    // do something with aList
+- (void)modalViewCancelPressed {
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void)modalViewDonePressedWithReturnValue:(id)returnValue {
+    [self dismissModalViewControllerAnimated:YES];
+    NSError *error = nil;
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [moc save:&error];
+    if (error) {
+        DLog(@"Unable to save list to store: %@", [error localizedDescription]);
+        NSString *errTitle = NSLocalizedString(@"Error during save", @"save list error title");
+        [ErrorAlert showWithTitle:errTitle andMessage:[error localizedDescription]];
+    }
+}
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -169,6 +180,7 @@
 
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList {
     [[cell textLabel] setText:[metaList name]];
+    [[cell textLabel] setTextColor:[[metaList color] uiColor]];
     NSString *catName = [[metaList category] name];
     [[cell detailTextLabel] setText:catName];
 }
