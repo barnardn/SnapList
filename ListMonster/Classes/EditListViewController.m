@@ -11,10 +11,11 @@
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "Category.h"
+#import "TextEntryViewController.h"
 
 @implementation EditListViewController
 
-@synthesize theList;
+@synthesize theList, editablePropertyKeys, selectedSubview;
 
 #pragma mark -
 #pragma mark Initialization
@@ -23,6 +24,9 @@
     if (!(self = [super initWithStyle:UITableViewStyleGrouped]))
         return nil;
     [self setTheList:l];
+    NSArray *keys = [NSArray arrayWithObjects:@"name",@"colorCode",@"category",nil];
+    [self setEditablePropertyKeys:keys];    
+    selectedSubview = nil;
     return self;
 }
 
@@ -30,6 +34,29 @@
     return [self initWithList:nil];
 }
 
+
+#pragma mark -
+#pragma mark Memory management
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Relinquish ownership any cached data, images, etc. that aren't in use.
+}
+
+- (void)viewDidUnload {
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
+}
+
+
+- (void)dealloc {
+    [theList release];
+    [editablePropertyKeys release];
+    [selectedSubview release];
+    [super dealloc];
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -43,11 +70,20 @@
     [backBtn release];
 }
 
-/*
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (editPropertyIndex < 0)
+        return;
+    if (![[self selectedSubview] respondsToSelector:@selector(returnValue)])
+        return;
+    NSString *key = [[self editablePropertyKeys] objectAtIndex:editPropertyIndex];
+    id newValue = [[self selectedSubview] performSelector:@selector(returnValue)];
+    [[self theList] setValue:newValue forKey:key];
+    [self setSelectedSubview:nil];
+    [[self tableView] reloadData];
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -92,11 +128,7 @@
     
     static NSString *CellIdentifier = @"Cell";   
     NSArray *cellConfigSelectors = [NSArray arrayWithObjects:@"cellAsNameCell:", @"cellAsColorCell:", @"cellAsCategoryCell:",nil];
-    
-    /*{
-        @selector(cellAsNameCell:), @selector(cellAsColorCell:), @selector(cellAsCategoryCell:)
-    };*/
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
@@ -112,32 +144,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    CategoryViewController *cvc = [[CategoryViewController alloc] initWithCategory:nil];
-    [[self navigationController] pushViewController:cvc animated:YES];
-    [cvc release];
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"", @"pushCategoryEditView",nil];
+    NSInteger sectionIdx = [indexPath section];
+    editPropertyIndex = [indexPath section];
+    NSString *selString = [nextNavSelectors objectAtIndex:sectionIdx];
+    if ([selString compare:@""] == NSOrderedSame)
+        return;
+    SEL selector = NSSelectorFromString([nextNavSelectors objectAtIndex:sectionIdx]);
+    [self performSelector:selector];
     
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
+
 }
 
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-    [theList release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Cell configuration methods
@@ -182,7 +200,27 @@
     return cell;
 }
 
+#pragma mark -
+#pragma mark Methods that push in the next view controller
 
+- (void)pushNameEditView {
+    NSString *viewTitle = NSLocalizedString(@"List Name", "@list name entry title");
+    NSString *placeholder = [[self theList] name];
+    if (!placeholder)
+        placeholder = NSLocalizedString(@"New List", "@new list name placeholder");
+    TextEntryViewController *tvc = [[TextEntryViewController alloc] initWithTitle:viewTitle placeholder:placeholder];
+    [[self navigationController] pushViewController:tvc animated:YES];
+    [self setSelectedSubview:tvc];
+    [tvc release];
+}
+
+- (void)pushCategoryEditView {
+    Category *category = [[self theList] category];
+    CategoryViewController *cvc = [[CategoryViewController alloc] initWithCategory:category];
+    [[self navigationController] pushViewController:cvc animated:YES];
+    [self setSelectedSubview:cvc];
+    [cvc release];
+}
 
 @end
 

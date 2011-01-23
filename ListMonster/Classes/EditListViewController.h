@@ -14,11 +14,14 @@
 @interface EditListViewController : UITableViewController {
 
     MetaList *theList;
-    
+    NSArray *editablePropertyKeys;
+    id selectedSubview;
+    NSInteger editPropertyIndex;
 }
 
 @property(nonatomic,retain) MetaList *theList;
-
+@property(nonatomic,retain) NSArray *editablePropertyKeys;  // order must match section index in table
+@property(nonatomic,retain) id selectedSubview;
 
 - (id)initWithList:(MetaList *)l;
 

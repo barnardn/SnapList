@@ -14,9 +14,9 @@
 @interface CategoryViewController()
 
 - (void)deleteCategory:(Category *)category;
+- (void)insertCategoryWithName:(NSString *)categoryName;
 
 @end
-
 
 
 @implementation CategoryViewController
@@ -59,6 +59,9 @@
     [super dealloc];
 }
 
+- (Category *)returnValue {
+    return [self selectedCategory];
+}
 
 
 #pragma mark -
@@ -91,13 +94,6 @@
     [super viewDidDisappear:animated];
 }
 */
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     
@@ -111,21 +107,13 @@
     }
 }
 
-
 - (void)addCategory:(id)sender {
     
-    NSString *catName = [InputRequestor requestInputWith:@"New Category" placeHolder:@"Enter category name" keyboardType:UIKeyboardTypeDefault];
+    NSString *title = NSLocalizedString(@"New Category", @"new category alert title");
+    NSString *placeholder = NSLocalizedString(@"category name", @"new category placeholder");
+    NSString *catName = [InputRequestor requestInputWith:title placeHolder:placeholder keyboardType:UIKeyboardTypeDefault];
     if (!catName) return;
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
-    Category *newCategory = [[Category alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
-    [newCategory setName:catName];
-    [[self allCategories] addObject:newCategory];
-    [newCategory release];
-    NSError *err;
-    [moc save:&err];
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    [[self allCategories] sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+    [self insertCategoryWithName:catName];
     [[self tableView] reloadData];
 }
 
@@ -158,9 +146,14 @@
     Category *cat = [[self allCategories] objectAtIndex:[indexPath row]];
     [[cell textLabel] setText:[cat name]];
     
+    BOOL isSelectedCategory = (NSOrderedSame == [[cat name] compare:[[self selectedCategory] name]]);
+    if (!isSelectedCategory)
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+    else
+        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    
     return cell;
 }
-
 
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -173,6 +166,7 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Category *category = [[self allCategories] objectAtIndex:[indexPath row]];
+        [category retain];
         [self deleteCategory:category];
         [[self allCategories] removeObjectAtIndex:[indexPath row]];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -184,47 +178,45 @@
 }
 
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
+
+    Category *category = [[self allCategories] objectAtIndex:[indexPath row]];
+    [self setSelectedCategory:category];
+    [[self tableView] reloadData];
 }
 
 #pragma mark -
 #pragma mark Coredata methods
 
+- (void)insertCategoryWithName:(NSString *)categoryName {
+    
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
+    Category *newCategory = [[Category alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
+    [newCategory setName:categoryName];
+    [[self allCategories] addObject:newCategory];
+    [newCategory release];
+    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    [[self allCategories] sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+    NSError *err = nil;
+    [moc save:&err];
+    if (err) 
+        DLog(@"Error adding category: %@", [err localizedDescription]);
+}
+
+
 - (void)deleteCategory:(Category *)category {
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     [moc deleteObject:category];
-    NSError *error;
+    NSError *error = nil;
     [moc save:&error];
     if (error) {
-        [ErrorAlert showWithTitle:@"Delete Error" andMessage:[error localizedDescription]];
         DLog(@"Error deleting category: %@", [error localizedDescription]);
+        [ErrorAlert showWithTitle:@"Delete Error" andMessage:[error localizedDescription]];
     }
 }
 

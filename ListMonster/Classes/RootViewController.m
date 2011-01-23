@@ -86,7 +86,11 @@
 
 - (void)addList:(id)sender {
     
-    EditListViewController *evc = [[EditListViewController alloc] init];
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
+    MetaList *newList = [[MetaList alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
+    [newList setName:NSLocalizedString(@"New List", @"default new list name")];
+    EditListViewController *evc = [[EditListViewController alloc] initWithList:newList];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
     [evc release];

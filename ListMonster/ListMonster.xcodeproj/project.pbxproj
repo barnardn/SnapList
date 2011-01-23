@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		491EBE5112EB744D0084BFCB /* TextEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */; };
+		491EBE5212EB744D0084BFCB /* TextEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* TextEntryView.xib */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
 		49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* Category.m */; };
@@ -46,6 +48,9 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ListMonster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMonster_Prefix.pch; sourceTree = "<group>"; };
+		491EBE4E12EB744D0084BFCB /* TextEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEntryViewController.h; sourceTree = "<group>"; };
+		491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEntryViewController.m; sourceTree = "<group>"; };
+		491EBE5012EB744D0084BFCB /* TextEntryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TextEntryView.xib; path = Classes/TextEntryView.xib; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
 		49A0206912E5276C005B1D0E /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
@@ -146,6 +151,7 @@
 			children = (
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
+				491EBE5012EB744D0084BFCB /* TextEntryView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
@@ -221,6 +227,8 @@
 				49A0205412E5256A005B1D0E /* EditListViewController.m */,
 				49F9710C12E9090E002D7B13 /* CategoryViewController.h */,
 				49F9710D12E9090E002D7B13 /* CategoryViewController.m */,
+				491EBE4E12EB744D0084BFCB /* TextEntryViewController.h */,
+				491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -284,6 +292,7 @@
 				49AD7A9512E39FF7006E6AC6 /* 0xc400c4.png in Resources */,
 				49AD7A9612E39FF7006E6AC6 /* 0xe1a10b.png in Resources */,
 				49AD7A9712E39FF7006E6AC6 /* 0xff5c00.png in Resources */,
+				491EBE5212EB744D0084BFCB /* TextEntryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +316,7 @@
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */,
 				49F9710E12E9090E002D7B13 /* CategoryViewController.m in Sources */,
+				491EBE5112EB744D0084BFCB /* TextEntryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

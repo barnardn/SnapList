@@ -20,5 +20,6 @@
 @property (nonatomic,retain) Category *selectedCategory;
 
 - (id)initWithCategory:(Category *)aCategory;
+- (Category *)returnValue;
 
 @end
