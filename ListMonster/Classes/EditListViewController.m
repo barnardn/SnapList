@@ -7,11 +7,14 @@
 //
 
 #import "CategoryViewController.h"
+#import "ColorSelectViewController.h"
 #import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "Category.h"
+#import "ListColor.h"
 #import "TextEntryViewController.h"
+
 
 @implementation EditListViewController
 
@@ -24,7 +27,7 @@
     if (!(self = [super initWithStyle:UITableViewStyleGrouped]))
         return nil;
     [self setTheList:l];
-    NSArray *keys = [NSArray arrayWithObjects:@"name",@"colorCode",@"category",nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"name",@"color",@"category",nil];
     [self setEditablePropertyKeys:keys];    
     selectedSubview = nil;
     return self;
@@ -66,7 +69,21 @@
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", @"list back button")
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:nil action:nil];
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
+                                                                  style:UIBarButtonItemStyleDone 
+                                                                 target:self 
+                                                                 action:@selector(cancelPressed:)];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
+                                                                style:UIBarButtonItemStyleDone 
+                                                               target:self 
+                                                               action:@selector(donePressed:)];
+    
+    [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
     [[self navigationItem] setBackBarButtonItem:backBtn];
+    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
+    [[self navigationItem] setRightBarButtonItem:doneBtn];
+    [cancelBtn release];
+    [doneBtn release];
     [backBtn release];
 }
 
@@ -99,13 +116,7 @@
     [super viewDidDisappear:animated];
 }
 */
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+
 
 
 #pragma mark -
@@ -131,7 +142,7 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     NSInteger selectorIdx = [indexPath section];
@@ -144,7 +155,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"", @"pushCategoryEditView",nil];
+    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"pushColorSelectView", @"pushCategoryEditView",nil];
     NSInteger sectionIdx = [indexPath section];
     editPropertyIndex = [indexPath section];
     NSString *selString = [nextNavSelectors objectAtIndex:sectionIdx];
@@ -152,8 +163,6 @@
         return;
     SEL selector = NSSelectorFromString([nextNavSelectors objectAtIndex:sectionIdx]);
     [self performSelector:selector];
-    
-
 }
 
 
@@ -161,29 +170,27 @@
 #pragma mark Cell configuration methods
 
 - (UITableViewCell *)cellAsNameCell:(UITableViewCell *)cell {
-    
+    NSString *cellTitle = NSLocalizedString(@"Name", @"name cell title");
     NSString *cellText = nil;
-    if (![[self theList] name]) {
-        [[cell textLabel] setTextColor:[UIColor grayColor]];
-        cellText = NSLocalizedString(@"List Name", @"empty list name placeholder");
-    } else {
-        [[cell textLabel] setTextColor:[UIColor blackColor]];
+    if (![[self theList] name])
+        cellText = NSLocalizedString(@"Name", @"empty list name placeholder");
+    else
         cellText = [[self theList] name];
-    }
-    [[cell textLabel] setText:cellText];
+
+    [[cell textLabel] setText:cellTitle];
+    [[cell detailTextLabel] setText:cellText];
     return cell;
 
 }
 
 - (UITableViewCell *)cellAsColorCell:(UITableViewCell *)cell {
-    
-    NSArray *cellTitles = [NSArray arrayWithObjects:NSLocalizedString(@"Black", @"black"),
-                                  NSLocalizedString(@"Red", @"red"), NSLocalizedString(@"Green", @"green"),
-                                  NSLocalizedString(@"Blue", @"blue"), NSLocalizedString(@"Gold", @"gold"),
-                                  NSLocalizedString(@"Turquoise", @"turquoise"), NSLocalizedString(@"Orange", @"orange"),
-                                  NSLocalizedString(@"Magenta", @"magenta"), nil];
-    NSInteger colorIdx = [[[self theList] colorCode] intValue];
-    [[cell textLabel] setText:[cellTitles objectAtIndex:colorIdx]];
+
+    NSString *cellTitle = NSLocalizedString(@"Color", @"color cell title");
+    NSString *colorName = [[[self theList] color] name];
+    UIColor *textColor = [[[self theList] color] uiColor];
+    [[cell textLabel] setText:cellTitle];
+    [[cell detailTextLabel] setText:colorName];
+    [[cell detailTextLabel] setTextColor:textColor];
     return cell;
 }
 
@@ -191,12 +198,10 @@
     
     Category *category = [[self theList] category];
     if (!category) {
-        [[cell textLabel] setText:NSLocalizedString(@"Select Category", @"select a category prompt")];
-        [[cell textLabel] setTextColor:[UIColor grayColor]];
+        [[cell textLabel] setText:NSLocalizedString(@"Category", @"select a category prompt")];
         return cell;
     }
-    [[cell textLabel] setText:[category name]];
-    [[cell textLabel] setTextColor:[UIColor blackColor]];
+    [[cell detailTextLabel] setText:[category name]];
     return cell;
 }
 
@@ -214,6 +219,15 @@
     [tvc release];
 }
 
+- (void)pushColorSelectView {
+    ListColor *color = [[self theList] color];
+    ColorSelectViewController *csvc = [[ColorSelectViewController alloc] initWithColor:color];
+    [[self navigationController] pushViewController:csvc animated:YES];
+    [self setSelectedSubview:csvc];
+    [csvc release];
+    
+}
+
 - (void)pushCategoryEditView {
     Category *category = [[self theList] category];
     CategoryViewController *cvc = [[CategoryViewController alloc] initWithCategory:category];
@@ -221,6 +235,8 @@
     [self setSelectedSubview:cvc];
     [cvc release];
 }
+
+
 
 @end
 

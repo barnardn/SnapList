@@ -13,7 +13,7 @@
 
 @implementation MetaList
 
-@dynamic name, listID, dateCreated, items, category, colorCode;
+@dynamic name, listID, dateCreated, items, category, color;
 
 
 #pragma mark -

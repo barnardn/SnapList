@@ -6,17 +6,18 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-//#import "ListEditViewController.h"
 #import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
+#import "ListColor.h"
 #import "MetaList.h"
-#import "NSStringExtensions.h"
+#import "NSArrayExtensions.h"
 #import "RootViewController.h"
 
 @interface RootViewController()
 
 - (NSFetchRequest *)allListsFetchRequest;
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
+- (ListColor *)blackColor;
 
 @end
 
@@ -90,11 +91,22 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
     MetaList *newList = [[MetaList alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
     [newList setName:NSLocalizedString(@"New List", @"default new list name")];
+    [newList setColor:[self blackColor]];
     EditListViewController *evc = [[EditListViewController alloc] initWithList:newList];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
     [evc release];
 
+}
+
+- (ListColor *)blackColor {
+    
+    NSArray *colors = [[ListMonsterAppDelegate sharedAppDelegate] allColors];
+    NSArray *blackColor = [colors filterBy:^ BOOL (id obj) {
+        ListColor *color = obj;
+        return (NSOrderedSame == [[color rgbValue] compare:INT_OBJ(0)]);
+    }];
+    return [blackColor objectAtIndex:0];
 }
 
 #pragma mark -

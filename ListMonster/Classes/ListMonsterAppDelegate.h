@@ -15,11 +15,13 @@
     NSManagedObjectContext *managedObjectContext;
     NSManagedObjectModel *managedObjectModel;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
+    NSArray *allColors;
     
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property(nonatomic,retain) UINavigationController *navController;
+@property (nonatomic,retain) UINavigationController *navController;
+@property (nonatomic,retain) NSArray *allColors;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
 - (NSManagedObjectModel *)managedObjectModel;

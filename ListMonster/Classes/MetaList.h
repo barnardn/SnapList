@@ -11,6 +11,7 @@
 
 @class MetaListItem;
 @class Category;
+@class ListColor;
 
 @interface MetaList : NSManagedObject {
 
@@ -21,6 +22,6 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSSet *items;
 @property (nonatomic, retain) Category *category;
-@property (nonatomic, retain) NSNumber *colorCode;
+@property (nonatomic, retain) ListColor *color;
 
 @end

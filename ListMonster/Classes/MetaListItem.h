@@ -9,17 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-typedef enum mlListColors {
-    Black,
-    Red,
-    Green,
-    Blue,
-    Gold,
-    Turquoise,
-    Orange,
-    Megenta
-};
-
 @class MetaList;
 
 @interface MetaListItem : NSManagedObject {
