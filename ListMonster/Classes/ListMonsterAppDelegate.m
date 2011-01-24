@@ -6,6 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "Category.h"
 #import "ListMonsterAppDelegate.h"
 #import "RootViewController.h"
 #import "ListColor.h"
@@ -16,6 +17,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (void)populateStaticData;
 - (NSArray *)importColors;
+- (void)importCategories;
 
 @end
 
@@ -227,6 +229,10 @@ static ListMonsterAppDelegate *appDelegateInstance;
         colors = [self importColors];
     [self setAllColors:colors];
     
+    NSArray *categories = [self fetchAllInstancesOf:@"Category" orderedBy:nil];
+    if ([categories count] == 0)
+        [self importCategories];
+    
 }
 
 - (NSArray *)importColors {
@@ -254,6 +260,24 @@ static ListMonsterAppDelegate *appDelegateInstance;
         return nil;
     }
     return colors;
+}
+
+- (void)importCategories {
+    
+    NSString *categoryFile = [[NSBundle mainBundle] pathForResource:@"Categories" ofType:@"plist"];
+    NSArray *dfltCategories = [NSArray arrayWithContentsOfFile:categoryFile];
+    if ([dfltCategories count] <= 0) return;
+    
+    NSEntityDescription *categoryEntity = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:[self managedObjectContext]];
+    for (NSString *catName in dfltCategories) {
+        Category *category = [[Category alloc] initWithEntity:categoryEntity insertIntoManagedObjectContext:[self managedObjectContext]];
+        [category setName:catName];
+    }
+    NSError *error = nil;
+    [[self managedObjectContext] save:&error];
+    if (error) {
+        DLog(@"Unable to initialize default categories: %@", [error localizedDescription]);
+    }
 }
 
 
