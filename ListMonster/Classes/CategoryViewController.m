@@ -202,10 +202,21 @@
     [newCategory release];
     NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
     [[self allCategories] sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-    NSError *err = nil;
-    [moc save:&err];
-    if (err) 
-        DLog(@"Error adding category: %@", [err localizedDescription]);
+    NSError *error = nil;
+    [moc save:&error];
+    if (error) {
+        // put this into a seperate error logging class... 
+        DLog(@"Error adding category: %@", [error localizedDescription]);
+        NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+        if(detailedErrors != nil && [detailedErrors count] > 0) {
+            for(NSError* detailedError in detailedErrors) {
+                NSLog(@"  DetailedError: %@", [detailedError userInfo]);
+            }
+        }
+        else {
+            NSLog(@"  %@", [error userInfo]);
+        } 
+    }
 }
 
 
