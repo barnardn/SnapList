@@ -11,6 +11,7 @@
 #import "ModalViewProtocol.h"
 
 @class ListMonsterAppDelegate;
+@class MetaList;
 
 @interface RootViewController : UITableViewController <ModalViewProtocol> {
     ListMonsterAppDelegate *appDelegate;

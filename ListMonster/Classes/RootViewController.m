@@ -83,7 +83,6 @@
         [[self navigationItem] setLeftBarButtonItem:nil];
         DLog(@"in edit mode");
     }
-
 }
 
 - (void)addList:(id)sender {
@@ -97,7 +96,8 @@
     [evc setModalParent:self];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
-    [evc release];
+    [newList release];
+    [evc release];    
 }
 
 - (ListColor *)blackColor {
@@ -115,7 +115,9 @@
 
 - (void)modalViewCancelPressed {
     [self dismissModalViewControllerAnimated:YES];
-}
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [moc undo];
+ }
 
 - (void)modalViewDonePressedWithReturnValue:(id)returnValue {
     [self dismissModalViewControllerAnimated:YES];

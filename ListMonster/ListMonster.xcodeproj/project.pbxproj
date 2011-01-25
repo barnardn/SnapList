@@ -16,6 +16,7 @@
 		491EBE5112EB744D0084BFCB /* TextEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */; };
 		491EBE5212EB744D0084BFCB /* TextEntryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* TextEntryView.xib */; };
 		4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4939B7B012ED0B2C007F6455 /* Categories.plist */; };
+		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
 		49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */; };
@@ -56,6 +57,8 @@
 		491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEntryViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* TextEntryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TextEntryView.xib; path = Classes/TextEntryView.xib; sourceTree = "<group>"; };
 		4939B7B012ED0B2C007F6455 /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
+		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
+		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
 		49A0206912E5276C005B1D0E /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 				491EBE4F12EB744D0084BFCB /* TextEntryViewController.m */,
 				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
 				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
+				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
+				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -347,6 +352,7 @@
 				491EBE5112EB744D0084BFCB /* TextEntryViewController.m in Sources */,
 				49BEEBD312EBC3680088707A /* ListColor.m in Sources */,
 				49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */,
+				498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

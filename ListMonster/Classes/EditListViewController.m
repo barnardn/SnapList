@@ -6,7 +6,7 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import "CategoryViewController.h"
+#import "CategorySelectViewController.h"
 #import "ColorSelectViewController.h"
 #import "EditListViewController.h"
 #import "ListMonsterAppDelegate.h"
@@ -104,7 +104,7 @@
 #pragma mark -
 #pragma mark button item actions
 
-- (void)cancelPresssed:(id)sender {
+- (void)cancelPressed:(id)sender {
     [[self modalParent] modalViewCancelPressed];
 }
 
@@ -241,9 +241,13 @@
     
 }
 
+// TODO: don't call category edit view
+// the cateogry edit view commits a transaction to the core data store when adding or
+// deleting categories, which will also commit any non-cateogyr list edits as well.
+
 - (void)pushCategoryEditView {
     Category *category = [[self theList] category];
-    CategoryViewController *cvc = [[CategoryViewController alloc] initWithCategory:category];
+    CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithCategory:category];
     [[self navigationController] pushViewController:cvc animated:YES];
     [self setSelectedSubview:cvc];
     [cvc release];
