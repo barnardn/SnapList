@@ -13,7 +13,7 @@
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : UITableViewController <ModalViewProtocol> {
+@interface RootViewController : UITableViewController <ModalViewProtocol, NSFetchedResultsControllerDelegate> {
     ListMonsterAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     UINavigationController *edListNav;

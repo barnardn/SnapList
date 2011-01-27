@@ -19,6 +19,7 @@
 - (NSFetchRequest *)allListsFetchRequest;
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
 - (ListColor *)blackColor;
+- (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 
 @end
 
@@ -29,6 +30,7 @@
 #pragma mark -
 #pragma mark Initializers
 
+// TODO: implelent nsfetchresultscontroller protocol ala core data book page 196
 - (id)init {
     
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -37,6 +39,7 @@
     [self setAppDelegate:[ListMonsterAppDelegate sharedAppDelegate]];
     NSFetchRequest *allLists = [self allListsFetchRequest];
     NSFetchedResultsController *c = [appDelegate fetchedResultsControllerWithFetchRequest:allLists];
+    [c setDelegate:self];
     [self setResultsController:c];
     return self;
 }
@@ -71,18 +74,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
+    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
+    [[self navigationItem] setLeftBarButtonItem:addBtn];
+    [addBtn release];
 }
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
     [super setEditing:inEditMode animated:animated];
-    if (inEditMode) {
+/*    if (inEditMode) {
         UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
         [[self navigationItem] setLeftBarButtonItem:addBtn];
         [addBtn release];
     } else {
         [[self navigationItem] setLeftBarButtonItem:nil];
         DLog(@"in edit mode");
-    }
+    } */
 }
 
 - (void)addList:(id)sender {
@@ -125,11 +131,23 @@
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     [moc save:&error];
     if (error) {
-        DLog(@"Unable to save list to store: %@", [error localizedDescription]);
-        NSString *errTitle = NSLocalizedString(@"Error during save", @"save list error title");
-        [ErrorAlert showWithTitle:errTitle andMessage:[error localizedDescription]];
+        [self displayErrorMessage:@"Unable to save list" forError:error];
+        return;
     }
 }
+    
+#pragma mark -
+#pragma mark Error handler routine
+
+// TODO:  replace this with an actual error handling class!
+- (void)displayErrorMessage:(NSString *)message forError:(NSError *)error {
+    
+    NSString *errMessage = [NSString stringWithFormat:@"%@: %@", message, [error localizedDescription]];
+    DLog(errMessage);
+    NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
+    [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
+}
+                                               
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -188,6 +206,7 @@
 }
 
 
+
 /*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -234,6 +253,68 @@
 }
 
 #pragma mark -
+#pragma mark NSFetchedResultsController protocol
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [[self tableView] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller 
+   didChangeObject:(id)anObject 
+       atIndexPath:(NSIndexPath *)indexPath 
+     forChangeType:(NSFetchedResultsChangeType)type 
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableViewCell *cell = nil;
+    MetaList *theList =  nil;
+    NSArray *paths = nil;
+    NSIndexSet *section = nil;
+    if (type != NSFetchedResultsChangeUpdate) {
+        paths = [NSArray arrayWithObject:newIndexPath];
+        section = [NSIndexSet indexSetWithIndex:[newIndexPath section]];        
+    }
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+            [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+        case NSFetchedResultsChangeUpdate:
+            cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+            theList = [[self resultsController] objectAtIndexPath:indexPath];
+            [self updateCell:cell forMetaList:theList];
+        default:
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller     
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex 
+     forChangeType:(NSFetchedResultsChangeType)type 
+{
+    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:sectionIndex];
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+                [[self tableView] insertSections:sections
+                                withRowAnimation:UITableViewRowAnimationFade];
+                break;
+        case NSFetchedResultsChangeDelete:
+                [[self tableView] deleteSections:sections
+                                withRowAnimation:UITableViewRowAnimationFade];                
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [[self tableView] endUpdates];
+}
+
+#pragma mark -
 
 - (NSFetchRequest *)allListsFetchRequest {
     
@@ -241,13 +322,14 @@
     NSFetchRequest *allListsFetchRequest = [[NSFetchRequest alloc] init];
     [allListsFetchRequest setEntity:[NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc]];
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
+    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES];
+    //NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byCategory, byName, nil];
     [allListsFetchRequest setSortDescriptors:sortDescriptors];
     
-    [byName release];
-    [byCategory release];
-    [sortDescriptors release];
+    [byName release], byName = nil;
+    [byCategory release], byCategory = nil;
+    [sortDescriptors release], sortDescriptors = nil;
     
     return [allListsFetchRequest autorelease];
 }
