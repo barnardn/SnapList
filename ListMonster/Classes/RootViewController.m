@@ -20,6 +20,8 @@
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
 - (ListColor *)blackColor;
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
+- (void)deleteListEntity:(MetaList *)list;
+- (void)showEditViewWithList:(MetaList *)list;
 
 @end
 
@@ -41,6 +43,7 @@
     NSFetchedResultsController *c = [appDelegate fetchedResultsControllerWithFetchRequest:allLists];
     [c setDelegate:self];
     [self setResultsController:c];
+    [[self tabBarItem] setTitle:@"Lists"];   // TODO: change me.
     return self;
 }
 
@@ -77,6 +80,7 @@
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [addBtn release];
+
 }
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
@@ -98,12 +102,17 @@
     MetaList *newList = [[MetaList alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
     [newList setName:NSLocalizedString(@"New List", @"default new list name")];
     [newList setColor:[self blackColor]];
-    EditListViewController *evc = [[EditListViewController alloc] initWithList:newList];
+    [self showEditViewWithList:newList];
+    [newList release];
+}
+
+- (void)showEditViewWithList:(MetaList *)list {
+    
+    EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
     [evc setModalParent:self];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
-    [newList release];
-    [evc release];    
+    [evc release];
 }
 
 - (ListColor *)blackColor {
@@ -193,6 +202,7 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell setEditingAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
     }
     [self updateCell:cell forMetaList:[[self resultsController] objectAtIndexPath:indexPath]];
     return cell;
@@ -205,21 +215,22 @@
     [[cell detailTextLabel] setText:catName];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
 
-
-/*
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        MetaList *dl = [[self resultsController] objectAtIndexPath:indexPath];
+        [self deleteListEntity:dl];
     }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+    /*else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
+    } */  
 }
-*/
+
 
 
 /*
@@ -252,6 +263,13 @@
     */
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    
+    MetaList *list = [[self resultsController] objectAtIndexPath:indexPath];
+    [self showEditViewWithList:list];
+}
+
+
 #pragma mark -
 #pragma mark NSFetchedResultsController protocol
 
@@ -267,26 +285,26 @@
 {
     UITableViewCell *cell = nil;
     MetaList *theList =  nil;
-    NSArray *paths = nil;
-    NSIndexSet *section = nil;
-    if (type != NSFetchedResultsChangeUpdate) {
-        paths = [NSArray arrayWithObject:newIndexPath];
-        section = [NSIndexSet indexSetWithIndex:[newIndexPath section]];        
-    }
     switch (type) {
         case NSFetchedResultsChangeInsert:
-            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeDelete:
-            [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeMove:
-            [[self tableView] deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
-            [[self tableView] reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:[newIndexPath section]] 
+                            withRowAnimation:UITableViewRowAnimationFade];
         case NSFetchedResultsChangeUpdate:
             cell = [[self tableView] cellForRowAtIndexPath:indexPath];
             theList = [[self resultsController] objectAtIndexPath:indexPath];
             [self updateCell:cell forMetaList:theList];
+            [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                    withRowAnimation:UITableViewRowAnimationFade];
         default:
             break;
     }
@@ -315,6 +333,7 @@
 }
 
 #pragma mark -
+#pragma mark Other core data related methods
 
 - (NSFetchRequest *)allListsFetchRequest {
     
@@ -323,7 +342,6 @@
     [allListsFetchRequest setEntity:[NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc]];
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES];
-    //NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byCategory, byName, nil];
     [allListsFetchRequest setSortDescriptors:sortDescriptors];
     
@@ -332,6 +350,18 @@
     [sortDescriptors release], sortDescriptors = nil;
     
     return [allListsFetchRequest autorelease];
+}
+
+- (void)deleteListEntity:(MetaList *)list {
+    
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [moc deleteObject:list];
+    NSError *error = nil;
+    [moc save:&error];
+    if (error) {
+        NSString *errMsg = NSLocalizedString(@"Unable to delete list", @"list delete error message");
+        [self displayErrorMessage:errMsg forError:error];
+    }
 }
 
 

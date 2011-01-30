@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "CategoryViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "RootViewController.h"
 #import "ListColor.h"
@@ -25,7 +26,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @implementation ListMonsterAppDelegate
 
-@synthesize window, navController, allColors;
+@synthesize window, navController, allColors, tabController;
 
 - (id)init {
     
@@ -47,10 +48,17 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     [self populateStaticData];
+    tabController = [[UITabBarController alloc] init];
+    
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
+    [[navController tabBarItem] setTitle:@"Lists"];  // TODO: change
+    CategoryViewController *cvc = [[CategoryViewController alloc] init];
+    NSArray *viewControllers = [NSArray arrayWithObjects:navController, cvc, nil];
+    [tabController setViewControllers:viewControllers];
     [rvc release];
-    [[self window] addSubview:[navController view]];
+    [cvc release];
+    [[self window] addSubview:[tabController view]];
     [[self window] makeKeyAndVisible];
     return YES;
 }
@@ -107,6 +115,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (void)dealloc {
     [window release];
     [navController release];
+    [tabController release];
     [super dealloc];
 }
 

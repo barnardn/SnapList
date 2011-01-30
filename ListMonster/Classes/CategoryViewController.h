@@ -13,13 +13,8 @@
 @interface CategoryViewController : UITableViewController {
 
     NSMutableArray *allCategories;
-    Category *selectedCategory;
 }
 
 @property (nonatomic,retain) NSMutableArray *allCategories;
-@property (nonatomic,retain) Category *selectedCategory;
-
-- (id)initWithCategory:(Category *)aCategory;
-- (Category *)returnValue;
 
 @end

@@ -21,20 +21,19 @@
 
 @implementation CategoryViewController
 
-@synthesize allCategories, selectedCategory;
+@synthesize allCategories;;
 
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithCategory:(Category *)aCategory {
+- (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (!self) return nil;
-    [self setSelectedCategory:aCategory];
+    [[self tabBarItem] setTitle:@"Settings"];  // TODO: change me
     return self;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    return [self initWithCategory:nil];
+    return [self init];
 }
 
 #pragma mark -
@@ -55,14 +54,8 @@
 
 - (void)dealloc {
     [allCategories release];
-    [selectedCategory release];
     [super dealloc];
 }
-
-- (Category *)returnValue {
-    return [self selectedCategory];
-}
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -72,6 +65,7 @@
     [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
     NSArray *categories = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Category" orderedBy:@"name"];
     [self setAllCategories:[categories mutableCopy]];
+
 }
 
 /*
@@ -146,12 +140,6 @@
     Category *cat = [[self allCategories] objectAtIndex:[indexPath row]];
     [[cell textLabel] setText:[cat name]];
     
-    BOOL isSelectedCategory = (NSOrderedSame == [[cat name] compare:[[self selectedCategory] name]]);
-    if (!isSelectedCategory)
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-    else
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    
     return cell;
 }
 
@@ -177,17 +165,6 @@
     } */  
 }
 
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    Category *category = [[self allCategories] objectAtIndex:[indexPath row]];
-    [self setSelectedCategory:category];
-    [[self tableView] reloadData];
-}
 
 #pragma mark -
 #pragma mark Coredata methods
