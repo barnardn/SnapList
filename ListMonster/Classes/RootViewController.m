@@ -32,7 +32,6 @@
 #pragma mark -
 #pragma mark Initializers
 
-// TODO: implelent nsfetchresultscontroller protocol ala core data book page 196
 - (id)init {
     
     self = [super initWithStyle:UITableViewStyleGrouped];
