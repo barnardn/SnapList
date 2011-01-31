@@ -7,15 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+#import "ModalViewProtocol.h"
 #import "SettingViewProtocol.h"
 
-@class Category;
-
-@interface CategoryViewController : UITableViewController <SettingViewProtocol> {
-
-    NSMutableArray *allCategories;
+@interface CategoryViewController : UITableViewController <SettingViewProtocol, 
+                                                           ModalViewProtocol, 
+                                                           NSFetchedResultsControllerDelegate> 
+{
+    NSFetchedResultsController *resultsController;
 }
 
-@property(nonatomic,retain) NSMutableArray *allCategories;
+@property(nonatomic,retain) NSFetchedResultsController *resultsController;
 
 @end

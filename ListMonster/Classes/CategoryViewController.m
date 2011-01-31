@@ -13,26 +13,32 @@
 
 @interface CategoryViewController()
 
+- (NSFetchRequest *)categoryFetchRequest;
 - (void)deleteCategory:(Category *)category;
-- (void)insertCategoryWithName:(NSString *)categoryName;
 
 @end
 
 
 @implementation CategoryViewController
 
-@synthesize allCategories;
+@synthesize resultsController;
 
 #pragma mark -
 #pragma mark Initialization
 
 - (id)initWithInfo:(NSDictionary *)info {
     self = [super initWithStyle:UITableViewStyleGrouped];
+    
+    NSFetchRequest *request = [[self categoryFetchRequest] retain];
+    NSFetchedResultsController *c = [[ListMonsterAppDelegate sharedAppDelegate] fetchedResultsControllerWithFetchRequest:request];
+    [request release];
+    [c setDelegate:self];
+    [self setResultsController:c];
     return self;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    return [self init];
+    return [self initWithInfo:nil];
 }
 
 #pragma mark -
@@ -52,7 +58,7 @@
 
 
 - (void)dealloc {
-    [allCategories release];
+    [resultsController release];
     [super dealloc];
 }
 
@@ -61,9 +67,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSArray *categories = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Category" orderedBy:@"name"];
-    [self setAllCategories:[categories mutableCopy]];
-
+    [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
 }
 
 /*
@@ -103,11 +107,30 @@
     
     NSString *title = NSLocalizedString(@"New Category", @"new category alert title");
     NSString *placeholder = NSLocalizedString(@"category name", @"new category placeholder");
-    NSString *catName = [InputRequestor requestInputWith:title placeHolder:placeholder keyboardType:UIKeyboardTypeDefault];
-    if (!catName) return;
-    [self insertCategoryWithName:catName];
-    [[self tableView] reloadData];
+    // create a new category in the moc
 }
+
+
+#pragma mark -
+#pragma mark modal view protocol methods
+
+- (void)modalViewCancelPressed {
+    [self dismissModalViewControllerAnimated:YES];
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [moc undo];
+}
+
+- (void)modalViewDonePressedWithReturnValue:(id)returnValue {
+    [self dismissModalViewControllerAnimated:YES];
+/*    NSError *error = nil;
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [moc save:&error];
+    if (error) {
+        [self displayErrorMessage:@"Unable to save list" forError:error];
+        return;
+    } */
+}
+
 
 
 #pragma mark -
@@ -115,13 +138,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return [[[self resultsController] sections] count];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [[self allCategories] count];
+    id<NSFetchedResultsSectionInfo> sectInfo = [[[self resultsController] sections] objectAtIndex:section];
+    return [sectInfo numberOfObjects];
 }
 
 
@@ -134,10 +157,8 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-    Category *cat = [[self allCategories] objectAtIndex:[indexPath row]];
-    [[cell textLabel] setText:[cat name]];
-    
+    Category *category = [[self resultsController] objectAtIndexPath:indexPath];
+    [[cell textLabel] setText:[category name]];
     return cell;
 }
 
@@ -151,11 +172,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Category *category = [[self allCategories] objectAtIndex:[indexPath row]];
-        [category retain];
+        Category *category = [[self resultsController] objectAtIndexPath:indexPath];
         [self deleteCategory:category];
-        [[self allCategories] removeObjectAtIndex:[indexPath row]];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     /*
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -163,37 +181,53 @@
     } */  
 }
 
-
 #pragma mark -
-#pragma mark Coredata methods
+#pragma mark NSFetchedResultsController delegate protocol
 
-- (void)insertCategoryWithName:(NSString *)categoryName {
-    
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc];
-    Category *newCategory = [[Category alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
-    [newCategory setName:categoryName];
-    [[self allCategories] addObject:newCategory];
-    [newCategory release];
-    NSSortDescriptor *sd = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-    [[self allCategories] sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-    NSError *error = nil;
-    [moc save:&error];
-    if (error) {
-        // put this into a seperate error logging class... 
-        DLog(@"Error adding category: %@", [error localizedDescription]);
-        NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-        if(detailedErrors != nil && [detailedErrors count] > 0) {
-            for(NSError* detailedError in detailedErrors) {
-                NSLog(@"  DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        else {
-            NSLog(@"  %@", [error userInfo]);
-        } 
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [[self tableView] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller 
+   didChangeObject:(id)anObject 
+       atIndexPath:(NSIndexPath *)indexPath 
+     forChangeType:(NSFetchedResultsChangeType)type 
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableViewCell *cell = nil;
+    Category *theCategory =  nil;
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+                                    withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:[newIndexPath section]] 
+                            withRowAnimation:UITableViewRowAnimationFade];
+        case NSFetchedResultsChangeUpdate:
+            cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+            theCategory = [[self resultsController] objectAtIndexPath:indexPath];
+            [[cell textLabel] setText:[theCategory name]];
+            [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                    withRowAnimation:UITableViewRowAnimationFade];
+        default:
+            break;
     }
 }
 
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [[self tableView] endUpdates];
+}
+
+
+#pragma mark -
+#pragma mark Coredata methods
 
 - (void)deleteCategory:(Category *)category {
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
@@ -206,6 +240,19 @@
     }
 }
 
+- (NSFetchRequest *)categoryFetchRequest {
+    ListMonsterAppDelegate *appDelegate = [ListMonsterAppDelegate sharedAppDelegate];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Category" inManagedObjectContext:[appDelegate managedObjectContext]]];
+    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byName,nil];
+    
+    [request setSortDescriptors:sortDescriptors];
+    [byName release];
+    [sortDescriptors release];
+    
+    return [request autorelease];
+}
 
 
 @end
