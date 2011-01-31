@@ -21,14 +21,13 @@
 
 @implementation CategoryViewController
 
-@synthesize allCategories;;
+@synthesize allCategories;
 
 #pragma mark -
 #pragma mark Initialization
 
-- (id)init {
+- (id)initWithInfo:(NSDictionary *)info {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    [[self tabBarItem] setTitle:@"Settings"];  // TODO: change me
     return self;
 }
 
@@ -62,7 +61,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
     NSArray *categories = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Category" orderedBy:@"name"];
     [self setAllCategories:[categories mutableCopy]];
 

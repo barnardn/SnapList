@@ -12,6 +12,7 @@
 @interface ListMonsterAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     UINavigationController *navController;
+    UINavigationController *settingsNavController;
     UITabBarController *tabController;
     NSManagedObjectContext *managedObjectContext;
     NSManagedObjectModel *managedObjectModel;
@@ -20,10 +21,11 @@
     
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic,retain) UINavigationController *navController;
-@property (nonatomic,retain) UITabBarController *tabController;
-@property (nonatomic,retain) NSArray *allColors;
+@property(nonatomic, retain) IBOutlet UIWindow *window;
+@property(nonatomic,retain) UINavigationController *navController;
+@property(nonatomic,retain) UINavigationController *settingsNavController;
+@property(nonatomic,retain) UITabBarController *tabController;
+@property(nonatomic,retain) NSArray *allColors;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
 - (NSManagedObjectModel *)managedObjectModel;

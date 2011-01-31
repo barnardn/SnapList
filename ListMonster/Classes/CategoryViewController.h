@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingViewProtocol.h"
 
 @class Category;
 
-@interface CategoryViewController : UITableViewController {
+@interface CategoryViewController : UITableViewController <SettingViewProtocol> {
 
     NSMutableArray *allCategories;
 }
 
-@property (nonatomic,retain) NSMutableArray *allCategories;
+@property(nonatomic,retain) NSMutableArray *allCategories;
 
 @end
