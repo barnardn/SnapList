@@ -13,7 +13,7 @@
 #import "MetaList.h"
 #import "Category.h"
 #import "ListColor.h"
-#import "TextEntryViewController.h"
+#import "ListNameViewController.h"
 
 
 @implementation EditListViewController
@@ -226,7 +226,7 @@
     NSString *placeholder = [[self theList] name];
     if (!placeholder)
         placeholder = NSLocalizedString(@"New List", "@new list name placeholder");
-    TextEntryViewController *tvc = [[TextEntryViewController alloc] initWithTitle:viewTitle placeholder:placeholder];
+    ListNameViewController *tvc = [[ListNameViewController alloc] initWithTitle:viewTitle placeholder:placeholder];
     [[self navigationController] pushViewController:tvc animated:YES];
     [self setSelectedSubview:tvc];
     [tvc release];
