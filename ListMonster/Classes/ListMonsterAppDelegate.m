@@ -194,6 +194,9 @@ static ListMonsterAppDelegate *appDelegateInstance;
     if (!psc) return nil;
     managedObjectContext = [[NSManagedObjectContext alloc] init];
     [managedObjectContext setPersistentStoreCoordinator:psc];
+    NSUndoManager *undoManager = [[NSUndoManager alloc] init];
+    [managedObjectContext setUndoManager:undoManager];
+    [undoManager release];
     return managedObjectContext;
 }
 
