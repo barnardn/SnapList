@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSSet *list;
 
 - (UIColor *)uiColor;
-
++ (ListColor *)blackColor;
 @end
 
 

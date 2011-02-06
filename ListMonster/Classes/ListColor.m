@@ -8,6 +8,8 @@
 
 #import "ListColor.h"
 #import "MetaList.h"
+#import "ListMonsterAppDelegate.h"
+#import "NSArrayExtensions.h"
 
 @implementation ListColor 
 
@@ -26,6 +28,16 @@
     return [UIColor colorWithRed:(redPart/255.0f) green:(greenPart/255.0f) blue:(bluePart/255.0f) alpha:1.0f];
 }
 
+
++ (ListColor *)blackColor {
+    
+    NSArray *colors = [[ListMonsterAppDelegate sharedAppDelegate] allColors];
+    NSArray *blackColor = [colors filterBy:^ BOOL (id obj) {
+        ListColor *color = obj;
+        return (NSOrderedSame == [[color rgbValue] compare:INT_OBJ(0)]);
+    }];
+    return [blackColor objectAtIndex:0];
+}
 
 
 @end

@@ -18,7 +18,6 @@
 
 - (NSFetchRequest *)allListsFetchRequest;
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
-- (ListColor *)blackColor;
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
@@ -100,7 +99,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
     MetaList *newList = [[MetaList alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
     [newList setName:NSLocalizedString(@"New List", @"default new list name")];
-    [newList setColor:[self blackColor]];
+    [newList setColor:[ListColor blackColor]];
     [self showEditViewWithList:newList];
     [newList release];
 }
@@ -114,23 +113,14 @@
     [evc release];
 }
 
-- (ListColor *)blackColor {
-    
-    NSArray *colors = [[ListMonsterAppDelegate sharedAppDelegate] allColors];
-    NSArray *blackColor = [colors filterBy:^ BOOL (id obj) {
-        ListColor *color = obj;
-        return (NSOrderedSame == [[color rgbValue] compare:INT_OBJ(0)]);
-    }];
-    return [blackColor objectAtIndex:0];
-}
-
 #pragma mark -
 #pragma mark modal view protocol methods
 
 - (void)modalViewCancelPressed {
     [self dismissModalViewControllerAnimated:YES];
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc undo];
+    [moc rollback];
+    //[moc undo];
  }
 
 - (void)modalViewDonePressedWithReturnValue:(id)returnValue {
