@@ -7,14 +7,14 @@
 //
 
 #import "Alerts.h"
+#import "Category.h"
 #import "CategoryViewController.h"
 #import "ListMonsterAppDelegate.h"
-#import "Category.h"
+#import "CategoryEditViewController.h"
 
 @interface CategoryViewController()
 
 - (NSFetchRequest *)categoryFetchRequest;
-- (void)deleteCategory:(Category *)category;
 
 @end
 
@@ -67,8 +67,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
+                                                                               target:self 
+                                                                               action:@selector(addCategory:)];
+    [[self navigationItem] setRightBarButtonItem:addButton];
+    [addButton release];
 }
+
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,46 +96,13 @@
 }
 */
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    
-    [super setEditing:editing animated:animated];
-    if (editing) {
-        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategory:)];
-        [[self navigationItem] setLeftBarButtonItem:addButton];
-        [addButton release];
-    } else {
-        [[self navigationItem] setLeftBarButtonItem:nil];
-    }
-}
 
 - (void)addCategory:(id)sender {
     
-    NSString *title = NSLocalizedString(@"New Category", @"new category alert title");
-    NSString *placeholder = NSLocalizedString(@"category name", @"new category placeholder");
-    // create a new category in the moc
+    CategoryEditViewController *cevc = [[CategoryEditViewController alloc] initWithCategory:nil];
+    [[self navigationController] pushViewController:cevc animated:YES];
+    [cevc release];
 }
-
-
-#pragma mark -
-#pragma mark modal view protocol methods
-
-- (void)modalViewCancelPressed {
-    [self dismissModalViewControllerAnimated:YES];
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc undo];
-}
-
-- (void)modalViewDonePressedWithReturnValue:(id)returnValue {
-    [self dismissModalViewControllerAnimated:YES];
-/*    NSError *error = nil;
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc save:&error];
-    if (error) {
-        [self displayErrorMessage:@"Unable to save list" forError:error];
-        return;
-    } */
-}
-
 
 
 #pragma mark -
@@ -163,23 +135,17 @@
 }
 
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
+#pragma mark -
+#pragma mark UITableViewDelegate methods
 
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Category *category = [[self resultsController] objectAtIndexPath:indexPath];
-        [self deleteCategory:category];
-    }   
-    /*
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    } */  
+    Category *category = [[self resultsController] objectAtIndexPath:indexPath];
+    CategoryEditViewController *cevc = [[CategoryEditViewController alloc] initWithCategory:category];
+    [[self navigationController] pushViewController:cevc animated:YES];
+    [cevc release];
 }
+
 
 #pragma mark -
 #pragma mark NSFetchedResultsController delegate protocol
@@ -229,16 +195,6 @@
 #pragma mark -
 #pragma mark Coredata methods
 
-- (void)deleteCategory:(Category *)category {
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc deleteObject:category];
-    NSError *error = nil;
-    [moc save:&error];
-    if (error) {
-        DLog(@"Error deleting category: %@", [error localizedDescription]);
-        [ErrorAlert showWithTitle:@"Delete Error" andMessage:[error localizedDescription]];
-    }
-}
 
 - (NSFetchRequest *)categoryFetchRequest {
     ListMonsterAppDelegate *appDelegate = [ListMonsterAppDelegate sharedAppDelegate];

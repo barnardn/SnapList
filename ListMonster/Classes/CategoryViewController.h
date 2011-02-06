@@ -11,13 +11,17 @@
 #import "ModalViewProtocol.h"
 #import "SettingViewProtocol.h"
 
+@class CategoryEditViewController;
+
 @interface CategoryViewController : UITableViewController <SettingViewProtocol, 
-                                                           ModalViewProtocol, 
-                                                           NSFetchedResultsControllerDelegate> 
+                                                           NSFetchedResultsControllerDelegate>
+
 {
     NSFetchedResultsController *resultsController;
 }
 
 @property(nonatomic,retain) NSFetchedResultsController *resultsController;
+
+- (IBAction)addCategory:(id)sender;
 
 @end

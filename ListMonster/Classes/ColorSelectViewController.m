@@ -69,7 +69,7 @@
 }
 
 - (void)cancelPressed:(id)sender {
-    [self setDefaultColor:nil];
+    [self setDefaultColor:[ListColor blackColor]];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
