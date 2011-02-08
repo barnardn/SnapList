@@ -6,30 +6,34 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import "Alerts.h"
+#import "Category.h"
 #import "CategorySelectViewController.h"
 #import "ColorSelectViewController.h"
 #import "EditListViewController.h"
-#import "ListMonsterAppDelegate.h"
-#import "MetaList.h"
-#import "Category.h"
 #import "ListColor.h"
+#import "ListMonsterAppDelegate.h"
 #import "ListNameViewController.h"
-
+#import "MetaList.h"
 
 @implementation EditListViewController
 
-@synthesize theList, editablePropertyKeys, selectedSubview, modalParent;
+@synthesize theList;
 
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithList:(MetaList *)l {
+- (id)initWithList:(MetaList *)aList {
     if (!(self = [super initWithStyle:UITableViewStyleGrouped]))
         return nil;
-    [self setTheList:l];
-    NSArray *keys = [NSArray arrayWithObjects:@"name",@"color",@"category",nil];
-    [self setEditablePropertyKeys:keys];    
-    selectedSubview = nil;
+    [self setTheList:aList];
+    if (!aList) {
+        NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+        NSEntityDescription *listEntity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
+        MetaList *l = [[MetaList alloc] initWithEntity:listEntity insertIntoManagedObjectContext:moc];
+        [self setTheList:l];
+        [l release];
+    }
     return self;
 }
 
@@ -56,8 +60,6 @@
 
 - (void)dealloc {
     [theList release];
-    [editablePropertyKeys release];
-    [selectedSubview release];
     [super dealloc];
 }
 
@@ -90,27 +92,27 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (editPropertyIndex < 0)
-        return;
-    if (![[self selectedSubview] respondsToSelector:@selector(returnValue)])
-        return;
-    NSString *key = [[self editablePropertyKeys] objectAtIndex:editPropertyIndex];
-    id newValue = [[self selectedSubview] performSelector:@selector(returnValue)];
-    [[self theList] setValue:newValue forKey:key];
-    [self setSelectedSubview:nil];
-    [[self tableView] reloadData];
+    [[self tableView] reloadData];    // may be able to eliminate this...
 }
 
 #pragma mark -
 #pragma mark button item actions
 
 - (void)cancelPressed:(id)sender {
-    [[self modalParent] modalViewCancelPressed];
+    [[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] rollback];
+    [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 
 - (void)donePressed:(id)sender {
-    [[self modalParent] modalViewDonePressedWithReturnValue:nil];
+    NSError *error = nil;
+    [[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error];
+    if (error) {
+        [ErrorAlert showWithTitle:NSLocalizedString(@"Error", @"error title")
+                       andMessage:NSLocalizedString(@"The changes list could not be saved.", @"cant save list message")];
+        DLog(@"Unable to save list: %@", [error localizedDescription]);
+    }
+    [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -170,7 +172,6 @@
 
     NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"pushColorSelectView", @"pushCategoryEditView",nil];
     NSInteger sectionIdx = [indexPath section];
-    editPropertyIndex = [indexPath section];
     NSString *selString = [nextNavSelectors objectAtIndex:sectionIdx];
     if ([selString compare:@""] == NSOrderedSame)
         return;
@@ -210,10 +211,7 @@
 - (UITableViewCell *)cellAsCategoryCell:(UITableViewCell *)cell {
     
     Category *category = [[self theList] category];
-    if (!category) {
-        [[cell textLabel] setText:NSLocalizedString(@"Category", @"select a category prompt")];
-        return cell;
-    }
+    [[cell textLabel] setText:NSLocalizedString(@"Category", @"select a category prompt")];
     [[cell detailTextLabel] setText:[category name]];
     return cell;
 }
@@ -222,34 +220,21 @@
 #pragma mark Methods that push in the next view controller
 
 - (void)pushNameEditView {
-    NSString *viewTitle = NSLocalizedString(@"List Name", "@list name entry title");
-    NSString *placeholder = [[self theList] name];
-    if (!placeholder)
-        placeholder = NSLocalizedString(@"New List", "@new list name placeholder");
-    ListNameViewController *tvc = [[ListNameViewController alloc] initWithTitle:viewTitle placeholder:placeholder];
-    [[self navigationController] pushViewController:tvc animated:YES];
-    [self setSelectedSubview:tvc];
-    [tvc release];
+    ListNameViewController *lnvc = [[ListNameViewController alloc] initWithList:[self theList]];
+    [[self navigationController] pushViewController:lnvc animated:YES];
+    [lnvc release];
 }
 
 - (void)pushColorSelectView {
-    ListColor *color = [[self theList] color];
-    ColorSelectViewController *csvc = [[ColorSelectViewController alloc] initWithColor:color];
+    ColorSelectViewController *csvc = [[ColorSelectViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:csvc animated:YES];
-    [self setSelectedSubview:csvc];
     [csvc release];
     
 }
 
-// TODO: don't call category edit view
-// the cateogry edit view commits a transaction to the core data store when adding or
-// deleting categories, which will also commit any non-cateogyr list edits as well.
-
 - (void)pushCategoryEditView {
-    Category *category = [[self theList] category];
-    CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithCategory:category];
+    CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:cvc animated:YES];
-    [self setSelectedSubview:cvc];
     [cvc release];
 }
 

@@ -10,17 +10,19 @@
 #import <CoreData/CoreData.h>
 
 @class Category;
+@class MetaList;
 
 @interface CategorySelectViewController : UITableViewController {
     
     NSArray *allCategories;
+    MetaList *theList;
     Category *selectedCategory;
 }
 
-@property(nonatomic, retain) NSArray *allCategories;
-@property(nonatomic, retain) Category *selectedCategory;
+@property(nonatomic,retain) NSArray *allCategories;
+@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,retain) Category *selectedCategory;
 
-- (id)initWithCategory:(Category *)defaultCategory;
-- (Category *)returnValue;
+- (id)initWithList:(MetaList *)aList;
 
 @end

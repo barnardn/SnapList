@@ -6,9 +6,10 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "Category.h"
+#import "ListColor.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
-#import "Category.h"
 #import "NSStringExtensions.h"
 
 @implementation MetaList
@@ -22,6 +23,7 @@
 - (void)awakeFromInsert {
     [self setDateCreated:[NSDate date]];
     [self setListID:[NSString stringWithUUID]];
+    [self setColor:[ListColor blackColor]];
 }
 
 @end

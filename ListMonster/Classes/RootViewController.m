@@ -78,6 +78,7 @@
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [addBtn release];
+    [[self navigationItem] setTitle:NSLocalizedString(@"Lists", "@root view title")];
 
 }
 
@@ -94,45 +95,17 @@
 }
 
 - (void)addList:(id)sender {
-    
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
-    MetaList *newList = [[MetaList alloc] initWithEntity:entity insertIntoManagedObjectContext:moc];
-    [newList setName:NSLocalizedString(@"New List", @"default new list name")];
-    [newList setColor:[ListColor blackColor]];
-    [self showEditViewWithList:newList];
-    [newList release];
+    [self showEditViewWithList:nil];
 }
 
 - (void)showEditViewWithList:(MetaList *)list {
     
     EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
-    [evc setModalParent:self];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     [self presentModalViewController:edListNav animated:YES];
     [evc release];
 }
 
-#pragma mark -
-#pragma mark modal view protocol methods
-
-- (void)modalViewCancelPressed {
-    [self dismissModalViewControllerAnimated:YES];
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc rollback];
-    //[moc undo];
- }
-
-- (void)modalViewDonePressedWithReturnValue:(id)returnValue {
-    [self dismissModalViewControllerAnimated:YES];
-    NSError *error = nil;
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc save:&error];
-    if (error) {
-        [self displayErrorMessage:@"Unable to save list" forError:error];
-        return;
-    }
-}
     
 #pragma mark -
 #pragma mark Error handler routine

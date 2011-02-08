@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "ModalViewProtocol.h"
 
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : UITableViewController <ModalViewProtocol, NSFetchedResultsControllerDelegate> {
+@interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
     ListMonsterAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     UINavigationController *edListNav;

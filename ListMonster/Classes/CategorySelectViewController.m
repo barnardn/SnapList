@@ -9,24 +9,27 @@
 #import "Alerts.h"
 #import "CategorySelectViewController.h"
 #import "ListMonsterAppDelegate.h"
+#import "MetaList.h"
 
 @implementation CategorySelectViewController
 
-@synthesize allCategories, selectedCategory;
+@synthesize allCategories, theList, selectedCategory;
 
 #pragma mark -
 #pragma mark Initialization
 
 
-- (id)initWithCategory:(Category *)defaultCategory {
+- (id)initWithList:(MetaList *)aList {
+    
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
-    [self setSelectedCategory:defaultCategory];
+    [self setTheList:aList];
+    [self setSelectedCategory:[aList category]];
     return self;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    return [self initWithCategory:nil];
+    return nil;
 }
 
 #pragma mark -
@@ -42,11 +45,11 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     [self setAllCategories:nil];
-    [self setSelectedCategory:nil];
 }
 
 - (void)dealloc {
     [allCategories release];
+    [theList release];
     [selectedCategory release];
     [super dealloc];
 }
@@ -98,16 +101,12 @@
 #pragma mark Button actions
 
 - (void)cancelPressed:(id)sender {
-    [self setSelectedCategory:nil];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (void)donePressed:(id)sender {
+    [[self theList] setCategory:[self selectedCategory]];
     [[self navigationController] popViewControllerAnimated:YES];
-}
-
-- (Category *)returnValue {
-    return [self selectedCategory];
 }
 
 #pragma mark -

@@ -128,6 +128,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     Category *category = [[self resultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[category name]];

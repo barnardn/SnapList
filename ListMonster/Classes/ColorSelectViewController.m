@@ -9,20 +9,23 @@
 #import "ColorSelectViewController.h"
 #import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
+#import "MetaList.h"
 
 @implementation ColorSelectViewController
 
-@synthesize allColors, defaultColor;
+@synthesize allColors, theList, selectedColor;
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (id)initWithColor:(ListColor *)color{
+- (id)initWithList:(MetaList *)aList{
     
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
     
-    [self setDefaultColor:color];
+    [self setTheList:aList];
+    [self setSelectedColor:[[self theList] color]];
+    
     NSArray *colors = [[ListMonsterAppDelegate sharedAppDelegate] allColors];
     [self setAllColors:colors];
     return self;
@@ -47,7 +50,8 @@
 
 - (void)dealloc {
     [allColors release];
-    [defaultColor release];
+    [theList release];
+    [selectedColor release];
     [super dealloc];
 }
 
@@ -69,7 +73,6 @@
 }
 
 - (void)cancelPressed:(id)sender {
-    [self setDefaultColor:[ListColor blackColor]];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
@@ -78,9 +81,6 @@
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-- (ListColor *)returnValue {
-    return [self defaultColor];
-}
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,7 +132,7 @@
     [[cell textLabel] setTextColor:[color uiColor]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     
-    NSNumber *selectRgb = [[self defaultColor] rgbValue];
+    NSNumber *selectRgb = [[self selectedColor] rgbValue];
     BOOL isSelectedColor = (NSOrderedSame == [[color rgbValue] compare:selectRgb]);
     if (isSelectedColor)
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -145,7 +145,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
-    [self setDefaultColor:color];
+    [self setSelectedColor:color];
     [[self tableView] reloadData];
 }
 

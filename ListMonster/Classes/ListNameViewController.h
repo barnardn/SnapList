@@ -7,22 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
+@class MetaList;
 
 @interface ListNameViewController : UIViewController {
 
     IBOutlet UITextField *textField;
-    NSString *viewTitle;
-    NSString *placeholderText;
-    NSString *returnValue;
+    MetaList *theList;
 }
 
 @property(nonatomic,retain) UITextField *textField;
-@property(nonatomic,copy) NSString *viewTitle;
-@property(nonatomic,copy) NSString *placeholderText;
-@property(nonatomic,copy) NSString *returnValue;
+@property(nonatomic,retain) MetaList *theList;
 
--(id)initWithTitle:(NSString *)theTitle placeholder:(NSString *)thePlaceholder;
-
+-(id)initWithList:(MetaList *)aList;
 
 @end

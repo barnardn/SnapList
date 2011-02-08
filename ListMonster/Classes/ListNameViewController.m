@@ -6,29 +6,26 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import "ListMonsterAppDelegate.h"
 #import "ListNameViewController.h"
 
 
 @implementation ListNameViewController
 
-@synthesize textField, viewTitle, placeholderText, returnValue;
+@synthesize textField, theList;
 
-- (id)initWithTitle:(NSString *)theTitle placeholder:(NSString *)thePlaceholder {
+- (id)initWithList:(MetaList *)aList {
     
     self = [super initWithNibName:@"TextEntryView" bundle:nil];
     if (!self) return nil;
     
-    [self setPlaceholderText:thePlaceholder];
-    [self setViewTitle:theTitle];
-    [self setReturnValue:nil];
+    [self setTheList:aList];
     return self;
 }
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    NSString *title = NSLocalizedString(@"New Item", @"untitled textentry view title");
-    NSString *placeholder = NSLocalizedString(@"item name", @"untitled textentry view placeholder");
-    return [self initWithTitle:title placeholder:placeholder];
+    return nil;
 }
 
 - (void)viewDidLoad {
@@ -43,10 +40,13 @@
                                                                action:@selector(donePressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [[self navigationItem] setTitle:[self viewTitle]];
-    [[self textField] setPlaceholder:[self placeholderText]];
     [cancelBtn release];
     [doneBtn release];
+    
+    [[self navigationItem] setTitle:NSLocalizedString(@"List Name", @"list name view title")];
+    [[self textField] setPlaceholder:NSLocalizedString(@"Enter list name", @"list name textfield placeholder")];
+    if ([[self theList] name]) 
+        [[self textField] setText:[[self theList] name]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -59,13 +59,12 @@
 }
 
 - (void)cancelPressed:(id)sender {
-    [self setReturnValue:nil];
     [[self navigationController] popViewControllerAnimated:YES];
 }
      
 - (void)donePressed:(id)sender {
-    NSString *txt = [[self textField] text];
-    [self setReturnValue:txt];
+    NSString *newName = [[self textField] text];
+    [[self theList] setName:newName];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
@@ -84,9 +83,7 @@
 
 - (void)dealloc {
     [textField release];
-    [placeholderText release];
-    [viewTitle release];
-    [returnValue release];
+    [theList release];
     [super dealloc];
 }
 

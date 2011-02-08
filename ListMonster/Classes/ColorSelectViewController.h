@@ -7,20 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 @class ListColor;
+@class MetaList;
 
 @interface ColorSelectViewController : UITableViewController {
     
     NSArray *allColors;
-    ListColor *defaultColor;
+    MetaList *theList;
+    ListColor *selectedColor;
 }
 
 @property(nonatomic,retain) NSArray *allColors;
-@property(nonatomic,retain) ListColor *defaultColor;
+@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,retain) ListColor *selectedColor;
 
-- (id)initWithColor:(ListColor *)color;
-- (ListColor *)returnValue;
+- (id)initWithList:(MetaList *)aList;
 
 
 @end
