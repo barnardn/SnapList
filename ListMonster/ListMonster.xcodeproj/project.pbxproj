@@ -79,7 +79,6 @@
 		49A0206A12E5276C005B1D0E /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectViewController.h; sourceTree = "<group>"; };
 		49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectViewController.m; sourceTree = "<group>"; };
-		49A3E35212ECE2DA0081D54A /* ModalViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewProtocol.h; sourceTree = "<group>"; };
 		49AD7A4C12E380D9006E6AC6 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		49AD7A4D12E380D9006E6AC6 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		49AD7A8812E39FF7006E6AC6 /* 0x000000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x000000.png; sourceTree = "<group>"; };
@@ -230,7 +229,6 @@
 		49BEEBC312EBBF8F0088707A /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				49A3E35212ECE2DA0081D54A /* ModalViewProtocol.h */,
 				4973C39D12F60AAD005BF894 /* SettingItem.h */,
 				4973C39E12F60AAD005BF894 /* SettingItem.m */,
 				4973C3B912F64688005BF894 /* SettingViewProtocol.h */,
