@@ -8,6 +8,7 @@
 
 #import "Alerts.h"
 #import "EditListViewController.h"
+#import "ListItemsViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListColor.h"
 #import "MetaList.h"
@@ -66,6 +67,7 @@
 
 - (void)dealloc {
     [resultsController release];
+    [edListNav release];
     [super dealloc];
 }
 
@@ -120,11 +122,12 @@
 }
                                                
 
-/*
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [edListNav release], edListNav = nil;
 }
-*/
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -215,14 +218,11 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
+    
+    MetaList *list = [[self resultsController] objectAtIndexPath:indexPath];
+    ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
+    [[self navigationController] pushViewController:livc animated:YES];
+    [livc release];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {

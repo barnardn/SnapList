@@ -16,6 +16,13 @@
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4939B7B012ED0B2C007F6455 /* Categories.plist */; };
+		495D8413130E088800933720 /* EditListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D8412130E088800933720 /* EditListItemViewController.m */; };
+		495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EABF713083F5700F4A64E /* ListItemsViewController.m */; };
+		495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 495EABF813083F5700F4A64E /* ListItemsView.xib */; };
+		495EAC0513085D1000F4A64E /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 495EAC0313085D1000F4A64E /* checked.png */; };
+		495EAC0613085D1000F4A64E /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 495EAC0413085D1000F4A64E /* unchecked.png */; };
+		495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC1713086F7000F4A64E /* NewListItemViewController.m */; };
+		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
 		4973C39C12F60845005BF894 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4973C39B12F60845005BF894 /* SettingsViewController.m */; };
 		4973C39F12F60AAD005BF894 /* SettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4973C39E12F60AAD005BF894 /* SettingItem.m */; };
 		497A097D12FDA4E500BA5B85 /* CategoryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 497A097B12FDA4E500BA5B85 /* CategoryEditViewController.m */; };
@@ -62,6 +69,17 @@
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
 		4939B7B012ED0B2C007F6455 /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
+		495D8411130E088800933720 /* EditListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListItemViewController.h; sourceTree = "<group>"; };
+		495D8412130E088800933720 /* EditListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListItemViewController.m; sourceTree = "<group>"; };
+		495EABF613083F5700F4A64E /* ListItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemsViewController.h; sourceTree = "<group>"; };
+		495EABF713083F5700F4A64E /* ListItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemsViewController.m; sourceTree = "<group>"; };
+		495EABF813083F5700F4A64E /* ListItemsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListItemsView.xib; path = Classes/ListItemsView.xib; sourceTree = "<group>"; };
+		495EAC0313085D1000F4A64E /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		495EAC0413085D1000F4A64E /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
+		495EAC1613086F7000F4A64E /* NewListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewListItemViewController.h; sourceTree = "<group>"; };
+		495EAC1713086F7000F4A64E /* NewListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewListItemViewController.m; sourceTree = "<group>"; };
+		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
+		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		4973C39A12F60845005BF894 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		4973C39B12F60845005BF894 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		4973C39D12F60AAD005BF894 /* SettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingItem.h; sourceTree = "<group>"; };
@@ -177,16 +195,19 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				495EAC0313085D1000F4A64E /* checked.png */,
+				495EAC0413085D1000F4A64E /* unchecked.png */,
+				4939B7B012ED0B2C007F6455 /* Categories.plist */,
+				497A097C12FDA4E500BA5B85 /* CategoryEditView.xib */,
+				498CE1E212FB8EB600A56CA8 /* CategoryView.xib */,
+				49BEEBD412EBC4440088707A /* Colors.plist */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
-				49F1814D12C959B50066B454 /* RootView.xib */,
-				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
-				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				495EABF813083F5700F4A64E /* ListItemsView.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
-				49BEEBD412EBC4440088707A /* Colors.plist */,
-				4939B7B012ED0B2C007F6455 /* Categories.plist */,
-				498CE1E212FB8EB600A56CA8 /* CategoryView.xib */,
-				497A097C12FDA4E500BA5B85 /* CategoryEditView.xib */,
+				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				49F1814D12C959B50066B454 /* RootView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -258,6 +279,8 @@
 				49F1812212C9364E0066B454 /* NSArrayExtensions.m */,
 				49F1812412C9366A0066B454 /* NSStringExtensions.h */,
 				49F1812512C9366A0066B454 /* NSStringExtensions.m */,
+				495EAC2F130882E900F4A64E /* NSNumberExtensions.h */,
+				495EAC30130882E900F4A64E /* NSNumberExtensions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -281,6 +304,12 @@
 				4973C39B12F60845005BF894 /* SettingsViewController.m */,
 				497A097A12FDA4E500BA5B85 /* CategoryEditViewController.h */,
 				497A097B12FDA4E500BA5B85 /* CategoryEditViewController.m */,
+				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
+				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
+				495EAC1613086F7000F4A64E /* NewListItemViewController.h */,
+				495EAC1713086F7000F4A64E /* NewListItemViewController.m */,
+				495D8411130E088800933720 /* EditListItemViewController.h */,
+				495D8412130E088800933720 /* EditListItemViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -349,6 +378,9 @@
 				4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */,
 				498CE1E312FB8EB600A56CA8 /* CategoryView.xib in Resources */,
 				497A097E12FDA4E500BA5B85 /* CategoryEditView.xib in Resources */,
+				495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */,
+				495EAC0513085D1000F4A64E /* checked.png in Resources */,
+				495EAC0613085D1000F4A64E /* unchecked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +411,10 @@
 				4973C39C12F60845005BF894 /* SettingsViewController.m in Sources */,
 				4973C39F12F60AAD005BF894 /* SettingItem.m in Sources */,
 				497A097D12FDA4E500BA5B85 /* CategoryEditViewController.m in Sources */,
+				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
+				495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */,
+				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
+				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
