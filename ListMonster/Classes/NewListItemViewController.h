@@ -11,19 +11,24 @@
 
 @class MetaList;
 @class MetaListItem;
+@class EditTextViewController;
 
 @interface NewListItemViewController : UITableViewController {
 
     MetaList *theList;
-    MetaListItem *theItem;
     NSArray *itemProperties;
+    NSInteger editPropertyIndex;
+    EditTextViewController *editViewController;
+    BOOL hasDirtyProperties;
 }
 
 @property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) MetaListItem *theItem;
 @property(nonatomic,retain) NSArray *itemProperties;
+@property(nonatomic,assign) NSInteger editPropertyIndex;
+@property(nonatomic,retain) EditTextViewController *editViewController;
+@property(nonatomic,assign) BOOL hasDirtyProperties;
 
-- (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;
+- (id)initWithList:(MetaList *)list;
 
 
 @end

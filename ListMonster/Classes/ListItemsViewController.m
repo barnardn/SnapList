@@ -83,13 +83,14 @@
     [super viewWillAppear:YES];
     [self setListItems:[[[self theList] items] allObjects]];
     [editItemNavController release], editItemNavController = nil;
+    [[self allItemsTableView] reloadData];
 }
 
 #pragma mark -
 #pragma mark Button action
 
 -(IBAction)addItemBtnPressed:(id)sender {
-    NewListItemViewController *eivc = [[NewListItemViewController alloc] initWithList:[self theList] editItem:nil];
+    NewListItemViewController *eivc = [[NewListItemViewController alloc] initWithList:[self theList]];
     editItemNavController = [[UINavigationController alloc] initWithRootViewController:eivc];
     [self presentModalViewController:editItemNavController animated:YES];
     [eivc release];
@@ -157,8 +158,9 @@
     }
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     [[cell textLabel] setText:[item name]];
-    NSString *qty = ([item quantity]) ? [[item quantity] stringValue] : @"";
-    [[cell detailTextLabel] setText:qty];
+    NSNumber *qty = [item quantity];
+    NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
+    [[cell detailTextLabel] setText:qtyString];
     [self updateCheckboxButtonForItem:item atCell:cell];
     return cell;
 }
@@ -212,7 +214,7 @@
 
 - (UITableViewCell *)makeCellWithCheckboxButton {
     
-    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"] autorelease];
+    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease];
     UIButton *checkBoxBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     checkBoxBtn.frame = CGRectMake(0.0f, 0.0f, 22.0f, 22.0f);
     [checkBoxBtn addTarget:self action:@selector(checkboxButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];

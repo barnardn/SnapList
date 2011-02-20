@@ -19,11 +19,14 @@
     if (!stringValue || [stringValue isEqualToString:@""]) 
         return nil;
     
+    NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
     NSArray *stringParts = [stringValue componentsSeparatedByString:@"."];
     if ([stringParts count] == 1) {
-        return [self initWithInteger:[stringValue integerValue]];
+        NSNumber *intNum = [formatter numberFromString:stringValue];
+        return (intNum) ? [[NSNumber alloc] initWithInt:[intNum intValue]] : nil;
     } 
-    return [self initWithDouble:[stringValue doubleValue]];
+    NSNumber *decimalNum = [formatter numberFromString:stringValue];
+    return (decimalNum) ? [self initWithDouble:[decimalNum doubleValue]] : nil;
 }
 
 + (NSNumber *)numberWithString:(NSString *)stringValue {
