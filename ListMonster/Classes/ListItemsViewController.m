@@ -81,7 +81,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    [self setListItems:[[[self theList] items] allObjects]];
+    NSArray *allItems = [[[self theList] items] allObjects];
+    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]; 
+    [self setListItems:[allItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:byName]]];
     [editItemNavController release], editItemNavController = nil;
     [[self allItemsTableView] reloadData];
 }
