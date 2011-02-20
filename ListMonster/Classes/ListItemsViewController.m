@@ -190,7 +190,7 @@
     [eivc release];
 }
 
-
+/*
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
@@ -198,7 +198,7 @@
     [[self navigationController] pushViewController:eivc animated:YES];
     [eivc release];
 }
-
+*/
 
 #pragma mark -
 #pragma mark Action sheet delegate
