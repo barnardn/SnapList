@@ -22,6 +22,8 @@
 - (void)rollbackAnyChanges;
 - (void)toggleCancelButton:(BOOL)editMode;
 - (void)cancelBtnPressed:(id)sender; 
+- (void)filterItemsByCheckedState;
+- (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
 
 @end
 
@@ -77,13 +79,14 @@
                                                                action:@selector(editBtnPressed:)];
     [self setEditBtn:btn];
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
+    [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    NSArray *allItems = [[[self theList] items] allObjects];
     NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]; 
-    [self setListItems:[allItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:byName]]];
+    [self setListItems:[self itemsSortedBy:byName]];
+    [self filterItemsByCheckedState];           // TODO: refactor to take sorted list then assign to datasource
     [editItemNavController release], editItemNavController = nil;
     [[self allItemsTableView] reloadData];
 }
@@ -112,8 +115,27 @@
 
 - (IBAction)checkedStateValueChanged:(id)sender {
     
+    [self filterItemsByCheckedState];
+    [[self allItemsTableView] reloadData];
 }
 
+- (void)filterItemsByCheckedState {
+
+    NSInteger selectedSegmentIdx = [[self checkedState] selectedSegmentIndex];
+    NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"self.isChecked == %d", selectedSegmentIdx];
+    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    
+    //TODO: revist this, not the most efficient.
+    NSArray *filteredItems = [[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState];
+    
+    [self setListItems:filteredItems];
+}
+
+- (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor {
+    
+    NSArray *allItems = [[[self theList] items] allObjects];
+    return [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+}
 
 - (void)editBtnPressed:(id)sender {
     
@@ -149,7 +171,8 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[self theList] items] count];
+    return [[self listItems] count];
+    //return [[[self theList] items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -229,7 +252,7 @@
     
     UIButton *checkBoxButton = (UIButton *)[cell editingAccessoryView];
     BOOL isChecked = ([[item isChecked] intValue] == 0);
-    NSString *stateImageFile = (isChecked) ? @"checked.png" : @"unchecked.png";
+    NSString *stateImageFile = (isChecked) ? @"unchecked.png" : @"checked.png";
     [checkBoxButton setImage:[UIImage imageNamed:stateImageFile] forState:UIControlStateNormal];    
 }
 

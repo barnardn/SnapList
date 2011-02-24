@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+#define livcSEGMENT_UNCHECKED   0
+#define livcSEGMENT_CHECKED     1
+
+
 @class MetaList;
 
 @interface ListItemsViewController : UIViewController <UITableViewDataSource,
