@@ -24,4 +24,9 @@
 @property (nonatomic, retain) Category *category;
 @property (nonatomic, retain) ListColor *color;
 
+- (BOOL)deleteAllItems;
+- (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
+
+
+
 @end

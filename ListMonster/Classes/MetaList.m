@@ -8,6 +8,7 @@
 
 #import "Category.h"
 #import "ListColor.h"
+#import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSStringExtensions.h"
@@ -24,6 +25,32 @@
     [self setDateCreated:[NSDate date]];
     [self setListID:[NSString stringWithUUID]];
     [self setColor:[ListColor blackColor]];
+}
+
+
+- (BOOL)deleteAllItems {
+    
+    if ([[self items] count] == 0) return YES;
+    
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    for (MetaListItem *item in [self items]) {
+        [moc deleteObject:item];
+    }
+    NSError *error = nil;
+    [moc save:&error];
+    if (error) {
+        DLog(@"Unable to delete list items: %@", [error localizedDescription]);
+        [moc rollback];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state {
+    
+    NSArray *allItems = [[self items] allObjects];
+    NSArray *filteredItems = [allItems filteredArrayUsingPredicate:predicate];
+    [filteredItems setValue:INT_OBJ(state) forKey:@"isChecked"];
 }
 
 @end

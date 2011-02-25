@@ -6,6 +6,7 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import "Alerts.h"
 #import "EditListItemViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListItemsViewController.h"
@@ -102,7 +103,14 @@
 }
 
 -(IBAction)moreActionsBtnPressed:(id)sender {
-    
+  
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title")
+                                                             delegate:self 
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete All", @"delete all action button")
+                                                    otherButtonTitles:NSLocalizedString(@"Check All",@"check all"),
+                                                                      NSLocalizedString(@"Uncheck All", @"uncheck all"),nil];
+    [actionSheet showFromToolbar:[self toolBar]];
 }
 
 - (void)cancelBtnPressed:(id)sender {
@@ -143,6 +151,8 @@
         [self setInEditMode:NO];
         [[self editBtn] setTitle:NSLocalizedString(@"Edit", @"edit button")];
         [self commitAnyChanges];
+        [self filterItemsByCheckedState];
+        [[self allItemsTableView] reloadData];
     } else {
         [self setInEditMode:YES];
         [[self editBtn] setTitle:NSLocalizedString(@"Done", @"done button")];
@@ -215,23 +225,41 @@
     [eivc release];
 }
 
-/*
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    NewListItemViewController *eivc = [[NewListItemViewController alloc] initWithList:[self theList] editItem:item];
-    [[self navigationController] pushViewController:eivc animated:YES];
-    [eivc release];
-}
-*/
-
 #pragma mark -
 #pragma mark Action sheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+    DLog(@"index of action sheet button: %d", buttonIndex);
+    if (buttonIndex == 3) return;  // cancel
+    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems",nil];
+    [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex])];
 }
 
+- (void)deleteAllItems {
+    
+    BOOL isOk = [[self theList] deleteAllItems];
+    if (!isOk) {
+        [ErrorAlert showWithTitle:@"Error Deleting Items" andMessage:@"Items could not be deleted"];
+    }
+    [[self navigationController] popViewControllerAnimated:YES];
+}
+
+- (void)checkAllItems {
+    
+    NSPredicate *uncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
+    [[self theList] setItemsMatching:uncheckedItems toCheckedState:1];
+    [self filterItemsByCheckedState];
+    [[self allItemsTableView] reloadData];
+}
+
+- (void)uncheckAllItems {
+    
+    NSPredicate *checkedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 1"];
+    [[self theList] setItemsMatching:checkedItems toCheckedState:0];
+    [self filterItemsByCheckedState];
+    [[self allItemsTableView] reloadData];
+}
 
 #pragma mark -
 #pragma mark Cell checkbox methods
