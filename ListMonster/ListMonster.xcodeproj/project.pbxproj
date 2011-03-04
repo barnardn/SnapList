@@ -46,6 +46,8 @@
 		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
 		49BEEBD512EBC4440088707A /* Colors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49BEEBD412EBC4440088707A /* Colors.plist */; };
+		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
+		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
 		49F180E312C914340066B454 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F180E212C914340066B454 /* CoreData.framework */; };
 		49F180E712C9153A0066B454 /* ListMonster.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */; };
 		49F180ED12C91CA40066B454 /* MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F180EC12C91CA40066B454 /* MetaListItem.m */; };
@@ -117,6 +119,9 @@
 		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
 		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
 		49BEEBD412EBC4440088707A /* Colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Colors.plist; sourceTree = "<group>"; };
+		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
+		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
+		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
 		49F180E212C914340066B454 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ListMonster.xcdatamodel; sourceTree = "<group>"; };
 		49F180EB12C91CA40066B454 /* MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaListItem.h; sourceTree = "<group>"; };
@@ -207,6 +212,7 @@
 				498CE1E212FB8EB600A56CA8 /* CategoryView.xib */,
 				49BEEBD412EBC4440088707A /* Colors.plist */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
+				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
 				495EABF813083F5700F4A64E /* ListItemsView.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
@@ -318,6 +324,8 @@
 				495D8412130E088800933720 /* EditListItemViewController.m */,
 				4959AB0313104B460039ACAC /* EditTextViewController.h */,
 				4959AB0413104B460039ACAC /* EditTextViewController.m */,
+				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
+				49EAC1D8131AED39003738FD /* EditCategoryViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -390,6 +398,7 @@
 				495EAC0513085D1000F4A64E /* checked.png in Resources */,
 				495EAC0613085D1000F4A64E /* unchecked.png in Resources */,
 				4959AB0713104B460039ACAC /* EditTextView.xib in Resources */,
+				49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +434,7 @@
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 				4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */,
+				49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -78,6 +78,7 @@
 
 
 - (void)donePressed:(id)sender {
+    [[self theList] setColor:[self selectedColor]];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 

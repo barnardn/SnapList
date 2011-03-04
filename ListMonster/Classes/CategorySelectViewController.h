@@ -8,20 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "EditCategoryViewController.h"
 
 @class Category;
 @class MetaList;
 
-@interface CategorySelectViewController : UITableViewController {
+@interface CategorySelectViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditCategoryDelegate> {
     
-    NSArray *allCategories;
     MetaList *theList;
-    Category *selectedCategory;
+    NSFetchedResultsController *resultsController;
+    Category *newCategory;
 }
 
-@property(nonatomic,retain) NSArray *allCategories;
 @property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) Category *selectedCategory;
+@property(nonatomic,retain) NSFetchedResultsController *resultsController;
+@property(nonatomic,retain) Category *newCategory;
 
 - (id)initWithList:(MetaList *)aList;
 
