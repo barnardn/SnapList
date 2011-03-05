@@ -25,11 +25,6 @@
 		495EAC0613085D1000F4A64E /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 495EAC0413085D1000F4A64E /* unchecked.png */; };
 		495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC1713086F7000F4A64E /* NewListItemViewController.m */; };
 		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
-		4973C39C12F60845005BF894 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4973C39B12F60845005BF894 /* SettingsViewController.m */; };
-		4973C39F12F60AAD005BF894 /* SettingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4973C39E12F60AAD005BF894 /* SettingItem.m */; };
-		497A097D12FDA4E500BA5B85 /* CategoryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 497A097B12FDA4E500BA5B85 /* CategoryEditViewController.m */; };
-		497A097E12FDA4E500BA5B85 /* CategoryEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 497A097C12FDA4E500BA5B85 /* CategoryEditView.xib */; };
-		498CE1E312FB8EB600A56CA8 /* CategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498CE1E212FB8EB600A56CA8 /* CategoryView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
@@ -56,7 +51,6 @@
 		49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1812512C9366A0066B454 /* NSStringExtensions.m */; };
 		49F1814B12C958F20066B454 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1814912C958F20066B454 /* RootViewController.m */; };
 		49F1814E12C959B50066B454 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F1814D12C959B50066B454 /* RootView.xib */; };
-		49F9710E12E9090E002D7B13 /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F9710D12E9090E002D7B13 /* CategoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,15 +81,7 @@
 		495EAC1713086F7000F4A64E /* NewListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewListItemViewController.m; sourceTree = "<group>"; };
 		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
-		4973C39A12F60845005BF894 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		4973C39B12F60845005BF894 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		4973C39D12F60AAD005BF894 /* SettingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingItem.h; sourceTree = "<group>"; };
-		4973C39E12F60AAD005BF894 /* SettingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingItem.m; sourceTree = "<group>"; };
 		4973C3B912F64688005BF894 /* SettingViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewProtocol.h; sourceTree = "<group>"; };
-		497A097A12FDA4E500BA5B85 /* CategoryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryEditViewController.h; sourceTree = "<group>"; };
-		497A097B12FDA4E500BA5B85 /* CategoryEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryEditViewController.m; sourceTree = "<group>"; };
-		497A097C12FDA4E500BA5B85 /* CategoryEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryEditView.xib; path = Classes/CategoryEditView.xib; sourceTree = "<group>"; };
-		498CE1E212FB8EB600A56CA8 /* CategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
@@ -136,8 +122,6 @@
 		49F1814812C958F20066B454 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		49F1814912C958F20066B454 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
-		49F9710C12E9090E002D7B13 /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
-		49F9710D12E9090E002D7B13 /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ListMonster-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ListMonster-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,8 +192,6 @@
 				495EAC0313085D1000F4A64E /* checked.png */,
 				495EAC0413085D1000F4A64E /* unchecked.png */,
 				4939B7B012ED0B2C007F6455 /* Categories.plist */,
-				497A097C12FDA4E500BA5B85 /* CategoryEditView.xib */,
-				498CE1E212FB8EB600A56CA8 /* CategoryView.xib */,
 				49BEEBD412EBC4440088707A /* Colors.plist */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
@@ -262,8 +244,6 @@
 		49BEEBC312EBBF8F0088707A /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				4973C39D12F60AAD005BF894 /* SettingItem.h */,
-				4973C39E12F60AAD005BF894 /* SettingItem.m */,
 				4973C3B912F64688005BF894 /* SettingViewProtocol.h */,
 			);
 			name = Objects;
@@ -304,18 +284,12 @@
 				49F1814912C958F20066B454 /* RootViewController.m */,
 				49A0205312E5256A005B1D0E /* EditListViewController.h */,
 				49A0205412E5256A005B1D0E /* EditListViewController.m */,
-				49F9710C12E9090E002D7B13 /* CategoryViewController.h */,
-				49F9710D12E9090E002D7B13 /* CategoryViewController.m */,
 				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
 				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
 				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
 				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
 				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
 				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
-				4973C39A12F60845005BF894 /* SettingsViewController.h */,
-				4973C39B12F60845005BF894 /* SettingsViewController.m */,
-				497A097A12FDA4E500BA5B85 /* CategoryEditViewController.h */,
-				497A097B12FDA4E500BA5B85 /* CategoryEditViewController.m */,
 				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
 				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
 				495EAC1613086F7000F4A64E /* NewListItemViewController.h */,
@@ -392,8 +366,6 @@
 				491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */,
 				49BEEBD512EBC4440088707A /* Colors.plist in Resources */,
 				4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */,
-				498CE1E312FB8EB600A56CA8 /* CategoryView.xib in Resources */,
-				497A097E12FDA4E500BA5B85 /* CategoryEditView.xib in Resources */,
 				495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */,
 				495EAC0513085D1000F4A64E /* checked.png in Resources */,
 				495EAC0613085D1000F4A64E /* unchecked.png in Resources */,
@@ -421,14 +393,10 @@
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */,
-				49F9710E12E9090E002D7B13 /* CategoryViewController.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
 				49BEEBD312EBC3680088707A /* ListColor.m in Sources */,
 				49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */,
 				498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */,
-				4973C39C12F60845005BF894 /* SettingsViewController.m in Sources */,
-				4973C39F12F60AAD005BF894 /* SettingItem.m in Sources */,
-				497A097D12FDA4E500BA5B85 /* CategoryEditViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
 				495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */,
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,

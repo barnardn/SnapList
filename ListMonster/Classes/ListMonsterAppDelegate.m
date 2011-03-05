@@ -9,7 +9,6 @@
 #import "Category.h"
 #import "ListMonsterAppDelegate.h"
 #import "RootViewController.h"
-#import "SettingsViewController.h"
 #import "ListColor.h"
 
 static ListMonsterAppDelegate *appDelegateInstance;
