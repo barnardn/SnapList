@@ -15,6 +15,7 @@
 @interface CategorySelectViewController()
 
 - (NSFetchRequest *)fetchRequestInContext:(NSManagedObjectContext *)moc;
+- (void)deleteCategory:(Category *)aCategory;
 
 @end
 
@@ -190,6 +191,14 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
+        [self deleteCategory:cat];
+    }   
+}
+
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -283,8 +292,6 @@
 
 }
 
-
-
 #pragma mark -
 #pragma mark Coredata methods
 
@@ -302,6 +309,13 @@
     
     return [request autorelease];
 }
+
+- (void)deleteCategory:(Category *)aCategory {
+    
+    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
+    [moc deleteObject:aCategory];
+}
+
 
 @end
 
