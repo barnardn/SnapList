@@ -48,20 +48,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     [self populateStaticData];
-    //tabController = [[UITabBarController alloc] init];
-    
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
-//    [[navController tabBarItem] setTitle:@"Lists"];  // TODO: change
-//    
-//    SettingsViewController *svc = [[SettingsViewController alloc] init];
-//    settingsNavController = [[UINavigationController alloc] initWithRootViewController:svc];
-//    [[settingsNavController tabBarItem] setTitle:@"Settings"]; // TODO change;
-//    
-//    NSArray *viewControllers = [NSArray arrayWithObjects:navController, settingsNavController, nil];
-//    [tabController setViewControllers:viewControllers];
-//    [rvc release];
-//    [svc release];
     [[self window] addSubview:[navController view]];
     [[self window] makeKeyAndVisible];
     return YES;
