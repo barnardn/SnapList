@@ -26,7 +26,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @implementation ListMonsterAppDelegate
 
-@synthesize window, navController, allColors, tabController, settingsNavController;
+@synthesize window, navController, allColors;
 
 - (id)init {
     
@@ -48,21 +48,21 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     [self populateStaticData];
-    tabController = [[UITabBarController alloc] init];
+    //tabController = [[UITabBarController alloc] init];
     
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
-    [[navController tabBarItem] setTitle:@"Lists"];  // TODO: change
-    
-    SettingsViewController *svc = [[SettingsViewController alloc] init];
-    settingsNavController = [[UINavigationController alloc] initWithRootViewController:svc];
-    [[settingsNavController tabBarItem] setTitle:@"Settings"]; // TODO change;
-    
-    NSArray *viewControllers = [NSArray arrayWithObjects:navController, settingsNavController, nil];
-    [tabController setViewControllers:viewControllers];
-    [rvc release];
-    [svc release];
-    [[self window] addSubview:[tabController view]];
+//    [[navController tabBarItem] setTitle:@"Lists"];  // TODO: change
+//    
+//    SettingsViewController *svc = [[SettingsViewController alloc] init];
+//    settingsNavController = [[UINavigationController alloc] initWithRootViewController:svc];
+//    [[settingsNavController tabBarItem] setTitle:@"Settings"]; // TODO change;
+//    
+//    NSArray *viewControllers = [NSArray arrayWithObjects:navController, settingsNavController, nil];
+//    [tabController setViewControllers:viewControllers];
+//    [rvc release];
+//    [svc release];
+    [[self window] addSubview:[navController view]];
     [[self window] makeKeyAndVisible];
     return YES;
 }
@@ -119,8 +119,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (void)dealloc {
     [window release];
     [navController release];
-    [settingsNavController release];
-    [tabController release];
     [super dealloc];
 }
 

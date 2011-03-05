@@ -22,13 +22,14 @@
 
 @implementation EditCategoryViewController
 
-@synthesize categoryNameField, category, navBar, delegate;
+@synthesize categoryNameField, category, navBar, delegate, theList;
 
 
 - (id)initWithList:(MetaList *)aList {
     
     self = [super initWithNibName:@"EditCategoryView" bundle:nil];
     if (!self) return nil;
+    [self setTheList:aList];
     return self;
 }
 
@@ -72,7 +73,15 @@
         return;
     }
     [[self navigationItem] setRightBarButtonItem:[self doneButton]];
+    [[self navigationItem] setTitle:NSLocalizedString(@"Edit Category", @"edit category nav title")];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if ([[self theList] category])
+        [[self categoryNameField] setText:[[[self theList] category] name]];
+}
+
 
 - (UINavigationBar *)navigationBarForModalView {
     

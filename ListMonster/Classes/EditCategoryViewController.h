@@ -17,6 +17,7 @@
 
     UITextField *categoryNameField; 
     Category *category;
+    MetaList *theList;
     UINavigationBar *navBar;        // for use when presented modally
     id<EditCategoryDelegate>delegate;
     
@@ -26,6 +27,7 @@
 @property(nonatomic,retain) Category *category;
 @property(nonatomic,retain) UINavigationBar *navBar;
 @property(nonatomic,assign) id<EditCategoryDelegate> delegate;
+@property(nonatomic,retain) MetaList *theList;
 
 - (id)initWithList:(MetaList *)aList;
 

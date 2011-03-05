@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "ModalViewProtocol.h"
 #import "SettingViewProtocol.h"
 
 @class CategoryEditViewController;
