@@ -8,6 +8,7 @@
 
 #import "Alerts.h"
 #import "EditListItemViewController.h"
+#import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListItemsViewController.h"
 #import "MetaList.h"
@@ -81,6 +82,12 @@
     [self setEditBtn:btn];
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
+    if ([[self theList] color]) {
+        UIColor *backColor = [[[self theList] color] uiColor];
+        [[self allItemsTableView] setBackgroundColor:backColor];
+    }
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
