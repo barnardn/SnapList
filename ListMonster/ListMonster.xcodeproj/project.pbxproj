@@ -16,6 +16,8 @@
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4939B7B012ED0B2C007F6455 /* Categories.plist */; };
+		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
+		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
 		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
 		4959AB0713104B460039ACAC /* EditTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4959AB0513104B460039ACAC /* EditTextView.xib */; };
 		495D8413130E088800933720 /* EditListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D8412130E088800933720 /* EditListItemViewController.m */; };
@@ -67,6 +69,9 @@
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
 		4939B7B012ED0B2C007F6455 /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
+		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
+		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
+		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		4959AB0313104B460039ACAC /* EditTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTextViewController.h; sourceTree = "<group>"; };
 		4959AB0413104B460039ACAC /* EditTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditTextViewController.m; sourceTree = "<group>"; };
 		4959AB0513104B460039ACAC /* EditTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditTextView.xib; path = Classes/EditTextView.xib; sourceTree = "<group>"; };
@@ -143,6 +148,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4955B038132302BC00722C3F /* Custom Table Cells */,
 				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
 				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
 				49F1810F12C935FB0066B454 /* Categories */,
@@ -202,6 +208,7 @@
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
+				4955B03D1323033E00722C3F /* ListCell.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -215,6 +222,15 @@
 				49F180E212C914340066B454 /* CoreData.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4955B038132302BC00722C3F /* Custom Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				4955B03A1323031500722C3F /* ListCell.h */,
+				4955B03B1323031500722C3F /* ListCell.m */,
+			);
+			name = "Custom Table Cells";
 			sourceTree = "<group>";
 		};
 		49A0206812E52756005B1D0E /* ThirdParty */ = {
@@ -371,6 +387,7 @@
 				495EAC0613085D1000F4A64E /* unchecked.png in Resources */,
 				4959AB0713104B460039ACAC /* EditTextView.xib in Resources */,
 				49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */,
+				4955B03E1323033E00722C3F /* ListCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +420,7 @@
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 				4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */,
 				49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */,
+				4955B03C1323031500722C3F /* ListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

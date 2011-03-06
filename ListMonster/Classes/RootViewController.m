@@ -10,6 +10,7 @@
 #import "EditListViewController.h"
 #import "ListItemsViewController.h"
 #import "ListMonsterAppDelegate.h"
+#import "ListCell.h"
 #import "ListColor.h"
 #import "MetaList.h"
 #import "NSArrayExtensions.h"
@@ -160,24 +161,43 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-        [cell setEditingAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
+
+    static NSString *CellId = @"ListCell";
+    ListCell *cell = (ListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
+    if (!cell) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ListCell" owner:self options:nil];
+        cell = (ListCell *)[nib objectAtIndex:0];
     }
     [self updateCell:cell forMetaList:[[self resultsController] objectAtIndexPath:indexPath]];
     return cell;
+
 }
 
-- (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList {
-    [[cell textLabel] setText:[metaList name]];
-    [[cell textLabel] setTextColor:[[metaList color] uiColor]];
+- (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList {
+    [[cell nameLabel] setText:[metaList name]];
+    [[cell nameLabel] setTextColor:[[metaList color] uiColor]];
+    [[cell countsLabel] setText:@""];
     NSString *catName = [[metaList category] name];
-    [[cell detailTextLabel] setText:catName];
+    
+    if (!catName) {
+        [[cell categoryLabel] setHidden:YES];
+        CGRect nameFrame = [[cell nameLabel] frame];
+        CGFloat y = ceil((cell.frame.size.height - nameFrame.size.height) / 2.0f);
+        nameFrame.origin.y = y; //13.0f;    
+        [[cell nameLabel] setFrame:nameFrame];
+    } else {
+        [[cell categoryLabel] setHidden:NO];
+        CGRect nameFrame = [[cell nameLabel] frame];
+        nameFrame.origin.y = 0.0f;
+        [[cell nameLabel] setFrame:nameFrame];
+        [[cell categoryLabel] setText:catName];
+    }
+    if ([metaList items] && [[metaList items] count] > 0) {
+        NSPredicate *byUncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
+        NSSet *uncheckedItems = [[metaList items] filteredSetUsingPredicate:byUncheckedItems];
+        NSString *count = [NSString stringWithFormat:@"%d", [uncheckedItems count]];
+        [[cell countsLabel] setText:count];
+    }    
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -196,24 +216,6 @@
     } */  
 }
 
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -230,6 +232,11 @@
     MetaList *list = [[self resultsController] objectAtIndexPath:indexPath];
     [self showEditViewWithList:list];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 54.0f;
+}
+
 
 
 #pragma mark -
