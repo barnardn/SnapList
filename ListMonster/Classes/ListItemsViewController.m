@@ -214,10 +214,13 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSArray *indexedObjects = [[[self theList] items] allObjects];
-        MetaListItem *deleteItem = [indexedObjects objectAtIndex:[indexPath row]];
-        NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+        MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
+        NSManagedObjectContext *moc = [[self theList] managedObjectContext];
         [moc deleteObject:deleteItem];
+        NSMutableArray *updatedItemsList = [[self listItems] mutableCopy];
+        [updatedItemsList removeObject:deleteItem];
+        [self setListItems:updatedItemsList];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
         
