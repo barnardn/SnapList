@@ -80,6 +80,9 @@
     [super viewWillAppear:animated];
     if ([[self theList] category])
         [[self categoryNameField] setText:[[[self theList] category] name]];
+    else
+        [[self categoryNameField] setPlaceholder:NSLocalizedString(@"Enter a category name", @"category name field placeholder")];
+    [[self categoryNameField] becomeFirstResponder];
 }
 
 
@@ -145,7 +148,7 @@
 }
 
 - (void)dismissMyself {
-    
+    [self resignFirstResponder];
     if (![self navigationController])
         [[self parentViewController] dismissModalViewControllerAnimated:YES];
     else
