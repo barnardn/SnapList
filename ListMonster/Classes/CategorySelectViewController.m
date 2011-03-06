@@ -269,7 +269,7 @@
             theCategory = [[self resultsController] objectAtIndexPath:indexPath];
             [[cell textLabel] setText:[theCategory name]];
             [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                    withRowAnimation:UITableViewRowAnimationFade];
+                                    withRowAnimation:UITableViewRowAnimationNone];
         default:
             break;
     }

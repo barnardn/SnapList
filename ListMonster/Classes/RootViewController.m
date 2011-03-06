@@ -81,7 +81,7 @@
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [addBtn release];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Lists", "@root view title")];
+    [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
 
 }
 

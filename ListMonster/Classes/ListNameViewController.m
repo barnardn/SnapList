@@ -9,6 +9,12 @@
 #import "ListMonsterAppDelegate.h"
 #import "ListNameViewController.h"
 
+@interface ListNameViewController()
+
+- (BOOL)didListnameChange;
+
+@end
+
 
 @implementation ListNameViewController
 
@@ -30,19 +36,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
-                                                                  style:UIBarButtonItemStyleDone 
-                                                                 target:self 
-                                                                 action:@selector(cancelPressed:)];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button")
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self 
-                                                               action:@selector(donePressed:)];
-    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-    [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [cancelBtn release];
-    [doneBtn release];
-    
     [[self navigationItem] setTitle:NSLocalizedString(@"List Name", @"list name view title")];
     [[self textField] setPlaceholder:NSLocalizedString(@"Enter list name", @"list name textfield placeholder")];
     if ([[self theList] name]) 
@@ -56,16 +49,17 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [[self textField] resignFirstResponder];
+    if ([self didListnameChange]) {
+        NSString *newName = [[self textField] text];
+        [[self theList] setName:newName];
+    }
 }
 
-- (void)cancelPressed:(id)sender {
-    [[self navigationController] popViewControllerAnimated:YES];
-}
-     
-- (void)donePressed:(id)sender {
+- (BOOL)didListnameChange {
+    
+    NSString *listName = [[self theList] name];
     NSString *newName = [[self textField] text];
-    [[self theList] setName:newName];
-    [[self navigationController] popViewControllerAnimated:YES];
+    return (![listName isEqualToString:newName]);
 }
 
 - (void)didReceiveMemoryWarning {

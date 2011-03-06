@@ -13,7 +13,7 @@
 
 @implementation ColorSelectViewController
 
-@synthesize allColors, theList, selectedColor;
+@synthesize allColors, theList;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -24,7 +24,6 @@
     if (!self) return nil;
     
     [self setTheList:aList];
-    [self setSelectedColor:[[self theList] color]];
     
     NSArray *colors = [[ListMonsterAppDelegate sharedAppDelegate] allColors];
     [self setAllColors:colors];
@@ -51,37 +50,12 @@
 - (void)dealloc {
     [allColors release];
     [theList release];
-    [selectedColor release];
     [super dealloc];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
-                                                                  style:UIBarButtonItemStyleDone 
-                                                                 target:self 
-                                                                 action:@selector(cancelPressed:)];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button")
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self 
-                                                               action:@selector(donePressed:)];
-    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-    [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Select Color", @"select color view title")];
-    [cancelBtn release];
-    [doneBtn release];
 }
-
-- (void)cancelPressed:(id)sender {
-    [[self navigationController] popViewControllerAnimated:YES];
-}
-
-
-- (void)donePressed:(id)sender {
-    [[self theList] setColor:[self selectedColor]];
-    [[self navigationController] popViewControllerAnimated:YES];
-}
-
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -133,7 +107,7 @@
     [[cell textLabel] setTextColor:[color uiColor]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     
-    NSNumber *selectRgb = [[self selectedColor] rgbValue];
+    NSNumber *selectRgb = [[[self theList] color] rgbValue];
     BOOL isSelectedColor = (NSOrderedSame == [[color rgbValue] compare:selectRgb]);
     if (isSelectedColor)
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -143,13 +117,32 @@
 #pragma mark -
 #pragma mark Table view delegate
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
+        [cell setSelected:YES];
+    }    
+}
+
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
-    [self setSelectedColor:color];
+    [[self theList] setColor:color];
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([selectedCell accessoryType] != UITableViewCellAccessoryCheckmark) {
+        [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        [[self theList] setColor:color];
+    }
     [[self tableView] reloadData];
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *deselectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    [deselectedCell setAccessoryType:UITableViewCellAccessoryNone];
+}
 
 
 

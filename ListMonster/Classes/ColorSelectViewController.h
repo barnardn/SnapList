@@ -16,12 +16,10 @@
     
     NSArray *allColors;
     MetaList *theList;
-    ListColor *selectedColor;
 }
 
 @property(nonatomic,retain) NSArray *allColors;
 @property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) ListColor *selectedColor;
 
 - (id)initWithList:(MetaList *)aList;
 
