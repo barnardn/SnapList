@@ -87,14 +87,6 @@
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
     [super setEditing:inEditMode animated:animated];
-/*    if (inEditMode) {
-        UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
-        [[self navigationItem] setLeftBarButtonItem:addBtn];
-        [addBtn release];
-    } else {
-        [[self navigationItem] setLeftBarButtonItem:nil];
-        DLog(@"in edit mode");
-    } */
 }
 
 - (void)addList:(id)sender {
@@ -121,12 +113,11 @@
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
     [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
 }
-                                               
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
+    [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
 
 /*
