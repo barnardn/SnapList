@@ -94,10 +94,12 @@
     if ([[[self theList] items] count] == 0) {
         [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
         [[self moreActionsBtn] setEnabled:NO];
+        [[self checkedState] setEnabled:NO];
         return;
     }
     [[[self navigationItem] rightBarButtonItem] setEnabled:YES];
     [[self moreActionsBtn] setEnabled:YES];
+    [[self checkedState] setEnabled:YES];
     [self setListItems:[self itemsSortedBy:byName]];
     [self filterItemsByCheckedState];           // TODO: refactor to take sorted list then assign to datasource
     [editItemNavController release], editItemNavController = nil;
