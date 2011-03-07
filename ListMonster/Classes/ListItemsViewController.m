@@ -26,6 +26,9 @@
 - (void)cancelBtnPressed:(id)sender; 
 - (void)filterItemsByCheckedState;
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
+- (void)configureForEmtpyList:(UITableViewCell *)cell;
+- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
+- (void)enabledStateForEditControls:(BOOL)enableState;
 
 @end
 
@@ -47,17 +50,14 @@
     return nil;
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
     [self setEditBtn:nil];
 }
-
 
 - (void)dealloc {
     [listItems release];
@@ -92,19 +92,22 @@
     [super viewWillAppear:YES];
     NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]; 
     if ([[[self theList] items] count] == 0) {
-        [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
-        [[self moreActionsBtn] setEnabled:NO];
-        [[self checkedState] setEnabled:NO];
+        [self enabledStateForEditControls:NO];
         return;
     }
-    [[[self navigationItem] rightBarButtonItem] setEnabled:YES];
-    [[self moreActionsBtn] setEnabled:YES];
-    [[self checkedState] setEnabled:YES];
+    [self enabledStateForEditControls:YES];
     [self setListItems:[self itemsSortedBy:byName]];
     [self filterItemsByCheckedState];           // TODO: refactor to take sorted list then assign to datasource
     [editItemNavController release], editItemNavController = nil;
     [[self allItemsTableView] reloadData];
 }
+
+- (void)enabledStateForEditControls:(BOOL)enableState {
+    [[[self navigationItem] rightBarButtonItem] setEnabled:enableState];
+    [[self moreActionsBtn] setEnabled:enableState];
+    [[self checkedState] setEnabled:enableState];
+}
+
 
 #pragma mark -
 #pragma mark Button action
@@ -195,39 +198,65 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if ([[[self theList] items] count] == 0)
+        return 1;
     return [[self listItems] count];
-    //return [[[self theList] items] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    BOOL isEmtpyList = ([[[self theList] items] count] == 0);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell) {
-        cell = [self makeCellWithCheckboxButton];
+        if (isEmtpyList)
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+        else
+            cell = [self makeCellWithCheckboxButton];
+    }
+    if (isEmtpyList) {
+        [self configureForEmtpyList:cell];
+        return cell;
     }
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    [[cell textLabel] setText:[item name]];
-    NSNumber *qty = [item quantity];
-    NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
-    [[cell detailTextLabel] setText:qtyString];
-    [self updateCheckboxButtonForItem:item atCell:cell];
+    [self cell:cell configureForItem:item];
     return cell;
 }
 
+- (void)configureForEmtpyList:(UITableViewCell *)cell {
+    [[cell textLabel] setText:NSLocalizedString(@"Tap '+' to add an item", @"empty list instruction cell text")];
+    [[cell textLabel] setTextColor:[UIColor lightGrayColor]];
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
+}
+
+- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item {
+    
+    [[cell textLabel] setText:[item name]];
+    [[cell textLabel] setTextColor:[UIColor blackColor]];
+    NSNumber *qty = [item quantity];
+    NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
+    [[cell detailTextLabel] setText:qtyString];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [self updateCheckboxButtonForItem:item atCell:cell];
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    return  ([[[self theList] items] count] > 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
-        NSManagedObjectContext *moc = [[self theList] managedObjectContext];
-        [moc deleteObject:deleteItem];
-        NSMutableArray *updatedItemsList = [[self listItems] mutableCopy];
-        [updatedItemsList removeObject:deleteItem];
-        [self setListItems:updatedItemsList];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if (editingStyle != UITableViewCellEditingStyleDelete) return;
+    MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
+    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
+    [moc deleteObject:deleteItem];
+    NSMutableArray *updatedItemsList = [[self listItems] mutableCopy];
+    [updatedItemsList removeObject:deleteItem];
+    [self setListItems:updatedItemsList];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if ([[[self theList] items] count] == 1) {  // last item entire list
+        [self enabledStateForEditControls:NO];
+        [self editBtnPressed:nil];
     }
 }
         
@@ -235,6 +264,8 @@
 #pragma mark TableView delegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([[[self theList] items] count] == 0) return;
     
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];    
     EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
@@ -247,7 +278,6 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    DLog(@"index of action sheet button: %d", buttonIndex);
     if (buttonIndex == 3) return;  // cancel
     NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems",nil];
     [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex])];
