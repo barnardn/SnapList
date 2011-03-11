@@ -169,13 +169,16 @@
         [[self editBtn] setTitle:NSLocalizedString(@"Edit", @"edit button")];
         [self commitAnyChanges];
         [self filterItemsByCheckedState];
-        [[self allItemsTableView] reloadData];
+
     } else {
         [self setInEditMode:YES];
         [[self editBtn] setTitle:NSLocalizedString(@"Done", @"done button")];
     }
     [[self allItemsTableView] setEditing:[self inEditMode] animated:YES];
     [self toggleCancelButton:[self inEditMode]];
+    
+    if (![self inEditMode]) 
+        [[self allItemsTableView] reloadData];
 }
 
 - (void)toggleCancelButton:(BOOL)editMode {
@@ -210,7 +213,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell) {
         if (isEmtpyList)
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EmptyCell"] autorelease];
         else
             cell = [self makeCellWithCheckboxButton];
     }

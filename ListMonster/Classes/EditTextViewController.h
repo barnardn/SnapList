@@ -15,6 +15,7 @@
     NSString *returnString;
     NSString *viewTitle;
     NSString *editText;
+    UIColor *backgroundColor;
     BOOL numericEntryMode;
 }
 
@@ -24,6 +25,7 @@
 @property(nonatomic,assign) NSString *viewTitle;
 @property(nonatomic,assign) NSString *editText;
 @property(nonatomic,assign) BOOL numericEntryMode;
+@property(nonatomic,retain) UIColor *backgroundColor;
 
 
 - (id)initWithViewTitle:(NSString *)aTitle editText:(NSString *)text;

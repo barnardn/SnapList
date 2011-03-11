@@ -10,6 +10,7 @@
 #import "EditListItemViewController.h"
 #import "EditTextViewController.h"
 #import "ListMonsterAppDelegate.h"
+#import "ListColor.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -17,7 +18,6 @@
 
 @interface EditListItemViewController()
 
-- (void)doneBtnPressed:(id)sender;
 - (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section;
 - (void)prepareProperties;
 - (void)didSelectItemCellAtIndex:(NSInteger)section;
@@ -95,16 +95,19 @@
 
     NSString *viewTitle = [[self theItem] name];
     [[self navigationItem] setTitle:viewTitle];
-    UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done",@"done button")
-                                                            style:UIBarButtonItemStyleDone 
-                                                           target:self 
-                                                           action:@selector(doneBtnPressed:)];
-    [[self navigationItem] setRightBarButtonItem:btn];
-    [btn release];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
+                                                                style:UIBarButtonItemStylePlain 
+                                                               target:nil 
+                                                               action:nil];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    [backBtn release];
+    [[self tableView] setBackgroundColor:[[[self theList] color] uiColor]];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     
+    [super viewWillAppear:animated];
     if (![self editViewController]) return;
     if (![self editProperty]) return;
     
@@ -120,23 +123,21 @@
             return;
         }
     }
-    [[self editProperty] setObject:valueString forKey:@"value"];
-    [self setHasDirtyProperties:YES];
+    if (valueString && ![valueString isEqualToString:[[self editProperty] valueForKey:@"value"]]) {
+        [[self editProperty] setObject:valueString forKey:@"value"];
+        [self setHasDirtyProperties:YES];
+    }
     [self setEditViewController:nil];
     [self setEditProperty:nil];
-    [[self tableView] reloadData];
+    if ([self hasDirtyProperties])
+        [[self tableView] reloadData];
 }
 
 
-#pragma mark -
-#pragma mark Actions
-
-- (IBAction)doneBtnPressed:(id)sender {
-    
-    if (![self hasDirtyProperties]) {
-        [[self navigationController] popViewControllerAnimated:YES];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (![self hasDirtyProperties] || [self editViewController])
         return;
-    }
     [[self itemProperties] forEach:^ void (id obj) {
         NSDictionary *pd = obj;
         NSString *propKey = [pd valueForKey:@"kvc-key"];
@@ -149,8 +150,8 @@
         }
     }];
     [self savePendingItemChanges];
-    [[self navigationController] popViewControllerAnimated:YES];
 }
+
 
 #pragma mark -
 #pragma mark Table view data source
@@ -229,6 +230,8 @@
     NSMutableDictionary *propDict = [[self itemProperties] objectAtIndex:section];
     EditTextViewController *etvc = [[EditTextViewController alloc] initWithViewTitle:[propDict valueForKey:@"title"] 
                                                                             editText:[propDict valueForKey:@"value"]];
+    if ([[self theList] color])
+        [etvc setBackgroundColor:[[[self theList] color] uiColor]];
     NSString *propertyKey = [propDict valueForKey:@"kvc-key"];
     if ([propertyKey isEqualToString:@"quantity"])
         [etvc setNumericEntryMode:YES];

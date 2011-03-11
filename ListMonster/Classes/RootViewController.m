@@ -120,11 +120,11 @@
     [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
 
-/*
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
-*/
+
 /*
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];

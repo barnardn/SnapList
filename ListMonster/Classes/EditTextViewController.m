@@ -13,18 +13,17 @@
 
 @implementation EditTextViewController
 
-@synthesize textField, returnString, numericEntryMode, viewTitle, editText;
+@synthesize textField, returnString, numericEntryMode, viewTitle, editText, backgroundColor;
 
 
 - (id)initWithViewTitle:(NSString *)aTitle editText:(NSString *)text {
     self = [super initWithNibName:@"EditTextView" bundle:nil];
     if (!self) return nil;
-    [self setViewTitle:viewTitle];
+    [self setViewTitle:aTitle];
     [self setEditText:text];
     [self setReturnString:nil];
     return self;
 }
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     return [self initWithViewTitle:@"New Item" editText:nil];
@@ -37,32 +36,24 @@
         [[self textField] setText:[self editText]];
     else
         [[self textField] setPlaceholder:NSLocalizedString(@"Value", "@empty text placeholder")];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self 
-                                                               action:@selector(doneBtnPressed:)];
-    [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [doneBtn release];
     if ([self numericEntryMode]) {
         [[self textField] setTextAlignment:UITextAlignmentRight];
         [[self textField] setKeyboardType:UIKeyboardTypeNumberPad];
     }
+
+    if ([self backgroundColor])
+        [[self view] setBackgroundColor:[self backgroundColor]];
     [[self textField] becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    
     [super viewWillDisappear:animated];
     [[self textField] resignFirstResponder];
-}
-
-- (void)doneBtnPressed:(id)sender {
-    
-    [[self textField] resignFirstResponder];
     NSString *text = [[self textField] text];
-    if (!text || [text isEqualToString:@""])
-        [[self navigationController] popViewControllerAnimated:YES];
-    
+    if (!text || [text isEqualToString:@""]) {
+        [self setReturnString:nil];
+        return;
+    }    
     if ([self numericEntryMode]) {
         NSNumber *numberValue = [NSNumber numberWithString:text];
         if (!numberValue || [numberValue compare:INT_OBJ(0)] == NSOrderedAscending) {
@@ -74,8 +65,8 @@
         }
     }
     [self setReturnString:text];
-    [[self navigationController] popViewControllerAnimated:YES];
 }
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

@@ -10,6 +10,7 @@
 #import "EditTextViewController.h"
 #import "NewListItemViewController.h"
 #import "ListMonsterAppDelegate.h"
+#import "ListColor.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSNumberExtensions.h"
@@ -45,7 +46,6 @@
     
     NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name", @"title",
                                      [NSNull null], @"value", nil];
-    
     NSMutableDictionary *qtyDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Quantity", @"title",
                                     [NSNull null], @"value", nil];
     NSArray *properties = [NSArray arrayWithObjects:nameDict, qtyDict, nil];
@@ -73,6 +73,7 @@
     UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelBtnPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [cancelBtn release];
+    [[self view] setBackgroundColor:[[[self theList] color] uiColor]];
 
 }
 
@@ -173,6 +174,7 @@
     NSDictionary *propDict = [[self itemProperties] objectAtIndex:[self editPropertyIndex]];
     NSString *propValue = ([propDict valueForKey:@"value"] != [NSNull null]) ? [propDict valueForKey:@"value"] : @"";
     EditTextViewController *editVc = [[EditTextViewController alloc] initWithViewTitle:[propDict valueForKey:@"title"] editText:propValue];
+    [editVc setBackgroundColor:[[[self theList] color] uiColor]];
     if ([self editPropertyIndex] == 1) // quantity
         [editVc setNumericEntryMode:YES];
     [[self navigationController] pushViewController:editVc animated:YES];
