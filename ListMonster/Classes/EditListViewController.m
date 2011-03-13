@@ -99,14 +99,14 @@
 #pragma mark button item actions
 
 - (void)cancelPressed:(id)sender {
-    [[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] rollback];
+    [[[self theList] managedObjectContext] rollback];
     [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 
 - (void)donePressed:(id)sender {
     NSError *error = nil;
-    [[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error];
+    [[[self theList] managedObjectContext] save:&error];
     if (error) {
         [ErrorAlert showWithTitle:NSLocalizedString(@"Error", @"error title")
                        andMessage:NSLocalizedString(@"The changes list could not be saved.", @"cant save list message")];
