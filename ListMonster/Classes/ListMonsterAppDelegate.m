@@ -185,12 +185,13 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return managedObjectContext;
 }
 
-- (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest {
+- (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest sectionNameKeyPath:(NSString *)sectionNameKeyPath {
     
     NSManagedObjectContext *moc = [self managedObjectContext];
+    [NSFetchedResultsController deleteCacheWithName:@"ListMonster"];
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:theRequest 
                                                                           managedObjectContext:moc 
-                                                                            sectionNameKeyPath:nil 
+                                                                            sectionNameKeyPath:sectionNameKeyPath 
                                                                                      cacheName:@"ListMonster"];
     NSError *error = nil;
     BOOL ok = [frc performFetch:&error];
