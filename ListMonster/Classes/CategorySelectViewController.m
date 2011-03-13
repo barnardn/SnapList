@@ -33,7 +33,7 @@
     if (!self) return nil;
     [self setTheList:aList];
     NSFetchRequest *request = [self fetchRequestInContext:[aList managedObjectContext]];
-    NSFetchedResultsController *c = [[ListMonsterAppDelegate sharedAppDelegate] fetchedResultsControllerWithFetchRequest:request];
+    NSFetchedResultsController *c = [[ListMonsterAppDelegate sharedAppDelegate] fetchedResultsControllerWithFetchRequest:request sectionNameKeyPath:nil];
     [c setDelegate:self];
     [self setResultsController:c];    
 
@@ -209,6 +209,7 @@
     if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         [[self theList] setCategory:nil];
+
     } else {
         [[self theList] setCategory:category];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
