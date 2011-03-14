@@ -202,24 +202,31 @@ static ListMonsterAppDelegate *appDelegateInstance;
 }
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName {
+
+    NSArray *sortDescriptors;
+    if (attributeName) {
+        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
+        sortDescriptors = [NSArray arrayWithObject:sd];
+    }
+    return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
+}
+
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors {
     
     NSManagedObjectContext *moc = [self managedObjectContext];
     NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
     [fetchReq setEntity:entity];
-    if (attributeName) {
-        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sd];
-        [fetchReq setSortDescriptors:sortDescriptors];
-    }
+    [fetchReq setSortDescriptors:sortDescriptors];
     NSError *error = nil;
     NSArray *resultSet = [moc executeFetchRequest:fetchReq error:&error];
     [fetchReq release];
     if (!resultSet) {
-        DLog(@"Error fetching all instances of %@ sorted by %@", entityName, attributeName);
+        DLog(@"Error fetching all instances of %@", entityName);
     }
     return resultSet;
 }
+
 
 #pragma mark -
 #pragma mark Static data initializer methods
