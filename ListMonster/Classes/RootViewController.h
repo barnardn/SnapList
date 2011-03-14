@@ -12,13 +12,14 @@
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
-    ListMonsterAppDelegate *appDelegate;
-    NSFetchedResultsController *resultsController;
+@interface RootViewController : UITableViewController  {
+
+    NSDictionary *allLists;
+    NSArray *categoryNameKeys;
     UINavigationController *edListNav;
 }
 
-@property(nonatomic,assign) ListMonsterAppDelegate *appDelegate;
-@property(nonatomic,retain) NSFetchedResultsController *resultsController;
+@property(nonatomic,retain) NSDictionary *allLists;
+@property(nonatomic,retain) NSArray *categoryNameKeys;
 
 @end

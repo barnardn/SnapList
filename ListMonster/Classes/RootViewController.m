@@ -18,17 +18,18 @@
 
 @interface RootViewController()
 
-- (NSFetchRequest *)allListsFetchRequest;
 - (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
+- (NSDictionary *)loadAllLists;
+- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 @implementation RootViewController
 
-@synthesize appDelegate, resultsController;
+@synthesize allLists, categoryNameKeys;
 
 #pragma mark -
 #pragma mark Initializers
@@ -36,14 +37,6 @@
 - (id)init {
     
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (!self)
-        return nil;
-    [self setAppDelegate:[ListMonsterAppDelegate sharedAppDelegate]];
-    NSFetchRequest *allLists = [self allListsFetchRequest];
-    NSFetchedResultsController *c = [appDelegate fetchedResultsControllerWithFetchRequest:allLists];
-    [c setDelegate:self];
-    [self setResultsController:c];
-    [[self tabBarItem] setTitle:@"Lists"];   // TODO: change me.
     return self;
 }
 
@@ -62,12 +55,13 @@
 }
 
 - (void)viewDidUnload {
-    [resultsController release], resultsController = nil;
+    [super viewDidUnload];
 }
 
 
 - (void)dealloc {
-    [resultsController release];
+    [allLists release];
+    [categoryNameKeys release];
     [edListNav release];
     [super dealloc];
 }
@@ -82,7 +76,6 @@
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [addBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
-
 }
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
@@ -117,39 +110,28 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
+    [self setAllLists:[self loadAllLists]];
     [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
-
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
 
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[[self resultsController] sections] count];
+    return [[self allLists] count];
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectInfo = [[[self resultsController] sections] objectAtIndex:section];
-    return [sectInfo numberOfObjects];
+
+    NSArray *listArr = [[self allLists] objectForKey:[[self categoryNameKeys] objectAtIndex:section]];
+    return [listArr count];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    return [[self categoryNameKeys] objectAtIndex:section];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
@@ -159,30 +141,30 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ListCell" owner:self options:nil];
         cell = (ListCell *)[nib objectAtIndex:0];
     }
-    [self updateCell:cell forMetaList:[[self resultsController] objectAtIndexPath:indexPath]];
+    MetaList *listObj = [self listObjectAtIndexPath:indexPath];
+    [self updateCell:cell forMetaList:listObj];
     return cell;
 
 }
 
+                                     
+- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *key = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
+    NSMutableArray *listArr = [[self allLists] objectForKey:key];
+    return [listArr objectAtIndex:[indexPath row]];
+}                                     
+                                     
+                                     
 - (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList {
     [[cell nameLabel] setText:[metaList name]];
     [[cell nameLabel] setTextColor:[[metaList color] uiColor]];
     [[cell countsLabel] setText:@""];
-    NSString *catName = [[metaList category] name];
-    
-    if (!catName) {
-        [[cell categoryLabel] setHidden:YES];
-        CGRect nameFrame = [[cell nameLabel] frame];
-        CGFloat y = ceil((cell.frame.size.height - nameFrame.size.height) / 2.0f);
-        nameFrame.origin.y = y; //13.0f;    
-        [[cell nameLabel] setFrame:nameFrame];
-    } else {
-        [[cell categoryLabel] setHidden:NO];
-        CGRect nameFrame = [[cell nameLabel] frame];
-        nameFrame.origin.y = 0.0f;
-        [[cell nameLabel] setFrame:nameFrame];
-        [[cell categoryLabel] setText:catName];
-    }
+    [[cell categoryLabel] setHidden:YES];
+    CGRect nameFrame = [[cell nameLabel] frame];
+    CGFloat y = ceil((cell.frame.size.height - nameFrame.size.height) / 2.0f);
+    nameFrame.origin.y = y; //13.0f;    
+    [[cell nameLabel] setFrame:nameFrame];    
     if ([metaList items] && [[metaList items] count] > 0) {
         NSPredicate *byUncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
         NSSet *uncheckedItems = [[metaList items] filteredSetUsingPredicate:byUncheckedItems];
@@ -199,20 +181,33 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        MetaList *dl = [[self resultsController] objectAtIndexPath:indexPath];
+        
+        NSString *key = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
+        NSMutableArray *listArr = [[self allLists] objectForKey:key];
+        MetaList *dl = [listArr objectAtIndex:[indexPath row]];
         [self deleteListEntity:dl];
+        [listArr removeObjectAtIndex:[indexPath row]];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if ([listArr count] == 0) {
+            NSMutableDictionary *newDict = [[self allLists] mutableCopy];
+            [newDict removeObjectForKey:key];
+            [self setAllLists:newDict];
+            [tableView deleteSections:[NSIndexSet indexSetWithIndex:[indexPath section]]
+                     withRowAnimation:UITableViewRowAnimationFade];
+        }
     }   
     /*else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     } */  
 }
 
+
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    MetaList *list = [[self resultsController] objectAtIndexPath:indexPath];
+
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];
     [livc release];
@@ -220,7 +215,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     
-    MetaList *list = [[self resultsController] objectAtIndexPath:indexPath];
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
     [self showEditViewWithList:list];
 }
 
@@ -228,90 +223,29 @@
     return 54.0f;
 }
 
-
-
-#pragma mark -
-#pragma mark NSFetchedResultsController protocol
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [[self tableView] beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller 
-   didChangeObject:(id)anObject 
-       atIndexPath:(NSIndexPath *)indexPath 
-     forChangeType:(NSFetchedResultsChangeType)type 
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    UITableViewCell *cell = nil;
-    MetaList *theList =  nil;
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
-                                    withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
-                                    withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        case NSFetchedResultsChangeMove:
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
-                                    withRowAnimation:UITableViewRowAnimationFade];
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:[newIndexPath section]] 
-                            withRowAnimation:UITableViewRowAnimationFade];
-        case NSFetchedResultsChangeUpdate:
-            cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-            theList = [[self resultsController] objectAtIndexPath:indexPath];
-            [self updateCell:cell forMetaList:theList];
-            [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                    withRowAnimation:UITableViewRowAnimationFade];
-        default:
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller     
-  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex 
-     forChangeType:(NSFetchedResultsChangeType)type 
-{
-    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:sectionIndex];
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-                [[self tableView] insertSections:sections
-                                withRowAnimation:UITableViewRowAnimationFade];
-                break;
-        case NSFetchedResultsChangeDelete:
-                [[self tableView] deleteSections:sections
-                                withRowAnimation:UITableViewRowAnimationFade];                
-            break;
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [[self tableView] endUpdates];
-}
-
 #pragma mark -
 #pragma mark Other core data related methods
 
-- (NSFetchRequest *)allListsFetchRequest {
+- (NSDictionary *)loadAllLists {
     
-    NSManagedObjectContext *moc = [appDelegate managedObjectContext];
-    NSFetchRequest *allListsFetchRequest = [[NSFetchRequest alloc] init];
-    [allListsFetchRequest setEntity:[NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc]];
-    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byCategory, byName, nil];
-    [allListsFetchRequest setSortDescriptors:sortDescriptors];
-    
-    [byName release], byName = nil;
-    [byCategory release], byCategory = nil;
-    [sortDescriptors release], sortDescriptors = nil;
-    
-    return [allListsFetchRequest autorelease];
+    NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES] autorelease];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
+    NSArray *lists =  [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaList" sortDescriptors:sortDescriptors];
+    NSMutableDictionary *listDict = [NSMutableDictionary dictionary];
+    for (MetaList *l in lists) {
+        NSString *key = ([l category]) ? [[l category] name] : @"";
+        if (![listDict objectForKey:key])
+            [listDict setObject:[NSMutableArray arrayWithObject:l] forKey:key];
+        else {
+            NSMutableArray *listArr = [listDict objectForKey:key];
+            [listArr addObject:l];
+        }
+    }
+    [self setCategoryNameKeys:[[listDict allKeys] sortedArrayUsingSelector:@selector(compare:)]];
+    return listDict;
 }
-
+            
 - (void)deleteListEntity:(MetaList *)list {
     
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
