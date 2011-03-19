@@ -78,10 +78,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if ([[self theList] category])
-        [[self categoryNameField] setText:[[[self theList] category] name]];
-    else
+    if (![[self category] name])
         [[self categoryNameField] setPlaceholder:NSLocalizedString(@"Enter a category name", @"category name field placeholder")];
+    else
+        [[self categoryNameField] setText:[[self category] name]];        
     [[self categoryNameField] becomeFirstResponder];
 }
 

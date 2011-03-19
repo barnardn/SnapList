@@ -70,7 +70,7 @@
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneBtnPressed:)];
     [[self navigationItem] setRightBarButtonItem:btn];
     [btn release];
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelBtnPressed:)];
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelBtnPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [cancelBtn release];
     [[self view] setBackgroundColor:[[[self theList] color] uiColor]];

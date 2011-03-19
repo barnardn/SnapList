@@ -14,9 +14,13 @@
 @interface EditListViewController : UITableViewController {
 
     MetaList *theList;
+    BOOL editActionCancelled;
+    BOOL isNewList;
 }
 
 @property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,assign) BOOL editActionCancelled;
+@property(nonatomic,assign) BOOL isNewList;
 
 - (id)initWithList:(MetaList *)aList;
 

@@ -16,9 +16,19 @@
 #import "ListNameViewController.h"
 #import "MetaList.h"
 
+@interface EditListViewController()
+
+- (void)setupNavigationBarForModalView;
+- (UIBarButtonItem *)doneButton;
+- (void)doneAction;
+- (void)dismissView;
+
+@end
+
+
 @implementation EditListViewController
 
-@synthesize theList;
+@synthesize theList, editActionCancelled, isNewList;
 
 #pragma mark -
 #pragma mark Initialization
@@ -33,6 +43,7 @@
         MetaList *l = [[MetaList alloc] initWithEntity:listEntity insertIntoManagedObjectContext:moc];
         [self setTheList:l];
         [l release];
+        [self setIsNewList:YES];
     }
     return self;
 }
@@ -46,15 +57,12 @@
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
+
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
+    [super viewDidUnload];
 }
 
 
@@ -68,25 +76,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if ([self isNewList]) {
+        [self setupNavigationBarForModalView];
+        return;
+    }
+    [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
+    [[self navigationItem] setRightBarButtonItem:[self doneButton]];
+/*    
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", @"list back button")
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:nil action:nil];
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
-                                                                  style:UIBarButtonItemStyleDone 
-                                                                 target:self 
-                                                                 action:@selector(cancelPressed:)];
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self 
-                                                               action:@selector(donePressed:)];
-    
-    [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-    [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [cancelBtn release];
-    [doneBtn release];
-    [backBtn release];
+    [backBtn release]; */
 }
 
 
@@ -95,16 +96,57 @@
     [[self tableView] reloadData];    // may be able to eliminate this...
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+
+
+#pragma mark -
+#pragma mark modal view navigation bar methods
+
+- (void)setupNavigationBarForModalView {
+    
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
+                                                                  style:UIBarButtonItemStylePlain 
+                                                                 target:self 
+                                                                 action:@selector(cancelPressed:)];
+    
+    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
+    [[self navigationItem] setRightBarButtonItem:[self doneButton]];
+    [cancelBtn release];
+    [[self navigationItem] setTitle:NSLocalizedString(@"Add List", @"add new list view title")];
+}
+
+- (UIBarButtonItem *)doneButton {
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
+                                                                style:UIBarButtonItemStyleDone 
+                                                               target:self 
+                                                               action:@selector(donePressed:)];
+    return [doneBtn autorelease];
+}
+
+
 #pragma mark -
 #pragma mark button item actions
 
 - (void)cancelPressed:(id)sender {
     [[[self theList] managedObjectContext] rollback];
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    [self setEditActionCancelled:YES];
+    [self dismissView];
 }
 
 
 - (void)donePressed:(id)sender {
+    [self doneAction];
+    [self dismissView];
+}
+
+- (void)doneAction {
+    if ([self editActionCancelled]) return;
+    if (![[[self theList] managedObjectContext] hasChanges]) return;
+    
     NSError *error = nil;
     [[[self theList] managedObjectContext] save:&error];
     if (error) {
@@ -112,44 +154,28 @@
                        andMessage:NSLocalizedString(@"The changes list could not be saved.", @"cant save list message")];
         DLog(@"Unable to save list: %@", [error localizedDescription]);
     }
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
-
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)dismissView {
+    
+    if ([self isNewList])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self navigationController] popViewControllerAnimated:YES];
 }
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-
 
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 3;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return 1;
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";   

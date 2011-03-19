@@ -76,7 +76,7 @@
     [super viewDidLoad];
     [[self navigationItem] setTitle:[[self theList] name]];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"edit button") 
-                                                                style:UIBarButtonItemStyleDone 
+                                                                style:UIBarButtonItemStylePlain 
                                                                target:self 
                                                                action:@selector(editBtnPressed:)];
     [self setEditBtn:btn];
@@ -167,12 +167,14 @@
     if ([self inEditMode]) {
         [self setInEditMode:NO];
         [[self editBtn] setTitle:NSLocalizedString(@"Edit", @"edit button")];
+        [[self editBtn] setStyle:UIBarButtonItemStylePlain];
         [self commitAnyChanges];
         [self filterItemsByCheckedState];
 
     } else {
         [self setInEditMode:YES];
         [[self editBtn] setTitle:NSLocalizedString(@"Done", @"done button")];
+        [[self editBtn] setStyle:UIBarButtonItemStyleDone];
     }
     [[self allItemsTableView] setEditing:[self inEditMode] animated:YES];
     [self toggleCancelButton:[self inEditMode]];

@@ -90,7 +90,10 @@
     
     EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
-    [self presentModalViewController:edListNav animated:YES];
+    if (!list)
+        [self presentModalViewController:edListNav animated:YES];
+    else
+        [[self navigationController] pushViewController:evc animated:YES];
     [evc release];
 }
 
