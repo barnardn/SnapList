@@ -93,7 +93,7 @@
     UINavigationBar *nb = [[UINavigationBar alloc] initWithFrame:navFrame];
     
     UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
-                                                                  style:UIBarButtonItemStyleDone 
+                                                                  style:UIBarButtonItemStylePlain 
                                                                  target:self 
                                                                  action:@selector(cancelPressed:)];
     
