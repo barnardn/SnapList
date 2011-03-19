@@ -153,7 +153,7 @@
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellId];        
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellId] autorelease];        
     }
     NSInteger sectionIdx = [indexPath section];
     NSDictionary *propDict = [[self itemProperties] objectAtIndex:sectionIdx];

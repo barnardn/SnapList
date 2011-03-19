@@ -61,6 +61,7 @@
 - (void)dealloc {
     [theList release];
     [resultsController release];
+    [newCategory release];
     [super dealloc];
 }
 
@@ -149,7 +150,8 @@
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     Category *newCat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
     [self setNewCategory:newCat];
-    [ecvc setCategory:[self newCategory]];
+    [ecvc setCategory:[self newCategory]];  // analyzer false positive??
+    [newCat release];
     [self presentModalViewController:ecvc animated:YES];
     [ecvc release];
 }
@@ -286,7 +288,7 @@
 - (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(Category *)category {
 
     if (!category) {
-        [[[self theList] managedObjectContext] deleteObject:[self newCategory]];
+        [[[self theList] managedObjectContext] deleteObject:[self newCategory]];  // analyzer false positive
     } else {
         [[self theList] setCategory:category];
     }

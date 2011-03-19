@@ -203,10 +203,11 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName {
 
-    NSArray *sortDescriptors;
+    NSArray *sortDescriptors = nil;
     if (attributeName) {
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
         sortDescriptors = [NSArray arrayWithObject:sd];
+        [sd release];
     }
     return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
 }
@@ -282,6 +283,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     for (NSString *catName in dfltCategories) {
         Category *category = [[Category alloc] initWithEntity:categoryEntity insertIntoManagedObjectContext:[self managedObjectContext]];
         [category setName:catName];
+        [category release];
     }
     NSError *error = nil;
     [[self managedObjectContext] save:&error];

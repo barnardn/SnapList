@@ -128,6 +128,7 @@
                                                     otherButtonTitles:NSLocalizedString(@"Check All",@"check all"),
                                                                       NSLocalizedString(@"Uncheck All", @"uncheck all"),nil];
     [actionSheet showFromToolbar:[self toolBar]];
+    [actionSheet release];
 }
 
 - (void)cancelBtnPressed:(id)sender {
@@ -192,6 +193,7 @@
                                                     target:self 
                                                     action:@selector(cancelBtnPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
+    [cancelBtn release];
 }
 
 
