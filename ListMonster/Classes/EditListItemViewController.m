@@ -203,9 +203,9 @@
     
     [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
     NSString *titleText; 
-    if (section == [[self itemProperties] count])
-        titleText = NSLocalizedString(@"Mark as Complete", @"completion text");
-    else {
+    if (section == [[self itemProperties] count]) {
+        titleText = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark as Incomplete", @"mark incomplete text") : NSLocalizedString(@"Mark as Complete", @"completion text");
+    } else {
         titleText = NSLocalizedString(@"Delete", @"delete item text");
         [cell setBackgroundColor:[UIColor redColor]];
     }
@@ -244,7 +244,8 @@
  
     NSInteger completeButtonIdx = [[self itemProperties] count];
     if (section == completeButtonIdx) {
-        [[self theItem] setIsChecked:INT_OBJ(1)];
+        NSNumber *checkedState = ([[self theItem] isComplete]) ? INT_OBJ(0) : INT_OBJ(1);
+        [[self theItem] setIsChecked:checkedState];
     } else {
         NSMutableSet *items = [[self theList] mutableSetValueForKey:@"items"];
         [items removeObject:[self theItem]];

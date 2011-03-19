@@ -20,4 +20,7 @@
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
 
+- (BOOL)isComplete;
+
+
 @end

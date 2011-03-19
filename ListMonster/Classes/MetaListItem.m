@@ -22,5 +22,12 @@
     [self setIsChecked:INT_OBJ(0)];
 }
 
+- (BOOL)isComplete {
+    
+    if (![self isChecked]) return NO;
+    NSInteger intVal = [[self isChecked] intValue];
+    return (intVal > 0);
+}
+
 
 @end
