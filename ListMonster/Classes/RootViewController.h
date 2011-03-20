@@ -14,12 +14,12 @@
 
 @interface RootViewController : UITableViewController  {
 
-    NSDictionary *allLists;
+    NSMutableDictionary *allLists;
     NSArray *categoryNameKeys;
     UINavigationController *edListNav;
 }
 
-@property(nonatomic,retain) NSDictionary *allLists;
+@property(nonatomic,retain) NSMutableDictionary *allLists;
 @property(nonatomic,retain) NSArray *categoryNameKeys;
 
 @end
