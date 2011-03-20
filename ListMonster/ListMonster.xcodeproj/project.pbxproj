@@ -23,11 +23,13 @@
 		495D8413130E088800933720 /* EditListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D8412130E088800933720 /* EditListItemViewController.m */; };
 		495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EABF713083F5700F4A64E /* ListItemsViewController.m */; };
 		495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 495EABF813083F5700F4A64E /* ListItemsView.xib */; };
-		495EAC0513085D1000F4A64E /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 495EAC0313085D1000F4A64E /* checked.png */; };
-		495EAC0613085D1000F4A64E /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 495EAC0413085D1000F4A64E /* unchecked.png */; };
 		495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC1713086F7000F4A64E /* NewListItemViewController.m */; };
 		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
+		499CDAED13356AA00099F3C9 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEB13356AA00099F3C9 /* redButton.png */; };
+		499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEC13356AA00099F3C9 /* whiteButton.png */; };
+		499CDB0C1335721C0099F3C9 /* radio-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDB0A1335721C0099F3C9 /* radio-off.png */; };
+		499CDB0D1335721C0099F3C9 /* radio-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDB0B1335721C0099F3C9 /* radio-on.png */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
 		49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */; };
@@ -80,8 +82,6 @@
 		495EABF613083F5700F4A64E /* ListItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemsViewController.h; sourceTree = "<group>"; };
 		495EABF713083F5700F4A64E /* ListItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemsViewController.m; sourceTree = "<group>"; };
 		495EABF813083F5700F4A64E /* ListItemsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListItemsView.xib; path = Classes/ListItemsView.xib; sourceTree = "<group>"; };
-		495EAC0313085D1000F4A64E /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
-		495EAC0413085D1000F4A64E /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		495EAC1613086F7000F4A64E /* NewListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewListItemViewController.h; sourceTree = "<group>"; };
 		495EAC1713086F7000F4A64E /* NewListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewListItemViewController.m; sourceTree = "<group>"; };
 		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
@@ -89,6 +89,10 @@
 		4973C3B912F64688005BF894 /* SettingViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewProtocol.h; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
+		499CDAEB13356AA00099F3C9 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
+		499CDAEC13356AA00099F3C9 /* whiteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteButton.png; sourceTree = "<group>"; };
+		499CDB0A1335721C0099F3C9 /* radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off.png"; sourceTree = "<group>"; };
+		499CDB0B1335721C0099F3C9 /* radio-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-on.png"; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
 		49A0206912E5276C005B1D0E /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
@@ -195,8 +199,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				495EAC0313085D1000F4A64E /* checked.png */,
-				495EAC0413085D1000F4A64E /* unchecked.png */,
+				499CDB0A1335721C0099F3C9 /* radio-off.png */,
+				499CDB0B1335721C0099F3C9 /* radio-on.png */,
+				499CDAEB13356AA00099F3C9 /* redButton.png */,
+				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
 				4939B7B012ED0B2C007F6455 /* Categories.plist */,
 				49BEEBD412EBC4440088707A /* Colors.plist */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
@@ -383,11 +389,13 @@
 				49BEEBD512EBC4440088707A /* Colors.plist in Resources */,
 				4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */,
 				495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */,
-				495EAC0513085D1000F4A64E /* checked.png in Resources */,
-				495EAC0613085D1000F4A64E /* unchecked.png in Resources */,
 				4959AB0713104B460039ACAC /* EditTextView.xib in Resources */,
 				49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */,
 				4955B03E1323033E00722C3F /* ListCell.xib in Resources */,
+				499CDAED13356AA00099F3C9 /* redButton.png in Resources */,
+				499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */,
+				499CDB0C1335721C0099F3C9 /* radio-off.png in Resources */,
+				499CDB0D1335721C0099F3C9 /* radio-on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

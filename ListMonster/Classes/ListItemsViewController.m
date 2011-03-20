@@ -333,8 +333,7 @@
 - (void)updateCheckboxButtonForItem:(MetaListItem *)item atCell:(UITableViewCell *)cell {
     
     UIButton *checkBoxButton = (UIButton *)[cell editingAccessoryView];
-    BOOL isChecked = ([[item isChecked] intValue] == 0);
-    NSString *stateImageFile = (isChecked) ? @"unchecked.png" : @"checked.png";
+    NSString *stateImageFile = ([item isComplete]) ? @"radio-on.png" : @"radio-off.png";
     [checkBoxButton setImage:[UIImage imageNamed:stateImageFile] forState:UIControlStateNormal];    
 }
 

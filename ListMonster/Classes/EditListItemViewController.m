@@ -201,16 +201,22 @@
 
 - (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section {
     
-    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+    UIImage *cellButtonImage;
     NSString *titleText; 
     if (section == [[self itemProperties] count]) {
         titleText = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark as Incomplete", @"mark incomplete text") : NSLocalizedString(@"Mark as Complete", @"completion text");
+        cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     } else {
         titleText = NSLocalizedString(@"Delete", @"delete item text");
-        [cell setBackgroundColor:[UIColor redColor]];
+        cellButtonImage = [[UIImage imageNamed:@"redButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     }
+    UIImageView *backImageView = [[UIImageView alloc] initWithImage:cellButtonImage];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
+    [cell setBackgroundView:backImageView];
     [[cell textLabel] setText:titleText];
+    [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
+    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+    [backImageView release];
 }
 
 #pragma mark -
