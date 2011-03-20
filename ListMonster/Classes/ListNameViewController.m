@@ -59,7 +59,7 @@
     
     NSString *listName = [[self theList] name];
     NSString *newName = [[self textField] text];
-    return (![listName isEqualToString:newName]);
+    return (![listName isEqualToString:newName] && (![newName isEqualToString:@""]));
 }
 
 - (void)didReceiveMemoryWarning {

@@ -22,6 +22,7 @@
 - (UIBarButtonItem *)doneButton;
 - (void)doneAction;
 - (void)dismissView;
+- (BOOL)haveValidList;
 
 @end
 
@@ -82,12 +83,6 @@
     }
     [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
     [[self navigationItem] setRightBarButtonItem:[self doneButton]];
-/*    
-    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", @"list back button")
-                                                                style:UIBarButtonItemStylePlain 
-                                                               target:nil action:nil];
-    [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release]; */
 }
 
 
@@ -139,6 +134,12 @@
 
 
 - (void)donePressed:(id)sender {
+    
+    if (![self haveValidList]) {
+        [ErrorAlert showWithTitle:NSLocalizedString(@"Bad Value",@"error title") 
+                       andMessage:NSLocalizedString(@"You must supply a list name", @"bad list name error")];
+        return;
+    } 
     [self doneAction];
     [self dismissView];
 }
@@ -146,7 +147,6 @@
 - (void)doneAction {
     if ([self editActionCancelled]) return;
     if (![[[self theList] managedObjectContext] hasChanges]) return;
-    
     NSError *error = nil;
     [[[self theList] managedObjectContext] save:&error];
     if (error) {
@@ -162,6 +162,12 @@
         [[self parentViewController] dismissModalViewControllerAnimated:YES];
     else
         [[self navigationController] popViewControllerAnimated:YES];
+}
+
+- (BOOL)haveValidList {
+    
+    NSString *listName = [[self theList] name];
+    return listName && ![listName isEqualToString:@""];
 }
 
 
