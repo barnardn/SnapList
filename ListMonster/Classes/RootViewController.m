@@ -22,7 +22,7 @@
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
-- (NSDictionary *)loadAllLists;
+- (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -192,12 +192,12 @@
         [listArr removeObjectAtIndex:[indexPath row]];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         if ([listArr count] == 0) {
-            NSMutableDictionary *newDict = [[self allLists] mutableCopy];
-            [newDict removeObjectForKey:key];
-            [self setAllLists:newDict];
-            [tableView deleteSections:[NSIndexSet indexSetWithIndex:[indexPath section]]
-                     withRowAnimation:UITableViewRowAnimationFade];
+            [[self allLists] removeObjectForKey:key];
+            NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
+            [self setCategoryNameKeys:catKeys];
         }
+//        [listArr release];
+        [tableView reloadData];
     }   
     /*else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -229,7 +229,7 @@
 #pragma mark -
 #pragma mark Other core data related methods
 
-- (NSDictionary *)loadAllLists {
+- (NSMutableDictionary *)loadAllLists {
     
     NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
     NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES] autorelease];
