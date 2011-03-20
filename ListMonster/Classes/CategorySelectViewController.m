@@ -77,7 +77,7 @@
                                                                target:nil 
                                                                action:nil];
     UIBarButtonItem *editBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"edit button")
-                                                                style:UIBarButtonItemStyleDone 
+                                                                style:UIBarButtonItemStylePlain 
                                                                target:self 
                                                                action:@selector(editPressed:)];
     [[self navigationItem] setBackBarButtonItem:backBtn];
@@ -124,9 +124,12 @@
     
     if ([self isEditing]) {
         [sender setTitle:NSLocalizedString(@"Edit", @"edit title")];
+        [sender setStyle:UIBarButtonItemStylePlain];
         [self setEditing:NO animated:YES];
+        
     } else {
         [sender setTitle:NSLocalizedString(@"Done", @"done title")];
+        [sender setStyle:UIBarButtonItemStyleDone];
         [self setEditing:YES animated:YES];
     }
 }
