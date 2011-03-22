@@ -80,6 +80,8 @@
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
     [super setEditing:inEditMode animated:animated];
+    BOOL enableEditButton = ([[self allLists] count] > 0);
+    [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
 }
 
 - (void)addList:(id)sender {
@@ -114,6 +116,8 @@
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
     [self setAllLists:[self loadAllLists]];
+    BOOL enableEditButton = ([[self allLists] count] > 0);
+    [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
     [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
 
@@ -122,23 +126,39 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self allLists] count];
+    NSInteger sectionCount = [[self allLists] count];
+    return (sectionCount == 0) ? 1 : sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+    NSInteger sectionCount = [[self allLists] count];
+    if (sectionCount == 0)
+        return 1;
     NSArray *listArr = [[self allLists] objectForKey:[[self categoryNameKeys] objectAtIndex:section]];
     return [listArr count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    
+    if ([[self allLists] count] == 0)
+        return @"";
     return [[self categoryNameKeys] objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     static NSString *CellId = @"ListCell";
+    static NSString *EmptyCellId = @"EmptyCell";
+    
+    if ([[self allLists] count] == 0) {
+        UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:EmptyCellId];
+        if (!emptyCell)
+            emptyCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EmptyCellId] autorelease];
+        [[emptyCell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
+        [[emptyCell textLabel] setTextAlignment:UITextAlignmentCenter];
+        [[emptyCell textLabel] setTextColor:[UIColor lightGrayColor]];
+        [emptyCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        return emptyCell;
+    }
     ListCell *cell = (ListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
     if (!cell) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ListCell" owner:self options:nil];
@@ -177,8 +197,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return ([[self allLists] count] > 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -196,6 +215,8 @@
             NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
             [self setCategoryNameKeys:catKeys];
         }
+        if (([[self allLists] count] == 0) && ([self isEditing]))
+            [self setEditing:NO animated:YES];
         [tableView reloadData];
     }   
 }
@@ -206,6 +227,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    if ([[self allLists] count] == 0) return;
+    
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];

@@ -214,17 +214,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     BOOL isEmtpyList = ([[[self theList] items] count] == 0);
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    if (!cell) {
-        if (isEmtpyList)
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EmptyCell"] autorelease];
-        else
-            cell = [self makeCellWithCheckboxButton];
-    }
     if (isEmtpyList) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
+        if (!cell)
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmptyCell"];
         [self configureForEmtpyList:cell];
         return cell;
     }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (!cell)
+        cell = [self makeCellWithCheckboxButton];
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     [self cell:cell configureForItem:item];
     return cell;
@@ -233,7 +232,9 @@
 - (void)configureForEmtpyList:(UITableViewCell *)cell {
     [[cell textLabel] setText:NSLocalizedString(@"Tap '+' to add an item", @"empty list instruction cell text")];
     [[cell textLabel] setTextColor:[UIColor lightGrayColor]];
+    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 }
 
 - (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item {
