@@ -24,6 +24,7 @@
 - (void)showEditViewWithList:(MetaList *)list;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)indexPathForList:(MetaList *)list;
 
 @end
 
@@ -58,8 +59,8 @@
     [super viewDidUnload];
 }
 
-
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [allLists release];
     [categoryNameKeys release];
     [edListNav release];
@@ -72,10 +73,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
-    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
+    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
+                                                                            target:self 
+                                                                            action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [addBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
+    [self setAllLists:[self loadAllLists]];
+    [[self tableView] reloadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didReceiveCompletedItemNotification:) 
+                                                 name:NOTICE_LIST_COUNTS
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didReceiveListChangeNotification:) 
+                                                 name:NOTICE_LIST_UPDATE
+                                               object:nil];
 }
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
@@ -91,13 +104,52 @@
 - (void)showEditViewWithList:(MetaList *)list {
     
     EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
+    [evc setNotificationMessage:NOTICE_LIST_UPDATE];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
     if (!list)
         [self presentModalViewController:edListNav animated:YES];
     else
         [[self navigationController] pushViewController:evc animated:YES];
+    
+
     [evc release];
 }
+
+//
+//*** TODO list items view will have to send notification when list count changes, remove reload 
+//*** from viewwillappear method..
+
+- (void)didReceiveListChangeNotification:(NSNotification *)notification {
+
+    [self setAllLists:[self loadAllLists]];
+    [[self tableView] reloadData];
+    MetaList *scrollToList = [notification object];
+    NSIndexPath *scrollToPath = [self indexPathForList:scrollToList];
+    [[self tableView] scrollToRowAtIndexPath:scrollToPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+}
+
+- (void)didReceiveCompletedItemNotification:(NSNotification *)notification {
+    
+    MetaList *updatedList = [notification object];
+    if ([[updatedList items] count] == 0) return;
+    NSIndexPath *indexPath = [self indexPathForList:updatedList];
+    ListCell *listCell = (ListCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
+    NSInteger incompleteCount = [[updatedList allIncompletedItems] count];
+    [[listCell countsLabel] setText:[NSString stringWithFormat:@"%d", incompleteCount]];
+    [[self tableView] scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+}
+
+- (NSIndexPath *)indexPathForList:(MetaList *)list {
+    
+    NSString *categoryName = [[list category] name];
+    NSString *key = (categoryName) ? categoryName : @"";
+    NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:categoryName];
+    NSArray *itemsForCategory = [[self allLists] objectForKey:key];
+    NSInteger rowIdx = [itemsForCategory indexOfObject:list];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
+    return indexPath;
+}
+
 
     
 #pragma mark -
@@ -115,10 +167,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
-    [self setAllLists:[self loadAllLists]];
+//    [self setAllLists:[self loadAllLists]];
     BOOL enableEditButton = ([[self allLists] count] > 0);
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
-    [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
+//    [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
 
 
@@ -169,7 +221,6 @@
     return cell;
 
 }
-
                                      
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -177,7 +228,6 @@
     NSMutableArray *listArr = [[self allLists] objectForKey:key];
     return [listArr objectAtIndex:[indexPath row]];
 }                                     
-                                     
                                      
 - (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList {
     [[cell nameLabel] setText:[metaList name]];
@@ -189,9 +239,8 @@
     nameFrame.origin.y = y; //13.0f;    
     [[cell nameLabel] setFrame:nameFrame];    
     if ([metaList items] && [[metaList items] count] > 0) {
-        NSPredicate *byUncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
-        NSSet *uncheckedItems = [[metaList items] filteredSetUsingPredicate:byUncheckedItems];
-        NSString *count = [NSString stringWithFormat:@"%d", [uncheckedItems count]];
+        NSInteger incompleteCount = [[metaList allIncompletedItems] count];
+        NSString *count = [NSString stringWithFormat:@"%d", incompleteCount];    
         [[cell countsLabel] setText:count];
     }    
 }

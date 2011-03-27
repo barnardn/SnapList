@@ -260,6 +260,7 @@
         case NSFetchedResultsChangeInsert:
             [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
                                     withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             break;
         case NSFetchedResultsChangeDelete:
             [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
@@ -270,6 +271,7 @@
                                     withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:[newIndexPath section]] 
                             withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         case NSFetchedResultsChangeUpdate:
             cell = [[self tableView] cellForRowAtIndexPath:indexPath];
             theCategory = [[self resultsController] objectAtIndexPath:indexPath];

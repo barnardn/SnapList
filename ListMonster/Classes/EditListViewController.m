@@ -29,7 +29,7 @@
 
 @implementation EditListViewController
 
-@synthesize theList, editActionCancelled, isNewList;
+@synthesize theList, editActionCancelled, isNewList, notificationMessage;
 
 #pragma mark -
 #pragma mark Initialization
@@ -69,6 +69,7 @@
 
 - (void)dealloc {
     [theList release];
+    [notificationMessage release];
     [super dealloc];
 }
 
@@ -106,7 +107,6 @@
                                                                   style:UIBarButtonItemStylePlain 
                                                                  target:self 
                                                                  action:@selector(cancelPressed:)];
-    
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [[self navigationItem] setRightBarButtonItem:[self doneButton]];
     [cancelBtn release];
@@ -117,7 +117,7 @@
     
     UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
                                                                 style:UIBarButtonItemStyleDone 
-                                                               target:self 
+                                                               target:self
                                                                action:@selector(donePressed:)];
     return [doneBtn autorelease];
 }
@@ -154,6 +154,8 @@
                        andMessage:NSLocalizedString(@"The changes list could not be saved.", @"cant save list message")];
         DLog(@"Unable to save list: %@", [error localizedDescription]);
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self notificationMessage]
+                                                        object:[self theList]];
 }
 
 - (void)dismissView {

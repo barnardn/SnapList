@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#define NOTICE_LIST_UPDATE  @"updatelist"
+#define NOTICE_LIST_COUNTS  @"countchange"
+
+
 @class MetaListItem;
 @class Category;
 @class ListColor;
@@ -26,6 +30,8 @@
 
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
+- (NSArray *)allCompletedItems;
+- (NSArray *)allIncompletedItems;
 
 
 

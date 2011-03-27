@@ -13,6 +13,13 @@
 #import "MetaListItem.h"
 #import "NSStringExtensions.h"
 
+@interface MetaList()
+
+- (NSArray *)itemsForCompletedState:(BOOL)state;
+
+@end
+
+
 @implementation MetaList
 
 @dynamic name, listID, dateCreated, items, category, color;
@@ -52,5 +59,27 @@
     NSArray *filteredItems = [allItems filteredArrayUsingPredicate:predicate];
     [filteredItems setValue:INT_OBJ(state) forKey:@"isChecked"];
 }
+
+- (NSArray *)allCompletedItems {
+    return [self itemsForCompletedState:YES];
+}
+
+- (NSArray *)allIncompletedItems {
+    return [self itemsForCompletedState:NO];
+}
+
+#pragma mark -
+#pragma mark Category Methods
+
+- (NSArray *)itemsForCompletedState:(BOOL)state {
+    
+    NSArray *allItems = [[self items] allObjects];
+    NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"isChecked == %d", (int)state];
+    NSArray *filteredItems = [allItems filteredArrayUsingPredicate:byCheckedState];
+    return filteredItems;
+    
+}
+
+
 
 @end
