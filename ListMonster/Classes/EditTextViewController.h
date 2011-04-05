@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface EditTextViewController : UIViewController {
+@interface EditTextViewController : UIViewController <UITextFieldDelegate> {
 
     UITextField *textField;
     NSString *returnString;

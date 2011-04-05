@@ -155,6 +155,15 @@
         [[self navigationController] popViewControllerAnimated:YES];
 }
 
+#pragma mark -
+#pragma mark UITextField delegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    [self donePressed:nil];
+    return YES;
+    
+}
 
 
 @end

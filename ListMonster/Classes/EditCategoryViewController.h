@@ -13,7 +13,7 @@
 @class Category;
 @class MetaList;
 
-@interface EditCategoryViewController : UIViewController {
+@interface EditCategoryViewController : UIViewController <UITextFieldDelegate> {
 
     UITextField *categoryNameField; 
     Category *category;

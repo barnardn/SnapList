@@ -11,7 +11,7 @@
 
 @class MetaList;
 
-@interface ListNameViewController : UIViewController {
+@interface ListNameViewController : UIViewController <UITextFieldDelegate> {
 
     IBOutlet UITextField *textField;
     MetaList *theList;

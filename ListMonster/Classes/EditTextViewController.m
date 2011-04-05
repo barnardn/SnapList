@@ -68,6 +68,17 @@
 }
 
 
+#pragma mark -
+#pragma mark UITextField delegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [[self textField] resignFirstResponder];
+    [[self navigationController] popViewControllerAnimated:YES];
+    return YES;
+}
+
+
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];

@@ -81,5 +81,18 @@
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark UITextField delegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)txtField {
+    
+    [txtField resignFirstResponder];
+    [[self navigationController] popViewControllerAnimated:YES];
+    return YES;
+}
+
+
+
+
 
 @end
