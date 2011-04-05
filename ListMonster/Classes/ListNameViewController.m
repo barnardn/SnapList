@@ -22,7 +22,7 @@
 
 - (id)initWithList:(MetaList *)aList {
     
-    self = [super initWithNibName:@"TextEntryView" bundle:nil];
+    self = [super initWithNibName:@"ListNameView" bundle:nil];
     if (!self) return nil;
     
     [self setTheList:aList];
