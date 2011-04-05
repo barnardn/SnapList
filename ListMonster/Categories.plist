@@ -4,11 +4,6 @@
 <array>
 	<string>Groceries</string>
 	<string>Inbox</string>
-	<string>Monday</string>
-	<string>Tuesday</string>
-	<string>Wednesday</string>
-	<string>Thrusday</string>
-	<string>Friday</string>
-	<string>Weekend</string>
+	<string>ToDo</string>
 </array>
 </plist>
