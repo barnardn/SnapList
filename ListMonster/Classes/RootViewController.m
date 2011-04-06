@@ -167,10 +167,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
-//    [self setAllLists:[self loadAllLists]];
     BOOL enableEditButton = ([[self allLists] count] > 0);
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
-//    [[self tableView] reloadData];  // TODO: remove this if the list items view works rewritten with fetched results controller
 }
 
 
