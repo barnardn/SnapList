@@ -143,7 +143,7 @@
     
     NSString *categoryName = [[list category] name];
     NSString *key = (categoryName) ? categoryName : @"";
-    NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:categoryName];
+    NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:key];
     NSArray *itemsForCategory = [[self allLists] objectForKey:key];
     NSInteger rowIdx = [itemsForCategory indexOfObject:list];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
