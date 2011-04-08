@@ -29,6 +29,7 @@
 - (void)configureForEmtpyList:(UITableViewCell *)cell;
 - (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
 - (void)enabledStateForEditControls:(BOOL)enableState;
+- (void)addItem;
 
 @end
 
@@ -111,11 +112,16 @@
 #pragma mark Button action
 
 -(IBAction)addItemBtnPressed:(id)sender {
+    [self addItem];
+}
+
+- (void)addItem {
     NewListItemViewController *eivc = [[NewListItemViewController alloc] initWithList:[self theList]];
     editItemNavController = [[UINavigationController alloc] initWithRootViewController:eivc];
     [self presentModalViewController:editItemNavController animated:YES];
     [eivc release];
 }
+
 
 -(IBAction)moreActionsBtnPressed:(id)sender {
   
@@ -272,8 +278,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([[[self theList] items] count] == 0) return;
-    
+    if ([[[self theList] items] count] == 0) {
+        [self addItem];
+        return;
+    }
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];    
     EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
     [[self navigationController] pushViewController:eivc animated:YES];

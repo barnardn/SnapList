@@ -274,8 +274,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    if ([[self allLists] count] == 0) return;
-    
+    if ([[self allLists] count] == 0) {
+        [self addList:nil];
+        return ;
+    }
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];
