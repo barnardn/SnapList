@@ -73,6 +73,9 @@
     UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelBtnPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [cancelBtn release];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    [backBtn release];
     [[self view] setBackgroundColor:[[[self theList] color] uiColor]];
 
 }
