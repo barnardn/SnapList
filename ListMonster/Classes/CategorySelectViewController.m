@@ -87,38 +87,9 @@
     [editBtn release];
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
 
 #pragma mark -
 #pragma mark Button actions
-
-- (void)cancelPressed:(id)sender {
-//    [[self navigationController] popViewControllerAnimated:YES];
-}
-
-- (void)donePressed:(id)sender {
-//    [[self theList] setCategory:[self selectedCategory]];
-//    [[self navigationController] popViewControllerAnimated:YES];
-}
 
 - (void)editPressed:(id)sender {
     
@@ -165,7 +136,6 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return [[[self resultsController] sections] count];
 }
 
@@ -174,7 +144,6 @@
     return [sectInfo numberOfObjects];
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
