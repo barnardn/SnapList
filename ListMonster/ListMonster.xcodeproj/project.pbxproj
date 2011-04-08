@@ -15,7 +15,6 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
-		4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4939B7B012ED0B2C007F6455 /* Categories.plist */; };
 		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
 		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
 		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
@@ -45,8 +44,8 @@
 		49AD7A9612E39FF7006E6AC6 /* 0xe1a10b.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8E12E39FF7006E6AC6 /* 0xe1a10b.png */; };
 		49AD7A9712E39FF7006E6AC6 /* 0xff5c00.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8F12E39FF7006E6AC6 /* 0xff5c00.png */; };
 		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
+		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
-		49BEEBD512EBC4440088707A /* Colors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49BEEBD412EBC4440088707A /* Colors.plist */; };
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
 		49F180E312C914340066B454 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F180E212C914340066B454 /* CoreData.framework */; };
@@ -72,7 +71,6 @@
 		491EBE4E12EB744D0084BFCB /* ListNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListNameViewController.h; sourceTree = "<group>"; };
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
-		4939B7B012ED0B2C007F6455 /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
 		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
@@ -115,9 +113,9 @@
 		49AD7A8F12E39FF7006E6AC6 /* 0xff5c00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0xff5c00.png; sourceTree = "<group>"; };
 		49AD7B1912E3DB45006E6AC6 /* Alerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alerts.h; sourceTree = "<group>"; };
 		49AD7B1A12E3DB45006E6AC6 /* Alerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alerts.m; sourceTree = "<group>"; };
+		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
 		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
-		49BEEBD412EBC4440088707A /* Colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Colors.plist; sourceTree = "<group>"; };
 		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
 		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
 		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
@@ -203,14 +201,13 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
 				499F4E06133AC4920048D35B /* Icon.png */,
 				499F4E07133AC4920048D35B /* Icon@2x.png */,
 				499CDB0A1335721C0099F3C9 /* radio-off.png */,
 				499CDB0B1335721C0099F3C9 /* radio-on.png */,
 				499CDAEB13356AA00099F3C9 /* redButton.png */,
 				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
-				4939B7B012ED0B2C007F6455 /* Categories.plist */,
-				49BEEBD412EBC4440088707A /* Colors.plist */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
@@ -392,8 +389,6 @@
 				49AD7A9612E39FF7006E6AC6 /* 0xe1a10b.png in Resources */,
 				49AD7A9712E39FF7006E6AC6 /* 0xff5c00.png in Resources */,
 				491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */,
-				49BEEBD512EBC4440088707A /* Colors.plist in Resources */,
-				4939B7B112ED0B2C007F6455 /* Categories.plist in Resources */,
 				495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */,
 				4959AB0713104B460039ACAC /* EditTextView.xib in Resources */,
 				49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */,
@@ -404,6 +399,7 @@
 				499CDB0D1335721C0099F3C9 /* radio-on.png in Resources */,
 				499F4E08133AC4920048D35B /* Icon.png in Resources */,
 				499F4E09133AC4920048D35B /* Icon@2x.png in Resources */,
+				49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,9 +15,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @interface ListMonsterAppDelegate()
 
-- (void)populateStaticData;
-- (NSArray *)importColors;
-- (void)importCategories;
+- (void)prefetchListColors;
 
 @end
 
@@ -46,7 +44,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
-    [self populateStaticData];
+    //[self populateStaticData];
+    [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
     [[self window] addSubview:[navController view]];
@@ -232,65 +231,10 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark Static data initializer methods
 
-
-- (void)populateStaticData {
-    
+- (void)prefetchListColors {
     NSArray *colors = [self fetchAllInstancesOf:@"ListColor" orderedBy:nil];
-    if ([colors count] == 0)
-        colors = [self importColors];
+    ZAssert(([colors count] != 0), @"ABORT:  No colors found in the database.");
     [self setAllColors:colors];
-    
-    NSArray *categories = [self fetchAllInstancesOf:@"Category" orderedBy:nil];
-    if ([categories count] == 0)
-        [self importCategories];
-    
 }
-
-- (NSArray *)importColors {
-    
-    NSString *colorFile = [[NSBundle mainBundle] pathForResource:@"Colors" ofType:@"plist"];
-    NSArray *defColors = [NSArray arrayWithContentsOfFile:colorFile];
-    if ([defColors count] <= 0) return nil;
-    
-    NSMutableArray *colors = [NSMutableArray arrayWithCapacity:[defColors count]];
-    NSEntityDescription *colorEntity = [NSEntityDescription entityForName:@"ListColor" inManagedObjectContext:[self managedObjectContext]];
-    for (NSDictionary *colorDict in defColors) {
-        ListColor *color = [[ListColor alloc] initWithEntity:colorEntity insertIntoManagedObjectContext:[self managedObjectContext]];
-        [color setName:[colorDict valueForKey:@"colorName"]];
-        [color setSwatchFilename:[colorDict valueForKey:@"swatchFilename"]];
-        NSString *rgbStr = [colorDict valueForKey:@"rgbValue"];
-        NSNumber *rgb = INT_OBJ([rgbStr intValue]);
-        [color setRgbValue:rgb];
-        [colors addObject:color];
-        [color release];   
-    }
-    NSError *error = nil;
-    [[self managedObjectContext] save:&error];
-    if (error) {
-        DLog(@"Unable to initialize colors entity: %@", [error localizedDescription]);
-        return nil;
-    }
-    return colors;
-}
-
-- (void)importCategories {
-    
-    NSString *categoryFile = [[NSBundle mainBundle] pathForResource:@"Categories" ofType:@"plist"];
-    NSArray *dfltCategories = [NSArray arrayWithContentsOfFile:categoryFile];
-    if ([dfltCategories count] <= 0) return;
-    
-    NSEntityDescription *categoryEntity = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:[self managedObjectContext]];
-    for (NSString *catName in dfltCategories) {
-        Category *category = [[Category alloc] initWithEntity:categoryEntity insertIntoManagedObjectContext:[self managedObjectContext]];
-        [category setName:catName];
-        [category release];
-    }
-    NSError *error = nil;
-    [[self managedObjectContext] save:&error];
-    if (error) {
-        DLog(@"Unable to initialize default categories: %@", [error localizedDescription]);
-    }
-}
-
 
 @end
