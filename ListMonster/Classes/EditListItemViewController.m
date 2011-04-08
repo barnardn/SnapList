@@ -52,7 +52,7 @@
 
 - (void)prepareProperties {
     
-    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name", @"title",
+    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Item", @"title",
                                      [[self theItem] name], @"value", @"name", @"kvc-key", nil];
     
     NSNumber *qty = [[self theItem] quantity];
@@ -180,7 +180,7 @@
     BOOL isListItemCell = (sectionIdx < ([[self itemProperties] count]));
     if (isListItemCell) {
         cellId = CellIdentifier;
-        cellStyle = UITableViewCellStyleValue1;
+        cellStyle = UITableViewCellStyleValue2;
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil)

@@ -44,7 +44,7 @@
 
 - (void)prepareProperties {
     
-    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Name", @"title",
+    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Item", @"title",
                                      [NSNull null], @"value", nil];
     NSMutableDictionary *qtyDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Quantity", @"title",
                                     [NSNull null], @"value", nil];
@@ -104,7 +104,7 @@
     NSString *itemName = [[[self itemProperties] objectAtIndex:0] valueForKey:@"value"];
     if (!itemName) {
         NSString *msgTitle = NSLocalizedString(@"Bad Value", @"bad value title");
-        NSString *msgText = NSLocalizedString(@"An item must have a proper name", @"missing name error");
+        NSString *msgText = NSLocalizedString(@"An item must have a proper description", @"missing name error");
         [ErrorAlert showWithTitle:msgTitle andMessage:msgText];
         return;
     }
