@@ -11,7 +11,9 @@
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
+#import "NSArrayExtensions.h"
 #import "NSStringExtensions.h"
+#import "RegexKitLite.h"
 
 @interface MetaList()
 
@@ -22,7 +24,7 @@
 
 @implementation MetaList
 
-@dynamic name, listID, dateCreated, items, category, color;
+@dynamic name, listID, dateCreated, items, category, color, note;
 
 
 #pragma mark -
@@ -67,6 +69,19 @@
 - (NSArray *)allIncompletedItems {
     return [self itemsForCompletedState:NO];
 }
+
+- (NSString *)excerptOfLength:(NSInteger)numWords {
+    
+    if ([[self note] length] <= 0) return nil;
+    
+    NSArray *words = [[self note] componentsSeparatedByRegex:@"\\s+"];
+    if ([words count] < numWords)
+        return [self note];
+
+    NSString *excerpt = [[words sliceAt:0 withLength:numWords] componentsJoinedByString:@" "];
+    return [NSString stringWithFormat:@"%@...", excerpt];
+}
+
 
 #pragma mark -
 #pragma mark Category Methods

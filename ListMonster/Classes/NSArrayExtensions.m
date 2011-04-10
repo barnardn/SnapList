@@ -35,4 +35,16 @@
     return newArr;
 }
 
+
+- (NSArray *)sliceAt:(NSInteger)start withLength:(NSInteger)length {
+    
+    if (start > ([self count] - 1)) return nil;
+    NSMutableArray *newArr = [NSMutableArray arrayWithCapacity:length];
+    for (int idx = start; idx < (start + length); idx++)
+        [newArr addObject:[self objectAtIndex:idx]];
+
+    return newArr;
+}
+
+
 @end

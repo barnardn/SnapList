@@ -26,7 +26,10 @@
 // apply the predicate block to each item in the NSArray and return 
 // the resulting NSArray for objects that satisfy the predicate condition.
 //
-
+- (NSArray *)sliceAt:(NSInteger)start withLength:(NSInteger)length;
+//
+// a slice of the array starting at start with length length.
+//
 
 
 @end

@@ -11,6 +11,7 @@
 #import "CategorySelectViewController.h"
 #import "ColorSelectViewController.h"
 #import "EditListViewController.h"
+#import "EditNoteViewController.h"
 #import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListNameViewController.h"
@@ -177,7 +178,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return elvNUM_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -187,7 +188,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";   
-    NSArray *cellConfigSelectors = [NSArray arrayWithObjects:@"cellAsNameCell:", @"cellAsColorCell:", @"cellAsCategoryCell:",nil];
+    NSArray *cellConfigSelectors = [NSArray arrayWithObjects:@"cellAsNameCell:", @"cellAsColorCell:", 
+                                    @"cellAsCategoryCell:",@"cellAsNoteCell:", nil];
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -204,7 +206,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"pushColorSelectView", @"pushCategoryEditView",nil];
+    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"pushColorSelectView", 
+                                 @"pushCategoryEditView",@"pushNoteEditView", nil];
     NSInteger sectionIdx = [indexPath section];
     NSString *selString = [nextNavSelectors objectAtIndex:sectionIdx];
     if ([selString compare:@""] == NSOrderedSame)
@@ -224,7 +227,6 @@
         cellText = NSLocalizedString(@"Name", @"empty list name placeholder");
     else
         cellText = [[self theList] name];
-
     [[cell textLabel] setText:cellTitle];
     [[cell detailTextLabel] setText:cellText];
     return cell;
@@ -250,6 +252,15 @@
     return cell;
 }
 
+- (UITableViewCell *)cellAsNoteCell:(UITableViewCell *)cell {
+    
+    NSString *cellTitle = NSLocalizedString(@"Note", @"cell note title");
+    [[cell textLabel] setText:cellTitle];
+    [[cell detailTextLabel] setText:[[self theList] excerptOfLength:6]];
+    return cell;
+}
+
+
 #pragma mark -
 #pragma mark Methods that push in the next view controller
 
@@ -270,6 +281,13 @@
     CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:cvc animated:YES];
     [cvc release];
+}
+
+- (void)pushNoteEditView {
+    
+    EditNoteViewController *envc = [[EditNoteViewController alloc] initWithList:[self theList]];
+    [[self navigationController] pushViewController:envc animated:YES];
+    [envc release];
 }
 
 

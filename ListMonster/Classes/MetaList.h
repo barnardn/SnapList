@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSDate *dateCreated;
 @property (nonatomic, retain) NSString *listID;
 @property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *note;
 @property (nonatomic, retain) NSSet *items;
 @property (nonatomic, retain) Category *category;
 @property (nonatomic, retain) ListColor *color;
@@ -32,6 +33,7 @@
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
 - (NSArray *)allCompletedItems;
 - (NSArray *)allIncompletedItems;
+- (NSString *)excerptOfLength:(NSInteger)numWords;
 
 
 
