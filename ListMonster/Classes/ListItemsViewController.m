@@ -270,7 +270,10 @@
     if ([[[self theList] items] count] == 1) {  // last item entire list
         [self enabledStateForEditControls:NO];
         [self editBtnPressed:nil];
+    } else {
+        [self commitAnyChanges];
     }
+
 }
         
 #pragma mark -
