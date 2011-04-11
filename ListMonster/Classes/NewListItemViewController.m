@@ -8,6 +8,7 @@
 
 #import "Alerts.h"
 #import "EditTextViewController.h"
+#import "ItemStash.h"
 #import "NewListItemViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListColor.h"
@@ -20,6 +21,8 @@
 - (void)prepareProperties;
 - (void)doneBtnPressed:(id)sender;
 - (void)cancelBtnPressed:(id)sender;
+- (UITableViewCell *)stashButtonCellForTableView:(UITableView *)tableView;
+- (void)handleStashButtonAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -141,7 +144,7 @@
 #pragma mark Tableview data source 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self itemProperties] count];
+    return [[self itemProperties] count] + 1;
 }
 
 
@@ -150,6 +153,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([indexPath section] >= [itemProperties count]) return [self stashButtonCellForTableView:tableView];
     
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
@@ -166,10 +171,38 @@
     return cell;
 }
 
+- (UITableViewCell *)stashButtonCellForTableView:(UITableView *)tableView {
+    
+    static NSString *stashCellId = @"StashCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:stashCellId];
+    if (cell) return cell;
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:stashCellId];
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
+    
+    UIImage *buttonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
+    UIImage *selectedButtonImage = [[UIImage imageNamed:@"blueButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:buttonImage];
+    UIImageView *selectedBackgroundView = [[UIImageView alloc] initWithImage:selectedButtonImage];
+    [cell setBackgroundView:backgroundView];
+    [cell setSelectedBackgroundView:selectedBackgroundView];
+    [backgroundView release];
+    [selectedBackgroundView release];
+    
+    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+    [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
+    [[cell textLabel] setText:NSLocalizedString(@"Add To Quick Stash", @"quick stash add button text")];
+    return cell;
+}
+
+
+
 #pragma mark -
 #pragma mark Tableview Delegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([indexPath section] >= [itemProperties count]) return [self handleStashButtonAtIndexPath:indexPath];
     
     [self setEditPropertyIndex:[indexPath section]];
     NSDictionary *propDict = [[self itemProperties] objectAtIndex:[self editPropertyIndex]];
@@ -181,5 +214,20 @@
     [[self navigationController] pushViewController:editVc animated:YES];
     [self setEditViewController:editVc];
 }
+
+- (void)handleStashButtonAtIndexPath:(NSIndexPath *)indexPath {
+    
+    id nameValue = [[[self itemProperties] objectAtIndex:0] valueForKey:@"value"];
+    if (nameValue == [NSNull null]) return;    
+    NSString *stashedName = nameValue;
+    NSNumber *stashedNumber = nil;
+    id qtyString = [[[self itemProperties] objectAtIndex:1] valueForKey:@"value"];
+    if (qtyString != [NSNull null])
+        stashedNumber = [NSNumber numberWithString:qtyString];
+    [ItemStash addToStash:stashedName quantity:stashedNumber];
+    UITableViewCell *stashButton = [[self tableView] cellForRowAtIndexPath:indexPath];
+    [stashButton setSelected:NO];
+}
+
 
 @end

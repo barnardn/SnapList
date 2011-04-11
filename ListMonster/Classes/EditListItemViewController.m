@@ -9,6 +9,7 @@
 #import "Alerts.h"
 #import "EditListItemViewController.h"
 #import "EditTextViewController.h"
+#import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListColor.h"
 #import "MetaList.h"
@@ -23,6 +24,7 @@
 - (void)didSelectItemCellAtIndex:(NSInteger)section;
 - (void)didSelectButtonCellAtIndex:(NSInteger)section;
 - (void)savePendingItemChanges;
+- (void)addItemEditsToStash;
 
 @end
 
@@ -102,7 +104,6 @@
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [backBtn release];
     [[self tableView] setBackgroundColor:[[[self theList] color] uiColor]];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -157,7 +158,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self itemProperties] count] + 2;
+    return [[self itemProperties] count] + elivcCOUNT_BUTTON_CELLS;
 }
 
 
@@ -204,17 +205,25 @@
     if (section == [[self itemProperties] count]) {
         titleText = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark as Incomplete", @"mark incomplete text") : NSLocalizedString(@"Mark as Complete", @"completion text");
         cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
+    } else if (section == [[self itemProperties] count] + 1) {
+        titleText = NSLocalizedString(@"Add To Quick Stash", @"quick stash button text");
+        cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     } else {
         titleText = NSLocalizedString(@"Delete", @"delete item text");
         cellButtonImage = [[UIImage imageNamed:@"redButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     }
     UIImageView *backImageView = [[UIImageView alloc] initWithImage:cellButtonImage];
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
+    UIImage *selectedBackImage = [[UIImage imageNamed:@"blueButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
+    UIImageView *selectedBackImageView = [[UIImageView alloc] initWithImage:selectedBackImage];                              
     [cell setBackgroundView:backImageView];
+    [cell setSelectedBackgroundView:selectedBackImageView];
+    [backImageView release];
+    [selectedBackImageView release];
+    
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
     [[cell textLabel] setText:titleText];
     [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
     [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
-    [backImageView release];
 }
 
 #pragma mark -
@@ -223,10 +232,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSInteger sectionIdx = [indexPath section];
-    if ( sectionIdx < [[self itemProperties] count])
-        [self didSelectItemCellAtIndex:sectionIdx];
-    else 
+    if ( sectionIdx < [[self itemProperties] count]) {
+        [self didSelectItemCellAtIndex:sectionIdx];        
+    } else  {
         [self didSelectButtonCellAtIndex:sectionIdx];
+        UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+        [cell setSelected:NO];
+    }
+
 
 }
 
@@ -247,11 +260,16 @@
 - (void)didSelectButtonCellAtIndex:(NSInteger)section {
  
     NSInteger completeButtonIdx = [[self itemProperties] count];
+    if (section == completeButtonIdx + 1) {
+        [self addItemEditsToStash];
+        return;
+    }
     if (section == completeButtonIdx) {
         NSNumber *checkedState = ([[self theItem] isComplete]) ? INT_OBJ(0) : INT_OBJ(1);
         [[self theItem] setIsChecked:checkedState];
     } else {
         NSMutableSet *items = [[self theList] mutableSetValueForKey:@"items"];
+        [[[self theList] managedObjectContext] deleteObject:[self theItem]];
         [items removeObject:[self theItem]];
     }
     [self savePendingItemChanges];
@@ -259,9 +277,22 @@
 }
 
 
+- (void)addItemEditsToStash {
+    
+    NSString *stashName = [[[self itemProperties] objectAtIndex:0] valueForKey:@"name"];
+    NSString *qtyString = [[[self itemProperties] objectAtIndex:1] valueForKey:@"quantity"];
+    NSNumber *qty = [NSNumber numberWithString:qtyString];
+    if (!stashName)
+        stashName = [[self theItem] name];
+    if (!qty)
+        qty = [[self theItem] quantity];
+    
+    [ItemStash addToStash:stashName quantity:qty];
+}
+
 - (void)savePendingItemChanges {
     
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];
     if (error) {

@@ -58,6 +58,8 @@
 		49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1812512C9366A0066B454 /* NSStringExtensions.m */; };
 		49F1814B12C958F20066B454 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1814912C958F20066B454 /* RootViewController.m */; };
 		49F1814E12C959B50066B454 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F1814D12C959B50066B454 /* RootView.xib */; };
+		49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49FDFF3D135233A400F6A3DA /* ItemStash.m */; };
+		49FDFF90135257E600F6A3DA /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 49FDFF8F135257E600F6A3DA /* blueButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -137,6 +139,9 @@
 		49F1814812C958F20066B454 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		49F1814912C958F20066B454 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
+		49FDFF3C135233A400F6A3DA /* ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStash.h; sourceTree = "<group>"; };
+		49FDFF3D135233A400F6A3DA /* ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStash.m; sourceTree = "<group>"; };
+		49FDFF8F135257E600F6A3DA /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueButton.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ListMonster-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ListMonster-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +210,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49FDFF8F135257E600F6A3DA /* blueButton.png */,
 				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
 				499F4E06133AC4920048D35B /* Icon.png */,
 				499F4E07133AC4920048D35B /* Icon@2x.png */,
@@ -289,6 +295,8 @@
 				49AD7A4D12E380D9006E6AC6 /* Category.m */,
 				49BEEBD112EBC3680088707A /* ListColor.h */,
 				49BEEBD212EBC3680088707A /* ListColor.m */,
+				49FDFF3C135233A400F6A3DA /* ItemStash.h */,
+				49FDFF3D135233A400F6A3DA /* ItemStash.m */,
 			);
 			name = CoreDataModels;
 			sourceTree = "<group>";
@@ -407,6 +415,7 @@
 				499F4E09133AC4920048D35B /* Icon@2x.png in Resources */,
 				49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */,
 				49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */,
+				49FDFF90135257E600F6A3DA /* blueButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +450,7 @@
 				49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */,
 				4955B03C1323031500722C3F /* ListCell.m in Sources */,
 				49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */,
+				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

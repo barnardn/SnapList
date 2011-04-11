@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+#define elivcCOUNT_BUTTON_CELLS     3  
+
 @class MetaList;
 @class MetaListItem;
 @class EditTextViewController;
