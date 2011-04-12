@@ -24,6 +24,8 @@
 		495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 495EABF813083F5700F4A64E /* ListItemsView.xib */; };
 		495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC1713086F7000F4A64E /* NewListItemViewController.m */; };
 		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
+		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
+		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		499CDAED13356AA00099F3C9 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEB13356AA00099F3C9 /* redButton.png */; };
 		499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEC13356AA00099F3C9 /* whiteButton.png */; };
@@ -90,6 +92,9 @@
 		495EAC1713086F7000F4A64E /* NewListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewListItemViewController.m; sourceTree = "<group>"; };
 		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
+		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
+		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
+		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		499CDAEB13356AA00099F3C9 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
@@ -229,6 +234,7 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
 				4955B03D1323033E00722C3F /* ListCell.xib */,
+				498002D21353CFD7002B3D9B /* ItemStashView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -339,6 +345,8 @@
 				49EAC1D8131AED39003738FD /* EditCategoryViewController.m */,
 				49C94290134FAB640045D4F6 /* EditNoteViewController.h */,
 				49C94291134FAB640045D4F6 /* EditNoteViewController.m */,
+				498002921353C1AF002B3D9B /* ItemStashViewController.h */,
+				498002931353C1AF002B3D9B /* ItemStashViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -416,6 +424,7 @@
 				49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */,
 				49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */,
 				49FDFF90135257E600F6A3DA /* blueButton.png in Resources */,
+				498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +460,7 @@
 				4955B03C1323031500722C3F /* ListCell.m in Sources */,
 				49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */,
 				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,
+				498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

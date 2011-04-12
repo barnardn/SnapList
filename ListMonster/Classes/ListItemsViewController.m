@@ -8,6 +8,7 @@
 
 #import "Alerts.h"
 #import "EditListItemViewController.h"
+#import "ItemStashViewController.h"
 #import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListItemsViewController.h"
@@ -130,7 +131,8 @@
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
                                                destructiveButtonTitle:NSLocalizedString(@"Delete All", @"delete all action button")
                                                     otherButtonTitles:NSLocalizedString(@"Check All",@"check all"),
-                                                                      NSLocalizedString(@"Uncheck All", @"uncheck all"),nil];
+                                                                      NSLocalizedString(@"Uncheck All", @"uncheck all"),
+                                                                      NSLocalizedString(@"Pick item from stash", @"stash button"),nil];
     [actionSheet showFromToolbar:[self toolBar]];
     [actionSheet release];
 }
@@ -296,8 +298,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    if (buttonIndex == 3) return;  // cancel
-    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems",nil];
+    if (buttonIndex == 4) return;  // cancel -- was 3
+    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems", @"pickFromStash",nil];
     [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex])];
 }
 
@@ -325,6 +327,13 @@
     [self filterItemsByCheckedState];
     [[self allItemsTableView] reloadData];
 }
+
+- (void)pickFromStash {
+    
+    ItemStashViewController *isvc = [[ItemStashViewController alloc] initWithList:[self theList]];
+    [self presentModalViewController:isvc animated:YES];
+}
+
 
 #pragma mark -
 #pragma mark Cell checkbox methods
