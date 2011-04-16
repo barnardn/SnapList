@@ -31,6 +31,7 @@
 - (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
 - (void)enabledStateForEditControls:(BOOL)enableState;
 - (void)addItem;
+- (void)pickFromStash;
 
 @end
 
@@ -104,7 +105,6 @@
 
 - (void)enabledStateForEditControls:(BOOL)enableState {
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableState];
-    [[self moreActionsBtn] setEnabled:enableState];
     [[self checkedState] setEnabled:enableState];
 }
 
@@ -125,14 +125,19 @@
 
 
 -(IBAction)moreActionsBtnPressed:(id)sender {
-  
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title")
+
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title") 
                                                              delegate:self 
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
-                                               destructiveButtonTitle:NSLocalizedString(@"Delete All", @"delete all action button")
-                                                    otherButtonTitles:NSLocalizedString(@"Check All",@"check all"),
-                                                                      NSLocalizedString(@"Uncheck All", @"uncheck all"),
-                                                                      NSLocalizedString(@"Pick item from stash", @"stash button"),nil];
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+    if ([[self listItems] count] > 0) {
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Delete All", @"delete all action button")];
+        [actionSheet setDestructiveButtonIndex:1];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Complete",@"check all")];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Incomplete", @"uncheck all")];
+    }
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
     [actionSheet showFromToolbar:[self toolBar]];
     [actionSheet release];
 }
@@ -202,7 +207,6 @@
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [cancelBtn release];
 }
-
 
 #pragma mark -
 #pragma mark Table data source methods
@@ -297,10 +301,15 @@
 #pragma mark Action sheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    if (!buttonIndex) return;
     
-    if (buttonIndex == 4) return;  // cancel -- was 3
+    if ([[self listItems] count] == 0 && buttonIndex == 1) {
+        [self pickFromStash];
+        return;
+    }
     NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems", @"pickFromStash",nil];
-    [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex])];
+    [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex- 1])];
 }
 
 - (void)deleteAllItems {
