@@ -11,7 +11,14 @@
 
 @class MetaList;
 
-@interface MetaListItem : NSManagedObject {
+@protocol ReminderItemProtocol
+
+- (NSDate *)reminderDate;
+- (void)setReminderDate:(NSDate *)date;
+
+@end
+
+@interface MetaListItem : NSManagedObject <ReminderItemProtocol> {
 
 }
 
@@ -19,6 +26,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
+@property (nonatomic, retain) NSDate *reminderDate;
 
 - (BOOL)isComplete;
 

@@ -27,6 +27,10 @@
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
+		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
+		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
+		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
+		499B27CD13663AA700C4500C /* datetime_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B27CC13663AA700C4500C /* datetime_utils.m */; };
 		499CDAED13356AA00099F3C9 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEB13356AA00099F3C9 /* redButton.png */; };
 		499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEC13356AA00099F3C9 /* whiteButton.png */; };
 		499CDB0C1335721C0099F3C9 /* radio-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDB0A1335721C0099F3C9 /* radio-off.png */; };
@@ -50,6 +54,7 @@
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
+		49DE1AF31362563C00D27543 /* Tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DE1AF21362563C00D27543 /* Tuple.m */; };
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
 		49F180E312C914340066B454 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F180E212C914340066B454 /* CoreData.framework */; };
@@ -97,6 +102,12 @@
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
+		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
+		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
+		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
+		499306AD135FB82C00ECBE16 /* days-en_US.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "days-en_US.plist"; sourceTree = "<group>"; };
+		499B27CB13663AA700C4500C /* datetime_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datetime_utils.h; sourceTree = "<group>"; };
+		499B27CC13663AA700C4500C /* datetime_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = datetime_utils.m; sourceTree = "<group>"; };
 		499CDAEB13356AA00099F3C9 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
 		499CDAEC13356AA00099F3C9 /* whiteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteButton.png; sourceTree = "<group>"; };
 		499CDB0A1335721C0099F3C9 /* radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off.png"; sourceTree = "<group>"; };
@@ -127,6 +138,8 @@
 		49C94290134FAB640045D4F6 /* EditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNoteViewController.h; sourceTree = "<group>"; };
 		49C94291134FAB640045D4F6 /* EditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNoteViewController.m; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
+		49DE1AF11362563C00D27543 /* Tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tuple.h; sourceTree = "<group>"; };
+		49DE1AF21362563C00D27543 /* Tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tuple.m; sourceTree = "<group>"; };
 		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
 		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
 		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
@@ -208,6 +221,8 @@
 				49F180FA12C929880066B454 /* Common.h */,
 				32CA4F630368D1EE00C91783 /* ListMonster_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				499B27CB13663AA700C4500C /* datetime_utils.h */,
+				499B27CC13663AA700C4500C /* datetime_utils.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -216,25 +231,27 @@
 			isa = PBXGroup;
 			children = (
 				49FDFF8F135257E600F6A3DA /* blueButton.png */,
-				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
-				499F4E06133AC4920048D35B /* Icon.png */,
-				499F4E07133AC4920048D35B /* Icon@2x.png */,
-				499CDB0A1335721C0099F3C9 /* radio-off.png */,
-				499CDB0B1335721C0099F3C9 /* radio-on.png */,
-				499CDAEB13356AA00099F3C9 /* redButton.png */,
-				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
+				499F4E06133AC4920048D35B /* Icon.png */,
+				499F4E07133AC4920048D35B /* Icon@2x.png */,
+				498002D21353CFD7002B3D9B /* ItemStashView.xib */,
+				4955B03D1323033E00722C3F /* ListCell.xib */,
 				495EABF813083F5700F4A64E /* ListItemsView.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
+				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				499CDB0A1335721C0099F3C9 /* radio-off.png */,
+				499CDB0B1335721C0099F3C9 /* radio-on.png */,
+				499CDAEB13356AA00099F3C9 /* redButton.png */,
+				499306A3135FB07300ECBE16 /* ReminderView.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
-				4955B03D1323033E00722C3F /* ListCell.xib */,
-				498002D21353CFD7002B3D9B /* ItemStashView.xib */,
+				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
+				499306AD135FB82C00ECBE16 /* days-en_US.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -286,6 +303,8 @@
 		49BEEBC312EBBF8F0088707A /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				49DE1AF11362563C00D27543 /* Tuple.h */,
+				49DE1AF21362563C00D27543 /* Tuple.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -323,30 +342,32 @@
 		49F1814712C958880066B454 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				49F1814812C958F20066B454 /* RootViewController.h */,
-				49F1814912C958F20066B454 /* RootViewController.m */,
-				49A0205312E5256A005B1D0E /* EditListViewController.h */,
-				49A0205412E5256A005B1D0E /* EditListViewController.m */,
-				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
-				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
-				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
-				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
 				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
 				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
-				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
-				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
-				495EAC1613086F7000F4A64E /* NewListItemViewController.h */,
-				495EAC1713086F7000F4A64E /* NewListItemViewController.m */,
-				495D8411130E088800933720 /* EditListItemViewController.h */,
-				495D8412130E088800933720 /* EditListItemViewController.m */,
-				4959AB0313104B460039ACAC /* EditTextViewController.h */,
-				4959AB0413104B460039ACAC /* EditTextViewController.m */,
+				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
+				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
 				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
 				49EAC1D8131AED39003738FD /* EditCategoryViewController.m */,
+				495D8411130E088800933720 /* EditListItemViewController.h */,
+				495D8412130E088800933720 /* EditListItemViewController.m */,
+				49A0205312E5256A005B1D0E /* EditListViewController.h */,
+				49A0205412E5256A005B1D0E /* EditListViewController.m */,
 				49C94290134FAB640045D4F6 /* EditNoteViewController.h */,
 				49C94291134FAB640045D4F6 /* EditNoteViewController.m */,
+				4959AB0313104B460039ACAC /* EditTextViewController.h */,
+				4959AB0413104B460039ACAC /* EditTextViewController.m */,
 				498002921353C1AF002B3D9B /* ItemStashViewController.h */,
 				498002931353C1AF002B3D9B /* ItemStashViewController.m */,
+				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
+				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
+				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
+				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
+				495EAC1613086F7000F4A64E /* NewListItemViewController.h */,
+				495EAC1713086F7000F4A64E /* NewListItemViewController.m */,
+				499306A1135FB07300ECBE16 /* ReminderViewController.h */,
+				499306A2135FB07300ECBE16 /* ReminderViewController.m */,
+				49F1814812C958F20066B454 /* RootViewController.h */,
+				49F1814912C958F20066B454 /* RootViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -425,6 +446,8 @@
 				49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */,
 				49FDFF90135257E600F6A3DA /* blueButton.png in Resources */,
 				498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */,
+				499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */,
+				499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +484,9 @@
 				49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */,
 				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,
 				498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */,
+				499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */,
+				49DE1AF31362563C00D27543 /* Tuple.m in Sources */,
+				499B27CD13663AA700C4500C /* datetime_utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

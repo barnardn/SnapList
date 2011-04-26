@@ -154,7 +154,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([indexPath section] >= [itemProperties count]) return [self stashButtonCellForTableView:tableView];
+    if ([indexPath section] >= [[self itemProperties] count]) return [self stashButtonCellForTableView:tableView];
     
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
@@ -194,7 +194,6 @@
     [[cell textLabel] setText:NSLocalizedString(@"Add To Quick Stash", @"quick stash add button text")];
     return cell;
 }
-
 
 
 #pragma mark -

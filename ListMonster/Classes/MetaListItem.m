@@ -11,7 +11,7 @@
 
 @implementation MetaListItem
 
-@dynamic name, quantity, isChecked, list;
+@dynamic name, quantity, isChecked, list, reminderDate;
 
 
 #pragma mark -
