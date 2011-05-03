@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EditItemViewProtocol.h"
 #import "MetaListItem.h"
 
+@class MetaListItem;
+@class MetaList;
 @class Tuple;
 
 #define rvDAYS_FILE_DEFAULT  @"days-en_US"
@@ -19,7 +22,8 @@
 
 @interface ReminderViewController : UIViewController <UITableViewDataSource, 
                                                       UITableViewDelegate, 
-                                                      UIPickerViewDelegate> 
+                                                      UIPickerViewDelegate,
+                                                      EditItemViewProtocol> 
 {
     UISegmentedControl *dateSelectionMode;
     UIDatePicker *datePicker;
@@ -27,6 +31,9 @@
     NSArray *simpleDates;
     id<ReminderItemProtocol> reminderItem;
     NSDate *selectedReminderDate;
+    NSString *backgroundImageFilename;
+    NSString *viewTitle;
+    Tuple *selectedSimpleDate;
 }
 
 @property(nonatomic,retain) IBOutlet UISegmentedControl *dateSelectionMode;
@@ -34,9 +41,14 @@
 @property(nonatomic,retain) IBOutlet UITableView *simpleDateTable;
 @property(nonatomic,retain) NSArray *simpleDates;
 @property(nonatomic,retain) id reminderItem;
-@property(nonatomic,retain) NSDate *selectedReminderDate;
+@property(nonatomic,retain) NSDate *selectedReminderDate;  // for picker only!?!?!?
+@property(nonatomic,retain) NSString *viewTitle;
+@property(nonatomic,retain) Tuple *selectedSimpleDate;
 
-- (id)initWithReminderItem:(id)item;
+
+- (id)initWithTitle:(NSString *)aTitle reminderItem:(id<ReminderItemProtocol>)item; // designated initializer
+- (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
+//- (id)initWithTitle:(NSString *)aTitle list:(MetaList *)aList;
 - (IBAction)dateSelectionModeChanged:(id)sender;
 - (IBAction)datePickerDateChanged:(id)sender;
 

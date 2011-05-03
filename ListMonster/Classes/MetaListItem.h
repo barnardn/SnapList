@@ -13,8 +13,7 @@
 
 @protocol ReminderItemProtocol
 
-- (NSDate *)reminderDate;
-- (void)setReminderDate:(NSDate *)date;
+@property(nonatomic,retain) NSDate *reminderDate;
 
 @end
 
@@ -26,7 +25,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
-@property (nonatomic, retain) NSDate *reminderDate;
+//@property (nonatomic, retain) NSDate *reminderDate;
 
 - (BOOL)isComplete;
 

@@ -7,28 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EditItemViewProtocol.h"
+@class MetaListItem;
 
-
-@interface EditTextViewController : UIViewController <UITextFieldDelegate> {
+@interface EditTextViewController : UIViewController <UITextFieldDelegate, EditItemViewProtocol> {
 
     UITextField *textField;
-    NSString *returnString;
     NSString *viewTitle;
-    NSString *editText;
-    UIColor *backgroundColor;
-    BOOL numericEntryMode;
+    NSString *backgroundImageFilename;
+    MetaListItem *item;
 }
 
 
 @property(nonatomic,retain) IBOutlet UITextField *textField;
-@property(nonatomic,retain) NSString *returnString;
 @property(nonatomic,assign) NSString *viewTitle;
-@property(nonatomic,assign) NSString *editText;
-@property(nonatomic,assign) BOOL numericEntryMode;
-@property(nonatomic,retain) UIColor *backgroundColor;
+@property(nonatomic,retain) MetaListItem *item;
 
 
-- (id)initWithViewTitle:(NSString *)aTitle editText:(NSString *)text;
-
+- (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
 
 @end

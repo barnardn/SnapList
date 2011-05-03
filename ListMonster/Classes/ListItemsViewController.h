@@ -12,12 +12,22 @@
 #define livcSEGMENT_UNCHECKED   0
 #define livcSEGMENT_CHECKED     1
 
-
 @class MetaList;
+@class MetaListItem;
+@class EditListItemViewController;
+
+@protocol ListItemsViewControllerProtocol
+
+-(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didCancelEditOnNewItem:(MetaListItem *)item;
+-(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item;
+
+@end
+
 
 @interface ListItemsViewController : UIViewController <UITableViewDataSource,
                                                        UITableViewDelegate, 
-                                                       UIActionSheetDelegate>
+                                                       UIActionSheetDelegate,
+                                                       ListItemsViewControllerProtocol>
 {
     UITableView *allItemsTableView;
     UIToolbar *toolBar;

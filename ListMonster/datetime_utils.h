@@ -10,10 +10,12 @@
 #import <Foundation/Foundation.h>
 
 #define dtuMMDDYY_CALUNITS NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit
+#define dtuHOURSMIN_CALUNITS NSHourCalendarUnit|NSMinuteCalendarUnit
 
 
 NSInteger weekday_for_date(NSDate *current_date);
 NSInteger weekday_for_today() ;
 NSDate *today_at_midnight();
 NSDate *date_by_adding_days(NSDate *from_date, NSInteger num_days);
+NSString *formatted_date(NSDate *date);
 

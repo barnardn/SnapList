@@ -14,7 +14,7 @@
 #import "ListItemsViewController.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
-#import "NewListItemViewController.h"
+//#import "NewListItemViewController.h"
 
 @interface ListItemsViewController()
 
@@ -112,12 +112,17 @@
 #pragma mark -
 #pragma mark Button action
 
--(IBAction)addItemBtnPressed:(id)sender {
+-(IBAction)addItemBtnPressed:(id)sender 
+{
     [self addItem];
 }
 
-- (void)addItem {
-    NewListItemViewController *eivc = [[NewListItemViewController alloc] initWithList:[self theList]];
+- (void)addItem 
+{
+    MetaListItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"MetaListItem" inManagedObjectContext:[[self theList] managedObjectContext]];
+    EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:newItem];
+    [eivc setIsModal:YES];
+    [eivc setDelegate:self];
     editItemNavController = [[UINavigationController alloc] initWithRootViewController:eivc];
     [self presentModalViewController:editItemNavController animated:YES];
     [eivc release];
@@ -207,6 +212,22 @@
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [cancelBtn release];
 }
+
+#pragma mark -
+#pragma mark ListItemsViewControllerProtocol method 
+
+-(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didCancelEditOnNewItem:(MetaListItem *)item
+{
+    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
+    [moc deleteObject:item];
+    DLog(@"item cancel item count: %d", [[[self theList] items] count]);
+}
+
+-(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item
+{
+    [item setList:[self theList]];
+}
+
 
 #pragma mark -
 #pragma mark Table data source methods

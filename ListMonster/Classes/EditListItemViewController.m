@@ -7,7 +7,9 @@
 //
 
 #import "Alerts.h"
+#import "datetime_utils.h"
 #import "EditListItemViewController.h"
+#import "EditNumberViewController.h"
 #import "EditTextViewController.h"
 #import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
@@ -16,15 +18,19 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSNumberExtensions.h"
+#import "ReminderViewController.h"
 
 @interface EditListItemViewController()
 
 - (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section;
-- (void)prepareProperties;
+- (void)preparePropertySections;
+- (NSString *)listItem:(MetaListItem *)item stringForAttribute:(NSString *)attrName;
 - (void)didSelectItemCellAtIndex:(NSInteger)section;
 - (void)didSelectButtonCellAtIndex:(NSInteger)section;
 - (void)savePendingItemChanges;
 - (void)addItemEditsToStash;
+- (void)configureAsModalView;
+- (void)configureAsChildNavigationView;
 
 @end
 
@@ -35,121 +41,122 @@
 #pragma mark Initialization
 
 
-@synthesize theItem, theList, itemProperties, editViewController, editProperty;
-@synthesize hasDirtyProperties;
+@synthesize theItem, theList, editPropertySections, isModal, delegate;
 
-- (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem {
-    
+- (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem 
+{
     self= [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
     [self setTheList:list];
     [self setTheItem:listItem];
-    [self prepareProperties];
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style 
+{
     return nil;
-}
-
-- (void)prepareProperties {
-    
-    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Item", @"title",
-                                     [[self theItem] name], @"value", @"name", @"kvc-key", nil];
-    
-    NSNumber *qty = [[self theItem] quantity];
-    NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue];
-    NSMutableDictionary *qtyDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Quantity", @"title",
-                                    qtyString, @"value", @"quantity", @"kvc-key", nil];
-    NSArray *properties = [NSArray arrayWithObjects:nameDict, qtyDict, nil];
-    [self setItemProperties:properties];
 }
 
 #pragma mark -
 #pragma mark Memory management
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
+- (void)didReceiveMemoryWarning 
+{
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
+- (void)viewDidUnload 
+{
+    [super viewDidUnload];
 }
 
-- (void)dealloc {
-    [itemProperties release];
+- (void)dealloc 
+{
     [theItem release];
     [theList release];
-    [editViewController release];
-    [editProperty release];
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
-
-    NSString *viewTitle = [[self theItem] name];
+    NSString *viewTitle = ([[self theItem] name]) ? [[self theItem] name] :  NSLocalizedString(@"New Item", @"new item title");
     [[self navigationItem] setTitle:viewTitle];
+    if ([self isModal]) {
+        [self configureAsModalView];
+    } else {
+        [self configureAsChildNavigationView];
+    }
+    [[self tableView] setBackgroundColor:[[[self theList] color] uiColor]];
+    [self preparePropertySections];
+}
+
+- (void)configureAsModalView 
+{
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button") 
+                                                                  style:UIBarButtonItemStylePlain 
+                                                                 target:self 
+                                                                 action:@selector(cancelPressed:)];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
+                                                                style:UIBarButtonItemStyleDone 
+                                                               target:self 
+                                                               action:@selector(donePressed:)];    
+    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
+    [[self navigationItem] setRightBarButtonItem:doneBtn];
+    [cancelBtn release];
+    [doneBtn release];
+}
+
+- (void)configureAsChildNavigationView 
+{
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:nil 
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release];
-    [[self tableView] setBackgroundColor:[[[self theList] color] uiColor]];
+    [backBtn release];    
+}
+ 
+- (void)cancelPressed:(id)sender
+{
+    [[self delegate] editListItemViewController:self didCancelEditOnNewItem:[self theItem]];
+    [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    
+- (void)donePressed:(id)sender
+{
+    [[self delegate] editListItemViewController:self didAddNewItem:[self theItem]];
+    [self savePendingItemChanges];
+    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+}
+
+- (void)preparePropertySections 
+{    
+    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Item", @"title",
+                                     @"name", @"attrib", [EditTextViewController class], @"vc", nil];
+    NSMutableDictionary *qtyDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Quantity", @"title",
+                                    @"quantity", @"attrib", [EditNumberViewController class], @"vc", nil];
+    NSMutableDictionary *reminderDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Reminder", @"title",
+                                         @"reminderDate", @"attrib", [ReminderViewController class], @"vc", nil];
+    NSArray *sects = [NSArray arrayWithObjects:nameDict, qtyDict, reminderDict, nil];
+    [self setEditPropertySections:sects];
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
     [super viewWillAppear:animated];
-    if (![self editViewController]) return;
-    if (![self editProperty]) return;
-    
-    NSString *valueString = [[self editViewController] returnString];
-    if (!valueString || [valueString isEqualToString:@""]) {
-        NSString *key = [[self editProperty] valueForKey:@"kvc-key"];
-        if ([key isEqualToString:@"name"]) {
-            NSString *ttl = NSLocalizedString(@"Bad Value", @"error title");
-            NSString *msg = NSLocalizedString(@"A list item must have a name", @"list item required name error");
-            [ErrorAlert showWithTitle:ttl andMessage:msg];
-            [self setEditViewController:nil];
-            [self setEditProperty:nil];
-            return;
-        }
-    }
-    if (valueString && ![valueString isEqualToString:[[self editProperty] valueForKey:@"value"]]) {
-        [[self editProperty] setObject:valueString forKey:@"value"];
-        [self setHasDirtyProperties:YES];
-    }
-    [self setEditViewController:nil];
-    [self setEditProperty:nil];
-    if ([self hasDirtyProperties])
+    if ([[self theItem] isUpdated])
         [[self tableView] reloadData];
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated 
+{
     [super viewWillDisappear:animated];
-    if (![self hasDirtyProperties] || [self editViewController])
-        return;
-    [[self itemProperties] forEach:^ void (id obj) {
-        NSDictionary *pd = obj;
-        NSString *propKey = [pd valueForKey:@"kvc-key"];
-        NSString *propVal = [pd valueForKey:@"value"];
-        if ([propKey isEqualToString:@"quantity"]) {
-            NSNumber *qty = [NSNumber numberWithString:propVal];
-            if (qty) [[self theItem] setQuantity:qty];
-        } else {
-            [[self theItem] setValue:propVal forKey:propKey];
-        }
-    }];
+    if ([self isModal]) return;
     [self savePendingItemChanges];
 }
 
@@ -157,26 +164,28 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self itemProperties] count] + elivcCOUNT_BUTTON_CELLS;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+{
+    NSInteger sectCount = [[self editPropertySections] count];
+    if (![self isModal])
+        sectCount += elivcCOUNT_BUTTON_CELLS;
+    return sectCount;
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
     return 1;
 }
 
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     static NSString *CellIdentifier = @"Cell";
     static NSString *ButtonCellIdentifier = @"ButtonCell";
     NSString *cellId = ButtonCellIdentifier;
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
     NSInteger sectionIdx = [indexPath section];
-    BOOL isListItemCell = (sectionIdx < ([[self itemProperties] count]));
+    BOOL isListItemCell = (sectionIdx < ([[self editPropertySections] count]));
     if (isListItemCell) {
         cellId = CellIdentifier;
         cellStyle = UITableViewCellStyleValue2;
@@ -186,11 +195,10 @@
         cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellId] autorelease];
     
     if (isListItemCell) {
-        NSDictionary *propDict = [[self itemProperties] objectAtIndex:sectionIdx];
-        if ([propDict valueForKey:@"value"] != [NSNull null]) {
-            [[cell detailTextLabel] setText:[propDict valueForKey:@"value"]];
-        }  
-        [[cell textLabel] setText:[propDict valueForKey:@"title"]];
+        NSDictionary *sectDict = [[self editPropertySections] objectAtIndex:sectionIdx];
+        [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
+        NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
+        [[cell detailTextLabel] setText:displayValue];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     } else {
         [self configureCell:cell asButtonInSection:sectionIdx];
@@ -198,14 +206,32 @@
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section {
-    
+- (NSString *)listItem:(MetaListItem *)item stringForAttribute:(NSString *)attrName 
+{
+    if (![item valueForKey:attrName]) return @"";
+    id attrValue = [item valueForKey:attrName];
+    if ([attrValue isKindOfClass:[NSNumber class]]) {
+        NSNumber *qty = attrValue;
+        return ([qty intValue] > 0) ? [qty stringValue] : @"";
+    } else if ([attrValue isKindOfClass:[NSDate class]]) {
+        NSDate *rmdr = attrValue;
+        return formatted_date(rmdr);
+    } else if ([attrValue isKindOfClass:[NSString class]]) {
+        NSString *str = attrValue;
+        return str;
+    }
+    return @"";
+}
+
+
+- (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section 
+{
     UIImage *cellButtonImage;
     NSString *titleText; 
-    if (section == [[self itemProperties] count]) {
+    if (section == [[self editPropertySections] count]) {
         titleText = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark as Incomplete", @"mark incomplete text") : NSLocalizedString(@"Mark as Complete", @"completion text");
         cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-    } else if (section == [[self itemProperties] count] + 1) {
+    } else if (section == [[self editPropertySections] count] + 1) {
         titleText = NSLocalizedString(@"Add To Quick Stash", @"quick stash button text");
         cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
     } else {
@@ -229,37 +255,30 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     NSInteger sectionIdx = [indexPath section];
-    if ( sectionIdx < [[self itemProperties] count]) {
+    if ( sectionIdx < [[self editPropertySections] count]) {
         [self didSelectItemCellAtIndex:sectionIdx];        
     } else  {
         [self didSelectButtonCellAtIndex:sectionIdx];
         UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
         [cell setSelected:NO];
     }
-
-
 }
 
-- (void)didSelectItemCellAtIndex:(NSInteger)section  {
-    NSMutableDictionary *propDict = [[self itemProperties] objectAtIndex:section];
-    EditTextViewController *etvc = [[EditTextViewController alloc] initWithViewTitle:[propDict valueForKey:@"title"] 
-                                                                            editText:[propDict valueForKey:@"value"]];
-    if ([[self theList] color])
-        [etvc setBackgroundColor:[[[self theList] color] uiColor]];
-    NSString *propertyKey = [propDict valueForKey:@"kvc-key"];
-    if ([propertyKey isEqualToString:@"quantity"])
-        [etvc setNumericEntryMode:YES];
-    [self setEditProperty:propDict];
-    [self setEditViewController:etvc];
-    [[self navigationController] pushViewController:etvc animated:YES];
+- (void)didSelectItemCellAtIndex:(NSInteger)section  
+{
+    NSMutableDictionary *sectDict = [[self editPropertySections] objectAtIndex:section];
+    Class vcClass = [sectDict objectForKey:@"vc"];
+    NSString *viewTitle = [sectDict objectForKey:@"title"];
+    UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
+    [[self navigationController] pushViewController:vc animated:YES];
 }
 
-- (void)didSelectButtonCellAtIndex:(NSInteger)section {
- 
-    NSInteger completeButtonIdx = [[self itemProperties] count];
+- (void)didSelectButtonCellAtIndex:(NSInteger)section 
+{
+    NSInteger completeButtonIdx = [[self editPropertySections] count];
     if (section == completeButtonIdx + 1) {
         [self addItemEditsToStash];
         return;
@@ -277,10 +296,10 @@
 }
 
 
-- (void)addItemEditsToStash {
-    
-    NSString *stashName = [[[self itemProperties] objectAtIndex:0] valueForKey:@"name"];
-    NSString *qtyString = [[[self itemProperties] objectAtIndex:1] valueForKey:@"quantity"];
+- (void)addItemEditsToStash 
+{
+    NSString *stashName = [[[self editPropertySections] objectAtIndex:0] valueForKey:@"name"];
+    NSString *qtyString = [[[self editPropertySections] objectAtIndex:1] valueForKey:@"quantity"];
     NSNumber *qty = [NSNumber numberWithString:qtyString];
     if (!stashName)
         stashName = [[self theItem] name];
@@ -290,8 +309,8 @@
     [ItemStash addToStash:stashName quantity:qty];
 }
 
-- (void)savePendingItemChanges {
-    
+- (void)savePendingItemChanges 
+{
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];

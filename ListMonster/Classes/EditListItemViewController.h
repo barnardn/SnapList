@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "ListItemsViewController.h"
 
 #define elivcCOUNT_BUTTON_CELLS     3  
 
@@ -19,18 +20,17 @@
 
     MetaList *theList;
     MetaListItem *theItem;
-    NSArray *itemProperties;
-    EditTextViewController *editViewController;
-    NSMutableDictionary *editProperty;
-    BOOL hasDirtyProperties;
+    NSArray *editPropertySections;
+    BOOL isModal;
+    id<ListItemsViewControllerProtocol> delegate;
+    
 }
 
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,retain) MetaListItem *theItem;
-@property(nonatomic,retain) NSArray *itemProperties;
-@property(nonatomic,retain) EditTextViewController *editViewController;
-@property(nonatomic,retain) NSMutableDictionary *editProperty;
-@property(nonatomic,assign) BOOL hasDirtyProperties;
+@property(nonatomic,retain) NSArray *editPropertySections;
+@property(nonatomic,assign) BOOL isModal;
+@property(nonatomic,assign) id<ListItemsViewControllerProtocol> delegate;
 
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;
 

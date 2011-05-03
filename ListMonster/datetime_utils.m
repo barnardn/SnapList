@@ -42,3 +42,16 @@ NSDate *date_by_adding_days(NSDate *from_date, NSInteger num_days)
     NSDate *new_date = [cal dateByAddingComponents:day_offset toDate:from_date options:0];
     return new_date;
 }
+
+NSString *formatted_date(NSDate *date) 
+{
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *hours = [cal components:dtuHOURSMIN_CALUNITS fromDate:date];
+    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFmt setLocale:[NSLocale currentLocale]];
+    if ([hours hour] == 0 && [hours minute] == 0)
+        [dateFmt setDateFormat:@"MM/dd/yy"];
+    else 
+        [dateFmt setDateFormat:@"MM/dd/yy @ HH:mm"];
+    return [dateFmt stringFromDate:date];
+}

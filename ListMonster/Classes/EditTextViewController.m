@@ -13,40 +13,50 @@
 
 @implementation EditTextViewController
 
-@synthesize textField, returnString, numericEntryMode, viewTitle, editText, backgroundColor;
+@synthesize textField, viewTitle,backgroundImageFilename, item;
 
-
-- (id)initWithViewTitle:(NSString *)aTitle editText:(NSString *)text {
+- (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem 
+{
     self = [super initWithNibName:@"EditTextView" bundle:nil];
     if (!self) return nil;
     [self setViewTitle:aTitle];
-    [self setEditText:text];
-    [self setReturnString:nil];
+    [self setItem:anItem];
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    return [self initWithViewTitle:@"New Item" editText:nil];
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+{
+    return nil;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    [self setTextField:nil];
+}
+
+- (void)dealloc {
+    [textField release];
+    [super dealloc];
+}
+
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
     [[self navigationItem] setTitle:[self viewTitle]];
-    if (editText) 
-        [[self textField] setText:[self editText]];
-    else
-        [[self textField] setPlaceholder:NSLocalizedString(@"Value", "@empty text placeholder")];
-    if ([self numericEntryMode]) {
-        [[self textField] setTextAlignment:UITextAlignmentRight];
-        [[self textField] setKeyboardType:UIKeyboardTypeNumberPad];
+    if (![self item] || ![[self item] name]) {
+        [[self textField] setPlaceholder:NSLocalizedString(@"Item", @"text value placeholder")];        
     }
-
-    if ([self backgroundColor])
-        [[self view] setBackgroundColor:[self backgroundColor]];
+    else {
+        [[self textField] setText:[[self item] name]];
+    }
+    if ([self backgroundImageFilename]) {
+        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
+    }
     [[self textField] becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated 
+{
     [super viewWillDisappear:animated];
     [[self textField] resignFirstResponder];
     NSString *text = [[self textField] text];
@@ -54,30 +64,18 @@
         [self setReturnString:nil];
         return;
     }    
-    if ([self numericEntryMode]) {
-        NSNumber *numberValue = [NSNumber numberWithString:text];
-        if (!numberValue || [numberValue compare:INT_OBJ(0)] == NSOrderedAscending) {
-            NSString *errorMessage = NSLocalizedString(@"Enter a number greater than 0", @">0 error message");
-            NSString *errorTitle = NSLocalizedString(@"Bad Value", @"error title");
-            [ErrorAlert showWithTitle:errorTitle andMessage:errorMessage];
-            [[self textField] becomeFirstResponder];
-            return;
-        }
-    }
-    [self setReturnString:text];
+    [[self item] setName:text];
 }
-
 
 #pragma mark -
 #pragma mark UITextField delegate methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField 
+{    
     [[self textField] resignFirstResponder];
     [[self navigationController] popViewControllerAnimated:YES];
     return YES;
 }
-
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -86,17 +84,7 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
 
-- (void)dealloc {
-    [textField release];
-    [returnString release];
-    [super dealloc];
-}
 
 
 @end
