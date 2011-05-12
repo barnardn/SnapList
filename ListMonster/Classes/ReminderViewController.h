@@ -45,10 +45,7 @@
 @property(nonatomic,retain) NSString *viewTitle;
 @property(nonatomic,retain) Tuple *selectedSimpleDate;
 
-
-- (id)initWithTitle:(NSString *)aTitle reminderItem:(id<ReminderItemProtocol>)item; // designated initializer
-- (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
-//- (id)initWithTitle:(NSString *)aTitle list:(MetaList *)aList;
+- (id)initWithTitle:(NSString *)aTitle listItem:(id<ReminderItemProtocol>)anItem; // designated initializer
 - (IBAction)dateSelectionModeChanged:(id)sender;
 - (IBAction)datePickerDateChanged:(id)sender;
 

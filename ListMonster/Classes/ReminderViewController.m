@@ -14,10 +14,10 @@
 
 - (NSArray *)readDayNamesForLocale:(NSLocale *)locale;
 - (void)setupSimpleDateDataSource;
-- (void)donePressed:(id)sender;
+- (void)stopDateSelectorAnimation;
+- (void)defaultViewForReminderDate:(NSDate *)date;
 
 @end
-
 
 @implementation ReminderViewController
 
@@ -25,7 +25,7 @@
 @synthesize simpleDates, reminderItem, backgroundImageFilename, viewTitle;
 @synthesize selectedSimpleDate;
 
-- (id)initWithTitle:(id)aTitle reminderItem:(id<ReminderItemProtocol>)item;
+- (id)initWithTitle:(id)aTitle listItem:(id<ReminderItemProtocol>)item;
 {
     self = [super initWithNibName:@"ReminderView" bundle:nil];
     if (!self) return nil;
@@ -35,16 +35,6 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem
-{
-    return [self initWithTitle:aTitle reminderItem:anItem];
-}
-/*
-- (id)initWithTitle:(NSString *)aTitle list:(MetaList *)list
-{
-    return [self initWithTitle:aTitle reminderItem:list];    
-}
-*/
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
 {
     return nil;
@@ -57,7 +47,6 @@
     [self setDatePicker:nil];
     [self setDateSelectionMode:nil];
 }
-
 
 - (void)didReceiveMemoryWarning 
 {
@@ -81,27 +70,69 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [[self datePicker] setHidden:YES];
-    [[self simpleDateTable] setHidden:NO];
-    [[self datePicker] setMinimumDate:[NSDate date]];
+    [[self datePicker] setMinimumDate:today_at_midnight()];
+    [[self datePicker] setDate:[NSDate date]];
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") 
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:nil 
                                                                action:nil];
-    
-    ///*** WHY DO I HAVE A DONE BUTTON IN THIS VIEW??!?!??!
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button")
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self 
-                                                               action:@selector(donePressed:)];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [[self navigationItem] setRightBarButtonItem:doneBtn];
     [backBtn release];
-    [doneBtn release];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
     [[self navigationItem] setTitle:NSLocalizedString(@"Set Reminder", @"reminder view title")];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if ([[self reminderItem] reminderDate]) {
+        [self defaultViewForReminderDate:[[self reminderItem] reminderDate]];
+    } else {
+        [[self datePicker] setHidden:YES];
+        [[self simpleDateTable] setHidden:NO];
+    }
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    NSInteger selectedMode = [[self dateSelectionMode] selectedSegmentIndex];
+    if (selectedMode == rvSIMPLE_MODE) {
+        NSInteger daysOffset = [[[self selectedSimpleDate] second] intValue];
+        if (daysOffset < 0) {
+            [[self reminderItem] setReminderDate:nil];
+            return;
+        }
+        NSDate *todayAtMidnight = today_at_midnight();
+        NSDate *rd = date_by_adding_days(todayAtMidnight, daysOffset);
+        [[self reminderItem] setReminderDate:rd];
+    } else {
+        [[self reminderItem] setReminderDate:[self selectedReminderDate]];
+    }
+}
+
+- (void)defaultViewForReminderDate:(NSDate *)date 
+{
+    NSDate *today = today_at_midnight();
+    NSInteger dayDiff = date_diff(today, date);
+    if (dayDiff < 8) {
+        NSPredicate *bySimpleDateOffset = [NSPredicate predicateWithFormat:@"self.second == %d", dayDiff];
+        NSArray *matches = [[self simpleDates] filteredArrayUsingPredicate:bySimpleDateOffset];
+        if ([matches count] == 0) {
+            [[self datePicker] setDate:date];
+            [[self dateSelectionMode] setSelectedSegmentIndex:rvPICKER_MODE];
+            return;
+        } else {
+            [self setSelectedSimpleDate:[matches objectAtIndex:0]];
+        }
+    } else {
+        [[self datePicker] setDate:date];
+        [[self dateSelectionMode] setSelectedSegmentIndex:rvPICKER_MODE];
+    }
 }
 
 
@@ -110,27 +141,43 @@
 
 - (IBAction)dateSelectionModeChanged:(id)sender 
 {    
+
+    CGContextRef gfxContext = UIGraphicsGetCurrentContext();
+    [UIView beginAnimations:nil context:gfxContext];
+    [UIView setAnimationDidStopSelector:@selector(stopDateSelectorAnimation)];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.5f];
+    
     NSInteger selectedMode = [[self dateSelectionMode] selectedSegmentIndex];
     if (selectedMode == rvSIMPLE_MODE) {
         [[self simpleDateTable] setHidden:NO];
-        [[self datePicker] setHidden:YES];
+        [[self simpleDateTable] setAlpha:1.0f];
+        [[self datePicker] setAlpha:0.0f];
         [[self datePicker] setDate:[NSDate date]];
     } else {
-        [[self simpleDateTable] setHidden:YES];
         [[self datePicker] setHidden:NO];
+        [[self simpleDateTable] setAlpha:0.0f];
+        [[self datePicker] setAlpha:1.0f];
     }
+    [UIView commitAnimations];
     [self setSelectedReminderDate:nil];
-}
-
-- (void)donePressed:(id)sender 
-{
-    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 - (IBAction)datePickerDateChanged:(id)sender 
 {
     [self setSelectedReminderDate:[[self datePicker] date]];
 }
+
+- (void)stopDateSelectorAnimation
+{
+    NSInteger selectedMode = [[self dateSelectionMode] selectedSegmentIndex];
+    if (selectedMode == rvSIMPLE_MODE) {
+        [[self datePicker] setHidden:YES];
+    } else {
+        [[self simpleDateTable] setHidden:YES];
+    }
+}
+
 
 #pragma mark -
 #pragma mark Methods
@@ -197,8 +244,10 @@
     }
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
-    if (dow == [self selectedSimpleDate])
+    if (dow == [self selectedSimpleDate]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        [cell setSelected:YES];
+    }
     [[cell textLabel] setText:[dow first]];
     return cell;
 }
@@ -209,28 +258,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"didSelect = start");
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark]; 
     Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
-    NSNumber *dow = [selected second];
-    NSDate *todayAtMidnight = today_at_midnight();
-    NSDate *rd = date_by_adding_days(todayAtMidnight, [dow intValue]);
     [self setSelectedSimpleDate:selected];
-    DLog(@"didSelect date: %@", rd);
 }
 
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    DLog(@"DEselect - start");
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
-        DLog(@"DEselect - unselect");
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         [self setSelectedSimpleDate:nil];
     }
-    DLog(@"DEselect - end");
 }
 
 

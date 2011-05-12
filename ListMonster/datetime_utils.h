@@ -18,4 +18,7 @@ NSInteger weekday_for_today() ;
 NSDate *today_at_midnight();
 NSDate *date_by_adding_days(NSDate *from_date, NSInteger num_days);
 NSString *formatted_date(NSDate *date);
+NSString *dayname_for_date(NSDate *date);
+NSString *formatted_relative_date(NSDate *date);
+NSInteger date_diff(NSDate *fromDate, NSDate *toDate);
 
