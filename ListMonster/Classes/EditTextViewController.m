@@ -60,10 +60,8 @@
     [super viewWillDisappear:animated];
     [[self textField] resignFirstResponder];
     NSString *text = [[self textField] text];
-    if (!text || [text isEqualToString:@""]) {
-        [self setReturnString:nil];
+    if (!text || [text isEqualToString:@""]) 
         return;
-    }    
     [[self item] setName:text];
 }
 

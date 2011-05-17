@@ -129,7 +129,7 @@
 - (void)donePressed:(id)sender
 {
     [[self delegate] editListItemViewController:self didAddNewItem:[self theItem]];
-    [self savePendingItemChanges];
+    //[self savePendingItemChanges];
     [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
@@ -148,6 +148,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    skipSaveLogic = NO;
     if ([[self theItem] isUpdated])
         [[self tableView] reloadData];
 }
@@ -156,7 +157,7 @@
 - (void)viewWillDisappear:(BOOL)animated 
 {
     [super viewWillDisappear:animated];
-    if ([self isModal]) return;
+    //if ([self isModal]) return;
     [self savePendingItemChanges];
 }
 
@@ -269,6 +270,7 @@
 
 - (void)didSelectItemCellAtIndex:(NSInteger)section  
 {
+    skipSaveLogic = YES;
     NSMutableDictionary *sectDict = [[self editPropertySections] objectAtIndex:section];
     Class vcClass = [sectDict objectForKey:@"vc"];
     NSString *viewTitle = [sectDict objectForKey:@"title"];
@@ -311,11 +313,16 @@
 
 - (void)savePendingItemChanges 
 {
+    if (skipSaveLogic) return;
+    NSDictionary *changedProperties = [[self theItem] changedValues];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];
     if (error) {
         DLog(@"Unable to save item: %@", [error localizedDescription]);
+    }
+    if ([changedProperties valueForKey:@"reminderDate"]) {
+        [[self theItem] scheduleReminder];
     }
 }
              

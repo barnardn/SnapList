@@ -105,8 +105,8 @@
 
 @implementation ErrorAlert
 
-+ (void)showWithTitle:(NSString *)title andMessage:(NSString *)message {
-    
++ (void)showWithTitle:(NSString *)title andMessage:(NSString *)message 
+{
     CFRunLoopRef curLoop = CFRunLoopGetCurrent();
     ModalAlertDelegate *ead = [[ModalAlertDelegate alloc] initWithRunloop:curLoop];
     
@@ -118,8 +118,32 @@
     [ead release];
 }
 
+@end
+
+#pragma mark -
+#pragma mark View Details Alert
+
+@implementation ViewDetailsAlert
+
++ (BOOL)showWithTitle:(NSString *)title message:(NSString *)message 
+{
+    BOOL hasSelectedViewDetails;
+    CFRunLoopRef curLoop = CFRunLoopGetCurrent();
+    ModalAlertDelegate *ead = [[ModalAlertDelegate alloc] initWithRunloop:curLoop];
+    NSString *close = NSLocalizedString(@"Close", nil);
+    //NSString *viewDetails = NSLocalizedString(@"View Details", nil);
+    UIAlertView *vdad = [[UIAlertView alloc] initWithTitle:title message:message delegate:ead cancelButtonTitle:close otherButtonTitles:nil];
+    [vdad show];
+    CFRunLoopRun();
+    hasSelectedViewDetails = ([ead btnIndex] == 1);
+    [vdad release];
+    [ead release];
+    return hasSelectedViewDetails;
+}
 
 @end
+
+
 
 @implementation LoadingAlert
 

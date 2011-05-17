@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#define mliREMINDER_KEY  @"SnaplistReminder"
+
 @class MetaList;
 
 @protocol ReminderItemProtocol
 
 @property(nonatomic,retain) NSDate *reminderDate;
+- (void)scheduleReminder;
 
 @end
 
@@ -25,9 +28,11 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
-//@property (nonatomic, retain) NSDate *reminderDate;
+
 
 - (BOOL)isComplete;
-
+- (void)cancelReminderDecrementingBadgeNumber:(BOOL)shouldDecrement;
+- (NSString *)messageForNotificationAlert;
+- (UILocalNotification *)findScheduledNofication;
 
 @end

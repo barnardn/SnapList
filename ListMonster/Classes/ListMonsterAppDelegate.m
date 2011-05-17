@@ -6,8 +6,11 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "Alerts.h"
 #import "Category.h"
+#import "datetime_utils.h"
 #import "ListMonsterAppDelegate.h"
+#import "MetaListItem.h"
 #import "RootViewController.h"
 #import "ListColor.h"
 
@@ -18,8 +21,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (void)prefetchListColors;
 
 @end
-
-
 
 @implementation ListMonsterAppDelegate
 
@@ -42,9 +43,14 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-    //[self populateStaticData];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{    
+    UILocalNotification *launchNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (launchNotification) {
+        [[UIApplication sharedApplication] cancelLocalNotification:launchNotification];
+        NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber-1];
+    }
     [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
@@ -53,7 +59,23 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return YES;
 }
 
-
+// TODO: alert should have a "view details" button and take the user to the 
+// EditListItemView for that item
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [[UIApplication sharedApplication] cancelLocalNotification:notification];
+    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber-1];
+    NSString *itemUrlString = [[notification userInfo] valueForKey:@"SnaplistReminder"];
+    NSURL *itemUrl = [NSURL  URLWithString:itemUrlString];
+    NSManagedObjectID *itemId = [[self persistentStoreCoordinator] managedObjectIDForURIRepresentation:itemUrl];
+    if (!itemId) return;
+    NSManagedObject *itemObj = [[self managedObjectContext] objectWithID:itemId];
+    if ([itemObj isFault]) return;
+    MetaListItem *item = (MetaListItem *)itemObj;
+    NSString *alertTitle = [[item list] name];
+    [ViewDetailsAlert showWithTitle:alertTitle message:[item messageForNotificationAlert]];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     /*
@@ -102,7 +124,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
      */
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [window release];
     [navController release];
     [super dealloc];
@@ -111,8 +134,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark Misc methods
 
-- (NSString *)documentsFolder {
-    
+- (NSString *)documentsFolder 
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docPath = [paths objectAtIndex:0];
     return docPath;
@@ -122,8 +145,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark core data methods
 
-- (NSManagedObjectModel *)managedObjectModel {
-    
+- (NSManagedObjectModel *)managedObjectModel 
+{
     if (managedObjectModel) return managedObjectModel;
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ListMonster" ofType:@"momd"];
@@ -136,8 +159,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
+{
     if (persistentStoreCoordinator) return persistentStoreCoordinator;
     
     NSFileManager *fileMan = [NSFileManager defaultManager];
@@ -171,8 +194,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
-    	
+- (NSManagedObjectContext *)managedObjectContext 
+{
     if (managedObjectContext) return managedObjectContext;
     NSPersistentStoreCoordinator *psc = [self persistentStoreCoordinator];
     if (!psc) return nil;
@@ -184,8 +207,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return managedObjectContext;
 }
 
-- (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest sectionNameKeyPath:(NSString *)sectionNameKeyPath {
-    
+- (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest sectionNameKeyPath:(NSString *)sectionNameKeyPath 
+{
     NSManagedObjectContext *moc = [self managedObjectContext];
     [NSFetchedResultsController deleteCacheWithName:@"ListMonster"];
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:theRequest 
@@ -200,8 +223,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return [frc autorelease];
 }
 
-- (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName {
-
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName 
+{
     NSArray *sortDescriptors = nil;
     if (attributeName) {
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
@@ -211,8 +234,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
     return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
 }
 
-- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors {
-    
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors 
+{
     NSManagedObjectContext *moc = [self managedObjectContext];
     NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
@@ -231,7 +254,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark Static data initializer methods
 
-- (void)prefetchListColors {
+- (void)prefetchListColors 
+{
     NSArray *colors = [self fetchAllInstancesOf:@"ListColor" orderedBy:nil];
     ZAssert(([colors count] != 0), @"ABORT:  No colors found in the database.");
     [self setAllColors:colors];

@@ -23,6 +23,7 @@
     NSArray *editPropertySections;
     BOOL isModal;
     id<ListItemsViewControllerProtocol> delegate;
+    BOOL skipSaveLogic;
     
 }
 

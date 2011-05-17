@@ -83,6 +83,14 @@ NSInteger date_diff(NSDate *fromDate, NSDate *toDate)
     return [dateParts day];
 }
 
+BOOL has_midnight_timecomponent(NSDate *date)
+{
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *hours = [cal components:dtuHOURSMIN_CALUNITS fromDate:date];
+    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFmt setLocale:[NSLocale currentLocale]];
+    return ([hours hour] == 0 && [hours minute] == 0);
+}
 
 NSString *dayname_for_date(NSDate *date)
 {
@@ -104,3 +112,12 @@ NSString *formatted_date(NSDate *date)
         [dateFmt setDateFormat:@"EEE, MMM d 'at' h:mm a"];
     return [dateFmt stringFromDate:date];
 }
+
+NSString *formatted_time(NSDate *date)
+{
+    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFmt setLocale:[NSLocale currentLocale]];
+    [dateFmt setDateFormat:@"h:mm a"];
+    return [dateFmt stringFromDate:date];
+}
+

@@ -22,7 +22,6 @@
 		495D8413130E088800933720 /* EditListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D8412130E088800933720 /* EditListItemViewController.m */; };
 		495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EABF713083F5700F4A64E /* ListItemsViewController.m */; };
 		495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 495EABF813083F5700F4A64E /* ListItemsView.xib */; };
-		495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC1713086F7000F4A64E /* NewListItemViewController.m */; };
 		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
@@ -95,8 +94,6 @@
 		495EABF613083F5700F4A64E /* ListItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemsViewController.h; sourceTree = "<group>"; };
 		495EABF713083F5700F4A64E /* ListItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemsViewController.m; sourceTree = "<group>"; };
 		495EABF813083F5700F4A64E /* ListItemsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListItemsView.xib; path = Classes/ListItemsView.xib; sourceTree = "<group>"; };
-		495EAC1613086F7000F4A64E /* NewListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewListItemViewController.h; sourceTree = "<group>"; };
-		495EAC1713086F7000F4A64E /* NewListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewListItemViewController.m; sourceTree = "<group>"; };
 		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
@@ -372,8 +369,6 @@
 				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
 				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
 				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
-				495EAC1613086F7000F4A64E /* NewListItemViewController.h */,
-				495EAC1713086F7000F4A64E /* NewListItemViewController.m */,
 				499306A1135FB07300ECBE16 /* ReminderViewController.h */,
 				499306A2135FB07300ECBE16 /* ReminderViewController.m */,
 				49F1814812C958F20066B454 /* RootViewController.h */,
@@ -486,7 +481,6 @@
 				49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */,
 				498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
-				495EAC1913086F7000F4A64E /* NewListItemViewController.m in Sources */,
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 				4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */,

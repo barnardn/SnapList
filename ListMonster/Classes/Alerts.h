@@ -16,6 +16,12 @@
 
 @end
 
+@interface ViewDetailsAlert : NSObject
+
++ (BOOL)showWithTitle:(NSString *)title message:(NSString *)message;
+
+@end
+
 @interface LoadingAlert : NSObject <UIAlertViewDelegate>
 
 + (UIAlertView *)showWithMessage:(NSString *)message;

@@ -21,4 +21,5 @@ NSString *formatted_date(NSDate *date);
 NSString *dayname_for_date(NSDate *date);
 NSString *formatted_relative_date(NSDate *date);
 NSInteger date_diff(NSDate *fromDate, NSDate *toDate);
-
+BOOL has_midnight_timecomponent(NSDate *date);
+NSString *formatted_time(NSDate *date);
