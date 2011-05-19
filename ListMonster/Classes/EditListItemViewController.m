@@ -40,8 +40,8 @@
 #pragma mark -
 #pragma mark Initialization
 
-
 @synthesize theItem, theList, editPropertySections, isModal, delegate;
+@synthesize backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem 
 {
@@ -90,7 +90,13 @@
     } else {
         [self configureAsChildNavigationView];
     }
-    [[self tableView] setBackgroundColor:[[[self theList] color] uiColor]];
+    if ([[self theList] color]) {
+        NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self theList] color] swatchFilename]];
+        [self setBackgroundImageFilename:bgImagePath];
+        UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
+        [[self tableView] setBackgroundView:bgView];
+        [bgView release];
+    }
     [self preparePropertySections];
 }
 
@@ -275,6 +281,7 @@
     Class vcClass = [sectDict objectForKey:@"vc"];
     NSString *viewTitle = [sectDict objectForKey:@"title"];
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
+    [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
 }
 

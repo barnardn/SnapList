@@ -51,6 +51,7 @@
 		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
+		49C395691381FEC00000D76D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 49C395581381FEC00000D76D /* Backgrounds */; };
 		49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */; };
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
@@ -67,7 +68,6 @@
 		49F1814B12C958F20066B454 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1814912C958F20066B454 /* RootViewController.m */; };
 		49F1814E12C959B50066B454 /* RootView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49F1814D12C959B50066B454 /* RootView.xib */; };
 		49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49FDFF3D135233A400F6A3DA /* ItemStash.m */; };
-		49FDFF90135257E600F6A3DA /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 49FDFF8F135257E600F6A3DA /* blueButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +134,7 @@
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
 		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
+		49C395581381FEC00000D76D /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
 		49C7BFE2136AF7ED003F3FAA /* EditNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNumberViewController.h; sourceTree = "<group>"; };
 		49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNumberViewController.m; sourceTree = "<group>"; };
 		49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNumberView.xib; path = Classes/EditNumberView.xib; sourceTree = "<group>"; };
@@ -162,7 +163,6 @@
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
 		49FDFF3C135233A400F6A3DA /* ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStash.h; sourceTree = "<group>"; };
 		49FDFF3D135233A400F6A3DA /* ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStash.m; sourceTree = "<group>"; };
-		49FDFF8F135257E600F6A3DA /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueButton.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ListMonster-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ListMonster-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -234,7 +234,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				49FDFF8F135257E600F6A3DA /* blueButton.png */,
+				49C395581381FEC00000D76D /* Backgrounds */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
@@ -449,11 +449,11 @@
 				499F4E09133AC4920048D35B /* Icon@2x.png in Resources */,
 				49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */,
 				49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */,
-				49FDFF90135257E600F6A3DA /* blueButton.png in Resources */,
 				498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */,
 				499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */,
 				499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */,
 				49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */,
+				49C395691381FEC00000D76D /* Backgrounds in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,7 @@
     NSArray *listItems;
     BOOL inEditMode;
     UINavigationController *editItemNavController;
+    NSString *backgroundImageFilename;
 }
 
 @property(nonatomic,retain) IBOutlet UITableView *allItemsTableView;
@@ -50,12 +51,12 @@
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,assign) BOOL inEditMode;
 @property(nonatomic,retain) NSArray *listItems;
+@property(nonatomic,retain) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)aList;
 - (IBAction)addItemBtnPressed:(id)sender;
 - (IBAction)moreActionsBtnPressed:(id)sender;
 - (IBAction)checkedStateValueChanged:(id)sender;
-
 
 
 @end

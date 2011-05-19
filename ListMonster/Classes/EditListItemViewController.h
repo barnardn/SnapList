@@ -24,6 +24,7 @@
     BOOL isModal;
     id<ListItemsViewControllerProtocol> delegate;
     BOOL skipSaveLogic;
+    NSString *backgroundImageFilename;
     
 }
 
@@ -32,6 +33,7 @@
 @property(nonatomic,retain) NSArray *editPropertySections;
 @property(nonatomic,assign) BOOL isModal;
 @property(nonatomic,assign) id<ListItemsViewControllerProtocol> delegate;
+@property(nonatomic,retain) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;
 

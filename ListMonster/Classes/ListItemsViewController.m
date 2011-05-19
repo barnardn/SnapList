@@ -39,7 +39,7 @@
 @implementation ListItemsViewController
 
 @synthesize allItemsTableView, theList, checkedState, addItemBtn, moreActionsBtn;
-@synthesize toolBar,inEditMode, listItems, editBtn;
+@synthesize toolBar,inEditMode, listItems, editBtn, backgroundImageFilename;
 
 
 - (id)initWithList:(MetaList *)aList {
@@ -63,6 +63,7 @@
 }
 
 - (void)dealloc {
+    [backgroundImageFilename release];
     [listItems release];
     [allItemsTableView release];
     [theList release];
@@ -86,8 +87,11 @@
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
     if ([[self theList] color]) {
-        UIColor *backColor = [[[self theList] color] uiColor];
-        [[self allItemsTableView] setBackgroundColor:backColor];
+        NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self theList] color] swatchFilename]];
+        [self setBackgroundImageFilename:bgImagePath];
+        UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
+        [[self allItemsTableView] setBackgroundView:bgView];
+        [bgView release];
     }
 }
 
