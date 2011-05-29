@@ -17,9 +17,11 @@
     NSMutableDictionary *allLists;
     NSArray *categoryNameKeys;
     UINavigationController *edListNav;
+    NSMutableArray *overdueItems;
 }
 
 @property(nonatomic,retain) NSMutableDictionary *allLists;
 @property(nonatomic,retain) NSArray *categoryNameKeys;
+@property(nonatomic,retain) NSMutableArray *overdueItems;
 
 @end

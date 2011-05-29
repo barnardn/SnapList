@@ -236,11 +236,17 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors 
 {
+    return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors filteredBy:nil];
+}
+
+- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors filteredBy:(NSPredicate *)filter 
+{
     NSManagedObjectContext *moc = [self managedObjectContext];
     NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
     [fetchReq setEntity:entity];
     [fetchReq setSortDescriptors:sortDescriptors];
+    [fetchReq setPredicate:filter];
     NSError *error = nil;
     NSArray *resultSet = [moc executeFetchRequest:fetchReq error:&error];
     [fetchReq release];

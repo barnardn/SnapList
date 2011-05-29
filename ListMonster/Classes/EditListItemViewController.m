@@ -314,22 +314,26 @@
         stashName = [[self theItem] name];
     if (!qty)
         qty = [[self theItem] quantity];
-    
     [ItemStash addToStash:stashName quantity:qty];
 }
 
 - (void)savePendingItemChanges 
 {
     if (skipSaveLogic) return;
-    NSDictionary *changedProperties = [[self theItem] changedValues];
+    if ([[self theItem] isDeleted]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_UPDATE object:[self theList]];
+    } else {
+        NSDictionary *changedProperties = [[self theItem] changedValues];
+        if ([changedProperties valueForKey:@"isChecked"])
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]];
+        if ([changedProperties valueForKey:@"reminderDate"])
+            [[self theItem] scheduleReminder];
+    }
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];
     if (error) {
         DLog(@"Unable to save item: %@", [error localizedDescription]);
-    }
-    if ([changedProperties valueForKey:@"reminderDate"]) {
-        [[self theItem] scheduleReminder];
     }
 }
              

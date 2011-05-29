@@ -92,6 +92,15 @@ BOOL has_midnight_timecomponent(NSDate *date)
     return ([hours hour] == 0 && [hours minute] == 0);
 }
 
+NSString *formatted_date_with_format_string(NSDate *date, NSString *formatString)
+{
+    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFmt setLocale:[NSLocale currentLocale]];
+    [dateFmt setDateFormat:formatString];
+    return [dateFmt stringFromDate:date];
+}
+
+
 NSString *dayname_for_date(NSDate *date)
 {
     NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];

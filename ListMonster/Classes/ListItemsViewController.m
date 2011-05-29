@@ -173,8 +173,9 @@
     
     //TODO: revist this, not the most efficient.
     NSArray *filteredItems = [[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState];
-    if ([filteredItems count] != [[self listItems] count])
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
+    
+    /*if ([filteredItems count] != [[self listItems] count])
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]]; */
     [self setListItems:filteredItems];
 }
 

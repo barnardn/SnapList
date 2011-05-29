@@ -7,6 +7,7 @@
 //
 
 #import "ListMonsterAppDelegate.h"
+#import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "datetime_utils.h"
@@ -15,6 +16,19 @@
 
 @dynamic name, quantity, isChecked, list, reminderDate;
 
+#pragma mark -
+#pragma mark Custom accessors
+
+- (void)setIsChecked:(NSNumber *)checkedState
+{
+    [self willChangeValueForKey:@"isChecked"];
+    [self setPrimitiveValue:checkedState forKey:@"isChecked"];
+    [self didChangeValueForKey:@"isChecked"];
+    if ([checkedState intValue] == 1 && [self reminderDate]) {
+        [self setReminderDate:nil];
+        [self cancelReminderDecrementingBadgeNumber:NO];
+    }
+}
 
 #pragma mark -
 #pragma mark NSManagedObject overrides
@@ -39,6 +53,11 @@
 
 - (void)scheduleReminder
 {
+    if (![self reminderDate]) return;
+    if ([[self reminderDate] timeIntervalSinceNow] <= 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:self];
+        return;
+    }
     NSURL *itemUrl = [[self objectID] URIRepresentation];
     NSString *noficationKey = [NSString stringWithFormat:@"%@",itemUrl]; 
     [self cancelReminderDecrementingBadgeNumber:NO];

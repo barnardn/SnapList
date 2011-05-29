@@ -15,6 +15,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
+		4937D80F1385930D00E7984D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 4937D7FD1385930D00E7984D /* Backgrounds */; };
 		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
 		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
 		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
@@ -51,7 +52,6 @@
 		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
-		49C395691381FEC00000D76D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 49C395581381FEC00000D76D /* Backgrounds */; };
 		49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */; };
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
@@ -83,6 +83,7 @@
 		491EBE4E12EB744D0084BFCB /* ListNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListNameViewController.h; sourceTree = "<group>"; };
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
+		4937D7FD1385930D00E7984D /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
 		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
@@ -134,7 +135,6 @@
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
 		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
-		49C395581381FEC00000D76D /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
 		49C7BFE2136AF7ED003F3FAA /* EditNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNumberViewController.h; sourceTree = "<group>"; };
 		49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNumberViewController.m; sourceTree = "<group>"; };
 		49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNumberView.xib; path = Classes/EditNumberView.xib; sourceTree = "<group>"; };
@@ -234,7 +234,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				49C395581381FEC00000D76D /* Backgrounds */,
+				4937D7FD1385930D00E7984D /* Backgrounds */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
@@ -453,7 +453,7 @@
 				499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */,
 				499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */,
 				49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */,
-				49C395691381FEC00000D76D /* Backgrounds in Resources */,
+				4937D80F1385930D00E7984D /* Backgrounds in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

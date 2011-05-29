@@ -9,6 +9,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define SECONDS_PER_DAY (60*60*24)
+
 #define dtuMMDDYY_CALUNITS NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit
 #define dtuHOURSMIN_CALUNITS NSHourCalendarUnit|NSMinuteCalendarUnit
 
@@ -23,3 +25,4 @@ NSString *formatted_relative_date(NSDate *date);
 NSInteger date_diff(NSDate *fromDate, NSDate *toDate);
 BOOL has_midnight_timecomponent(NSDate *date);
 NSString *formatted_time(NSDate *date);
+NSString *formatted_date_with_format_string(NSDate *date, NSString *formatString);

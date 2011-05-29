@@ -7,12 +7,15 @@
 //
 
 #import "Alerts.h"
+#import "datetime_utils.h"
 #import "EditListViewController.h"
+#import "EditListItemViewController.h"
 #import "ListItemsViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListCell.h"
 #import "ListColor.h"
 #import "MetaList.h"
+#import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "RootViewController.h"
 
@@ -22,44 +25,50 @@
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
+- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
+- (NSMutableArray *)loadOverdueItems;
 
 @end
 
 @implementation RootViewController
 
-@synthesize allLists, categoryNameKeys;
+@synthesize allLists, categoryNameKeys, overdueItems;
 
 #pragma mark -
 #pragma mark Initializers
 
-- (id)init {
-    
+- (id)init 
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style 
+{
     return [self init];
 }
 
 #pragma mark -
 #pragma mark Memory management
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [allLists release];
     [categoryNameKeys release];
@@ -70,7 +79,8 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
     [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
@@ -80,6 +90,7 @@
     [addBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
     [self setAllLists:[self loadAllLists]];
+    [self setOverdueItems:[self loadOverdueItems]];
     [[self tableView] reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(didReceiveCompletedItemNotification:) 
@@ -89,20 +100,26 @@
                                              selector:@selector(didReceiveListChangeNotification:) 
                                                  name:NOTICE_LIST_UPDATE
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didReceiveOverdueReminderNotification:) 
+                                                 name:NOTICE_OVERDUE_ITEM 
+                                               object:nil];
 }
 
-- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
+- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated 
+{
     [super setEditing:inEditMode animated:animated];
     BOOL enableEditButton = ([[self allLists] count] > 0);
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
 }
 
-- (void)addList:(id)sender {
+- (void)addList:(id)sender 
+{
     [self showEditViewWithList:nil];
 }
 
-- (void)showEditViewWithList:(MetaList *)list {
-    
+- (void)showEditViewWithList:(MetaList *)list 
+{
     EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
     [evc setNotificationMessage:NOTICE_LIST_UPDATE];
     edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
@@ -115,35 +132,55 @@
     [evc release];
 }
 
-//
-//*** TODO list items view will have to send notification when list count changes, remove reload 
-//*** from viewwillappear method..
+#pragma mark -
+#pragma mark Notification Handlers
 
-- (void)didReceiveListChangeNotification:(NSNotification *)notification {
-
+- (void)didReceiveListChangeNotification:(NSNotification *)notification 
+{
     [self setAllLists:[self loadAllLists]];
+    [self setOverdueItems:[self loadOverdueItems]];
     [[self tableView] reloadData];
     MetaList *scrollToList = [notification object];
     NSIndexPath *scrollToPath = [self indexPathForList:scrollToList];
     [[self tableView] scrollToRowAtIndexPath:scrollToPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
-- (void)didReceiveCompletedItemNotification:(NSNotification *)notification {
-    
-    MetaList *updatedList = [notification object];
-    if ([[updatedList items] count] == 0) return;
-    NSIndexPath *indexPath = [self indexPathForList:updatedList];
+- (void)didReceiveCompletedItemNotification:(NSNotification *)notification 
+{
+    MetaListItem *item = [notification object];
+    NSUInteger itemIndex = [[self overdueItems] indexOfObject:item];
+    if ([[self overdueItems] count] && itemIndex != NSNotFound) {
+        [[self overdueItems] removeObjectAtIndex:itemIndex];
+        if ([[self overdueItems] count] == 0) {
+            NSIndexSet *sections = [NSIndexSet indexSetWithIndex:0];
+            [[self tableView] deleteSections:sections withRowAnimation:UITableViewRowAnimationFade];
+            [self setOverdueItems:nil];
+        } else {
+            NSIndexPath *itemIdxPath = [NSIndexPath indexPathForRow:itemIndex inSection:0];
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:itemIdxPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }
+    if ([[[item list] items] count] == 0) return;
+    NSIndexPath *indexPath = [self indexPathForList:[item list]];
     ListCell *listCell = (ListCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
-    NSInteger incompleteCount = [[updatedList allIncompletedItems] count];
+    NSInteger incompleteCount = [[[item list] allIncompletedItems] count];
     [[listCell countsLabel] setText:[NSString stringWithFormat:@"%d", incompleteCount]];
     [[self tableView] scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
-- (NSIndexPath *)indexPathForList:(MetaList *)list {
-    
+- (void)didReceiveOverdueReminderNotification:(NSNotification *)notification
+{
+    [self setOverdueItems:[self loadOverdueItems]];
+    [[self tableView] reloadData];
+}
+
+- (NSIndexPath *)indexPathForList:(MetaList *)list 
+{
     NSString *categoryName = [[list category] name];
     NSString *key = (categoryName) ? categoryName : @"";
     NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:key];
+    if ([[self overdueItems] count] > 0)
+        sectionIdx++;
     NSArray *itemsForCategory = [[self allLists] objectForKey:key];
     NSInteger rowIdx = [itemsForCategory indexOfObject:list];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
@@ -156,15 +193,16 @@
 #pragma mark Error handler routine
 
 // TODO:  replace this with an actual error handling class!
-- (void)displayErrorMessage:(NSString *)message forError:(NSError *)error {
-    
+- (void)displayErrorMessage:(NSString *)message forError:(NSError *)error 
+{
     NSString *errMessage = [NSString stringWithFormat:@"%@: %@", message, [error localizedDescription]];
     DLog(errMessage);
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
     [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated 
+{
     [super viewWillAppear:animated];
     [edListNav release], edListNav = nil;
     BOOL enableEditButton = ([[self allLists] count] > 0);
@@ -175,27 +213,43 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+{
     NSInteger sectionCount = [[self allLists] count];
+    if ([[self overdueItems] count] > 0)
+        sectionCount++;
     return (sectionCount == 0) ? 1 : sectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if (section == 0 && haveOverdueItems)
+        return [[self overdueItems] count];
+    
     NSInteger sectionCount = [[self allLists] count];
     if (sectionCount == 0)
         return 1;
+    if (haveOverdueItems) section--;
     NSArray *listArr = [[self allLists] objectForKey:[[self categoryNameKeys] objectAtIndex:section]];
     return [listArr count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if ((section == 0) && haveOverdueItems)
+        return NSLocalizedString(@"Reminders", nil);
+    
     if ([[self allLists] count] == 0)
         return @"";
+    if (haveOverdueItems)
+        section--;
     return [[self categoryNameKeys] objectAtIndex:section];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     static NSString *CellId = @"ListCell";
     static NSString *EmptyCellId = @"EmptyCell";
     
@@ -209,6 +263,9 @@
         [emptyCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return emptyCell;
     }
+    if ([self overdueItems] && [indexPath section] == 0) 
+        return [self tableView:tableView overdueItemCellForRowAtIndexPath:indexPath];
+    
     ListCell *cell = (ListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
     if (!cell) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ListCell" owner:self options:nil];
@@ -217,17 +274,54 @@
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
     [self updateCell:cell forMetaList:listObj];
     return cell;
-
 }
-                                     
-- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath {
+
+- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    static NSString *ItemCellID = @"ItemCell";
+    NSInteger rowIdx = [indexPath row];
+    MetaListItem *item = [[self overdueItems] objectAtIndex:rowIdx];
     
-    NSString *key = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ItemCellID];
+    if (!cell) 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ItemCellID] autorelease];
+    [[cell textLabel] setText:[item name]];
+    [[cell textLabel] setTextColor:[UIColor whiteColor]];
+    NSInteger dayDiff = date_diff([NSDate date], [item reminderDate]);
+    NSString *dateFmt = nil;
+    [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.36 blue:0.36 alpha:1.0]];
+    if (dayDiff == 0) {
+        if (has_midnight_timecomponent([item reminderDate]))
+            dateFmt = @"'Today'";
+        else
+            dateFmt = @"h:mm a";
+        [cell setBackgroundColor:[UIColor colorWithRed:0.36 green:1.0 blue:0.36 alpha:1.0]];
+        [[cell textLabel] setTextColor:[UIColor blackColor]];
+    }
+    else if (dayDiff == -1)
+        dateFmt = @"'Yesterday'";
+    else if (dayDiff < -1)
+        dateFmt = @"MMM d";
+    [[cell detailTextLabel] setText:formatted_date_with_format_string([item reminderDate], dateFmt)];
+    [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    return cell;
+}
+
+         
+- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath 
+{
+    NSInteger sectionIdx = [indexPath section];
+    if ([[self overdueItems] count] > 0)
+        sectionIdx--;
+    
+    NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
     NSMutableArray *listArr = [[self allLists] objectForKey:key];
     return [listArr objectAtIndex:[indexPath row]];
 }                                     
                                      
-- (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList {
+- (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList 
+{
     [[cell nameLabel] setText:[metaList name]];
     [[cell nameLabel] setTextColor:[[metaList color] uiColor]];
     [[cell countsLabel] setText:@""];
@@ -243,15 +337,23 @@
     }    
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ([[self allLists] count] > 0);
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    if (![self overdueItems])
+        return ([[self allLists] count] > 0);
+    else
+        return ([indexPath section] > 0);       // don't allow edits on the overdue items
+
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if (haveOverdueItems && [indexPath section] == 0) return;
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        NSString *key = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
+        NSInteger sectionIdx = (haveOverdueItems) ? [indexPath section] - 1 : [indexPath section];
+        NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
         NSMutableArray *listArr = [[self allLists] objectForKey:key];
         MetaList *dl = [listArr objectAtIndex:[indexPath row]];
         [self deleteListEntity:dl];
@@ -272,8 +374,16 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if (haveOverdueItems && [indexPath section] == 0) {
+        MetaListItem *listItem = [[self overdueItems] objectAtIndex:[indexPath row]];
+        EditListItemViewController *elivc = [[EditListItemViewController alloc] initWithList:[listItem list] editItem:listItem];
+        [[self navigationController] pushViewController:elivc animated:YES];
+        [elivc release];
+        return;
+    }
     if ([[self allLists] count] == 0) {
         [self addList:nil];
         return ;
@@ -284,21 +394,39 @@
     [livc release];
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
+{
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     [self showEditViewWithList:list];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     return 54.0f;
 }
 
 #pragma mark -
 #pragma mark Other core data related methods
 
-- (NSMutableDictionary *)loadAllLists {
-    
+- (NSMutableArray *)loadOverdueItems
+{
+    NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSSortDescriptor *byDate = [[[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES] autorelease];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:byDate,byName,nil];
+    NSDate *tam = today_at_midnight();
+    NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:SECONDS_PER_DAY]];
+    NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];
+    if ([overdue count] > 0) {
+        DLog(@"%d overdue items: \n", [overdue count]);
+        for (MetaListItem *i in overdue) {
+            DLog(@"%@\n", [i name]);
+        }
+    }
+    return ([overdue count] == 0) ? nil : [overdue mutableCopy];
+}
+
+- (NSMutableDictionary *)loadAllLists 
+{
     NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
     NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES] autorelease];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
@@ -317,8 +445,8 @@
     return listDict;
 }
             
-- (void)deleteListEntity:(MetaList *)list {
-    
+- (void)deleteListEntity:(MetaList *)list 
+{
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     [moc deleteObject:list];
     NSError *error = nil;
