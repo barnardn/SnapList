@@ -34,6 +34,7 @@
     NSString *backgroundImageFilename;
     NSString *viewTitle;
     Tuple *selectedSimpleDate;
+    NSIndexPath *selectedIndexPath;
 }
 
 @property(nonatomic,retain) IBOutlet UISegmentedControl *dateSelectionMode;

@@ -79,6 +79,7 @@
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [backBtn release];
+    [[self simpleDateTable] setAllowsSelection:YES];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
@@ -244,12 +245,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
     if (dow == [self selectedSimpleDate]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        [cell setSelected:YES];
+        selectedIndexPath = indexPath;
     }
+    else
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
     [[cell textLabel] setText:[dow first]];
     return cell;
 }
@@ -260,19 +262,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [cell setAccessoryType:UITableViewCellAccessoryCheckmark]; 
+    DLog(@"didSelectRow");
     Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
     [self setSelectedSimpleDate:selected];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    if (selectedIndexPath) {
+        cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
+        selectedIndexPath = nil;
+    }
 }
-
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    DLog(@"did DE SelectRow");    
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
         [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [self setSelectedSimpleDate:nil];
+        //[self setSelectedSimpleDate:nil];
     }
 }
 
