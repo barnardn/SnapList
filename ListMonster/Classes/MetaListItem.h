@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
+@property (nonatomic, retain) NSNumber *priority;
 
 
 - (BOOL)isComplete;

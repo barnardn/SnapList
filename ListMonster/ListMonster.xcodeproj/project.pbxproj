@@ -56,6 +56,7 @@
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
+		49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */; };
 		49DE1AF31362563C00D27543 /* Tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DE1AF21362563C00D27543 /* Tuple.m */; };
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
@@ -142,6 +143,7 @@
 		49C94290134FAB640045D4F6 /* EditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNoteViewController.h; sourceTree = "<group>"; };
 		49C94291134FAB640045D4F6 /* EditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNoteViewController.m; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
+		49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditListItemView.xib; sourceTree = "<group>"; };
 		49DE1AF11362563C00D27543 /* Tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tuple.h; sourceTree = "<group>"; };
 		49DE1AF21362563C00D27543 /* Tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tuple.m; sourceTree = "<group>"; };
 		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				49F1814D12C959B50066B454 /* RootView.xib */,
 				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
 				499306AD135FB82C00ECBE16 /* days-en_US.plist */,
+				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */,
 				49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */,
 				4937D80F1385930D00E7984D /* Backgrounds in Resources */,
+				49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

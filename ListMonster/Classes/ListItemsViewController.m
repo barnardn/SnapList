@@ -169,8 +169,7 @@
 
     NSInteger selectedSegmentIdx = [[self checkedState] selectedSegmentIndex];
     NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"self.isChecked == %d", selectedSegmentIdx];
-    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    
+    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];    
     //TODO: revist this, not the most efficient.
     NSArray *filteredItems = [[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState];
     [self setListItems:filteredItems];
@@ -179,7 +178,8 @@
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor {
     
     NSArray *allItems = [[[self theList] items] allObjects];
-    return [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    NSSortDescriptor *bySortOrder = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
+    return [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:bySortOrder, sortDescriptor, nil]];
 }
 
 - (void)editBtnPressed:(id)sender {
@@ -302,7 +302,6 @@
     } else {
         [self commitAnyChanges];
     }
-
 }
         
 #pragma mark -

@@ -22,15 +22,16 @@
 
 @interface EditListItemViewController()
 
-- (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section;
 - (void)preparePropertySections;
 - (NSString *)listItem:(MetaListItem *)item stringForAttribute:(NSString *)attrName;
-- (void)didSelectItemCellAtIndex:(NSInteger)section;
 - (void)didSelectButtonCellAtIndex:(NSInteger)section;
 - (void)savePendingItemChanges;
 - (void)addItemEditsToStash;
 - (void)configureAsModalView;
 - (void)configureAsChildNavigationView;
+- (UITableView *)tableView;
+- (void)deleteItem;
+- (void)toggleCompletedState;
 
 @end
 
@@ -41,21 +42,27 @@
 #pragma mark Initialization
 
 @synthesize theItem, theList, editPropertySections, isModal, delegate;
-@synthesize backgroundImageFilename;
+@synthesize backgroundImageFilename, listItemTableView, toolBar;
 
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem 
 {
-    self= [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithNibName:@"EditListItemView" bundle:nil];
     if (!self) return nil;
     [self setTheList:list];
     [self setTheItem:listItem];
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     return nil;
 }
+
+- (UITableView *)tableView 
+{
+    return [self listItemTableView];
+}
+
 
 #pragma mark -
 #pragma mark Memory management
@@ -74,6 +81,8 @@
 {
     [theItem release];
     [theList release];
+    [listItemTableView release];
+    [toolBar release];
     [super dealloc];
 }
 
@@ -163,7 +172,6 @@
 - (void)viewWillDisappear:(BOOL)animated 
 {
     [super viewWillDisappear:animated];
-    //if ([self isModal]) return;
     [self savePendingItemChanges];
 }
 
@@ -174,8 +182,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
     NSInteger sectCount = [[self editPropertySections] count];
-    if (![self isModal])
-        sectCount += elivcCOUNT_BUTTON_CELLS;
     return sectCount;
 }
 
@@ -187,29 +193,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     static NSString *CellIdentifier = @"Cell";
-    static NSString *ButtonCellIdentifier = @"ButtonCell";
-    NSString *cellId = ButtonCellIdentifier;
-    UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
     NSInteger sectionIdx = [indexPath section];
-    BOOL isListItemCell = (sectionIdx < ([[self editPropertySections] count]));
-    if (isListItemCell) {
-        cellId = CellIdentifier;
-        cellStyle = UITableViewCellStyleValue2;
-    }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
-        cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellId] autorelease];
-    
-    if (isListItemCell) {
-        NSDictionary *sectDict = [[self editPropertySections] objectAtIndex:sectionIdx];
-        [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
-        NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
-        [[cell detailTextLabel] setText:displayValue];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    } else {
-        [self configureCell:cell asButtonInSection:sectionIdx];
-    }
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
+    NSDictionary *sectDict = [[self editPropertySections] objectAtIndex:sectionIdx];
+    [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
+    NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
+    [[cell detailTextLabel] setText:displayValue];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     return cell;
 }
 
@@ -231,59 +224,20 @@
 }
 
 
-- (void)configureCell:(UITableViewCell *)cell asButtonInSection:(NSInteger)section 
-{
-    UIImage *cellButtonImage;
-    NSString *titleText; 
-    if (section == [[self editPropertySections] count]) {
-        titleText = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark as Incomplete", @"mark incomplete text") : NSLocalizedString(@"Mark as Complete", @"completion text");
-        cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-    } else if (section == [[self editPropertySections] count] + 1) {
-        titleText = NSLocalizedString(@"Add To Quick Stash", @"quick stash button text");
-        cellButtonImage = [[UIImage imageNamed:@"whiteButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-    } else {
-        titleText = NSLocalizedString(@"Delete", @"delete item text");
-        cellButtonImage = [[UIImage imageNamed:@"redButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-    }
-    UIImageView *backImageView = [[UIImageView alloc] initWithImage:cellButtonImage];
-    UIImage *selectedBackImage = [[UIImage imageNamed:@"blueButton.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:0];
-    UIImageView *selectedBackImageView = [[UIImageView alloc] initWithImage:selectedBackImage];                              
-    [cell setBackgroundView:backImageView];
-    [cell setSelectedBackgroundView:selectedBackImageView];
-    [backImageView release];
-    [selectedBackImageView release];
-    
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
-    [[cell textLabel] setText:titleText];
-    [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
-    [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
-}
-
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    NSInteger sectionIdx = [indexPath section];
-    if ( sectionIdx < [[self editPropertySections] count]) {
-        [self didSelectItemCellAtIndex:sectionIdx];        
-    } else  {
-        [self didSelectButtonCellAtIndex:sectionIdx];
-        UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-        [cell setSelected:NO];
-    }
-}
-
-- (void)didSelectItemCellAtIndex:(NSInteger)section  
-{
     skipSaveLogic = YES;
-    NSMutableDictionary *sectDict = [[self editPropertySections] objectAtIndex:section];
+    NSMutableDictionary *sectDict = [[self editPropertySections] objectAtIndex:[indexPath section]];
     Class vcClass = [sectDict objectForKey:@"vc"];
     NSString *viewTitle = [sectDict objectForKey:@"title"];
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
     [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
 }
+
 
 - (void)didSelectButtonCellAtIndex:(NSInteger)section 
 {
@@ -302,6 +256,62 @@
     }
     [self savePendingItemChanges];
     [[self navigationController] popViewControllerAnimated:YES];
+}
+
+
+#pragma mark -
+#pragma mark ActionSheet delegate and ActionSheet
+
+-(IBAction)moreActionsBtnPressed:(id)sender {
+    
+    NSString *markTitle = ([[self theItem] isComplete]) ? NSLocalizedString(@"Mark As Incomplete",nil) : NSLocalizedString(@"Mark As Complete",nil);
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title") 
+                                                             delegate:self 
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete", nil)
+                                                    otherButtonTitles:nil];
+    [actionSheet addButtonWithTitle:markTitle];
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"Add to Quick Stash",nil)];
+    [actionSheet showFromToolbar:[self toolBar]];
+    [actionSheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
+{
+    if (buttonIndex < 0) return;
+    BOOL saveRequired = YES;
+    DLog(@"buttonIndex: %d : %@", buttonIndex, [actionSheet buttonTitleAtIndex:buttonIndex]);
+    switch (buttonIndex) {
+        case 0:        // delete
+            [self deleteItem];
+            break;
+        case 1:
+            saveRequired = NO;
+        case 2:
+            [self toggleCompletedState];
+            break;	
+        case 3:
+            [self addItemEditsToStash];
+            break;
+    }
+    if (!saveRequired) return;
+    [self savePendingItemChanges];
+    [[self navigationController] popViewControllerAnimated:YES];
+
+}
+
+- (void)deleteItem
+{
+    NSMutableSet *items = [[self theList] mutableSetValueForKey:@"items"];
+    [[[self theList] managedObjectContext] deleteObject:[self theItem]];
+    [items removeObject:[self theItem]];
+}
+
+- (void)toggleCompletedState
+{
+    NSNumber *checkedState = ([[self theItem] isComplete]) ? INT_OBJ(0) : INT_OBJ(1);
+    [[self theItem] setIsChecked:checkedState];
 }
 
 

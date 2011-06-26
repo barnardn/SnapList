@@ -10,14 +10,14 @@
 #import <CoreData/CoreData.h>
 #import "ListItemsViewController.h"
 
-#define elivcCOUNT_BUTTON_CELLS     3  
-
 @class MetaList;
 @class MetaListItem;
 @class EditTextViewController;
 
-@interface EditListItemViewController : UITableViewController {
+@interface EditListItemViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 
+    UITableView *listItemTableView;
+    UIToolbar *toolBar;
     MetaList *theList;
     MetaListItem *theItem;
     NSArray *editPropertySections;
@@ -28,6 +28,8 @@
     
 }
 
+@property(nonatomic,retain) IBOutlet UITableView *listItemTableView;
+@property(nonatomic,retain) IBOutlet UIToolbar *toolBar;
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,retain) MetaListItem *theItem;
 @property(nonatomic,retain) NSArray *editPropertySections;
@@ -35,6 +37,7 @@
 @property(nonatomic,assign) id<ListItemsViewControllerProtocol> delegate;
 @property(nonatomic,retain) NSString *backgroundImageFilename;
 
+- (IBAction)moreActionsBtnPressed:(id)sender;
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;
 
 @end

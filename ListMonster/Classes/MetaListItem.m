@@ -14,7 +14,7 @@
 
 @implementation MetaListItem
 
-@dynamic name, quantity, isChecked, list, reminderDate;
+@dynamic name, quantity, isChecked, list, reminderDate, priority;
 
 #pragma mark -
 #pragma mark Custom accessors
