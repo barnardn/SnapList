@@ -18,6 +18,7 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSNumberExtensions.h"
+#import "PriorityViewController.h"
 #import "ReminderViewController.h"
 
 @interface EditListItemViewController()
@@ -32,6 +33,7 @@
 - (UITableView *)tableView;
 - (void)deleteItem;
 - (void)toggleCompletedState;
+- (NSString *)priorityNameForValue:(NSNumber *)priorityValue;
 
 @end
 
@@ -156,7 +158,9 @@
                                     @"quantity", @"attrib", [EditNumberViewController class], @"vc", nil];
     NSMutableDictionary *reminderDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Reminder", @"title",
                                          @"reminderDate", @"attrib", [ReminderViewController class], @"vc", nil];
-    NSArray *sects = [NSArray arrayWithObjects:nameDict, qtyDict, reminderDict, nil];
+    NSMutableDictionary *priorityDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Priority", @"title",
+                                         @"priority", @"attrib", [PriorityViewController class], @"vc", nil];
+    NSArray *sects = [NSArray arrayWithObjects:nameDict, priorityDict, qtyDict, reminderDict, nil];
     [self setEditPropertySections:sects];
 }
 
@@ -210,6 +214,10 @@
 {
     if (![item valueForKey:attrName]) return @"";
     id attrValue = [item valueForKey:attrName];
+    if ([attrName isEqualToString:@"priority"]) {
+        NSNumber *priority = attrValue;
+        return [self priorityNameForValue:priority];
+    }
     if ([attrValue isKindOfClass:[NSNumber class]]) {
         NSNumber *qty = attrValue;
         return ([qty intValue] > 0) ? [qty stringValue] : @"";
@@ -221,6 +229,18 @@
         return str;
     }
     return @"";
+}
+
+- (NSString *)priorityNameForValue:(NSNumber *)priorityValue {
+    switch ([priorityValue intValue]) {
+        case -1:
+            return NSLocalizedString(@"Low",nil);   
+            break;
+        case 1:
+            return NSLocalizedString(@"High",nil);
+            break;
+    }
+    return NSLocalizedString(@"Normal",nil);
 }
 
 
@@ -334,11 +354,12 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_UPDATE object:[self theList]];
     } else {
         NSDictionary *changedProperties = [[self theItem] changedValues];
-        if ([changedProperties valueForKey:@"isChecked"])
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]];
+//        if ([changedProperties valueForKey:@"isChecked"])
+//            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]];
         if ([changedProperties valueForKey:@"reminderDate"])
             [[self theItem] scheduleReminder];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]]; 
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];

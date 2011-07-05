@@ -28,7 +28,8 @@
 - (void)filterItemsByCheckedState;
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
 - (void)configureForEmtpyList:(UITableViewCell *)cell;
-- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
+- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
+//- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
 - (void)enabledStateForEditControls:(BOOL)enableState;
 - (void)addItem;
 - (void)pickFromStash;
@@ -259,7 +260,8 @@
     if (!cell)
         cell = [self makeCellWithCheckboxButton];
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    [self cell:cell configureForItem:item];
+    [self configureCell:cell withItem:item];
+    //[self cell:cell configureForItem:item];
     return cell;
 }
 
@@ -271,13 +273,21 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 }
 
-- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item {
-    
+- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
+{    
     [[cell textLabel] setText:[item name]];
     [[cell textLabel] setTextColor:[UIColor blackColor]];
     NSNumber *qty = [item quantity];
     NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
     [[cell detailTextLabel] setText:qtyString];
+    NSNumber *priority = [item priority];
+    if (![priority isEqualToNumber:INT_OBJ(0)]) {
+        NSString *priorityName = [item priorityName];
+        [[cell imageView] setImage:[UIImage imageNamed:priorityName]];
+    } else {
+        [[cell imageView] setImage:nil];
+    }
+
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [self updateCheckboxButtonForItem:item atCell:cell];
 }
@@ -286,8 +296,8 @@
     return  ([[[self theList] items] count] > 0);
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     if (editingStyle != UITableViewCellEditingStyleDelete) return;
     MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];

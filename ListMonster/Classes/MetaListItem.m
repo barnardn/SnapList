@@ -104,4 +104,19 @@
     return msg;
 }
 
+- (NSString *)priorityName 
+{
+    if (![self priority])
+        return nil;
+    switch ([[self priority] intValue]) {
+        case 0:
+            return @"Normal";            
+        case 1: 
+            return @"High";
+        case -1:
+            return @"Low";
+    }
+}
+
+
 @end

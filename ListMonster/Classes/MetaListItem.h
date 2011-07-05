@@ -35,5 +35,6 @@
 - (void)cancelReminderDecrementingBadgeNumber:(BOOL)shouldDecrement;
 - (NSString *)messageForNotificationAlert;
 - (UILocalNotification *)findScheduledNofication;
+- (NSString *)priorityName;
 
 @end
