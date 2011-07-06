@@ -25,7 +25,6 @@
 
 - (void)preparePropertySections;
 - (NSString *)listItem:(MetaListItem *)item stringForAttribute:(NSString *)attrName;
-- (void)didSelectButtonCellAtIndex:(NSInteger)section;
 - (void)savePendingItemChanges;
 - (void)addItemEditsToStash;
 - (void)configureAsModalView;
@@ -168,7 +167,7 @@
 {
     [super viewWillAppear:animated];
     skipSaveLogic = NO;
-    if ([[self theItem] isUpdated])
+    if ([[self theItem] isUpdated] || [[self theItem] isInserted])
         [[self tableView] reloadData];
 }
 
@@ -256,28 +255,9 @@
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
     [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-
-- (void)didSelectButtonCellAtIndex:(NSInteger)section 
-{
-    NSInteger completeButtonIdx = [[self editPropertySections] count];
-    if (section == completeButtonIdx + 1) {
-        [self addItemEditsToStash];
-        return;
-    }
-    if (section == completeButtonIdx) {
-        NSNumber *checkedState = ([[self theItem] isComplete]) ? INT_OBJ(0) : INT_OBJ(1);
-        [[self theItem] setIsChecked:checkedState];
-    } else {
-        NSMutableSet *items = [[self theList] mutableSetValueForKey:@"items"];
-        [[[self theList] managedObjectContext] deleteObject:[self theItem]];
-        [items removeObject:[self theItem]];
-    }
-    [self savePendingItemChanges];
-    [[self navigationController] popViewControllerAnimated:YES];
-}
-
 
 #pragma mark -
 #pragma mark ActionSheet delegate and ActionSheet
@@ -354,8 +334,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_UPDATE object:[self theList]];
     } else {
         NSDictionary *changedProperties = [[self theItem] changedValues];
-//        if ([changedProperties valueForKey:@"isChecked"])
-//            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]];
         if ([changedProperties valueForKey:@"reminderDate"])
             [[self theItem] scheduleReminder];
     }

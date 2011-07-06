@@ -18,7 +18,7 @@
 #pragma mark Initialization
 
 
--(id)initWithTitle:(NSString *)title listItem:(MetaListItem *)anItem;
+-(id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
@@ -85,11 +85,11 @@
     [super viewDidAppear:animated];
 }
 */
-/*
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
-*/
+
 /*
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -133,7 +133,10 @@
     }
     Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
     NSNumber *priorityVal = [t first];
-    if (!lastIndexPath && [priorityVal isEqualToNumber:[[self theItem] priority]]) {
+    NSNumber *itemPriority = [[self theItem] priority];
+    if (!itemPriority)
+        itemPriority = INT_OBJ(0);
+    if ([priorityVal isEqualToNumber:itemPriority] && !lastIndexPath) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
         lastIndexPath = indexPath;
     }

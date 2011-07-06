@@ -36,6 +36,7 @@
 
 - (void)dealloc {
     [textField release];
+    [item release];
     [super dealloc];
 }
 

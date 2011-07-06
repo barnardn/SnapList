@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "EditItemViewProtocol.h"
+
 @class MetaListItem;
 
 @interface PriorityViewController : UITableViewController <EditItemViewProtocol> {
     NSIndexPath *lastIndexPath;
+    MetaListItem *theItem;
 }
 
 @property(nonatomic,retain) NSArray *priorityList;
