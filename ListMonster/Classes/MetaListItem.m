@@ -116,6 +116,7 @@
         case -1:
             return @"Low";
     }
+    return nil;
 }
 
 
