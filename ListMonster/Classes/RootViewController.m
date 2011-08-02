@@ -127,8 +127,6 @@
         [self presentModalViewController:edListNav animated:YES];
     else
         [[self navigationController] pushViewController:evc animated:YES];
-    
-
     [evc release];
 }
 
@@ -143,6 +141,7 @@
     MetaList *scrollToList = [notification object];
     NSIndexPath *scrollToPath = [self indexPathForList:scrollToList];
     [[self tableView] scrollToRowAtIndexPath:scrollToPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+    [self setEditing:NO animated:YES];
 }
 
 - (void)didReceiveCompletedItemNotification:(NSNotification *)notification 
