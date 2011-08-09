@@ -35,6 +35,7 @@
 
 - (void)awakeFromInsert 
 {
+    [self setName:@"New Item"];
     [self setQuantity:[NSNumber numberWithInt:0]];
     [self setIsChecked:INT_OBJ(0)];
 }

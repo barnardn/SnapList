@@ -55,6 +55,12 @@
     return YES;
 }
 
+- (void)removeItem:(MetaListItem *)item
+{
+    NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
+    [mutableItems removeObject:item];
+}
+
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state {
     
     NSArray *allItems = [[self items] allObjects];
@@ -89,7 +95,7 @@
 - (NSArray *)itemsForCompletedState:(BOOL)state {
     
     NSArray *allItems = [[self items] allObjects];
-    NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"isChecked == %d", (int)state];
+    NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"isChecked == %d AND isDeleted == NO", (int)state];
     NSArray *filteredItems = [allItems filteredArrayUsingPredicate:byCheckedState];
     return filteredItems;
     

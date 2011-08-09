@@ -138,6 +138,7 @@
  
 - (void)cancelPressed:(id)sender
 {
+    skipSaveLogic = YES;
     [[self delegate] editListItemViewController:self didCancelEditOnNewItem:[self theItem]];
     [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
@@ -296,16 +297,17 @@
             break;
     }
     if (!saveRequired) return;
-    [self savePendingItemChanges];
-    [[self navigationController] popViewControllerAnimated:YES];
+    if ([self isModal])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self navigationController] popViewControllerAnimated:YES];
 
 }
 
 - (void)deleteItem
 {
-    NSMutableSet *items = [[self theList] mutableSetValueForKey:@"items"];
+    [[self theList] removeItem:[self theItem]];
     [[[self theList] managedObjectContext] deleteObject:[self theItem]];
-    [items removeObject:[self theItem]];
 }
 
 - (void)toggleCompletedState
@@ -331,13 +333,13 @@
 {
     if (skipSaveLogic) return;
     if ([[self theItem] isDeleted]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_UPDATE object:[self theList]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
     } else {
         NSDictionary *changedProperties = [[self theItem] changedValues];
         if ([changedProperties valueForKey:@"reminderDate"])
             [[self theItem] scheduleReminder];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]]; 
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]]; 
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;
     [moc save:&error];

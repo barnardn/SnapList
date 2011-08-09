@@ -29,7 +29,6 @@
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
 - (void)configureForEmtpyList:(UITableViewCell *)cell;
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
-//- (void)cell:(UITableViewCell *)cell configureForItem:(MetaListItem *)item;
 - (void)enabledStateForEditControls:(BOOL)enableState;
 - (void)addItem;
 - (void)pickFromStash;
@@ -41,7 +40,6 @@
 
 @synthesize allItemsTableView, theList, checkedState, addItemBtn, moreActionsBtn;
 @synthesize toolBar,inEditMode, listItems, editBtn, backgroundImageFilename;
-
 
 - (id)initWithList:(MetaList *)aList {
     self = [super initWithNibName:@"ListItemsView" bundle:nil];
@@ -287,7 +285,7 @@
     } else {
         [[cell imageView] setImage:nil];
     }
-
+		
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [self updateCheckboxButtonForItem:item atCell:cell];
 }
@@ -305,12 +303,12 @@
     NSMutableArray *updatedItemsList = [[self listItems] mutableCopy];
     [updatedItemsList removeObject:deleteItem];
     [self setListItems:updatedItemsList];
+    [self commitAnyChanges];
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    if ([[[self theList] items] count] == 1) {  // last item entire list
+    if ([[[self theList] items] count] == 0) {  // just deleted the last item
         [self enabledStateForEditControls:NO];
-        [self editBtnPressed:nil];
-    } else {
-        [self commitAnyChanges];
+        NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ipath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
         
@@ -350,6 +348,7 @@
     if (!isOk) {
         [ErrorAlert showWithTitle:@"Error Deleting Items" andMessage:@"Items could not be deleted"];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
@@ -380,8 +379,8 @@
 #pragma mark Cell checkbox methods
 
 
-- (UITableViewCell *)makeCellWithCheckboxButton {
-    
+- (UITableViewCell *)makeCellWithCheckboxButton 
+{
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease];
     UIButton *checkBoxBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     checkBoxBtn.frame = CGRectMake(0.0f, 0.0f, 22.0f, 22.0f);
@@ -391,16 +390,16 @@
     return cell;
 }     
 
-- (void)updateCheckboxButtonForItem:(MetaListItem *)item atCell:(UITableViewCell *)cell {
-    
+- (void)updateCheckboxButtonForItem:(MetaListItem *)item atCell:(UITableViewCell *)cell 
+{    
     UIButton *checkBoxButton = (UIButton *)[cell editingAccessoryView];
     NSString *stateImageFile = ([item isComplete]) ? @"radio-on.png" : @"radio-off.png";
     [checkBoxButton setImage:[UIImage imageNamed:stateImageFile] forState:UIControlStateNormal];    
 }
 
 
-- (void)checkboxButtonTapped:(UIButton *)button withEvent:(UIEvent *)event {
-    
+- (void)checkboxButtonTapped:(UIButton *)button withEvent:(UIEvent *)event 
+{    
     UITableViewCell *cell = (UITableViewCell *)[button superview];
     NSIndexPath *indexPath = [[self allItemsTableView] indexPathForCell:cell];
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
@@ -418,6 +417,12 @@
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     if (![moc hasChanges]) return;
     NSError *error = nil;
+    for (MetaListItem *item in [[self theList] items]) {
+        if ([[item changedValues] objectForKey:@"isChecked"] || [item isDeleted]) {
+            DLog(@"posting count notice for item: %@", [item name]);
+            [[NSNotificationCenter defaultCenter]  postNotificationName:NOTICE_LIST_COUNTS object:item];
+        }
+    }
     [moc save:&error];
     if (error) {
         DLog(@"Unable to save changes: %@", [error localizedDescription]);

@@ -13,7 +13,6 @@
 #define NOTICE_LIST_COUNTS  @"countchange"
 #define NOTICE_OVERDUE_ITEM @"overdueitem"
 
-
 @class MetaListItem;
 @class Category;
 @class ListColor;
@@ -35,7 +34,6 @@
 - (NSArray *)allCompletedItems;
 - (NSArray *)allIncompletedItems;
 - (NSString *)excerptOfLength:(NSInteger)numWords;
-
-
+- (void)removeItem:(MetaListItem *)item;
 
 @end

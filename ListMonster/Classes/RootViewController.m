@@ -30,6 +30,7 @@
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 - (NSMutableArray *)loadOverdueItems;
+- (void)updateIncompleteCountForList:(MetaList *)list;
 
 @end
 
@@ -146,9 +147,16 @@
 
 - (void)didReceiveCompletedItemNotification:(NSNotification *)notification 
 {
-    MetaListItem *item = [notification object];
+    NSManagedObject *managedObj = [notification object];
+    if ([[[managedObj entity] name] isEqualToString:@"MetaList"]) {
+        MetaList *l = (MetaList *)managedObj;
+        [self updateIncompleteCountForList:l];
+        return;
+    }
+    MetaListItem *item = (MetaListItem *)managedObj;
     NSUInteger itemIndex = [[self overdueItems] indexOfObject:item];
-    if ([[self overdueItems] count] && itemIndex != NSNotFound) {
+    if ([[self overdueItems] count] && itemIndex != NSNotFound && [item isComplete]) {
+        DLog(@"removing overdue item: %@", [item name]);
         [[self overdueItems] removeObjectAtIndex:itemIndex];
         if ([[self overdueItems] count] == 0) {
             NSIndexSet *sections = [NSIndexSet indexSetWithIndex:0];
@@ -159,18 +167,24 @@
             [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:itemIdxPath] withRowAnimation:UITableViewRowAnimationFade];
         }
     }
-    if ([[[item list] items] count] == 0) return;
-    NSIndexPath *indexPath = [self indexPathForList:[item list]];
-    ListCell *listCell = (ListCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
-    NSInteger incompleteCount = [[[item list] allIncompletedItems] count];
-    [[listCell countsLabel] setText:[NSString stringWithFormat:@"%d", incompleteCount]];
-    [[self tableView] scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+    [self updateIncompleteCountForList:[item list]];
 }
 
 - (void)didReceiveOverdueReminderNotification:(NSNotification *)notification
 {
     [self setOverdueItems:[self loadOverdueItems]];
     [[self tableView] reloadData];
+}
+
+- (void)updateIncompleteCountForList:(MetaList *)list 
+{
+    NSIndexPath *indexPath = [self indexPathForList:list];
+    ListCell *listCell = (ListCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
+    NSInteger incompleteCount = [[list allIncompletedItems] count];
+    NSString *countText = (incompleteCount == 0) ? @"" : [NSString stringWithFormat:@"%d", incompleteCount];
+    [[listCell countsLabel] setText:countText];
+    [[self tableView] scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+    
 }
 
 - (NSIndexPath *)indexPathForList:(MetaList *)list 
@@ -415,13 +429,7 @@
     NSDate *tam = today_at_midnight();
     NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:SECONDS_PER_DAY]];
     NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];
-    if ([overdue count] > 0) {
-        DLog(@"%d overdue items: \n", [overdue count]);
-        for (MetaListItem *i in overdue) {
-            DLog(@"%@\n", [i name]);
-        }
-    }
-    return ([overdue count] == 0) ? nil : [overdue mutableCopy];
+    return ([overdue count] == 0) ? nil : [[overdue mutableCopy] autorelease];
 }
 
 - (NSMutableDictionary *)loadAllLists 
