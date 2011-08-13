@@ -170,8 +170,9 @@
     NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"self.isChecked == %d", selectedSegmentIdx];
     NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];    
     //TODO: revist this, not the most efficient.
-    NSArray *filteredItems = [[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState];
+    NSMutableArray *filteredItems = [[[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState] mutableCopy];
     [self setListItems:filteredItems];
+    [filteredItems release];
 }
 
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor {
@@ -226,7 +227,8 @@
 
 -(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item
 {
-    [item setList:[self theList]];
+    [[self theList] addItem:item];
+    [item release];  // maybe...
 }
 
 
@@ -259,7 +261,6 @@
         cell = [self makeCellWithCheckboxButton];
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     [self configureCell:cell withItem:item];
-    //[self cell:cell configureForItem:item];
     return cell;
 }
 
@@ -298,18 +299,16 @@
 {
     if (editingStyle != UITableViewCellEditingStyleDelete) return;
     MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
-    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
-    [moc deleteObject:deleteItem];
-    NSMutableArray *updatedItemsList = [[self listItems] mutableCopy];
-    [updatedItemsList removeObject:deleteItem];
-    [self setListItems:updatedItemsList];
-    [self commitAnyChanges];
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [[self listItems] removeObject:deleteItem];
+    [[[self theList] managedObjectContext] deleteObject:deleteItem];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];    
+    [[self theList] removeItem:deleteItem];
     if ([[[self theList] items] count] == 0) {  // just deleted the last item
         [self enabledStateForEditControls:NO];
         NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
         [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ipath] withRowAnimation:UITableViewRowAnimationFade];
     }
+    [self commitAnyChanges];
 }
         
 #pragma mark -
@@ -416,13 +415,11 @@
     
     NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     if (![moc hasChanges]) return;
+    NSPredicate *itemsForCountUpdate = [NSPredicate predicateWithFormat:@"isChecked == YES OR isDeleted == YES"];
+    NSSet *filteredSet = [[[self theList] items] filteredSetUsingPredicate:itemsForCountUpdate];
+    if ([filteredSet count] > 0)
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
     NSError *error = nil;
-    for (MetaListItem *item in [[self theList] items]) {
-        if ([[item changedValues] objectForKey:@"isChecked"] || [item isDeleted]) {
-            DLog(@"posting count notice for item: %@", [item name]);
-            [[NSNotificationCenter defaultCenter]  postNotificationName:NOTICE_LIST_COUNTS object:item];
-        }
-    }
     [moc save:&error];
     if (error) {
         DLog(@"Unable to save changes: %@", [error localizedDescription]);

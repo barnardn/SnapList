@@ -59,6 +59,14 @@
 {
     NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
     [mutableItems removeObject:item];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self];
+}
+
+- (void)addItem:(MetaListItem *)item
+{
+    NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
+    [mutableItems addObject:item];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self];
 }
 
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state {

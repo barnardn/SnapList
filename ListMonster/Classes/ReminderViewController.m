@@ -107,7 +107,6 @@
         NSInteger daysOffset = [[[self selectedSimpleDate] second] intValue];
         if (daysOffset < 0) {
             [[self reminderItem] setReminderDate:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self reminderItem]];
             return;
         }
         NSDate *todayAtMidnight = today_at_midnight();

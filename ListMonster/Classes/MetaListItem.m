@@ -30,16 +30,6 @@
     }
 }
 
-#pragma mark -
-#pragma mark NSManagedObject overrides
-
-- (void)awakeFromInsert 
-{
-    [self setName:@"New Item"];
-    [self setQuantity:[NSNumber numberWithInt:0]];
-    [self setIsChecked:INT_OBJ(0)];
-}
-
 - (BOOL)isComplete 
 {
     if (![self isChecked]) return NO;
@@ -47,18 +37,40 @@
     return (intVal > 0);
 }
 
-- (void)prepareForDeletion
+#pragma mark -
+#pragma mark NSManagedObject overrides
+
+- (void)awakeFromInsert 
 {
-    [self cancelReminderDecrementingBadgeNumber:NO];
+    [self setPrimitiveValue:@"New Item" forKey:@"name"];
+    [self setPrimitiveValue:INT_OBJ(0) forKey:@"quantity"];
+    [self setPrimitiveValue:INT_OBJ(0) forKey:@"isChecked"];
+/*    [self setName:@"New Item"];
+    [self setQuantity:[NSNumber numberWithInt:0]];
+    [self setIsChecked:INT_OBJ(0)]; */
 }
 
-- (void)scheduleReminder
+- (void)willSave
 {
     if (![self reminderDate]) return;
     if ([[self reminderDate] timeIntervalSinceNow] <= 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:self];
         return;
     }
+}
+
+- (void)prepareForDeletion
+{
+    [self cancelReminderDecrementingBadgeNumber:NO];
+}
+
+#pragma mark -
+#pragma mark Reminder scheduling methods
+
+
+- (void)scheduleReminder
+{
+    if (![self reminderDate]) return;
     NSURL *itemUrl = [[self objectID] URIRepresentation];
     NSString *noficationKey = [NSString stringWithFormat:@"%@",itemUrl]; 
     [self cancelReminderDecrementingBadgeNumber:NO];

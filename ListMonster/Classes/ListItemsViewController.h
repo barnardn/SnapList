@@ -36,7 +36,7 @@
     UIBarButtonItem *moreActionsBtn;
     UIBarButtonItem *editBtn;
     MetaList *theList;
-    NSArray *listItems;
+    NSMutableArray *listItems;
     BOOL inEditMode;
     UINavigationController *editItemNavController;
     NSString *backgroundImageFilename;
@@ -50,7 +50,7 @@
 @property(nonatomic,retain) IBOutlet UIBarButtonItem *editBtn;
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,assign) BOOL inEditMode;
-@property(nonatomic,retain) NSArray *listItems;
+@property(nonatomic,retain) NSMutableArray *listItems;
 @property(nonatomic,retain) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)aList;

@@ -10,6 +10,7 @@
 #import "ItemStashViewController.h"
 #import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
+#import "MetaList.h"
 #import "MetaListItem.h"
 
 @interface ItemStashViewController()
@@ -123,7 +124,7 @@
     [newItem setName:[selectedItem name]];
     if ([selectedItem quantity])
         [newItem setQuantity:[selectedItem quantity]];
-    [newItem setList:[self theList]];
+    [[self theList] addItem:newItem];
     NSError *error = nil;
     [moc save:&error];
     if (error) {

@@ -94,7 +94,7 @@
     [self setOverdueItems:[self loadOverdueItems]];
     [[self tableView] reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveCompletedItemNotification:) 
+                                             selector:@selector(didReceiveListCountChangeNotification:) 
                                                  name:NOTICE_LIST_COUNTS
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -134,6 +134,7 @@
 #pragma mark -
 #pragma mark Notification Handlers
 
+// a list property changed (category or name) - reload all lists..
 - (void)didReceiveListChangeNotification:(NSNotification *)notification 
 {
     [self setAllLists:[self loadAllLists]];
@@ -145,29 +146,10 @@
     [self setEditing:NO animated:YES];
 }
 
-- (void)didReceiveCompletedItemNotification:(NSNotification *)notification 
+- (void)didReceiveListCountChangeNotification:(NSNotification *)notification 
 {
-    NSManagedObject *managedObj = [notification object];
-    if ([[[managedObj entity] name] isEqualToString:@"MetaList"]) {
-        MetaList *l = (MetaList *)managedObj;
-        [self updateIncompleteCountForList:l];
-        return;
-    }
-    MetaListItem *item = (MetaListItem *)managedObj;
-    NSUInteger itemIndex = [[self overdueItems] indexOfObject:item];
-    if ([[self overdueItems] count] && itemIndex != NSNotFound && [item isComplete]) {
-        DLog(@"removing overdue item: %@", [item name]);
-        [[self overdueItems] removeObjectAtIndex:itemIndex];
-        if ([[self overdueItems] count] == 0) {
-            NSIndexSet *sections = [NSIndexSet indexSetWithIndex:0];
-            [[self tableView] deleteSections:sections withRowAnimation:UITableViewRowAnimationFade];
-            [self setOverdueItems:nil];
-        } else {
-            NSIndexPath *itemIdxPath = [NSIndexPath indexPathForRow:itemIndex inSection:0];
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:itemIdxPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-    }
-    [self updateIncompleteCountForList:[item list]];
+    MetaList *list = [notification object];
+    [self updateIncompleteCountForList:list];
 }
 
 - (void)didReceiveOverdueReminderNotification:(NSNotification *)notification

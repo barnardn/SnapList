@@ -338,7 +338,6 @@
         NSDictionary *changedProperties = [[self theItem] changedValues];
         if ([changedProperties valueForKey:@"reminderDate"])
             [[self theItem] scheduleReminder];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theItem]]; 
     }
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     NSError *error = nil;

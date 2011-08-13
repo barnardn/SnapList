@@ -35,5 +35,6 @@
 - (NSArray *)allIncompletedItems;
 - (NSString *)excerptOfLength:(NSInteger)numWords;
 - (void)removeItem:(MetaListItem *)item;
+- (void)addItem:(MetaListItem *)item;
 
 @end
