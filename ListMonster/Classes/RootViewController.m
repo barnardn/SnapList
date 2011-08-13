@@ -31,7 +31,8 @@
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 - (NSMutableArray *)loadOverdueItems;
 - (void)updateIncompleteCountForList:(MetaList *)list;
-
+//- (BOOL)removeOverdueItems:(NSMutableArray *)overdue fromDeletedList:(MetaList *)deletedList inTableView:(UITableView *)tableView;
+- (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
 @end
 
 @implementation RootViewController
@@ -343,26 +344,55 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    if (editingStyle != UITableViewCellEditingStyleDelete) return;
     BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    if (haveOverdueItems && [indexPath section] == 0) return;
     
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSInteger sectionIdx = (haveOverdueItems) ? [indexPath section] - 1 : [indexPath section];
-        NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
-        NSMutableArray *listArr = [[self allLists] objectForKey:key];
-        MetaList *dl = [listArr objectAtIndex:[indexPath row]];
-        [self deleteListEntity:dl];
-        [listArr removeObjectAtIndex:[indexPath row]];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        if ([listArr count] == 0) {
-            [[self allLists] removeObjectForKey:key];
-            NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-            [self setCategoryNameKeys:catKeys];
+    NSIndexPath *deletionIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:[indexPath section]];
+    
+    if (haveOverdueItems && [deletionIndexPath section] == 0) return;
+    
+    NSInteger sectionIdx = (haveOverdueItems) ? [deletionIndexPath section] - 1 : [deletionIndexPath section];
+    NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
+    NSMutableArray *listArr = [[self allLists] objectForKey:key];
+    MetaList *dl = [listArr objectAtIndex:[indexPath row]];
+    if (haveOverdueItems) {
+        BOOL haveRemovedOverdueSection = [self didRemoveOverdueSectionInTableView:tableView forOverdueItems:[self overdueItems] inDeletedList:dl];
+        if (haveRemovedOverdueSection)
+            deletionIndexPath = [NSIndexPath indexPathForRow:[deletionIndexPath row] inSection:[deletionIndexPath section] - 1];
+    }
+    [self deleteListEntity:dl];
+    [listArr removeObjectAtIndex:[deletionIndexPath row]];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:deletionIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if ([listArr count] == 0) {
+        [[self allLists] removeObjectForKey:key];
+        NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
+        [self setCategoryNameKeys:catKeys];
+    }
+    if (([[self allLists] count] == 0) && ([self isEditing]))
+        [self setEditing:NO animated:YES];
+    [tableView reloadData];  
+
+}
+
+- (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList
+{
+    BOOL haveRemovedOverdueItemSection = NO;
+    NSSet *overdueSet = [NSSet setWithArray:overdue];
+    if (![overdueSet intersectsSet:[deletedList items]]) return haveRemovedOverdueItemSection; 
+    for (NSInteger idx = 0; idx < [overdue count]; idx++) {
+        if ([[deletedList items] containsObject:[overdue objectAtIndex:idx]]) {
+            [overdue removeObjectAtIndex:idx];
+            if ([overdue count] == 0) {
+                NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
+                [tableView deleteSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+                haveRemovedOverdueItemSection = YES;
+            } else {
+                NSIndexPath *overdueIndexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:overdueIndexPath] withRowAnimation:UITableViewRowAnimationFade]; 
+            }
         }
-        if (([[self allLists] count] == 0) && ([self isEditing]))
-            [self setEditing:NO animated:YES];
-        [tableView reloadData];
-    }   
+    }
+    return haveRemovedOverdueItemSection;
 }
 
 
