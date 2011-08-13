@@ -242,15 +242,12 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
-    if (dow == [self selectedSimpleDate]) {
+    if (dow == [self selectedSimpleDate] && !lastSelectedIndexPath) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        selectedIndexPath = indexPath;
+        lastSelectedIndexPath = indexPath;
     }
-    else
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
     [[cell textLabel] setText:[dow first]];
     return cell;
 }
@@ -262,27 +259,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DLog(@"didSelectRow");
+    if ([indexPath row] == [lastSelectedIndexPath row]) return;
+    
     Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
     [self setSelectedSimpleDate:selected];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    if (selectedIndexPath) {
-        cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        selectedIndexPath = nil;
-    }
+    [lastCell setAccessoryType:UITableViewCellAccessoryNone];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    lastSelectedIndexPath = indexPath;
 }
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    DLog(@"did DE SelectRow");    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        //[self setSelectedSimpleDate:nil];
-    }
-}
-
 
 @end
 

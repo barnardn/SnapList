@@ -85,46 +85,32 @@
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
     [[cell textLabel] setText:[color name]];
     [[cell textLabel] setTextColor:[color uiColor]];
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
     
     NSNumber *selectRgb = [[[self theList] color] rgbValue];
     BOOL isSelectedColor = (NSOrderedSame == [[color rgbValue] compare:selectRgb]);
-    if (isSelectedColor)
+    if (isSelectedColor && !lastSelectedIndexPath) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        lastSelectedIndexPath = indexPath;
+    }
     return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
-        [cell setSelected:YES];
-    }    
-}
-
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    if (indexPath == lastSelectedIndexPath) return;
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
     [[self theList] setColor:color];
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([selectedCell accessoryType] != UITableViewCellAccessoryCheckmark) {
-        [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        [[self theList] setColor:color];
-    }
-    [[self tableView] reloadData];
+    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
+    [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    [lastCell setAccessoryType:UITableViewCellAccessoryNone];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    lastSelectedIndexPath = indexPath;
+
 }
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *deselectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    [deselectedCell setAccessoryType:UITableViewCellAccessoryNone];
-}
-
-
 
 @end
 

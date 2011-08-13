@@ -35,6 +35,7 @@
     NSString *viewTitle;
     Tuple *selectedSimpleDate;
     NSIndexPath *selectedIndexPath;
+    NSIndexPath *lastSelectedIndexPath;
 }
 
 @property(nonatomic,retain) IBOutlet UISegmentedControl *dateSelectionMode;

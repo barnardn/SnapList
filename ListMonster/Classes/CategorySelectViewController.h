@@ -18,11 +18,15 @@
     MetaList *theList;
     NSFetchedResultsController *resultsController;
     Category *newCategory;
+    Category *selectedCategory;
+    NSIndexPath *lastSelectedIndexPath;
+    
 }
 
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,retain) NSFetchedResultsController *resultsController;
 @property(nonatomic,retain) Category *newCategory;
+@property(nonatomic,retain) Category *selectedCategory;
 
 - (id)initWithList:(MetaList *)aList;
 

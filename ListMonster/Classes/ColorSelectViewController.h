@@ -16,6 +16,7 @@
     
     NSArray *allColors;
     MetaList *theList;
+    NSIndexPath *lastSelectedIndexPath;
 }
 
 @property(nonatomic,retain) NSArray *allColors;

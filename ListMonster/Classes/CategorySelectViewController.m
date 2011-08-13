@@ -21,14 +21,14 @@
 
 @implementation CategorySelectViewController
 
-@synthesize resultsController, theList, newCategory;
+@synthesize resultsController, theList, newCategory, selectedCategory;
 
 #pragma mark -
 #pragma mark Initialization
 
 
-- (id)initWithList:(MetaList *)aList {
-    
+- (id)initWithList:(MetaList *)aList 
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
     [self setTheList:aList];
@@ -40,38 +40,42 @@
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style 
+{
     return nil;
 }
 
 #pragma mark -
 #pragma mark Memory management
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
     // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
     [theList release];
     [resultsController release];
     [newCategory release];
+    [selectedCategory release];
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
-
-    
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", @"list back button")
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:nil 
@@ -87,12 +91,19 @@
     [editBtn release];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (![self isEditing])
+        [[self theList] setCategory:[self selectedCategory]];
+}
+
 
 #pragma mark -
 #pragma mark Button actions
 
-- (void)editPressed:(id)sender {
-    
+- (void)editPressed:(id)sender 
+{
     if ([self isEditing]) {
         [sender setTitle:NSLocalizedString(@"Edit", @"edit title")];
         [sender setStyle:UIBarButtonItemStylePlain];
@@ -106,7 +117,8 @@
 }
 
 
-- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated {
+- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated 
+{
     [super setEditing:inEditMode animated:animated];
     if (inEditMode) {
         UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addBtnPressed:)];
@@ -129,8 +141,6 @@
     [self presentModalViewController:ecvc animated:YES];
     [ecvc release];
 }
-
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -158,10 +168,11 @@
     
     Category *listCategory = [[self theList] category];
     BOOL isSelectedCategory = (NSOrderedSame == [[cat name] compare:[listCategory name]]);
-    if (isSelectedCategory)
+    if (isSelectedCategory && !lastSelectedIndexPath) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    else
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
+        [self setSelectedCategory:listCategory];
+        lastSelectedIndexPath = indexPath;
+    }
     return cell;
 }
 
@@ -176,28 +187,20 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Category *category = [[self resultsController] objectAtIndexPath:indexPath];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [[self theList] setCategory:nil];
-
-    } else {
-        [[self theList] setCategory:category];
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    DLog(@"decselected at row: %d", [indexPath row]);
+    if (indexPath == lastSelectedIndexPath) return;
+    Category *category = [[self resultsController] objectAtIndexPath:indexPath];
+    [self setSelectedCategory:category];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell accessoryType] == UITableViewCellAccessoryCheckmark) {
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [[self theList] setCategory:nil];
+    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    if (lastSelectedIndexPath) {
+        UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
+        [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    lastSelectedIndexPath = indexPath;
+    
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -242,8 +245,9 @@
                             withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         case NSFetchedResultsChangeUpdate:
-            cell = [[self tableView] cellForRowAtIndexPath:indexPath];
             theCategory = [[self resultsController] objectAtIndexPath:indexPath];
+            if ([[theCategory changedValues] count] == 0) return;
+            cell = [[self tableView] cellForRowAtIndexPath:indexPath];
             [[cell textLabel] setText:[theCategory name]];
             [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
                                     withRowAnimation:UITableViewRowAnimationNone];
@@ -252,7 +256,7 @@
     }
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {    
     [[self tableView] endUpdates];
 }
 
@@ -260,7 +264,6 @@
 #pragma mark Edit Category Delegate Method
 
 - (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(Category *)category {
-
     if (!category) {
         [[[self theList] managedObjectContext] deleteObject:[self newCategory]];  // analyzer false positive
     } else {
@@ -288,7 +291,8 @@
 }
 
 - (void)deleteCategory:(Category *)aCategory {
-    
+    if (aCategory == [self selectedCategory])
+        [self setSelectedCategory:nil];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     [moc deleteObject:aCategory];
 }
