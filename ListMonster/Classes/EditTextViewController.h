@@ -12,14 +12,13 @@
 
 @interface EditTextViewController : UIViewController <UITextFieldDelegate, EditItemViewProtocol> {
 
-    UITextField *textField;
+    UITextView *textView;
     NSString *viewTitle;
     NSString *backgroundImageFilename;
     MetaListItem *item;
 }
 
-
-@property(nonatomic,retain) IBOutlet UITextField *textField;
+@property(nonatomic,retain) IBOutlet UITextView *textView;
 @property(nonatomic,assign) NSString *viewTitle;
 @property(nonatomic,retain) MetaListItem *item;
 

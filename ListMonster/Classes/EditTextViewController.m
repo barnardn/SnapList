@@ -13,7 +13,7 @@
 
 @implementation EditTextViewController
 
-@synthesize textField, viewTitle,backgroundImageFilename, item;
+@synthesize textView, viewTitle,backgroundImageFilename, item;
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem 
 {
@@ -29,13 +29,15 @@
     return nil;
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
-    [self setTextField:nil];
+    [self setTextView:nil];
 }
 
-- (void)dealloc {
-    [textField release];
+- (void)dealloc 
+{
+    [textView release];
     [item release];
     [super dealloc];
 }
@@ -44,23 +46,21 @@
 {
     [super viewDidLoad];
     [[self navigationItem] setTitle:[self viewTitle]];
-    if (![self item] || ![[self item] name]) {
-        [[self textField] setPlaceholder:NSLocalizedString(@"Item", @"text value placeholder")];        
-    }
-    else {
-        [[self textField] setText:[[self item] name]];
-    }
+    if (![self item] || ![[self item] name])
+        [[self textView] setText:@""];        
+    else 
+        [[self textView] setText:[[self item] name]];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
-    [[self textField] becomeFirstResponder];
+    [[self textView] becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated 
 {
     [super viewWillDisappear:animated];
-    [[self textField] resignFirstResponder];
-    NSString *text = [[self textField] text];
+    [[self textView] resignFirstResponder];
+    NSString *text = [[self textView] text];
     if (!text || [text isEqualToString:@""]) 
         return;
     [[self item] setName:text];
@@ -71,7 +71,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField 
 {    
-    [[self textField] resignFirstResponder];
+    [[self textView] resignFirstResponder];
     [[self navigationController] popViewControllerAnimated:YES];
     return YES;
 }

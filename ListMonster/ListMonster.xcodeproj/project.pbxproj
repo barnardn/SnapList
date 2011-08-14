@@ -16,6 +16,8 @@
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		4937D80F1385930D00E7984D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 4937D7FD1385930D00E7984D /* Backgrounds */; };
+		494844BA13F84DCF00445ED7 /* DisplayListNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */; };
+		494844BE13F85F3A00445ED7 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 494844BD13F85F3A00445ED7 /* blueButton.png */; };
 		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
 		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
 		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
@@ -92,6 +94,9 @@
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
 		4937D7FD1385930D00E7984D /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
+		494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayListNoteViewController.h; sourceTree = "<group>"; };
+		494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayListNoteViewController.m; sourceTree = "<group>"; };
+		494844BD13F85F3A00445ED7 /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueButton.png; sourceTree = "<group>"; };
 		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
@@ -251,6 +256,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				494844BD13F85F3A00445ED7 /* blueButton.png */,
 				495FE5F413C3EF330074235B /* High.png */,
 				495FE5F513C3EF330074235B /* High@2x.png */,
 				495FE5F613C3EF330074235B /* Low.png */,
@@ -371,6 +377,8 @@
 		49F1814712C958880066B454 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
+				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
 				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
 				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
 				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
@@ -490,6 +498,7 @@
 				495FE5FD13C3EF330074235B /* Low@2x.png in Resources */,
 				495FE5FE13C3EF330074235B /* Normal.png in Resources */,
 				495FE5FF13C3EF330074235B /* Normal@2x.png in Resources */,
+				494844BE13F85F3A00445ED7 /* blueButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +539,7 @@
 				499B27CD13663AA700C4500C /* datetime_utils.m in Sources */,
 				49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */,
 				495FE3C813C379B00074235B /* PriorityViewController.m in Sources */,
+				494844BA13F84DCF00445ED7 /* DisplayListNoteViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

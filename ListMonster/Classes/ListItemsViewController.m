@@ -7,6 +7,7 @@
 //
 
 #import "Alerts.h"
+#import "DisplayListNoteViewController.h"
 #import "EditListItemViewController.h"
 #import "ItemStashViewController.h"
 #import "ListColor.h"
@@ -146,6 +147,7 @@
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Incomplete", @"uncheck all")];
     }
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
+    [actionSheet addButtonWithTitle:NSLocalizedString(@"View List Note", nil)];
     [actionSheet showFromToolbar:[self toolBar]];
     [actionSheet release];
 }
@@ -274,8 +276,6 @@
 
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
 {    
-    [[cell textLabel] setText:[item name]];
-    [[cell textLabel] setTextColor:[UIColor blackColor]];
     NSNumber *qty = [item quantity];
     NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
     [[cell detailTextLabel] setText:qtyString];
@@ -286,7 +286,16 @@
     } else {
         [[cell imageView] setImage:nil];
     }
-		
+    UILabel *nameLabel = nil;
+    NSString *name = [item name];
+    CGFloat lblStart = CELL_CONTENT_MARGIN + 20.0f;
+    //CGFloat contentWidth = CELL_CONTENT_WIDTH;
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    CGSize size = [name sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    if (!nameLabel)
+        nameLabel = (UILabel *)[cell viewWithTag:1];
+    [nameLabel setText:name];
+    [nameLabel setFrame:CGRectMake(lblStart, CELL_CONTENT_MARGIN, CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), MAX(size.height, 34.0f))];	
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [self updateCheckboxButtonForItem:item atCell:cell];
 }
@@ -314,6 +323,16 @@
 #pragma mark -
 #pragma mark TableView delegate methods
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    NSString *text = [item name];
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGFloat height = MAX(size.height, 34.0f);
+    return height + (CELL_CONTENT_MARGIN * 2);
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ([[[self theList] items] count] == 0) {
@@ -329,20 +348,21 @@
 #pragma mark -
 #pragma mark Action sheet delegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
+{
     if (!buttonIndex) return;
     
     if ([[self listItems] count] == 0 && buttonIndex == 1) {
         [self pickFromStash];
         return;
     }
-    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems", @"pickFromStash",nil];
+    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems", 
+                                @"pickFromStash",@"showListNote", nil];
     [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex- 1])];
 }
 
-- (void)deleteAllItems {
-    
+- (void)deleteAllItems 
+{
     BOOL isOk = [[self theList] deleteAllItems];
     if (!isOk) {
         [ErrorAlert showWithTitle:@"Error Deleting Items" andMessage:@"Items could not be deleted"];
@@ -351,28 +371,35 @@
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
-- (void)checkAllItems {
-    
+- (void)checkAllItems 
+{    
     NSPredicate *uncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
     [[self theList] setItemsMatching:uncheckedItems toCheckedState:1];
     [self filterItemsByCheckedState];
     [[self allItemsTableView] reloadData];
 }
 
-- (void)uncheckAllItems {
-    
+- (void)uncheckAllItems 
+{
     NSPredicate *checkedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 1"];
     [[self theList] setItemsMatching:checkedItems toCheckedState:0];
     [self filterItemsByCheckedState];
     [[self allItemsTableView] reloadData];
 }
 
-- (void)pickFromStash {
-    
+- (void)pickFromStash 
+{
     ItemStashViewController *isvc = [[ItemStashViewController alloc] initWithList:[self theList]];
     [self presentModalViewController:isvc animated:YES];
+    [isvc release];
 }
 
+- (void)showListNote 
+{
+    DisplayListNoteViewController *noteVc = [[DisplayListNoteViewController alloc] initWithList:[self theList]];
+    [self presentModalViewController:noteVc animated:YES];
+    [noteVc release];
+}
 
 #pragma mark -
 #pragma mark Cell checkbox methods
@@ -386,6 +413,15 @@
     [checkBoxBtn addTarget:self action:@selector(checkboxButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
     [cell setEditingAccessoryView:checkBoxBtn];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
+    [lbl setLineBreakMode:UILineBreakModeWordWrap];
+    [lbl setMinimumFontSize:14.0f];
+    [lbl setNumberOfLines:0];
+    [lbl setFont:[UIFont systemFontOfSize:14.0f]];
+    [lbl setTag:1];
+    [[cell contentView] addSubview:lbl];
+    [lbl release];
     return cell;
 }     
 
