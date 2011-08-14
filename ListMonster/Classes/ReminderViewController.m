@@ -260,7 +260,6 @@
 {
     DLog(@"didSelectRow");
     if ([indexPath row] == [lastSelectedIndexPath row]) return;
-    
     Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
     [self setSelectedSimpleDate:selected];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

@@ -21,7 +21,7 @@
 @end
 
 @interface MetaListItem : NSManagedObject <ReminderItemProtocol> {
-
+    BOOL reminderDateChanged;
 }
 
 @property (nonatomic, retain) NSNumber *isChecked;

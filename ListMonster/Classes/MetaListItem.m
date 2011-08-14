@@ -45,18 +45,20 @@
     [self setPrimitiveValue:@"New Item" forKey:@"name"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"quantity"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"isChecked"];
-/*    [self setName:@"New Item"];
-    [self setQuantity:[NSNumber numberWithInt:0]];
-    [self setIsChecked:INT_OBJ(0)]; */
 }
 
 - (void)willSave
 {
-    if (![self reminderDate]) return;
-    if ([[self reminderDate] timeIntervalSinceNow] <= 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:self];
-        return;
-    }
+    [super willSave];
+    if ([[self changedValues] valueForKey:@"reminderDate"])
+        reminderDateChanged = YES;
+}
+
+- (void)didSave
+{
+    [super didSave];
+    if (!reminderDateChanged) return;
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:self];
 }
 
 - (void)prepareForDeletion
