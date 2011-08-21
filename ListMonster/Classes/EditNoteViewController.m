@@ -48,6 +48,13 @@
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [backBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Enter Note", @"edit note view title")];
+    UIBarButtonItem *clearTextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", nil) 
+                                                                        style:UIBarButtonItemStylePlain 
+                                                                       target:self 
+                                                                       action:@selector(clearText:)];
+    [[self navigationItem] setRightBarButtonItem:clearTextButton];
+    [clearTextButton release];
+    
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     [[self view] addGestureRecognizer:tapRecognizer];
     [tapRecognizer release];
@@ -73,6 +80,11 @@
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
+}
+
+- (void)clearText:(id)sender
+{
+    [[self noteTextView] setText:nil];
 }
 
 - (void)dismissKeyboard:(id)sender {

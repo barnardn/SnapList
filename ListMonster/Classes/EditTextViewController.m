@@ -53,6 +53,16 @@
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
+    UIBarButtonItem *clearTextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", nil) 
+                                                                        style:UIBarButtonItemStylePlain 
+                                                                       target:self 
+                                                                       action:@selector(clearText:)];
+    [[self navigationItem] setRightBarButtonItem:clearTextButton];
+    [clearTextButton release];
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    [[self view] addGestureRecognizer:tapRecognizer];
+    [tapRecognizer release];
     [[self textView] becomeFirstResponder];
 }
 
@@ -66,15 +76,15 @@
     [[self item] setName:text];
 }
 
-#pragma mark -
-#pragma mark UITextField delegate methods
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField 
-{    
-    [[self textView] resignFirstResponder];
-    [[self navigationController] popViewControllerAnimated:YES];
-    return YES;
+- (void)clearText:(id)sender
+{
+    [[self textView] setText:nil];
 }
+
+- (void)dismissKeyboard:(id)sender {
+    [[self textView] resignFirstResponder];
+}
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

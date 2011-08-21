@@ -10,7 +10,7 @@
 #import "EditItemViewProtocol.h"
 @class MetaListItem;
 
-@interface EditTextViewController : UIViewController <UITextFieldDelegate, EditItemViewProtocol> {
+@interface EditTextViewController : UIViewController <EditItemViewProtocol> {
 
     UITextView *textView;
     NSString *viewTitle;
