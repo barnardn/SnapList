@@ -23,6 +23,7 @@ NSString *formatted_date(NSDate *date);
 NSString *dayname_for_date(NSDate *date);
 NSString *formatted_relative_date(NSDate *date);
 NSInteger date_diff(NSDate *fromDate, NSDate *toDate);
+NSDate *date_minus_seconds(NSDate *date);
 BOOL has_midnight_timecomponent(NSDate *date);
 NSString *formatted_time(NSDate *date);
 NSString *formatted_date_with_format_string(NSDate *date, NSString *formatString);

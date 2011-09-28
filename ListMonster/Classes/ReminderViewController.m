@@ -167,7 +167,10 @@
 
 - (IBAction)datePickerDateChanged:(id)sender 
 {
-    [self setSelectedReminderDate:[[self datePicker] date]];
+    NSDate *date = [[self datePicker] date];
+    NSDate *noSeconds = date_minus_seconds(date);
+    DLog(@"date without seconds: %@", noSeconds);
+    [self setSelectedReminderDate:noSeconds];
 }
 
 - (void)stopDateSelectorAnimation

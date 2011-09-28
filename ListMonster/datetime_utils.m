@@ -39,6 +39,14 @@ NSDate *today_at_midnight()
     
 }
 
+NSDate *date_minus_seconds(NSDate *date)
+{
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *components = [cal components:NSSecondCalendarUnit fromDate:date];
+    NSDate *noSeconds = [date dateByAddingTimeInterval:(-1 * [components second])];
+    return noSeconds;
+}
+
 NSDate *date_by_adding_days(NSDate *from_date, NSInteger num_days)
 {
     NSCalendar *cal = [NSCalendar currentCalendar];
