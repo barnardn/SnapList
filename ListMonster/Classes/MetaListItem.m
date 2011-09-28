@@ -25,8 +25,14 @@
     [self setPrimitiveValue:checkedState forKey:@"isChecked"];
     [self didChangeValueForKey:@"isChecked"];
     if ([checkedState intValue] == 1 && [self reminderDate]) {
+        if (NSOrderedAscending == [[self reminderDate] compare:[NSDate date]]) {
+            NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+            if (badgeNumber > 0)
+                badgeNumber--;
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+        }
         [self setReminderDate:nil];
-        [self cancelReminderDecrementingBadgeNumber:NO];
+        [self cancelReminder];
     }
 }
 
@@ -63,7 +69,7 @@
 
 - (void)prepareForDeletion
 {
-    [self cancelReminderDecrementingBadgeNumber:NO];
+    [self cancelReminder];
 }
 
 #pragma mark -
@@ -75,26 +81,24 @@
     if (![self reminderDate]) return;
     NSURL *itemUrl = [[self objectID] URIRepresentation];
     NSString *noficationKey = [NSString stringWithFormat:@"%@",itemUrl]; 
-    [self cancelReminderDecrementingBadgeNumber:NO];
+    [self cancelReminder];
     UILocalNotification *localNotice = [[UILocalNotification alloc] init];
     [localNotice setFireDate:[self reminderDate]];
     NSDictionary *infoDict = [NSDictionary dictionaryWithObject:noficationKey forKey:mliREMINDER_KEY];
-    [localNotice setUserInfo:infoDict];
+    [localNotice setUserInfo:infoDict];    
     [localNotice setApplicationIconBadgeNumber:1];
+    [localNotice setAlertBody:[self messageForNotificationAlert]];
+    [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
     [localNotice release];
     DLog(@"Scheduled new notification for %@", [localNotice fireDate]);
 }
 
-- (void)cancelReminderDecrementingBadgeNumber:(BOOL)shouldDecrement
+- (void)cancelReminder
 {
     UILocalNotification *reminder = [self findScheduledNofication];
     if (!reminder) return;
     [[UIApplication sharedApplication] cancelLocalNotification:reminder];
-    if (shouldDecrement) {
-        NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber-1];
-    }
 }
 
 - (UILocalNotification *)findScheduledNofication
@@ -111,11 +115,11 @@
 
 - (NSString *)messageForNotificationAlert
 {
-    NSString *msg;
-    if (has_midnight_timecomponent([self reminderDate]))
-        msg = [self name];
-    else
-        msg = [NSString stringWithFormat:@"%@ at %@", [self name], formatted_time([self reminderDate])];
+    NSString *msg = [self name];
+    NSArray *words = [[self name] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([words count] > mleMAX_REMINDER_WORDS) {
+        msg = [words componentsJoinedByString:@" "];
+    }
     return msg;
 }
 

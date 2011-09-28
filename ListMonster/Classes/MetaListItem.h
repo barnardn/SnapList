@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 #define mliREMINDER_KEY  @"SnaplistReminder"
+#define mleMAX_REMINDER_WORDS   10
 
 @class MetaList;
 
@@ -32,7 +33,7 @@
 
 
 - (BOOL)isComplete;
-- (void)cancelReminderDecrementingBadgeNumber:(BOOL)shouldDecrement;
+- (void)cancelReminder;
 - (NSString *)messageForNotificationAlert;
 - (UILocalNotification *)findScheduledNofication;
 - (NSString *)priorityName;

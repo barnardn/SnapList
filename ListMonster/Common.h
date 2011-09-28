@@ -25,3 +25,8 @@
 #define BOOL_OBJ(A)    ([NSNumber numberWithBool:(A)])
 #define YES_OBJ        ([NSNumber numberWithBool:YES])
 #define NO_OBJ         ([NSNumber numberWithBool:NO])
+
+
+#define NOTICE_LIST_UPDATE  @"updatelist"
+#define NOTICE_LIST_COUNTS  @"countchange"
+#define NOTICE_OVERDUE_ITEM @"overdueitem"

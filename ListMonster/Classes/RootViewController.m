@@ -33,6 +33,8 @@
 - (void)updateIncompleteCountForList:(MetaList *)list;
 //- (BOOL)removeOverdueItems:(NSMutableArray *)overdue fromDeletedList:(MetaList *)deletedList inTableView:(UITableView *)tableView;
 - (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
+- (NSArray *)overdueItemsSortCriteria;
+
 @end
 
 @implementation RootViewController
@@ -155,8 +157,35 @@
 
 - (void)didReceiveOverdueReminderNotification:(NSNotification *)notification
 {
-    [self setOverdueItems:[self loadOverdueItems]];
-    [[self tableView] reloadData];
+    if (![[self view] isHidden] || ![notification object]) {
+        [self setOverdueItems:[self loadOverdueItems]];    
+        [[self tableView] reloadData];
+        return;
+    } else {
+        MetaListItem *item = [notification object];
+        if (!item) {
+            [self setOverdueItems:[self loadOverdueItems]];    
+            [[self tableView] reloadData];
+            return;            
+        }
+        NSInteger notificationItemIndex = -1;
+        if (![self overdueItems]) {
+            [self setOverdueItems:[NSMutableArray arrayWithObject:item]];
+            notificationItemIndex = 0;
+        }
+        if ([[self overdueItems] count] > 1) {
+            NSArray *sortDescriptors = [self overdueItemsSortCriteria];
+            [[self overdueItems] sortUsingDescriptors:sortDescriptors];
+            notificationItemIndex = [[self overdueItems] indexOfObject:item];
+        }
+        if ([[self overdueItems] count] == 1) {
+            [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            NSArray *idxPaths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:notificationItemIndex inSection:0]];
+            [[self tableView] insertRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }
+    
 }
 
 - (void)updateIncompleteCountForList:(MetaList *)list 
@@ -433,11 +462,19 @@
 #pragma mark -
 #pragma mark Other core data related methods
 
-- (NSMutableArray *)loadOverdueItems
+- (NSArray *)overdueItemsSortCriteria 
 {
     NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
     NSSortDescriptor *byDate = [[[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES] autorelease];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:byDate,byName,nil];
+    return sortDescriptors;
+}
+
+
+
+- (NSMutableArray *)loadOverdueItems
+{
+    NSArray *sortDescriptors = [self overdueItemsSortCriteria];
     NSDate *tam = today_at_midnight();
     NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:SECONDS_PER_DAY]];
     NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];

@@ -19,6 +19,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 @interface ListMonsterAppDelegate()
 
 - (void)prefetchListColors;
+- (void)cancelRogueLocalNotifications;
 
 @end
 
@@ -45,11 +46,10 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
+    [self cancelRogueLocalNotifications];
     UILocalNotification *launchNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (launchNotification) {
-        [[UIApplication sharedApplication] cancelLocalNotification:launchNotification];
-        NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber-1];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
     }
     [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
@@ -63,18 +63,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
 // EditListItemView for that item
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[UIApplication sharedApplication] cancelLocalNotification:notification];
-    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber-1];
-    NSString *itemUrlString = [[notification userInfo] valueForKey:@"SnaplistReminder"];
-    NSURL *itemUrl = [NSURL  URLWithString:itemUrlString];
-    NSManagedObjectID *itemId = [[self persistentStoreCoordinator] managedObjectIDForURIRepresentation:itemUrl];
-    if (!itemId) return;
-    NSManagedObject *itemObj = [[self managedObjectContext] objectWithID:itemId];
-    if ([itemObj isFault]) return;
-    MetaListItem *item = (MetaListItem *)itemObj;
-    NSString *alertTitle = [[item list] name];
-    [ViewDetailsAlert showWithTitle:alertTitle message:[item messageForNotificationAlert]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -104,6 +94,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
 }
 
 
@@ -139,6 +130,16 @@ static ListMonsterAppDelegate *appDelegateInstance;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docPath = [paths objectAtIndex:0];
     return docPath;
+}
+
+- (void)cancelRogueLocalNotifications
+{
+    NSString *path = [NSString pathWithComponents:[NSArray arrayWithObjects:[self documentsFolder], @"rogue-notifications.dat", nil]];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        [[NSFileManager defaultManager] createFileAtPath:path contents:nil attributes:nil];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    }
 }
 
 
