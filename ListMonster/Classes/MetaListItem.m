@@ -25,12 +25,7 @@
     [self setPrimitiveValue:checkedState forKey:@"isChecked"];
     [self didChangeValueForKey:@"isChecked"];
     if ([checkedState intValue] == 1 && [self reminderDate]) {
-        if (NSOrderedAscending == [[self reminderDate] compare:[NSDate date]]) {
-            NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-            if (badgeNumber > 0)
-                badgeNumber--;
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-        }
+        [self decrementBadgeNumberForFiredNotification];
         [self setReminderDate:nil];
         [self cancelReminder];
     }
@@ -70,11 +65,22 @@
 - (void)prepareForDeletion
 {
     [self cancelReminder];
+    [self decrementBadgeNumberForFiredNotification];
 }
 
 #pragma mark -
 #pragma mark Reminder scheduling methods
 
+- (void)decrementBadgeNumberForFiredNotification
+{
+    if (NSOrderedAscending == [[self reminderDate] compare:[NSDate date]]) {
+        NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+        if (badgeNumber > 0)
+            badgeNumber--;
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+    }
+}
+        
 
 - (void)scheduleReminder
 {
