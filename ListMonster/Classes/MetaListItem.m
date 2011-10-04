@@ -31,6 +31,17 @@
     }
 }
 
+- (void)setReminderDate:(NSDate *)date
+{
+    NSDate *oldDate = [self primitiveValueForKey:@"reminderDate"];
+    if (oldDate && (NSOrderedAscending == [oldDate compare:date]))
+        [self decrementBadgeNumber];
+    [self willChangeValueForKey:@"reminderDate"];
+    [self setPrimitiveValue:date forKey:@"reminderDate"];
+    [self didChangeValueForKey:@"reminderDate"];    
+}
+
+
 - (BOOL)isComplete 
 {
     if (![self isChecked]) return NO;
@@ -73,14 +84,18 @@
 
 - (void)decrementBadgeNumberForFiredNotification
 {
-    if (NSOrderedAscending == [[self reminderDate] compare:[NSDate date]]) {
-        NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-        if (badgeNumber > 0)
-            badgeNumber--;
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-    }
+    if (NSOrderedAscending == [[self reminderDate] compare:[NSDate date]])
+        [self decrementBadgeNumber];
 }
-        
+
+- (void)decrementBadgeNumber
+{
+    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    if (badgeNumber > 0)
+        badgeNumber--;
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+
+}
 
 - (void)scheduleReminder
 {
@@ -91,8 +106,9 @@
     UILocalNotification *localNotice = [[UILocalNotification alloc] init];
     [localNotice setFireDate:[self reminderDate]];
     NSDictionary *infoDict = [NSDictionary dictionaryWithObject:noficationKey forKey:mliREMINDER_KEY];
-    [localNotice setUserInfo:infoDict];    
-    [localNotice setApplicationIconBadgeNumber:1];
+    [localNotice setUserInfo:infoDict];
+    NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
+    [localNotice setApplicationIconBadgeNumber:(badgeNumber + 1)];
     [localNotice setAlertBody:[self messageForNotificationAlert]];
     [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
@@ -105,6 +121,8 @@
     UILocalNotification *reminder = [self findScheduledNofication];
     if (!reminder) return;
     [[UIApplication sharedApplication] cancelLocalNotification:reminder];
+    if ([self reminderDate])
+        [self decrementBadgeNumberForFiredNotification];
 }
 
 - (UILocalNotification *)findScheduledNofication

@@ -96,6 +96,9 @@
         [[self datePicker] setHidden:YES];
         [[self simpleDateTable] setHidden:NO];
     }
+#ifdef DEBUG
+    [[self datePicker] setMinuteInterval:1];
+#endif
 }
 
 

@@ -38,5 +38,6 @@
 - (UILocalNotification *)findScheduledNofication;
 - (NSString *)priorityName;
 - (void)decrementBadgeNumberForFiredNotification;
+- (void)decrementBadgeNumber;
 
 @end
