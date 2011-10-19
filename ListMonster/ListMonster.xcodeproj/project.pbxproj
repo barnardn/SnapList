@@ -18,6 +18,7 @@
 		4937D80F1385930D00E7984D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 4937D7FD1385930D00E7984D /* Backgrounds */; };
 		494844BA13F84DCF00445ED7 /* DisplayListNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */; };
 		494844BE13F85F3A00445ED7 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 494844BD13F85F3A00445ED7 /* blueButton.png */; };
+		4950C220143E7DDF007E3633 /* ListItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4950C21F143E7DDF007E3633 /* ListItemCell.m */; };
 		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
 		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
 		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
@@ -36,14 +37,16 @@
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
+		498EE8BD144E570D00668052 /* radio-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8BB144E570D00668052 /* radio-off.png */; };
+		498EE8BE144E570D00668052 /* radio-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8BC144E570D00668052 /* radio-on.png */; };
+		498EE8C1144E572D00668052 /* radio-off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8BF144E572D00668052 /* radio-off@2x.png */; };
+		498EE8C2144E572D00668052 /* radio-on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8C0144E572D00668052 /* radio-on@2x.png */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
 		499B27CD13663AA700C4500C /* datetime_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B27CC13663AA700C4500C /* datetime_utils.m */; };
 		499CDAED13356AA00099F3C9 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEB13356AA00099F3C9 /* redButton.png */; };
 		499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEC13356AA00099F3C9 /* whiteButton.png */; };
-		499CDB0C1335721C0099F3C9 /* radio-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDB0A1335721C0099F3C9 /* radio-off.png */; };
-		499CDB0D1335721C0099F3C9 /* radio-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDB0B1335721C0099F3C9 /* radio-on.png */; };
 		499F4E08133AC4920048D35B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E06133AC4920048D35B /* Icon.png */; };
 		499F4E09133AC4920048D35B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E07133AC4920048D35B /* Icon@2x.png */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
@@ -97,6 +100,8 @@
 		494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayListNoteViewController.h; sourceTree = "<group>"; };
 		494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayListNoteViewController.m; sourceTree = "<group>"; };
 		494844BD13F85F3A00445ED7 /* blueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueButton.png; sourceTree = "<group>"; };
+		4950C21E143E7DDF007E3633 /* ListItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemCell.h; sourceTree = "<group>"; };
+		4950C21F143E7DDF007E3633 /* ListItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemCell.m; sourceTree = "<group>"; };
 		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
@@ -123,6 +128,10 @@
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
+		498EE8BB144E570D00668052 /* radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off.png"; sourceTree = "<group>"; };
+		498EE8BC144E570D00668052 /* radio-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-on.png"; sourceTree = "<group>"; };
+		498EE8BF144E572D00668052 /* radio-off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off@2x.png"; sourceTree = "<group>"; };
+		498EE8C0144E572D00668052 /* radio-on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-on@2x.png"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -131,8 +140,6 @@
 		499B27CC13663AA700C4500C /* datetime_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = datetime_utils.m; sourceTree = "<group>"; };
 		499CDAEB13356AA00099F3C9 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redButton.png; sourceTree = "<group>"; };
 		499CDAEC13356AA00099F3C9 /* whiteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteButton.png; sourceTree = "<group>"; };
-		499CDB0A1335721C0099F3C9 /* radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off.png"; sourceTree = "<group>"; };
-		499CDB0B1335721C0099F3C9 /* radio-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-on.png"; sourceTree = "<group>"; };
 		499F4E06133AC4920048D35B /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		499F4E07133AC4920048D35B /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
@@ -256,6 +263,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				498EE8BF144E572D00668052 /* radio-off@2x.png */,
+				498EE8C0144E572D00668052 /* radio-on@2x.png */,
+				498EE8BB144E570D00668052 /* radio-off.png */,
+				498EE8BC144E570D00668052 /* radio-on.png */,
 				494844BD13F85F3A00445ED7 /* blueButton.png */,
 				495FE5F413C3EF330074235B /* High.png */,
 				495FE5F513C3EF330074235B /* High@2x.png */,
@@ -279,8 +290,6 @@
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
-				499CDB0A1335721C0099F3C9 /* radio-off.png */,
-				499CDB0B1335721C0099F3C9 /* radio-on.png */,
 				499CDAEB13356AA00099F3C9 /* redButton.png */,
 				499306A3135FB07300ECBE16 /* ReminderView.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
@@ -307,6 +316,8 @@
 			children = (
 				4955B03A1323031500722C3F /* ListCell.h */,
 				4955B03B1323031500722C3F /* ListCell.m */,
+				4950C21E143E7DDF007E3633 /* ListItemCell.h */,
+				4950C21F143E7DDF007E3633 /* ListItemCell.m */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -480,8 +491,6 @@
 				4955B03E1323033E00722C3F /* ListCell.xib in Resources */,
 				499CDAED13356AA00099F3C9 /* redButton.png in Resources */,
 				499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */,
-				499CDB0C1335721C0099F3C9 /* radio-off.png in Resources */,
-				499CDB0D1335721C0099F3C9 /* radio-on.png in Resources */,
 				499F4E08133AC4920048D35B /* Icon.png in Resources */,
 				499F4E09133AC4920048D35B /* Icon@2x.png in Resources */,
 				49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */,
@@ -499,6 +508,10 @@
 				495FE5FE13C3EF330074235B /* Normal.png in Resources */,
 				495FE5FF13C3EF330074235B /* Normal@2x.png in Resources */,
 				494844BE13F85F3A00445ED7 /* blueButton.png in Resources */,
+				498EE8BD144E570D00668052 /* radio-off.png in Resources */,
+				498EE8BE144E570D00668052 /* radio-on.png in Resources */,
+				498EE8C1144E572D00668052 /* radio-off@2x.png in Resources */,
+				498EE8C2144E572D00668052 /* radio-on@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,6 +553,7 @@
 				49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */,
 				495FE3C813C379B00074235B /* PriorityViewController.m in Sources */,
 				494844BA13F84DCF00445ED7 /* DisplayListNoteViewController.m in Sources */,
+				4950C220143E7DDF007E3633 /* ListItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

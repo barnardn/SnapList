@@ -12,12 +12,6 @@
 #define livcSEGMENT_UNCHECKED   0
 #define livcSEGMENT_CHECKED     1
 
-#define FONT_SIZE 14.0f
-#define CELL_CONTENT_WIDTH 255.0f
-#define CELL_CONTENT_MARGIN 10.0f
-
-
-
 @class MetaList;
 @class MetaListItem;
 @class EditListItemViewController;
