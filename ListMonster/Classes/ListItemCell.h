@@ -13,6 +13,7 @@
 #define FONT_SIZE 14.0f
 #define CELL_CONTENT_WIDTH 255.0f
 #define CELL_CONTENT_MARGIN 5.0f
+#define CELL_ORIGIN_X 30.0f
 
 @interface ListItemCell : UITableViewCell
 
