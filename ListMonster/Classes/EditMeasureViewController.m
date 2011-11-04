@@ -1,0 +1,181 @@
+//
+//  EditMeasureViewController.m
+//  ListMonster
+//
+//  Created by Norm Barnard on 10/26/11.
+//  Copyright (c) 2011 clamdango.com. All rights reserved.
+//
+
+#import "EditMeasureViewController.h"
+#import "ListMonsterAppDelegate.h"
+#import "Measure.h"
+#import "MetaListItem.h"
+#import "NSArrayExtensions.h"
+
+@interface EditMeasureViewController()
+
+- (void)loadMeasureMeasurementSet:(BOOL)isMetric;
+
+@end
+
+
+@implementation EditMeasureViewController
+
+@synthesize unitSelector, measurePicker, currentMeasures;
+@synthesize backgroundImageFilename, selectedMeasure, item, viewTitle;
+
+
+- (id)initWithTitle:(id)aTitle listItem:(MetaListItem *)anItem;
+{
+    self = [super initWithNibName:@"EditMeasureView" bundle:nil];
+    if (!self) return nil;
+    [self setItem:anItem];
+    [self setViewTitle:aTitle];
+    return self;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
+{
+    return nil;
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") 
+                                                                style:UIBarButtonItemStylePlain 
+                                                               target:nil 
+                                                               action:nil];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    [backBtn release];
+    if ([self backgroundImageFilename]) {
+        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
+    }
+    [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
+    [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
+    [self loadMeasureMeasurementSet:NO];
+    [[self navigationItem] setTitle:viewTitle];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (![self selectedMeasure])
+        return;
+    [[self item] setUnitOfMeasure:[self selectedMeasure]];
+}
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    [self setUnitSelector:nil];
+    [self setMeasurePicker:nil];
+}
+
+- (void)dealloc {
+    [unitSelector release];
+    [measurePicker release];
+    [selectedMeasure release];
+    [viewTitle release];
+    [item release];
+    [super dealloc];
+}
+
+#pragma mark - Actions
+
+- (IBAction)UnitSelectorTapped:(id)sender 
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    bool isMetric = (emvMETRIC_UNIT_INDEX == [[self unitSelector] selectedSegmentIndex]);
+    [self loadMeasureMeasurementSet:isMetric];
+    selectedMeasureKey = nil;
+    selectedMeasure = nil;
+    [[self measurePicker] reloadAllComponents];
+    
+    [UIView commitAnimations];
+}
+
+#pragma mark - PickerView datasource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 2;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (emvMEASURE_COMPONENT_INDEX == component)
+        return [[[self currentMeasures] allKeys] count];
+    if (nil == selectedMeasureKey)
+        selectedMeasureKey = [[[self currentMeasures] allKeys] objectAtIndex:0];
+    NSArray *units = [[self currentMeasures] valueForKey:selectedMeasureKey];
+    return [units count];
+}
+
+#pragma mark - PickerView delegate
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSArray *componentList;
+    if (emvMEASURE_COMPONENT_INDEX == component)  { // measures
+        componentList = [[self currentMeasures] allKeys];
+        return [componentList objectAtIndex:row];
+    }
+    if (!selectedMeasureKey)
+        selectedMeasureKey = [[[self currentMeasures] allKeys] objectAtIndex:0];
+    componentList = [[self currentMeasures] objectForKey:selectedMeasureKey];
+    Measure *m = [componentList objectAtIndex:row];
+    return [m unit];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (emvMEASURE_COMPONENT_INDEX == component) {
+        NSArray *measures = [[self currentMeasures] allKeys];
+        selectedMeasureKey = [measures objectAtIndex:row];
+        [[self measurePicker] reloadComponent:emvUNIT_COMPONENT_INDEX];
+        return;
+    }
+    ZAssert(nil != selectedMeasureKey, @"Whoa, selected measure key is nil in pickerView:didSelectRow:inComponent");
+    NSArray *units = [[self currentMeasures] objectForKey:selectedMeasureKey];
+    [self setSelectedMeasure:[units objectAtIndex:row]];
+}
+
+
+#pragma mark - Methods
+
+- (void)loadMeasureMeasurementSet:(BOOL)isMetric
+{
+    NSArray *allMeasures = [[ListMonsterAppDelegate sharedAppDelegate] cacheObjectForKey:@"measures"];
+    if (!allMeasures) {
+        allMeasures = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] ;       
+        [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:allMeasures withKey:@"measures"];
+    }
+    NSArray *selectedMeasures = [allMeasures filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.isMetric == %d", (isMetric) ? 1 : 0]];
+    NSMutableDictionary *measureMap = [NSMutableDictionary dictionaryWithCapacity:0];
+    [selectedMeasures forEach:^ (id m) {
+        NSMutableArray *unitList = [measureMap objectForKey:[m measure]];
+        if (!unitList) {
+            unitList = [NSMutableArray arrayWithObject:m];
+            [measureMap setObject:unitList forKey:[m measure]];
+        } else {
+            [unitList addObject:m];
+        }
+    }];
+    [self setCurrentMeasures:measureMap];
+}
+
+
+
+@end

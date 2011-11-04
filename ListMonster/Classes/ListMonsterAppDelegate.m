@@ -25,7 +25,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @implementation ListMonsterAppDelegate
 
-@synthesize window, navController, allColors;
+@synthesize window, navController, allColors, cachedItems;
 
 - (id)init {
     
@@ -109,16 +109,16 @@ static ListMonsterAppDelegate *appDelegateInstance;
 #pragma mark -
 #pragma mark Memory management
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-    /*
-     Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
-     */
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application 
+{
+    [self flushCache];
 }
 
 - (void)dealloc 
 {
     [window release];
     [navController release];
+    [cachedItems release];
     [super dealloc];
 }
 
@@ -256,6 +256,26 @@ static ListMonsterAppDelegate *appDelegateInstance;
     }
     return resultSet;
 }
+
+#pragma mark - Cache methods
+
+- (void)addCacheObject:(id)object withKey:(NSString *)key
+{
+    [[self cachedItems] setObject:object forKey:key];
+}
+- (void)deleteCacheObjectForKey:(NSString *)key
+{
+    [[self cachedItems] removeObjectForKey:key];
+}
+- (id)cacheObjectForKey:(NSString *)key
+{
+    return [[self cachedItems] objectForKey:key];
+}
+- (void)flushCache
+{
+    [[self cachedItems] removeAllObjects];
+}
+
 
 
 #pragma mark -

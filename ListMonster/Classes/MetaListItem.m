@@ -7,6 +7,7 @@
 //
 
 #import "ListMonsterAppDelegate.h"
+#import "Measure.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -14,7 +15,7 @@
 
 @implementation MetaListItem
 
-@dynamic name, quantity, isChecked, list, reminderDate, priority;
+@dynamic name, quantity, isChecked, list, reminderDate, priority, unitOfMeasure;
 
 #pragma mark -
 #pragma mark Custom accessors

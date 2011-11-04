@@ -13,6 +13,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		491703B9145786750034437B /* Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 491703B8145786750034437B /* Measure.m */; };
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		4937D80F1385930D00E7984D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 4937D7FD1385930D00E7984D /* Backgrounds */; };
@@ -36,6 +37,8 @@
 		495FE5FF13C3EF330074235B /* Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495FE5F913C3EF330074235B /* Normal@2x.png */; };
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
+		498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498885421458D42600FC3294 /* EditMeasureViewController.m */; };
+		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		498EE8BD144E570D00668052 /* radio-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8BB144E570D00668052 /* radio-off.png */; };
 		498EE8BE144E570D00668052 /* radio-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EE8BC144E570D00668052 /* radio-on.png */; };
@@ -93,6 +96,8 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ListMonster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMonster_Prefix.pch; sourceTree = "<group>"; };
+		491703B7145786750034437B /* Measure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Measure.h; sourceTree = "<group>"; };
+		491703B8145786750034437B /* Measure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Measure.m; sourceTree = "<group>"; };
 		491EBE4E12EB744D0084BFCB /* ListNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListNameViewController.h; sourceTree = "<group>"; };
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
@@ -126,6 +131,9 @@
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
 		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
+		498885411458D42600FC3294 /* EditMeasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMeasureViewController.h; sourceTree = "<group>"; };
+		498885421458D42600FC3294 /* EditMeasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMeasureViewController.m; sourceTree = "<group>"; };
+		498885431458D42600FC3294 /* EditMeasureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditMeasureView.xib; path = Classes/EditMeasureView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		498EE8BB144E570D00668052 /* radio-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-off.png"; sourceTree = "<group>"; };
@@ -213,11 +221,11 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4955B038132302BC00722C3F /* Custom Table Cells */,
 				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
 				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
 				49F1810F12C935FB0066B454 /* Categories */,
 				49F180EA12C91C800066B454 /* CoreDataModels */,
+				4955B038132302BC00722C3F /* Custom Table Cells */,
 				1D3623240D0F684500981E51 /* ListMonsterAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ListMonsterAppDelegate.m */,
 				49BEEBC312EBBF8F0088707A /* Objects */,
@@ -263,23 +271,18 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				498EE8BF144E572D00668052 /* radio-off@2x.png */,
-				498EE8C0144E572D00668052 /* radio-on@2x.png */,
-				498EE8BB144E570D00668052 /* radio-off.png */,
-				498EE8BC144E570D00668052 /* radio-on.png */,
-				494844BD13F85F3A00445ED7 /* blueButton.png */,
-				495FE5F413C3EF330074235B /* High.png */,
-				495FE5F513C3EF330074235B /* High@2x.png */,
-				495FE5F613C3EF330074235B /* Low.png */,
-				495FE5F713C3EF330074235B /* Low@2x.png */,
-				495FE5F813C3EF330074235B /* Normal.png */,
-				495FE5F913C3EF330074235B /* Normal@2x.png */,
 				4937D7FD1385930D00E7984D /* Backgrounds */,
+				494844BD13F85F3A00445ED7 /* blueButton.png */,
 				49AD7A8712E39FDD006E6AC6 /* ColorSwatches */,
+				499306AD135FB82C00ECBE16 /* days-en_US.plist */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
+				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
+				498885431458D42600FC3294 /* EditMeasureView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
 				49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */,
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
+				495FE5F413C3EF330074235B /* High.png */,
+				495FE5F513C3EF330074235B /* High@2x.png */,
 				499F4E06133AC4920048D35B /* Icon.png */,
 				499F4E07133AC4920048D35B /* Icon@2x.png */,
 				498002D21353CFD7002B3D9B /* ItemStashView.xib */,
@@ -289,13 +292,19 @@
 				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
 				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
+				495FE5F613C3EF330074235B /* Low.png */,
+				495FE5F713C3EF330074235B /* Low@2x.png */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				495FE5F813C3EF330074235B /* Normal.png */,
+				495FE5F913C3EF330074235B /* Normal@2x.png */,
+				498EE8BB144E570D00668052 /* radio-off.png */,
+				498EE8BF144E572D00668052 /* radio-off@2x.png */,
+				498EE8BC144E570D00668052 /* radio-on.png */,
+				498EE8C0144E572D00668052 /* radio-on@2x.png */,
 				499CDAEB13356AA00099F3C9 /* redButton.png */,
 				499306A3135FB07300ECBE16 /* ReminderView.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
 				499CDAEC13356AA00099F3C9 /* whiteButton.png */,
-				499306AD135FB82C00ECBE16 /* days-en_US.plist */,
-				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -358,16 +367,18 @@
 		49F180EA12C91C800066B454 /* CoreDataModels */ = {
 			isa = PBXGroup;
 			children = (
-				49F180EB12C91CA40066B454 /* MetaListItem.h */,
-				49F180EC12C91CA40066B454 /* MetaListItem.m */,
-				49F180EE12C920AD0066B454 /* MetaList.h */,
-				49F180EF12C920AD0066B454 /* MetaList.m */,
 				49AD7A4C12E380D9006E6AC6 /* Category.h */,
 				49AD7A4D12E380D9006E6AC6 /* Category.m */,
-				49BEEBD112EBC3680088707A /* ListColor.h */,
-				49BEEBD212EBC3680088707A /* ListColor.m */,
 				49FDFF3C135233A400F6A3DA /* ItemStash.h */,
 				49FDFF3D135233A400F6A3DA /* ItemStash.m */,
+				49BEEBD112EBC3680088707A /* ListColor.h */,
+				49BEEBD212EBC3680088707A /* ListColor.m */,
+				491703B7145786750034437B /* Measure.h */,
+				491703B8145786750034437B /* Measure.m */,
+				49F180EE12C920AD0066B454 /* MetaList.h */,
+				49F180EF12C920AD0066B454 /* MetaList.m */,
+				49F180EB12C91CA40066B454 /* MetaListItem.h */,
+				49F180EC12C91CA40066B454 /* MetaListItem.m */,
 			);
 			name = CoreDataModels;
 			sourceTree = "<group>";
@@ -418,6 +429,8 @@
 				49F1814912C958F20066B454 /* RootViewController.m */,
 				495FE3C613C379B00074235B /* PriorityViewController.h */,
 				495FE3C713C379B00074235B /* PriorityViewController.m */,
+				498885411458D42600FC3294 /* EditMeasureViewController.h */,
+				498885421458D42600FC3294 /* EditMeasureViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -512,6 +525,7 @@
 				498EE8BE144E570D00668052 /* radio-on.png in Resources */,
 				498EE8C1144E572D00668052 /* radio-off@2x.png in Resources */,
 				498EE8C2144E572D00668052 /* radio-on@2x.png in Resources */,
+				498885451458D42600FC3294 /* EditMeasureView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +568,8 @@
 				495FE3C813C379B00074235B /* PriorityViewController.m in Sources */,
 				494844BA13F84DCF00445ED7 /* DisplayListNoteViewController.m in Sources */,
 				4950C220143E7DDF007E3633 /* ListItemCell.m in Sources */,
+				491703B9145786750034437B /* Measure.m in Sources */,
+				498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

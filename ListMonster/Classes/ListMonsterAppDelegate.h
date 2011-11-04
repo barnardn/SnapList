@@ -16,12 +16,14 @@
     NSManagedObjectModel *managedObjectModel;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
     NSArray *allColors;
+    NSMutableDictionary *cachedItems;
     
 }
 
 @property(nonatomic, retain) IBOutlet UIWindow *window;
 @property(nonatomic,retain) UINavigationController *navController;
 @property(nonatomic,retain) NSArray *allColors;
+@property(nonatomic,retain) NSMutableDictionary *cachedItems;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
 - (NSManagedObjectModel *)managedObjectModel;
@@ -30,8 +32,12 @@
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName;
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors;
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors filteredBy:(NSPredicate *)filter;
-
 - (NSString *)documentsFolder;
+
+- (void)addCacheObject:(id)object withKey:(NSString *)key;
+- (void)deleteCacheObjectForKey:(NSString *)key;
+- (id)cacheObjectForKey:(NSString *)key;
+- (void)flushCache;
 
 + (ListMonsterAppDelegate *)sharedAppDelegate;
 

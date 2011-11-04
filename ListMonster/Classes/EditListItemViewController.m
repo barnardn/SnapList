@@ -9,11 +9,13 @@
 #import "Alerts.h"
 #import "datetime_utils.h"
 #import "EditListItemViewController.h"
+#import "EditMeasureViewController.h"
 #import "EditNumberViewController.h"
 #import "EditTextViewController.h"
 #import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListColor.h"
+#import "Measure.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -160,7 +162,9 @@
                                          @"reminderDate", @"attrib", [ReminderViewController class], @"vc", nil];
     NSMutableDictionary *priorityDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Priority", @"title",
                                          @"priority", @"attrib", [PriorityViewController class], @"vc", nil];
-    NSArray *sects = [NSArray arrayWithObjects:nameDict, priorityDict, qtyDict, reminderDict, nil];
+    NSMutableDictionary *unitDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Units", @"title",
+                                     @"unitOfMeasure", @"attrib", [EditMeasureViewController class], @"vc", nil];
+    NSArray *sects = [NSArray arrayWithObjects:nameDict, priorityDict, qtyDict, unitDict, reminderDict, nil];
     [self setEditPropertySections:sects];
 }
 

@@ -13,6 +13,7 @@
 #define mleMAX_REMINDER_WORDS   10
 
 @class MetaList;
+@class Measure;
 
 @protocol ReminderItemProtocol
 
@@ -30,6 +31,7 @@
 @property (nonatomic, retain) NSNumber *quantity;
 @property (nonatomic, retain) MetaList *list;
 @property (nonatomic, retain) NSNumber *priority;
+@property (nonatomic, retain) Measure *unitOfMeasure;
 
 
 - (BOOL)isComplete;
