@@ -11,6 +11,7 @@
 
 #define livcSEGMENT_UNCHECKED   0
 #define livcSEGMENT_CHECKED     1
+#define livcSEGMENT_VIEW_TAG    1001
 
 @class MetaList;
 @class MetaListItem;

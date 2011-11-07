@@ -14,6 +14,7 @@
 #import "ListMonsterAppDelegate.h"
 #import "ListItemsViewController.h"
 #import "ListItemCell.h"
+#import "Measure.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -35,6 +36,7 @@
 - (void)addItem;
 - (void)pickFromStash;
 - (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath;
+- (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex;
 
 @end
 
@@ -185,10 +187,8 @@
     //TODO: revist this, not the most efficient.
     NSMutableArray *filteredItems = [[[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState] mutableCopy];
     [self setListItems:filteredItems];
-    [filteredItems forEach:^(id item) {
-        DLog(@"filtered name: %@", [item name]); 
-    }];
-    [filteredItems release];
+    [self updateCheckedStateCountWithFilteredItems:filteredItems usingSelectedIndex:selectedSegmentIdx];
+    [filteredItems release]; 
 }
 
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor {
@@ -196,6 +196,23 @@
     NSArray *allItems = [[[self theList] items] allObjects];
     NSSortDescriptor *bySortOrder = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
     return [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:bySortOrder, sortDescriptor, nil]];
+}
+
+- (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex
+{
+    UISegmentedControl *checkedStateSegCtrl = (UISegmentedControl *)[[self toolBar] viewWithTag:livcSEGMENT_VIEW_TAG];
+    int nComplete, nIncomplete;
+    if (livcSEGMENT_CHECKED == selectedIndex) {
+        nComplete = [filteredItems count];
+        nIncomplete = [[[self theList] items] count] - nComplete;
+    } else {
+        nIncomplete = [filteredItems count];
+        nComplete = [[[self theList] items] count] - nIncomplete;
+    }
+    [checkedStateSegCtrl setTitle:[NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"Incomplete",nil),nIncomplete] 
+                forSegmentAtIndex:livcSEGMENT_UNCHECKED];
+    [checkedStateSegCtrl setTitle:[NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"Complete", nil),nComplete] 
+                forSegmentAtIndex:livcSEGMENT_CHECKED];
 }
 
 - (void)editBtnPressed:(id)sender 
@@ -313,7 +330,8 @@
     [lbl setText:[item name]];
     NSNumber *qty = [item quantity];
     NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
-    [[cell detailTextLabel] setText:qtyString];
+    NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
 
 }
 

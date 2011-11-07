@@ -221,7 +221,12 @@
     if ([attrName isEqualToString:@"priority"]) {
         NSNumber *priority = attrValue;
         return [self priorityNameForValue:priority];
+    } else if ([attrName isEqualToString:@"unitOfMeasure"]) {
+        return [NSString stringWithFormat:@"%@ (%@)",
+                [[[self theItem] unitOfMeasure] unit],
+                [[[self theItem] unitOfMeasure] unitAbbreviation]];
     }
+        
     if ([attrValue isKindOfClass:[NSNumber class]]) {
         NSNumber *qty = attrValue;
         return ([qty intValue] > 0) ? [qty stringValue] : @"";
