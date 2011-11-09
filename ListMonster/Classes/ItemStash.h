@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
+@class Measure;
 
 @interface ItemStash : NSManagedObject {
 
@@ -15,8 +16,8 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber *quantity;
+@property (nonatomic, retain) Measure *unitOfMeasure;
 
-+ (void)addToStash:(NSString *)itemName quantity:(NSNumber *)quantity;
-
++ (void)addToStash:(NSString *)itemName quantity:(NSNumber *)quantity measure:(Measure *)measure;
 
 @end

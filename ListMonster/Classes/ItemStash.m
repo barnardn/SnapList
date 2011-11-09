@@ -8,17 +8,18 @@
 
 #import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
+#import "Measure.h"
 
 @implementation ItemStash
 
-@dynamic name, quantity;
+@dynamic name, quantity, unitOfMeasure;
 
 
 // add an item to the item stash using a local managed object context so as to 
 // not mess up transactions at the app level moc.
 //
-+ (void)addToStash:(NSString *)itemName quantity:(NSNumber *)quantity {
-    
++ (void)addToStash:(NSString *)itemName quantity:(NSNumber *)quantity measure:(Measure *)measure;
+{
     NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
     [ctx setPersistentStoreCoordinator:[[ListMonsterAppDelegate sharedAppDelegate] persistentStoreCoordinator]];
     NSFetchRequest *fetchStashItems = [[NSFetchRequest alloc] init];
@@ -42,6 +43,10 @@
         [stashItem setName:itemName];
     }
     [stashItem setQuantity:quantity];
+    
+    if (measure)
+        [stashItem setUnitOfMeasure:[Measure findMatchingMeasure:measure inManagedObjectContext:ctx]];
+    
     error = nil;
     [ctx save:&error];
     if (error) {

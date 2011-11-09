@@ -10,6 +10,7 @@
 #import "ItemStashViewController.h"
 #import "ItemStash.h"
 #import "ListMonsterAppDelegate.h"
+#import "Measure.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 
@@ -93,22 +94,6 @@
     [navItem release];
 }
 
-/*
-- (void)editPressed:(id)sender {
-    
-    if ([self isEditing]) {
-        [sender setTitle:NSLocalizedString(@"Edit", @"edit title")];
-        [sender setStyle:UIBarButtonItemStylePlain];
-        [self setEditing:NO animated:YES];
-        
-    } else {
-        [sender setTitle:NSLocalizedString(@"Done", @"done title")];
-        [sender setStyle:UIBarButtonItemStyleDone];
-        [self setEditing:YES animated:YES];
-    }
-}
-*/
-
 - (void)cancelPressed:(id)sender {
     [self dismissModalView];
 }
@@ -124,6 +109,10 @@
     [newItem setName:[selectedItem name]];
     if ([selectedItem quantity])
         [newItem setQuantity:[selectedItem quantity]];
+    if ([selectedItem unitOfMeasure]) {
+        Measure *measure = [Measure findMatchingMeasure:[selectedItem unitOfMeasure] inManagedObjectContext:moc];
+        [newItem setUnitOfMeasure:measure];
+    }
     [[self theList] addItem:newItem];
     NSError *error = nil;
     [moc save:&error];
@@ -165,8 +154,12 @@
     }
     ItemStash *item = [[self resultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[item name]];
+    NSString *qtyText = @"", *unitText = @"";
     if ([item quantity])
-        [[cell detailTextLabel] setText:[[item quantity] stringValue]];
+        qtyText = [[item quantity] stringValue];
+    if ([item unitOfMeasure])
+        unitText = [[item unitOfMeasure] unitAbbreviation];
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyText, unitText]];
     return cell;
 }
 

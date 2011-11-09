@@ -328,14 +328,10 @@
 
 - (void)addItemEditsToStash 
 {
-    NSString *stashName = [[[self editPropertySections] objectAtIndex:0] valueForKey:@"name"];
-    NSString *qtyString = [[[self editPropertySections] objectAtIndex:1] valueForKey:@"quantity"];
-    NSNumber *qty = [NSNumber numberWithString:qtyString];
-    if (!stashName)
-        stashName = [[self theItem] name];
-    if (!qty)
-        qty = [[self theItem] quantity];
-    [ItemStash addToStash:stashName quantity:qty];
+    NSString *stashName = [[self theItem] name];
+    NSNumber *stashQty = [[self theItem] quantity];
+    Measure *stashMeasure = [[self theItem] unitOfMeasure];
+    [ItemStash addToStash:stashName quantity:stashQty measure:stashMeasure];
 }
 
 - (void)savePendingItemChanges 

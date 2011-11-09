@@ -23,4 +23,6 @@
 @property (nonatomic, retain) NSSet *itemStash;
 @property (nonatomic, retain) NSSet *items;
 
++ (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc;
+
 @end
