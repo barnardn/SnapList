@@ -25,4 +25,6 @@
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc;
 
+- (BOOL) isMetricUnit;
+
 @end

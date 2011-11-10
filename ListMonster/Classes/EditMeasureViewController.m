@@ -14,7 +14,8 @@
 
 @interface EditMeasureViewController()
 
-- (void)loadMeasureMeasurementSet:(BOOL)isMetric;
+- (void)loadMeasurementSet:(BOOL)isMetric;
+- (void)setupUIWithDefaultMeasure:(Measure *)measure; 
 
 @end
 
@@ -61,15 +62,14 @@
     }
     [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
-    [self loadMeasureMeasurementSet:NO];
+    [self loadMeasurementSet:[[[self item] unitOfMeasure] isMetricUnit]];
+    [self setupUIWithDefaultMeasure:[[self item] unitOfMeasure]];
     [[self navigationItem] setTitle:viewTitle];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (![self selectedMeasure])
-        return;
     [[self item] setUnitOfMeasure:[self selectedMeasure]];
 }
 
@@ -98,7 +98,7 @@
     [UIView setAnimationBeginsFromCurrentState:YES];
     
     bool isMetric = (emvMETRIC_UNIT_INDEX == [[self unitSelector] selectedSegmentIndex]);
-    [self loadMeasureMeasurementSet:isMetric];
+    [self loadMeasurementSet:isMetric];
     selectedMeasureKey = nil;
     selectedMeasure = nil;
     [[self measurePicker] reloadAllComponents];
@@ -117,8 +117,9 @@
 {
     if (emvMEASURE_COMPONENT_INDEX == component)
         return [[[self currentMeasures] allKeys] count];
-    if (nil == selectedMeasureKey)
+    if (nil == selectedMeasureKey) {
         selectedMeasureKey = [[[self currentMeasures] allKeys] objectAtIndex:0];
+    }
     NSArray *units = [[self currentMeasures] valueForKey:selectedMeasureKey];
     return [units count];
 }
@@ -132,8 +133,9 @@
         componentList = [[self currentMeasures] allKeys];
         return [componentList objectAtIndex:row];
     }
-    if (!selectedMeasureKey)
+    if (!selectedMeasureKey) {
         selectedMeasureKey = [[[self currentMeasures] allKeys] objectAtIndex:0];
+    }
     componentList = [[self currentMeasures] objectForKey:selectedMeasureKey];
     Measure *m = [componentList objectAtIndex:row];
     return [m unit];
@@ -145,6 +147,12 @@
         NSArray *measures = [[self currentMeasures] allKeys];
         selectedMeasureKey = [measures objectAtIndex:row];
         [[self measurePicker] reloadComponent:emvUNIT_COMPONENT_INDEX];
+        if (0 == row) {
+            selectedMeasure = nil;
+        } else {        // default to the first item in the unit wheel
+            NSArray *units = [[self currentMeasures] objectForKey:selectedMeasureKey];
+            [self setSelectedMeasure:[units objectAtIndex:0]];
+        }
         return;
     }
     ZAssert(nil != selectedMeasureKey, @"Whoa, selected measure key is nil in pickerView:didSelectRow:inComponent");
@@ -155,11 +163,11 @@
 
 #pragma mark - Methods
 
-- (void)loadMeasureMeasurementSet:(BOOL)isMetric
+- (void)loadMeasurementSet:(BOOL)isMetric
 {
     NSArray *allMeasures = [[ListMonsterAppDelegate sharedAppDelegate] cacheObjectForKey:@"measures"];
     if (!allMeasures) {
-        allMeasures = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] ;       
+        allMeasures = [[[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] mutableCopy];
         [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:allMeasures withKey:@"measures"];
     }
     NSArray *selectedMeasures = [allMeasures filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.isMetric == %d", (isMetric) ? 1 : 0]];
@@ -175,6 +183,21 @@
     }];
     [self setCurrentMeasures:measureMap];
 }
+
+- (void)setupUIWithDefaultMeasure:(Measure *)measure 
+{
+    if (!measure) return;
+    if ([measure isMetricUnit])
+        [[self unitSelector] setSelectedSegmentIndex:emvMETRIC_UNIT_INDEX];
+    selectedMeasureKey = [measure measure];
+    NSInteger measureRow = [[[self currentMeasures] allKeys] indexOfObject:selectedMeasureKey];
+    NSInteger unitRow = [[[self currentMeasures] objectForKey:selectedMeasureKey] indexOfObject:measure];
+    [[self measurePicker] selectRow:measureRow inComponent:emvMEASURE_COMPONENT_INDEX animated:YES];
+    [[self measurePicker] selectRow:unitRow inComponent:emvUNIT_COMPONENT_INDEX animated:YES];
+    [self setSelectedMeasure:measure];
+}
+
+
 
 
 

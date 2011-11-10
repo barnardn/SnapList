@@ -38,4 +38,11 @@
     return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
 }
 
+- (BOOL) isMetricUnit
+{
+    if (![self isMetric]) return NO;
+    return (1 == [[self isMetric] intValue]);
+}
+
+
 @end
