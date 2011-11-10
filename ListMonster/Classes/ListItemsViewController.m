@@ -88,6 +88,7 @@
                                                                target:self 
                                                                action:@selector(editBtnPressed:)];
     [self setEditBtn:btn];
+    [btn release];  // prof rcmd
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
     if ([[self theList] color]) {
@@ -285,7 +286,7 @@
     if (isEmtpyList) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
         if (!cell)
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmptyCell"];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmptyCell"] autorelease];
         [self configureForEmtpyList:cell];
         return cell;
     }

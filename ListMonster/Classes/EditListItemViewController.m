@@ -265,7 +265,7 @@
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
     [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
-    
+    [vc release];  // prof rcmd
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

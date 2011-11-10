@@ -54,6 +54,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
+    [rvc release];  // profiler reccomendation
     [[self window] addSubview:[navController view]];
     [[self window] makeKeyAndVisible];
     return YES;

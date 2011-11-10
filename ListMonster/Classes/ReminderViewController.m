@@ -247,7 +247,7 @@
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
     }
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
     if (dow == [self selectedSimpleDate] && !lastSelectedIndexPath) {

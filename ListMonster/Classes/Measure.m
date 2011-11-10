@@ -33,7 +33,6 @@
     NSArray *soughtMeasure = [moc executeFetchRequest:matchingUnitFetch error:&error];
     if (error) {
         DLog(@"Unable to fetch a meatching measure items", [error localizedDescription]);
-        [matchingUnitFetch release];
         return nil;
     }
     return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;

@@ -30,6 +30,7 @@
     if (error) {
         DLog(@"Unable to fetch stashed items", [error localizedDescription]);
         [fetchStashItems release];
+        [ctx release];  // prof rcmd
         return;
     }
     [fetchStashItems release];

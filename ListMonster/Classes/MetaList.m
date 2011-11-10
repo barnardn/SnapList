@@ -13,7 +13,6 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSStringExtensions.h"
-#import "RegexKitLite.h"
 
 @interface MetaList()
 
@@ -87,8 +86,7 @@
 - (NSString *)excerptOfLength:(NSInteger)numWords {
     
     if ([[self note] length] <= 0) return nil;
-    
-    NSArray *words = [[self note] componentsSeparatedByRegex:@"\\s+"];
+    NSArray *words = [[self note] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ([words count] < numWords)
         return [self note];
 
