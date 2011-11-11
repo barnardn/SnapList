@@ -149,8 +149,10 @@
     if ([[self listItems] count] > 0) {
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Delete All", @"delete all action button")];
         [actionSheet setDestructiveButtonIndex:1];
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Complete",@"check all")];
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Incomplete", @"uncheck all")];
+        if ([[self checkedState] selectedSegmentIndex] == livcSEGMENT_CHECKED)
+            [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Incomplete", @"uncheck all")];
+        else
+            [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Complete",@"check all")];
     }
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
     [actionSheet addButtonWithTitle:NSLocalizedString(@"View List Note", nil)];
@@ -432,7 +434,12 @@
         [self pickFromStash];
         return;
     }
-    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", @"checkAllItems", @"uncheckAllItems", 
+    NSString *checkStateSelector = nil;
+    if (livcSEGMENT_CHECKED == [[self checkedState] selectedSegmentIndex])
+        checkStateSelector = @"uncheckAllItems";
+    else
+        checkStateSelector = @"checkAllItems";
+    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", checkStateSelector, 
                                 @"pickFromStash",@"showListNote", nil];
     [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex- 1])];
 }

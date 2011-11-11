@@ -120,6 +120,28 @@
 
 @end
 
+#pragma mark - Confirmation Alert
+
+@implementation ConfirmationAlert
+
++ (BOOL)showMessage:(NSString *)message withTitle:(NSString *)title
+{
+    CFRunLoopRef curLoop = CFRunLoopGetCurrent();
+    ModalAlertDelegate *ead = [[ModalAlertDelegate alloc] initWithRunloop:curLoop];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:ead cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil];
+    [alert show];
+    CFRunLoopRun();
+    
+    [alert release];
+    [ead release];  
+    return NO;
+}
+
+@end
+
+
+
 #pragma mark -
 #pragma mark View Details Alert
 

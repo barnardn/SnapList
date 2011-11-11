@@ -16,6 +16,12 @@
 
 @end
 
+@interface ConfirmationAlert : NSObject
+
++ (BOOL)showMessage:(NSString *)message withTitle:(NSString *)title;
+
+@end
+
 @interface ViewDetailsAlert : NSObject
 
 + (BOOL)showWithTitle:(NSString *)title message:(NSString *)message;
