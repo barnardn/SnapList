@@ -22,7 +22,7 @@
 
 @implementation EditMeasureViewController
 
-@synthesize unitSelector, measurePicker, currentMeasures;
+@synthesize unitSelector, measurePicker, currentMeasures, defaultUnitSelection;
 @synthesize backgroundImageFilename, selectedMeasure, item, viewTitle;
 
 
@@ -40,11 +40,23 @@
     return nil;
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
+- (NSInteger)defaultUnitSelection
+{
+    NSNumber *unitIdx = [[ListMonsterAppDelegate sharedAppDelegate] cacheObjectForKey:@"defaultUnit"];
+    return (!unitIdx) ? 0 : [unitIdx intValue];
+}
+
+- (void)setDefaultUnitSelection:(NSInteger)unitIdx;
+{
+    NSNumber *idxObj = [NSNumber numberWithInt:unitIdx];
+    [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:idxObj withKey:@"defaultUnit"];
+}
+
 
 #pragma mark - View lifecycle
 
@@ -96,13 +108,12 @@
 {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationBeginsFromCurrentState:YES];
-    
     bool isMetric = (emvMETRIC_UNIT_INDEX == [[self unitSelector] selectedSegmentIndex]);
     [self loadMeasurementSet:isMetric];
     selectedMeasureKey = nil;
     selectedMeasure = nil;
     [[self measurePicker] reloadAllComponents];
-    
+    [self setDefaultUnitSelection:[[self unitSelector] selectedSegmentIndex]];
     [UIView commitAnimations];
 }
 
@@ -186,7 +197,10 @@
 
 - (void)setupUIWithDefaultMeasure:(Measure *)measure 
 {
-    if (!measure) return;
+    if (!measure) {
+        [[self unitSelector] setSelectedSegmentIndex:[self defaultUnitSelection]];
+        return;
+    }
     if ([measure isMetricUnit])
         [[self unitSelector] setSelectedSegmentIndex:emvMETRIC_UNIT_INDEX];
     selectedMeasureKey = [measure measure];

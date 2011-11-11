@@ -399,18 +399,20 @@
 		49F1814712C958880066B454 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
-				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
 				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
 				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
 				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
 				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
+				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
+				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
 				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
 				49EAC1D8131AED39003738FD /* EditCategoryViewController.m */,
 				495D8411130E088800933720 /* EditListItemViewController.h */,
 				495D8412130E088800933720 /* EditListItemViewController.m */,
 				49A0205312E5256A005B1D0E /* EditListViewController.h */,
 				49A0205412E5256A005B1D0E /* EditListViewController.m */,
+				498885411458D42600FC3294 /* EditMeasureViewController.h */,
+				498885421458D42600FC3294 /* EditMeasureViewController.m */,
 				49C94290134FAB640045D4F6 /* EditNoteViewController.h */,
 				49C94291134FAB640045D4F6 /* EditNoteViewController.m */,
 				49C7BFE2136AF7ED003F3FAA /* EditNumberViewController.h */,
@@ -423,14 +425,12 @@
 				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
 				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
 				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
+				495FE3C613C379B00074235B /* PriorityViewController.h */,
+				495FE3C713C379B00074235B /* PriorityViewController.m */,
 				499306A1135FB07300ECBE16 /* ReminderViewController.h */,
 				499306A2135FB07300ECBE16 /* ReminderViewController.m */,
 				49F1814812C958F20066B454 /* RootViewController.h */,
 				49F1814912C958F20066B454 /* RootViewController.m */,
-				495FE3C613C379B00074235B /* PriorityViewController.h */,
-				495FE3C713C379B00074235B /* PriorityViewController.m */,
-				498885411458D42600FC3294 /* EditMeasureViewController.h */,
-				498885421458D42600FC3294 /* EditMeasureViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";

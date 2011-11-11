@@ -21,6 +21,7 @@
 @interface EditMeasureViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, EditItemViewProtocol>
 {
     NSString *selectedMeasureKey;
+    NSInteger defaultUnitSelection;
 }
 
 
@@ -31,6 +32,7 @@
 @property (retain, nonatomic) Measure *selectedMeasure;
 @property (retain, nonatomic) MetaListItem *item;
 @property (retain, nonatomic) NSString *viewTitle;
+@property (assign) NSInteger defaultUnitSelection;
 
 - (IBAction)UnitSelectorTapped:(id)sender;
 
