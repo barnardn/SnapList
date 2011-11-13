@@ -149,10 +149,13 @@
 
 - (void)dismissMyself {
     [self resignFirstResponder];
-    if (![self navigationController])
-        [[self parentViewController] dismissModalViewControllerAnimated:YES];
-    else
-        [[self navigationController] popViewControllerAnimated:YES];
+    if (![self navigationController]) {
+        if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+            [[self parentViewController] dismissModalViewControllerAnimated:YES];
+        else
+            [[self presentingViewController] dismissModalViewControllerAnimated:YES];
+    }
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 #pragma mark -

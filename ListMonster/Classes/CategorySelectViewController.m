@@ -22,6 +22,7 @@
 @implementation CategorySelectViewController
 
 @synthesize resultsController, theList, newCategory, selectedCategory;
+@synthesize lastSelectedIndexPath;
 
 #pragma mark -
 #pragma mark Initialization
@@ -67,6 +68,7 @@
     [resultsController release];
     [newCategory release];
     [selectedCategory release];
+    [lastSelectedIndexPath release];
     [super dealloc];
 }
 
@@ -89,6 +91,7 @@
     [[self navigationItem] setTitle:NSLocalizedString(@"Select Category", @"category selection only view title")];
     [backBtn release];
     [editBtn release];
+    [self setLastSelectedIndexPath:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -131,6 +134,7 @@
 
 - (void)addBtnPressed:(id)sender {
     
+    [self setLastSelectedIndexPath:nil];
     EditCategoryViewController *ecvc = [[EditCategoryViewController alloc] initWithList:[self theList]];
     [ecvc setDelegate:self];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
@@ -166,11 +170,11 @@
     [[cell textLabel] setText:[cat name]];
     
     Category *listCategory = [[self theList] category];
-    BOOL isSelectedCategory = (NSOrderedSame == [[cat name] compare:[listCategory name]]);
-    if (isSelectedCategory && !lastSelectedIndexPath) {
+    BOOL isSelectedCategory = (NSOrderedSame == [[listCategory name] compare:[cat name]]);
+    if (isSelectedCategory && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
         [self setSelectedCategory:listCategory];
-        lastSelectedIndexPath = indexPath;
+        [self setLastSelectedIndexPath:indexPath];
     }
     return cell;
 }
@@ -188,17 +192,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if (indexPath == lastSelectedIndexPath) return;
+    if ([self lastSelectedIndexPath] && ([indexPath row] == [[self lastSelectedIndexPath] row])) return;
     Category *category = [[self resultsController] objectAtIndexPath:indexPath];
     [self setSelectedCategory:category];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    if (lastSelectedIndexPath) {
-        UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
+    if ([self lastSelectedIndexPath]) {
+        UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];
         [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    lastSelectedIndexPath = indexPath;
+    [self setLastSelectedIndexPath:indexPath];
     
 }
 

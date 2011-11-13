@@ -34,7 +34,6 @@
     NSString *backgroundImageFilename;
     NSString *viewTitle;
     Tuple *selectedSimpleDate;
-    NSIndexPath *selectedIndexPath;
     NSIndexPath *lastSelectedIndexPath;
 }
 
@@ -46,6 +45,8 @@
 @property(nonatomic,retain) NSDate *selectedReminderDate;  // for picker only!?!?!?
 @property(nonatomic,retain) NSString *viewTitle;
 @property(nonatomic,retain) Tuple *selectedSimpleDate;
+@property(nonatomic,retain) NSIndexPath *lastSelectedIndexPath;
+
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(id<ReminderItemProtocol>)anItem; // designated initializer
 - (IBAction)dateSelectionModeChanged:(id)sender;

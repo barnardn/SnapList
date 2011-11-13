@@ -19,6 +19,7 @@
 @property(nonatomic,retain) NSArray *priorityList;
 @property(nonatomic,retain) MetaListItem *theItem;
 @property(nonatomic,retain) NSString *backgroundImageFilename;
+@property(nonatomic,retain) NSIndexPath *lastIndexPath;
 
 -(id)initWithTitle:(NSString *)title listItem:(MetaListItem *)anItem;
 @end

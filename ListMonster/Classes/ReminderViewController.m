@@ -24,7 +24,7 @@
 
 @synthesize selectedReminderDate, dateSelectionMode, datePicker, simpleDateTable; 
 @synthesize simpleDates, reminderItem, backgroundImageFilename, viewTitle;
-@synthesize selectedSimpleDate;
+@synthesize selectedSimpleDate, lastSelectedIndexPath;
 
 - (id)initWithTitle:(id)aTitle listItem:(id<ReminderItemProtocol>)item;
 {
@@ -62,6 +62,7 @@
     [simpleDates release];
     [backgroundImageFilename release];
     [viewTitle release];
+    [lastSelectedIndexPath release];
     [super dealloc];
 }
 
@@ -246,13 +247,12 @@
 {
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
+    if (!cell)
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
-    }
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
-    if (dow == [self selectedSimpleDate] && !lastSelectedIndexPath) {
+    if (dow == [self selectedSimpleDate] && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        lastSelectedIndexPath = indexPath;
+        [self setLastSelectedIndexPath:indexPath];
     }
     [[cell textLabel] setText:[dow first]];
     return cell;
@@ -265,15 +265,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DLog(@"didSelectRow");
-    if ([indexPath row] == [lastSelectedIndexPath row]) return;
+    if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
     Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
     [self setSelectedSimpleDate:selected];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
+    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    lastSelectedIndexPath = indexPath;
+    [self setLastSelectedIndexPath:indexPath];
 }
 
 @end

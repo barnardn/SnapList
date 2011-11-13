@@ -12,7 +12,7 @@
 
 @implementation PriorityViewController
 
-@synthesize priorityList, theItem, backgroundImageFilename;
+@synthesize priorityList, theItem, backgroundImageFilename, lastIndexPath;
 
 #pragma mark -
 #pragma mark Initialization
@@ -54,9 +54,11 @@
 }
 
 
-- (void)dealloc {
-    [self setPriorityList:nil];
-    [self setTheItem:nil];
+- (void)dealloc 
+{
+    [priorityList release];
+    [theItem release];
+    [lastIndexPath release];
     [super dealloc];
 }
 
@@ -74,35 +76,9 @@
     }
 }
 
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
-
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -127,18 +103,16 @@
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (cell == nil)
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        //[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
     Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
     NSNumber *priorityVal = [t first];
     NSNumber *itemPriority = [[self theItem] priority];
     if (!itemPriority)
         itemPriority = INT_OBJ(0);
-    if ([priorityVal isEqualToNumber:itemPriority] && !lastIndexPath) {
+    if ([priorityVal isEqualToNumber:itemPriority] && ![self lastIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        lastIndexPath = indexPath;
+        [self setLastIndexPath:indexPath];
     }
     NSString *priorityName = [t second];
     [[cell textLabel] setText:priorityName];
@@ -151,16 +125,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if ([indexPath row] == [lastIndexPath row]) return;
+    if ([indexPath row] == [[self lastIndexPath] row]) return;
     UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
     DLog(@"cell text: %@", [[cell textLabel] text]);
-    UITableViewCell *lastCell = [[self tableView ]  cellForRowAtIndexPath:lastIndexPath];
+    UITableViewCell *lastCell = [[self tableView ]  cellForRowAtIndexPath:[self lastIndexPath]];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
     NSNumber *priorityVal = [t first];
     [[self theItem] setPriority:priorityVal];
-    lastIndexPath = indexPath;
+    [self setLastIndexPath:indexPath];
     [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -35,6 +35,7 @@
 - (void)deleteItem;
 - (void)toggleCompletedState;
 - (NSString *)priorityNameForValue:(NSNumber *)priorityValue;
+- (void)dismissModalViewWithIOS5Compliance;
 
 @end
 
@@ -142,14 +143,21 @@
 {
     skipSaveLogic = YES;
     [[self delegate] editListItemViewController:self didCancelEditOnNewItem:[self theItem]];
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewWithIOS5Compliance];
 }
 
 - (void)donePressed:(id)sender
 {
     [[self delegate] editListItemViewController:self didAddNewItem:[self theItem]];
-    //[self savePendingItemChanges];
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewWithIOS5Compliance];
+}
+
+- (void)dismissModalViewWithIOS5Compliance
+{
+    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self presentingViewController] dismissModalViewControllerAnimated:YES];    
 }
 
 - (void)preparePropertySections 

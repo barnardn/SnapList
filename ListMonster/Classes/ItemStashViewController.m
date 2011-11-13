@@ -125,8 +125,12 @@
     [self dismissModalView];
 }
 
-- (void)dismissModalView {
-    [[self parentViewController] dismissModalViewControllerAnimated:YES]; 
+- (void)dismissModalView 
+{
+    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self presentingViewController] dismissModalViewControllerAnimated:YES];    
 }
 
 #pragma mark -

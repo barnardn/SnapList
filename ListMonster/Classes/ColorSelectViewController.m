@@ -13,7 +13,7 @@
 
 @implementation ColorSelectViewController
 
-@synthesize allColors, theList;
+@synthesize allColors, theList, lastSelectedIndexPath;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -50,11 +50,13 @@
 - (void)dealloc {
     [allColors release];
     [theList release];
+    [lastSelectedIndexPath release];
     [super dealloc];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setLastSelectedIndexPath:nil];
 }
 
 
@@ -74,8 +76,8 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -88,9 +90,9 @@
     
     NSNumber *selectRgb = [[[self theList] color] rgbValue];
     BOOL isSelectedColor = (NSOrderedSame == [[color rgbValue] compare:selectRgb]);
-    if (isSelectedColor && !lastSelectedIndexPath) {
+    if (isSelectedColor && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        lastSelectedIndexPath = indexPath;
+        [self setLastSelectedIndexPath:indexPath];
     }
     return cell;
 }
@@ -100,15 +102,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if (indexPath == lastSelectedIndexPath) return;
+    if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
     [[self theList] setColor:color];
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:lastSelectedIndexPath];
+    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];
     [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
     [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    lastSelectedIndexPath = indexPath;
+    [self setLastSelectedIndexPath:indexPath];
 
 }
 

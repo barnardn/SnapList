@@ -65,7 +65,10 @@
 
 - (IBAction)dismissButtonPressed:(id)sender
 {
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self presentingViewController] dismissModalViewControllerAnimated:YES];    
 }
 
 #pragma mark -

@@ -24,6 +24,7 @@
 - (void)doneAction;
 - (void)dismissView;
 - (BOOL)haveValidList;
+- (void)dismissModalViewWithIOS5Compliance;
 
 @end
 
@@ -162,9 +163,17 @@
 - (void)dismissView {
     
     if ([self isNewList])
-        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+        [self dismissModalViewWithIOS5Compliance];
     else
         [[self navigationController] popViewControllerAnimated:YES];
+}
+
+- (void)dismissModalViewWithIOS5Compliance
+{
+    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self presentingViewController] dismissModalViewControllerAnimated:YES];    
 }
 
 - (BOOL)haveValidList {

@@ -27,6 +27,7 @@
 @property(nonatomic,retain) NSFetchedResultsController *resultsController;
 @property(nonatomic,retain) Category *newCategory;
 @property(nonatomic,retain) Category *selectedCategory;
+@property(nonatomic,retain) NSIndexPath *lastSelectedIndexPath;
 
 - (id)initWithList:(MetaList *)aList;
 

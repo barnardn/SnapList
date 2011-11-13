@@ -21,6 +21,7 @@
 
 @property(nonatomic,retain) NSArray *allColors;
 @property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,retain) NSIndexPath *lastSelectedIndexPath;
 
 - (id)initWithList:(MetaList *)aList;
 
