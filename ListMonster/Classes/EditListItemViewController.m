@@ -306,6 +306,7 @@
             break;
         case 1:
             saveRequired = NO;
+            break;
         case 2:
             [self toggleCompletedState];
             break;	
@@ -315,7 +316,7 @@
     }
     if (!saveRequired) return;
     if ([self isModal])
-        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+        [self dismissModalViewWithIOS5Compliance];
     else
         [[self navigationController] popViewControllerAnimated:YES];
 
@@ -336,10 +337,10 @@
 
 - (void)addItemEditsToStash 
 {
-    NSString *stashName = [[self theItem] name];
-    NSNumber *stashQty = [[self theItem] quantity];
-    Measure *stashMeasure = [[self theItem] unitOfMeasure];
-    [ItemStash addToStash:stashName quantity:stashQty measure:stashMeasure];
+    [self savePendingItemChanges];
+    if ([self isModal])
+        [[self delegate] editListItemViewController:self didAddNewItem:[self theItem]];
+    [ItemStash addToStash:[self theItem]];
 }
 
 - (void)savePendingItemChanges 

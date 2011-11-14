@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 clamdango.com. All rights reserved.
 //
 
+#import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaListItem.h"
 
@@ -17,17 +18,14 @@
 @dynamic unitAbbreviation;
 @dynamic isMetric;
 @dynamic sortOrder;
-
-@dynamic itemStash;
+@dynamic unitIdentifier;
 @dynamic items;
-
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc
 {
     NSFetchRequest *matchingUnitFetch = [[[NSFetchRequest alloc] init] autorelease];
     [matchingUnitFetch setEntity:[NSEntityDescription entityForName:@"Measure" inManagedObjectContext:moc]];
-    NSPredicate *byMatchingMeasure = [NSPredicate predicateWithFormat:@"isMetric == %@ and unit == %@ and measure == %@", 
-                                      [measure isMetric],[measure unit], [measure measure]];
+    NSPredicate *byMatchingMeasure = [NSPredicate predicateWithFormat:@"unitIdentifier = %d", [measure unitIdentifier]];
     [matchingUnitFetch setPredicate:byMatchingMeasure];
     NSError *error = nil;
     NSArray *soughtMeasure = [moc executeFetchRequest:matchingUnitFetch error:&error];
@@ -36,6 +34,24 @@
         return nil;
     }
     return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
+}
+
++ (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc
+{
+    NSFetchRequest *matchingUnitFetch = [[[NSFetchRequest alloc] init] autorelease];
+    if (!moc)
+        moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    [matchingUnitFetch setEntity:[NSEntityDescription entityForName:@"Measure" inManagedObjectContext:moc]];
+    NSPredicate *byMatchingMeasure = [NSPredicate predicateWithFormat:@"unitIdentifier = %@", identifier];
+    [matchingUnitFetch setPredicate:byMatchingMeasure];
+    NSError *error = nil;
+    NSArray *soughtMeasure = [moc executeFetchRequest:matchingUnitFetch error:&error];
+    if (error) {
+        DLog(@"Unable to fetch a meatching measure items", [error localizedDescription]);
+        return nil;
+    }
+    return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
+
 }
 
 - (BOOL) isMetricUnit

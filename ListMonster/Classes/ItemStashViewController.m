@@ -107,10 +107,10 @@
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     MetaListItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"MetaListItem" inManagedObjectContext:moc];
     [newItem setName:[selectedItem name]];
-    if ([selectedItem quantity])
-        [newItem setQuantity:[selectedItem quantity]];
-    if ([selectedItem unitOfMeasure]) {
-        Measure *measure = [Measure findMatchingMeasure:[selectedItem unitOfMeasure] inManagedObjectContext:moc];
+    [newItem setQuantity:[selectedItem quantity]];
+    [newItem setPriority:[selectedItem priority]];
+    if ([selectedItem unitIdentifier]) {
+        Measure *measure = [Measure findMeasureMatchingIdentifier:[selectedItem unitIdentifier] inManagedObjectContext:moc];
         [newItem setUnitOfMeasure:measure];
     }
     [[self theList] addItem:newItem];
@@ -156,13 +156,21 @@
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    ItemStash *item = [[self resultsController] objectAtIndexPath:indexPath];
+    ItemStash *item = (ItemStash *)[[self resultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[item name]];
     NSString *qtyText = @"", *unitText = @"";
     if ([item quantity])
         qtyText = [[item quantity] stringValue];
-    if ([item unitOfMeasure])
-        unitText = [[item unitOfMeasure] unitAbbreviation];
+    if ([item unitIdentifier]) {
+        Measure *unitOfMeasure = [Measure findMeasureMatchingIdentifier:[item unitIdentifier] inManagedObjectContext:[item managedObjectContext]];
+        unitText = [unitOfMeasure unitAbbreviation];
+    }
+    if ([item priority]) {
+        if (![[item priority] isEqualToNumber:INT_OBJ(0)]) {
+            NSString *priorityName = [ItemStash nameForPriority:[item priority]];
+            [[cell imageView] setImage:[UIImage imageNamed:priorityName]];
+        }
+    }
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyText, unitText]];
     return cell;
 }

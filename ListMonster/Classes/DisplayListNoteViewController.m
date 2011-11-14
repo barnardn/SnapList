@@ -156,7 +156,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if ([indexPath section] == 0) return;
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+        [[self parentViewController] dismissModalViewControllerAnimated:YES];
+    else
+        [[self presentingViewController] dismissModalViewControllerAnimated:YES];   
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

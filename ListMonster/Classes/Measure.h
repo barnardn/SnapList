@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class MetaListItem;
-@class ItemStash;
+@class Measure;
 
 @interface Measure : NSManagedObject
 
@@ -19,11 +19,11 @@
 @property (nonatomic, retain) NSString *unitAbbreviation;
 @property (nonatomic, retain) NSNumber *isMetric;
 @property (nonatomic, retain) NSNumber *sortOrder;
-
-@property (nonatomic, retain) NSSet *itemStash;
+@property (nonatomic, retain) NSNumber *unitIdentifier;
 @property (nonatomic, retain) NSSet *items;
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc;
++ (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc;
 
 - (BOOL) isMetricUnit;
 

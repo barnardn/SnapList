@@ -8,16 +8,18 @@
 
 #import <CoreData/CoreData.h>
 
+@class MetaListItem;
 @class Measure;
 
 @interface ItemStash : NSManagedObject {
-
 }
 
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
-@property (nonatomic, retain) Measure *unitOfMeasure;
+@property (nonatomic, retain) NSNumber *unitIdentifier;
+@property (nonatomic, retain) NSNumber *priority;
 
-+ (void)addToStash:(NSString *)itemName quantity:(NSNumber *)quantity measure:(Measure *)measure;
++ (void)addToStash:(MetaListItem *)anItem;
++ (NSString *)nameForPriority:(NSNumber *)priority;
 
 @end

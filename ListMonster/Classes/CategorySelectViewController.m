@@ -171,6 +171,8 @@
     
     Category *listCategory = [[self theList] category];
     BOOL isSelectedCategory = (NSOrderedSame == [[listCategory name] compare:[cat name]]);
+    if (!listCategory) isSelectedCategory = NO;
+    
     if (isSelectedCategory && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
         [self setSelectedCategory:listCategory];
@@ -192,7 +194,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if ([self lastSelectedIndexPath] && ([indexPath row] == [[self lastSelectedIndexPath] row])) return;
+    if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
     Category *category = [[self resultsController] objectAtIndexPath:indexPath];
     [self setSelectedCategory:category];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

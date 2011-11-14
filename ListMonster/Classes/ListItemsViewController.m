@@ -317,7 +317,6 @@
     UIImage *priorityImage = nil;
     if (![[item priority] isEqualToNumber:INT_OBJ(0)]) {
         NSString *priorityName = [item priorityName];
-        DLog(@"Priority image name: %@", priorityName);
         priorityImage = [UIImage imageNamed:priorityName];
     }
     [cell setNormalModeImage:priorityImage];    
@@ -343,6 +342,7 @@
     ListItemCell *cell = [[[ListItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease]; 
     
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
+    [lbl setBackgroundColor:[UIColor clearColor]];
     [lbl setLineBreakMode:UILineBreakModeWordWrap];
     [lbl setMinimumFontSize:14.0f];
     [lbl setNumberOfLines:0];
