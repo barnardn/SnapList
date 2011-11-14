@@ -37,6 +37,7 @@
 - (void)pickFromStash;
 - (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath;
 - (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex;
+- (void)enableToolbarItems:(BOOL)enabled;
 
 @end
 
@@ -83,7 +84,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[self navigationItem] setTitle:[[self theList] name]];
-    UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"edit button") 
+    UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select", @"edit button") 
                                                                 style:UIBarButtonItemStylePlain 
                                                                target:self 
                                                                action:@selector(editBtnPressed:)];
@@ -163,7 +164,7 @@
 - (void)cancelBtnPressed:(id)sender {
     [self setInEditMode:NO];
     [self rollbackAnyChanges];
-    [[self editBtn] setTitle:NSLocalizedString(@"Edit", @"edit button")];
+    [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
     [self toggleCancelButton:[self inEditMode]];
     for (NSIndexPath *p in [[self allItemsTableView] indexPathsForVisibleRows]) {
         MetaListItem *item = [[self listItems] objectAtIndex:[p row]];
@@ -174,6 +175,7 @@
             [cell setEditModeImage:[UIImage imageNamed:@"radio-off"]];
     }
     [[self allItemsTableView] setEditing:NO animated:YES];
+    [self enableToolbarItems:YES];
 }
 
 - (IBAction)checkedStateValueChanged:(id)sender {
@@ -222,15 +224,17 @@
 {
     if ([self inEditMode]) {
         [self setInEditMode:NO];
-        [[self editBtn] setTitle:NSLocalizedString(@"Edit", @"edit button")];
+        [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
         [[self editBtn] setStyle:UIBarButtonItemStylePlain];
         [self commitAnyChanges];
         [self filterItemsByCheckedState];
+        [self enableToolbarItems:YES];
 
     } else {
         [self setInEditMode:YES];
         [[self editBtn] setTitle:NSLocalizedString(@"Done", @"done button")];
         [[self editBtn] setStyle:UIBarButtonItemStyleDone];
+        [self enableToolbarItems:NO];
     }
     [[self allItemsTableView] setEditing:[self inEditMode] animated:YES];
     [self toggleCancelButton:[self inEditMode]];
@@ -238,6 +242,14 @@
     if (![self inEditMode]) 
         [[self allItemsTableView] reloadData];
 }
+
+- (void)enableToolbarItems:(BOOL)enabled
+{
+    [[self checkedState] setEnabled:enabled];
+    [[self addItemBtn] setEnabled:enabled];
+    [[self moreActionsBtn] setEnabled:enabled];
+}
+
 
 - (void)toggleCancelButton:(BOOL)editMode {
     
