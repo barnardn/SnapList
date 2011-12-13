@@ -69,6 +69,7 @@
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
 		49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */; };
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
+		49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
 		49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */; };
@@ -76,7 +77,6 @@
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
 		49F180E312C914340066B454 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F180E212C914340066B454 /* CoreData.framework */; };
-		49F180E712C9153A0066B454 /* ListMonster.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */; };
 		49F180ED12C91CA40066B454 /* MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F180EC12C91CA40066B454 /* MetaListItem.m */; };
 		49F180F012C920AD0066B454 /* MetaList.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F180EF12C920AD0066B454 /* MetaList.m */; };
 		49F1812312C9364E0066B454 /* NSArrayExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F1812212C9364E0066B454 /* NSArrayExtensions.m */; };
@@ -175,6 +175,8 @@
 		49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNumberViewController.m; sourceTree = "<group>"; };
 		49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNumberView.xib; path = Classes/EditNumberView.xib; sourceTree = "<group>"; };
 		49C7C00D136B0ADE003F3FAA /* EditItemViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemViewProtocol.h; sourceTree = "<group>"; };
+		49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 2.xcdatamodel"; sourceTree = "<group>"; };
+		49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListMonster.xcdatamodel; sourceTree = "<group>"; };
 		49C94290134FAB640045D4F6 /* EditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNoteViewController.h; sourceTree = "<group>"; };
 		49C94291134FAB640045D4F6 /* EditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNoteViewController.m; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
@@ -185,7 +187,6 @@
 		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
 		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
 		49F180E212C914340066B454 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ListMonster.xcdatamodel; sourceTree = "<group>"; };
 		49F180EB12C91CA40066B454 /* MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaListItem.h; sourceTree = "<group>"; };
 		49F180EC12C91CA40066B454 /* MetaListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaListItem.m; sourceTree = "<group>"; };
 		49F180EE12C920AD0066B454 /* MetaList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaList.h; sourceTree = "<group>"; };
@@ -290,7 +291,7 @@
 				495EABF813083F5700F4A64E /* ListItemsView.xib */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
 				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
-				49F180E612C9153A0066B454 /* ListMonster.xcdatamodel */,
+				49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */,
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
 				495FE5F613C3EF330074235B /* Low.png */,
 				495FE5F713C3EF330074235B /* Low@2x.png */,
@@ -538,7 +539,6 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ListMonsterAppDelegate.m in Sources */,
-				49F180E712C9153A0066B454 /* ListMonster.xcdatamodel in Sources */,
 				49F180ED12C91CA40066B454 /* MetaListItem.m in Sources */,
 				49F180F012C920AD0066B454 /* MetaList.m in Sources */,
 				49F1812312C9364E0066B454 /* NSArrayExtensions.m in Sources */,
@@ -570,6 +570,7 @@
 				4950C220143E7DDF007E3633 /* ListItemCell.m in Sources */,
 				491703B9145786750034437B /* Measure.m in Sources */,
 				498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */,
+				49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,6 +671,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
+				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
+			);
+			currentVersion = 49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */;
+			path = ListMonster.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

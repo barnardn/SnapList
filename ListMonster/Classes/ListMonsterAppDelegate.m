@@ -177,10 +177,15 @@ static ListMonsterAppDelegate *appDelegateInstance;
         }
     }
     NSURL *url = [NSURL fileURLWithPath:dbPath];
+   NSDictionary *storeOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  BOOL_OBJ(YES), NSMigratePersistentStoresAutomaticallyOption,
+                                  BOOL_OBJ(YES), NSInferMappingModelAutomaticallyOption,
+                                  nil];
     NSManagedObjectModel *mom = [self managedObjectModel];
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    
     NSError *error = nil;
-    if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&error]) {
+    if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:storeOptions error:&error]) {
         return persistentStoreCoordinator;
     }
     [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
