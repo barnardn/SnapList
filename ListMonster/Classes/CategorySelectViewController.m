@@ -157,8 +157,8 @@
     return [sectInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -181,8 +181,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
         [self deleteCategory:cat];
@@ -194,7 +194,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
+    if ([self lastSelectedIndexPath] && ([indexPath row] == [[self lastSelectedIndexPath] row])) return;
     Category *category = [[self resultsController] objectAtIndexPath:indexPath];
     [self setSelectedCategory:category];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -208,7 +208,8 @@
     
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
+{
     Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
     
     EditCategoryViewController *ecvc = [[EditCategoryViewController alloc] initWithList:[self theList]];

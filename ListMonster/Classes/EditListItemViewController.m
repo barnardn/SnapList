@@ -326,6 +326,7 @@
 {
     [[self theList] removeItem:[self theItem]];
     [[[self theList] managedObjectContext] deleteObject:[self theItem]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_UPDATE object:[self theList]];
 }
 
 - (void)toggleCompletedState

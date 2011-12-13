@@ -46,7 +46,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
-    [self cancelRogueLocalNotifications];
+//    [self cancelRogueLocalNotifications];
     [self setCachedItems:[NSMutableDictionary dictionaryWithCapacity:0]];
     UILocalNotification *launchNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (launchNotification) {
