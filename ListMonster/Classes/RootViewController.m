@@ -34,6 +34,7 @@
 //- (BOOL)removeOverdueItems:(NSMutableArray *)overdue fromDeletedList:(MetaList *)deletedList inTableView:(UITableView *)tableView;
 - (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
 - (NSArray *)overdueItemsSortCriteria;
+- (void)setBackgroundView;
 
 @end
 
@@ -95,6 +96,10 @@
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
     [self setAllLists:[self loadAllLists]];
     [self setOverdueItems:[self loadOverdueItems]];
+    [self setBackgroundView];
+    
+    
+    
     [[self tableView] reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(didReceiveListCountChangeNotification:) 
@@ -109,6 +114,14 @@
                                                  name:NOTICE_OVERDUE_ITEM 
                                                object:nil];
 }
+
+- (void)setBackgroundView
+{
+    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
+    [[self tableView] setBackgroundView:bgView];
+    [bgView release];    
+}
+
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated 
 {

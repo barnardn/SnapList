@@ -18,7 +18,7 @@
 
 @implementation ListNameViewController
 
-@synthesize textField, theList;
+@synthesize textField, theList, backgroundImageView;
 
 - (id)initWithList:(MetaList *)aList {
     
@@ -40,6 +40,7 @@
     [[self textField] setPlaceholder:NSLocalizedString(@"Enter list name", @"list name textfield placeholder")];
     if ([[self theList] name]) 
         [[self textField] setText:[[self theList] name]];
+    [[self backgroundImageView] setImage:[UIImage imageNamed:@"Backgrounds/normal"]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -72,12 +73,14 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     [self setTextField:nil];
+    [self setBackgroundImageView:nil];
 }
 
 
 - (void)dealloc {
     [textField release];
     [theList release];
+    [backgroundImageView release];
     [super dealloc];
 }
 

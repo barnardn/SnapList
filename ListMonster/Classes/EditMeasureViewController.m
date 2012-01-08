@@ -71,6 +71,8 @@
     [backBtn release];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
+    } else {
+        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Backgrounds/normal"]]];        
     }
     [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];

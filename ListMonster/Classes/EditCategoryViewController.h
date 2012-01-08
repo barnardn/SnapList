@@ -15,6 +15,7 @@
 
 @interface EditCategoryViewController : UIViewController <UITextFieldDelegate> {
 
+    UIImageView *backgroundImageView;
     UITextField *categoryNameField; 
     Category *category;
     MetaList *theList;
@@ -23,6 +24,7 @@
     
 }
 
+@property(nonatomic,retain) IBOutlet UIImageView *backgroundImageView;
 @property(nonatomic,retain) IBOutlet UITextField *categoryNameField;
 @property(nonatomic,retain) Category *category;
 @property(nonatomic,retain) UINavigationBar *navBar;

@@ -12,7 +12,7 @@
 
 @implementation EditNoteViewController
 
-@synthesize noteTextView, theList;
+@synthesize noteTextView, theList, backgroundImageView;
 
 
 - (id)initWithList:(MetaList *)list {
@@ -29,13 +29,14 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [self setNoteTextView:nil];
+    [self setBackgroundImageView:nil];
 }
 
 - (void)dealloc {
     [theList release];
     [noteTextView release];
+    [backgroundImageView release];
     [super dealloc];
 }
 

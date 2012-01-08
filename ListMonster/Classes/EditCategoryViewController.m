@@ -23,7 +23,7 @@
 @implementation EditCategoryViewController
 
 @synthesize categoryNameField, category, navBar, delegate, theList;
-
+@synthesize backgroundImageView;
 
 - (id)initWithList:(MetaList *)aList {
     
@@ -47,8 +47,9 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    [self setBackgroundImageView:nil];
+    [self setCategoryNameField:nil];
+    [self setNavBar:nil];
 }
 
 
@@ -56,6 +57,7 @@
     [navBar release];
     [categoryNameField release];
     [category release];
+    [backgroundImageView release];
     [super dealloc];
 }
 
@@ -65,6 +67,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];    
+    [[self backgroundImageView] setImage:[UIImage imageNamed:@"Backgrounds/normal"]];
     if (![self navigationController]) {
         [self setNavBar:[self navigationBarForModalView]];
         [[self view] addSubview:[self navBar]];

@@ -13,11 +13,13 @@
 
 @interface ListNameViewController : UIViewController <UITextFieldDelegate> {
 
-    IBOutlet UITextField *textField;
+    UITextField *textField;
+    UIImageView *backgroundImageView;
     MetaList *theList;
 }
 
-@property(nonatomic,retain) UITextField *textField;
+@property(nonatomic,retain) IBOutlet UIImageView *backgroundImageView;
+@property(nonatomic,retain) IBOutlet UITextField *textField;
 @property(nonatomic,retain) MetaList *theList;
 
 -(id)initWithList:(MetaList *)aList;

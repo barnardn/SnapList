@@ -86,6 +86,9 @@
     }
     [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
     [[self navigationItem] setRightBarButtonItem:[self doneButton]];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
+    [[self tableView] setBackgroundView:backgroundView];
+    [backgroundView release];
 }
 
 

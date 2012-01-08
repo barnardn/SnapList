@@ -57,6 +57,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setLastSelectedIndexPath:nil];
+    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
+    [[self tableView] setBackgroundView:backgroundView];
+    [backgroundView release];
 }
 
 
