@@ -73,6 +73,7 @@
 {
     [super viewDidLoad];
     [[self datePicker] setMinimumDate:today_at_midnight()];
+    DLog(@"setting date to: %@", [NSDate date]);
     [[self datePicker] setDate:[NSDate date]];
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") 
                                                                 style:UIBarButtonItemStylePlain 

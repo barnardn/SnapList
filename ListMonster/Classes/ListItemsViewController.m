@@ -51,6 +51,9 @@
     self = [super initWithNibName:@"ListItemsView" bundle:nil];
     if (!self) return nil;
     [self setTheList:aList];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTICE_LIST_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveListChangeNotification:) name:NOTICE_LIST_UPDATE object:nil];
+
     return self;
 }
 
@@ -68,6 +71,7 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [backgroundImageFilename release];
     [listItems release];
     [allItemsTableView release];
@@ -434,6 +438,13 @@
     [cell setEditModeImage:radioStateImage];
 }
 
+
+#pragma mark - list changed notification methods
+
+- (void)didReceiveListChangeNotification:(NSNotification *)notification
+{
+    [[self allItemsTableView] reloadData];
+}
 
 #pragma mark -
 #pragma mark Action sheet delegate
