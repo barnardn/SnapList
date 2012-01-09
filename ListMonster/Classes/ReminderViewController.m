@@ -109,6 +109,8 @@
     [super viewWillDisappear:animated];
     NSInteger selectedMode = [[self dateSelectionMode] selectedSegmentIndex];
     if (selectedMode == rvSIMPLE_MODE) {
+        
+        if (![self selectedSimpleDate]) return;
         NSInteger daysOffset = [[[self selectedSimpleDate] second] intValue];
         if (daysOffset < 0) {
             [[self reminderItem] setReminderDate:nil];
@@ -148,7 +150,6 @@
 
 - (IBAction)dateSelectionModeChanged:(id)sender 
 {    
-
     CGContextRef gfxContext = UIGraphicsGetCurrentContext();
     [UIView beginAnimations:nil context:gfxContext];
     [UIView setAnimationDidStopSelector:@selector(stopDateSelectorAnimation)];
