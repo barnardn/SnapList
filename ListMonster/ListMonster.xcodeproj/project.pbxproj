@@ -37,6 +37,7 @@
 		495FE5FF13C3EF330074235B /* Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495FE5F913C3EF330074235B /* Normal@2x.png */; };
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
+		49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49851B3B14BA749800CBB385 /* TableHeaderView.m */; };
 		498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498885421458D42600FC3294 /* EditMeasureViewController.m */; };
 		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
@@ -131,6 +132,8 @@
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
 		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
+		49851B3A14BA749800CBB385 /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
+		49851B3B14BA749800CBB385 /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		498885411458D42600FC3294 /* EditMeasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMeasureViewController.h; sourceTree = "<group>"; };
 		498885421458D42600FC3294 /* EditMeasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMeasureViewController.m; sourceTree = "<group>"; };
 		498885431458D42600FC3294 /* EditMeasureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditMeasureView.xib; path = Classes/EditMeasureView.xib; sourceTree = "<group>"; };
@@ -265,6 +268,8 @@
 				499B27CB13663AA700C4500C /* datetime_utils.h */,
 				499B27CC13663AA700C4500C /* datetime_utils.m */,
 				49C7C00D136B0ADE003F3FAA /* EditItemViewProtocol.h */,
+				49851B3A14BA749800CBB385 /* TableHeaderView.h */,
+				49851B3B14BA749800CBB385 /* TableHeaderView.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -571,6 +576,7 @@
 				491703B9145786750034437B /* Measure.m in Sources */,
 				498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */,
 				49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */,
+				49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

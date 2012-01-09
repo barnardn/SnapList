@@ -18,6 +18,7 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "RootViewController.h"
+#import "TableHeaderView.h"
 
 @interface RootViewController()
 
@@ -97,8 +98,6 @@
     [self setAllLists:[self loadAllLists]];
     [self setOverdueItems:[self loadOverdueItems]];
     [self setBackgroundView];
-    
-    
     
     [[self tableView] reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -271,19 +270,6 @@
     if (haveOverdueItems) section--;
     NSArray *listArr = [[self allLists] objectForKey:[[self categoryNameKeys] objectAtIndex:section]];
     return [listArr count];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
-{
-    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    if ((section == 0) && haveOverdueItems)
-        return NSLocalizedString(@"Reminders", nil);
-    
-    if ([[self allLists] count] == 0)
-        return @"";
-    if (haveOverdueItems)
-        section--;
-    return [[self categoryNameKeys] objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -471,6 +457,46 @@
 {
     return 54.0f;
 }
+/*
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if ((section == 0) && haveOverdueItems)
+        return NSLocalizedString(@"Reminders", nil);
+    
+    if ([[self allLists] count] == 0)
+        return @"";
+    if (haveOverdueItems)
+        section--;
+    return [[self categoryNameKeys] objectAtIndex:section];
+}
+*/
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *emptyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)] autorelease];
+    [emptyLabel setBackgroundColor:[UIColor clearColor]];
+    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
+    if ((section == 0) && haveOverdueItems)
+        return emptyLabel;
+    if ([[self allLists] count] == 0)
+        return emptyLabel;
+    if (haveOverdueItems)
+        section--;
+    NSString *headerTitle = [[self categoryNameKeys] objectAtIndex:section];
+    TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:headerTitle];
+    return [header autorelease];
+/*    [emptyLabel setTextColor:[UIColor blackColor]];
+    [emptyLabel setText:[[self categoryNameKeys] objectAtIndex:section]];
+    return emptyLabel; */
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 24.0f;
+}
+
+
 
 #pragma mark -
 #pragma mark Other core data related methods
