@@ -24,7 +24,6 @@
     if (!self) return nil;
     
     UIFont *headerFont = [UIFont fontWithName:@"Helvetica-Bold" size:18.0f];
-    CGSize textSize = [title sizeWithFont:headerFont];
     //CGFloat yPos = (frame.size.height - textSize.height) / 2.0f;
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 0, frame.size.width, frame.size.height)];
     [lbl setText:title];

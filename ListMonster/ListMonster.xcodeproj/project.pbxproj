@@ -114,6 +114,7 @@
 		4959AB0313104B460039ACAC /* EditTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTextViewController.h; sourceTree = "<group>"; };
 		4959AB0413104B460039ACAC /* EditTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditTextViewController.m; sourceTree = "<group>"; };
 		4959AB0513104B460039ACAC /* EditTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditTextView.xib; path = Classes/EditTextView.xib; sourceTree = "<group>"; };
+		495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 3.xcdatamodel"; sourceTree = "<group>"; };
 		495D8411130E088800933720 /* EditListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListItemViewController.h; sourceTree = "<group>"; };
 		495D8412130E088800933720 /* EditListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListItemViewController.m; sourceTree = "<group>"; };
 		495EABF613083F5700F4A64E /* ListItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemsViewController.h; sourceTree = "<group>"; };
@@ -626,7 +627,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -635,6 +636,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-licucore";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "135E23B1-4127-4499-B5CA-3EE776B59514";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -643,7 +645,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -651,6 +653,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-licucore";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "135E23B1-4127-4499-B5CA-3EE776B59514";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -682,10 +685,11 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */,
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */;
+			currentVersion = 495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */;
 			path = ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

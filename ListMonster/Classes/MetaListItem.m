@@ -16,6 +16,7 @@
 @implementation MetaListItem
 
 @dynamic name, quantity, isChecked, list, reminderDate, priority, unitOfMeasure;
+@dynamic itemIdentity;
 
 #pragma mark -
 #pragma mark Custom accessors
@@ -58,6 +59,7 @@
     [self setPrimitiveValue:@"New Item" forKey:@"name"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"quantity"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"isChecked"];
+    [self setPrimitiveValue:[[NSProcessInfo processInfo] globallyUniqueString] forKey:@"itemIdentity"];
 }
 
 - (void)willSave
@@ -101,12 +103,10 @@
 - (void)scheduleReminder
 {
     if (![self reminderDate]) return;
-    NSURL *itemUrl = [[self objectID] URIRepresentation];
-    NSString *noficationKey = [NSString stringWithFormat:@"%@",itemUrl]; 
     [self cancelReminder];
     UILocalNotification *localNotice = [[UILocalNotification alloc] init];
     [localNotice setFireDate:[self reminderDate]];
-    NSDictionary *infoDict = [NSDictionary dictionaryWithObject:noficationKey forKey:mliREMINDER_KEY];
+    NSDictionary *infoDict = [NSDictionary dictionaryWithObject:[self itemIdentity] forKey:mliREMINDER_KEY];
     [localNotice setUserInfo:infoDict];
     NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
     [localNotice setApplicationIconBadgeNumber:(badgeNumber + 1)];
@@ -128,12 +128,11 @@
 
 - (UILocalNotification *)findScheduledNofication
 {
-    NSString *notificationKey = [NSString stringWithFormat:@"%@", [[self objectID] URIRepresentation]];
     NSArray *allNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     NSArray *matching = [allNotifications filterBy:^ (id obj) {
         UILocalNotification *ln = obj;
         NSString *notificationName = [[ln userInfo] valueForKey:mliREMINDER_KEY];
-        return ([notificationName isEqualToString:notificationKey]);
+        return ([notificationName isEqualToString:[self itemIdentity]]);
     }];
     return ([matching count]) ? [matching objectAtIndex:0] : nil;
 }

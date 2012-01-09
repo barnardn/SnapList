@@ -26,6 +26,7 @@
     BOOL reminderDateChanged;
 }
 
+@property (nonatomic, retain) NSString *itemIdentity;
 @property (nonatomic, retain) NSNumber *isChecked;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *quantity;
