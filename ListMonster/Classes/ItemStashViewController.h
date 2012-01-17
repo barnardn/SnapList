@@ -29,6 +29,7 @@
 @property(nonatomic,retain) MetaList *theList;
 @property(nonatomic,retain) NSFetchedResultsController *resultsController;
 @property(nonatomic,retain) ItemStash *selectedItem;
+@property(nonatomic,retain) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)list;
 

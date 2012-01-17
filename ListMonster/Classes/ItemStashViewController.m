@@ -9,6 +9,7 @@
 #import "Alerts.h"
 #import "ItemStashViewController.h"
 #import "ItemStash.h"
+#import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaList.h"
@@ -25,7 +26,7 @@
 @implementation ItemStashViewController
 
 @synthesize theList, resultsController, navBar, stashTableView, selectedItem;
-
+@synthesize backgroundImageFilename;
 
 #pragma mark -
 #pragma mark Initialization
@@ -65,6 +66,7 @@
 
 - (void)dealloc {
     [resultsController release];
+    [backgroundImageFilename release];
     [theList release];
     [navBar release];
     [stashTableView release];
@@ -76,6 +78,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/normal"];
+    if ([[self theList] color])
+        bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self theList] color] swatchFilename]];
+    [self setBackgroundImageFilename:bgImagePath];
+    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
+    [[self stashTableView] setBackgroundView:bgView];
+    [bgView release];
+
     UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
                                                                   style:UIBarButtonItemStylePlain 
                                                                  target:self 
