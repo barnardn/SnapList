@@ -73,6 +73,7 @@
 		49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */; };
 		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
+		49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 49D225BF14C4FA09009D9769 /* iTunesArtwork */; };
 		49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */; };
 		49DE1AF31362563C00D27543 /* Tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DE1AF21362563C00D27543 /* Tuple.m */; };
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
@@ -184,6 +185,7 @@
 		49C94290134FAB640045D4F6 /* EditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNoteViewController.h; sourceTree = "<group>"; };
 		49C94291134FAB640045D4F6 /* EditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNoteViewController.m; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
+		49D225BF14C4FA09009D9769 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditListItemView.xib; sourceTree = "<group>"; };
 		49DE1AF11362563C00D27543 /* Tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tuple.h; sourceTree = "<group>"; };
 		49DE1AF21362563C00D27543 /* Tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tuple.m; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				49D225BF14C4FA09009D9769 /* iTunesArtwork */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -533,6 +536,7 @@
 				498EE8C1144E572D00668052 /* radio-off@2x.png in Resources */,
 				498EE8C2144E572D00668052 /* radio-on@2x.png in Resources */,
 				498885451458D42600FC3294 /* EditMeasureView.xib in Resources */,
+				49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
