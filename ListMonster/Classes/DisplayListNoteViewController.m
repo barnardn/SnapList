@@ -9,6 +9,7 @@
 #import "DisplayListNoteViewController.h"
 #import "ListColor.h"
 #import "MetaList.h"
+#import "TableHeaderView.h"
 
 @implementation DisplayListNoteViewController
 
@@ -31,6 +32,7 @@
 {
     [list release];
     [backgroundImageFilename release];
+    [super dealloc];
 }
 
 
@@ -48,13 +50,14 @@
 {
     [super viewDidLoad];
 
-    if ([[self list] color]) {
-        NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self list] color] swatchFilename]];
-        [self setBackgroundImageFilename:bgImagePath];
-        UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
-        [[self tableView] setBackgroundView:bgView];
-        [bgView release];
-    }
+    NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/normal"];
+    if ([[self list] color])
+        bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self list] color] swatchFilename]];
+    
+    [self setBackgroundImageFilename:bgImagePath];
+    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
+    [[self tableView] setBackgroundView:bgView];
+    [bgView release];
     
 }
 
@@ -149,6 +152,21 @@
 #pragma mark -
 #pragma Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *emptyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)] autorelease];
+    [emptyLabel setBackgroundColor:[UIColor clearColor]];
+    if (section != 0) return emptyLabel;
+    
+    TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:[[self list] name]];
+    return [header autorelease];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 24.0f;
+}
+
 - (CGFloat )tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath section] == 1) return 34.0f;
@@ -167,14 +185,6 @@
     else
         [[self presentingViewController] dismissModalViewControllerAnimated:YES];   
 }
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section != 0) return nil;
-    return [[self list] name];
-}
-
-
 
 
 @end
