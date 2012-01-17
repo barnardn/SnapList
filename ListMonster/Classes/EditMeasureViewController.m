@@ -95,6 +95,12 @@
     [self setMeasurePicker:nil];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 - (void)dealloc {
     [unitSelector release];
     [measurePicker release];

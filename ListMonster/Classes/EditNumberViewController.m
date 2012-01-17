@@ -37,6 +37,11 @@
     [self setNumericTextField:nil];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
 
 - (void)dealloc 
 {

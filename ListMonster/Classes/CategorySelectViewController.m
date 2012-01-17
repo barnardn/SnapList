@@ -105,6 +105,12 @@
         [[self theList] setCategory:[self selectedCategory]];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 
 #pragma mark -
 #pragma mark Button actions

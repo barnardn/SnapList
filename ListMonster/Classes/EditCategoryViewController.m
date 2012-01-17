@@ -88,6 +88,11 @@
     [[self categoryNameField] becomeFirstResponder];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
 
 - (UINavigationBar *)navigationBarForModalView {
     

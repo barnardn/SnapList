@@ -56,6 +56,12 @@
     }
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 - (BOOL)didListnameChange {
     
     NSString *listName = [[self theList] name];

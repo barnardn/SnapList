@@ -63,6 +63,12 @@
     [super viewDidUnload];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 - (IBAction)dismissButtonPressed:(id)sender
 {
     if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])

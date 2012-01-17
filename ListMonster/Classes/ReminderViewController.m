@@ -49,6 +49,12 @@
     [self setDateSelectionMode:nil];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 - (void)didReceiveMemoryWarning 
 {
     [super didReceiveMemoryWarning];

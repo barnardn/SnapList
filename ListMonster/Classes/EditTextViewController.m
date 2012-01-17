@@ -85,6 +85,12 @@
     [[self textView] resignFirstResponder];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+}
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
