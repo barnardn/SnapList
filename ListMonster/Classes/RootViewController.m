@@ -32,7 +32,6 @@
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 - (NSMutableArray *)loadOverdueItems;
 - (void)updateIncompleteCountForList:(MetaList *)list;
-//- (BOOL)removeOverdueItems:(NSMutableArray *)overdue fromDeletedList:(MetaList *)deletedList inTableView:(UITableView *)tableView;
 - (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
 - (NSArray *)overdueItemsSortCriteria;
 - (void)setBackgroundView;
@@ -524,7 +523,7 @@
 - (NSMutableDictionary *)loadAllLists 
 {
     NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-    NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES] autorelease];
+    NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
     NSArray *lists =  [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaList" sortDescriptors:sortDescriptors];
     NSMutableDictionary *listDict = [NSMutableDictionary dictionary];
@@ -537,7 +536,7 @@
             [listArr addObject:l];
         }
     }
-    [self setCategoryNameKeys:[[listDict allKeys] sortedArrayUsingSelector:@selector(compare:)]];
+    [self setCategoryNameKeys:[[listDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     return listDict;
 }
             
