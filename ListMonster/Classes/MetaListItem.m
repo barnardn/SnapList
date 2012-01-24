@@ -110,6 +110,7 @@
     [localNotice setUserInfo:infoDict];
     NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
     [localNotice setApplicationIconBadgeNumber:(badgeNumber + 1)];
+    DLog(@"set badge to %d", badgeNumber + 1);
     [localNotice setAlertBody:[self messageForNotificationAlert]];
     [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];

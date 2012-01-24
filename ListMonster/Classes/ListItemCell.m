@@ -74,7 +74,7 @@
     CGFloat contentMargin = CELL_CONTENT_MARGIN;
     CGFloat lblStart = CELL_ORIGIN_X; 
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (contentMargin * 2), 20000.0f);
-    CGSize size = [name sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [name sizeWithFont:[UIFont systemFontOfSize:CELL_FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     [nameLabel setText:name];
     [nameLabel setFrame:CGRectMake(lblStart, contentMargin, CELL_CONTENT_WIDTH - (contentMargin * 2), MAX(size.height, 34.0f))];	
 }

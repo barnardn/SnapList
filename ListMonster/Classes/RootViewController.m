@@ -313,8 +313,10 @@
     MetaListItem *item = [[self overdueItems] objectAtIndex:rowIdx];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ItemCellID];
-    if (!cell) 
+    if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ItemCellID] autorelease];
+        [[cell textLabel] setFont:[UIFont systemFontOfSize:14.0f]];
+    }
     [[cell textLabel] setText:[item name]];
     [[cell textLabel] setTextColor:[UIColor whiteColor]];
     NSInteger dayDiff = date_diff([NSDate date], [item reminderDate]);
