@@ -33,11 +33,18 @@
     }
 }
 
+// NOTE: some date checks are required.
+// if the previous reminder date is prior to "right now" then the notification was fired, and bumped up 
+// the badge number, so we have to decrement the badge number since were effectively completing this 
+// entry by pushing it into the future.
 - (void)setReminderDate:(NSDate *)date
 {
     NSDate *oldDate = [self primitiveValueForKey:@"reminderDate"];
-    if (oldDate && (NSOrderedAscending == [oldDate compare:date]))
-        [self decrementBadgeNumber];
+    if (![self isComplete]) {
+        if (oldDate && (NSOrderedAscending == [oldDate compare:[NSDate date]])) 
+            [self decrementBadgeNumber];
+        [self cancelReminder];
+    }
     [self willChangeValueForKey:@"reminderDate"];
     [self setPrimitiveValue:date forKey:@"reminderDate"];
     [self didChangeValueForKey:@"reminderDate"];    
@@ -79,7 +86,6 @@
 - (void)prepareForDeletion
 {
     [self cancelReminder];
-    [self decrementBadgeNumberForFiredNotification];
 }
 
 #pragma mark -
@@ -108,9 +114,9 @@
     [localNotice setFireDate:[self reminderDate]];
     NSDictionary *infoDict = [NSDictionary dictionaryWithObject:[self itemIdentity] forKey:mliREMINDER_KEY];
     [localNotice setUserInfo:infoDict];
-    NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
-    [localNotice setApplicationIconBadgeNumber:(badgeNumber + 1)];
-    DLog(@"set badge to %d", badgeNumber + 1);
+    ///NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
+    [localNotice setApplicationIconBadgeNumber:1];  // was badgeNumber + 1
+    //DLog(@"set badge to %d", badgeNumber + 1);
     [localNotice setAlertBody:[self messageForNotificationAlert]];
     [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];

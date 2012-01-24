@@ -505,6 +505,10 @@
     DLog(@"root view: today_at_midnight = %@", tam);
     NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:(SECONDS_PER_DAY-1)]];
     NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];
+    
+//    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[overdue count]];
+    
     return ([overdue count] == 0) ? nil : [[overdue mutableCopy] autorelease];
 }
 

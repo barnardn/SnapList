@@ -353,8 +353,10 @@
 - (void)savePendingItemChanges 
 {
     if (skipSaveLogic) return;
-    if ([[self theItem] isDeleted]) {
+    if (([[self theItem] isDeleted])) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
+    } else if ([[self theItem] isComplete]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:[self theItem]];
     } else {
         NSDictionary *changedProperties = [[self theItem] changedValues];
         if ([changedProperties valueForKey:@"reminderDate"])
