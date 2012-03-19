@@ -21,6 +21,7 @@
     MetaList *theList;
     NSFetchedResultsController *resultsController;
     ItemStash *selectedItem;
+    NSNumberFormatter *numFormatter;
     
 }
 

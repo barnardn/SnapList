@@ -133,6 +133,7 @@
 		495FE5F713C3EF330074235B /* Low@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Low@2x.png"; sourceTree = "<group>"; };
 		495FE5F813C3EF330074235B /* Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Normal.png; sourceTree = "<group>"; };
 		495FE5F913C3EF330074235B /* Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Normal@2x.png"; sourceTree = "<group>"; };
+		497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 4.xcdatamodel"; sourceTree = "<group>"; };
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
 		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
@@ -703,11 +704,12 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */,
 				495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */,
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */;
+			currentVersion = 497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */;
 			path = ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

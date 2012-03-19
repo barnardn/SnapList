@@ -12,12 +12,15 @@
 @class MetaListItem;
 
 @interface EditNumberViewController : UIViewController <UITextFieldDelegate,
-                                                        EditItemViewProtocol> {
+                                                        EditItemViewProtocol> 
+{
 
     UITextField *numericTextField;
     MetaListItem *item;
     NSString *viewTitle;
     NSString *backgroundImageFilename;
+    NSNumberFormatter *numFormatter;
+    BOOL firstDigitEntered;
 }
 
 @property(nonatomic,retain) IBOutlet UITextField *numericTextField;

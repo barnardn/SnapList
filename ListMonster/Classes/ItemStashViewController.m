@@ -40,6 +40,8 @@
     NSFetchedResultsController *c = [[ListMonsterAppDelegate sharedAppDelegate] fetchedResultsControllerWithFetchRequest:request sectionNameKeyPath:nil];
     [self setResultsController:c];
     [[self resultsController] setDelegate:self];
+    numFormatter = [[NSNumberFormatter alloc] init];
+    [numFormatter setPositiveFormat:@"#0.00"];
     return self;
 }
 
@@ -64,7 +66,9 @@
 }
 
 
-- (void)dealloc {
+- (void)dealloc 
+{
+    [numFormatter release];
     [resultsController release];
     [backgroundImageFilename release];
     [theList release];
@@ -118,7 +122,10 @@
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     MetaListItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"MetaListItem" inManagedObjectContext:moc];
     [newItem setName:[selectedItem name]];
-    [newItem setQuantity:[selectedItem quantity]];
+    if ([[selectedItem quantity] isEqualToNumber:INT_OBJ(0)])
+        [newItem setQuantity:INT_OBJ(1)];
+    else
+        [newItem setQuantity:[selectedItem quantity]];
     [newItem setPriority:[selectedItem priority]];
     if ([selectedItem unitIdentifier]) {
         Measure *measure = [Measure findMeasureMatchingIdentifier:[selectedItem unitIdentifier] inManagedObjectContext:moc];
@@ -175,12 +182,15 @@
     }
     ItemStash *item = (ItemStash *)[[self resultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[item name]];
-    NSString *qtyText = @"", *unitText = @"";
-    if ([item quantity])
-        qtyText = [[item quantity] stringValue];
+    NSString *qtyText = @"1", *unitText = @"";
+    if ([item quantity]) {
+        if (![[item quantity] isEqualToNumber:INT_OBJ(0)])
+            qtyText = [numFormatter stringFromNumber:[item quantity]];
+    }
     if ([item unitIdentifier]) {
         Measure *unitOfMeasure = [Measure findMeasureMatchingIdentifier:[item unitIdentifier] inManagedObjectContext:[item managedObjectContext]];
-        unitText = [unitOfMeasure unitAbbreviation];
+        if (unitOfMeasure)
+            unitText = [unitOfMeasure unitAbbreviation];
     }
     if ([item priority]) {
         if (![[item priority] isEqualToNumber:INT_OBJ(0)]) {

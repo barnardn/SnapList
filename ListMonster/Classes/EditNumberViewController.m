@@ -23,6 +23,8 @@
     if (!self) return nil;
     [self setViewTitle:aTitle];
     [self setItem:anItem];
+    numFormatter = [[NSNumberFormatter alloc] init];
+    [numFormatter setPositiveFormat:@"#0.00"];
     return self;
 }
 
@@ -45,6 +47,7 @@
 
 - (void)dealloc 
 {
+    [numFormatter release];
     [backgroundImageFilename release];
     [numericTextField release];
     [item release];
@@ -68,13 +71,15 @@
         [[self numericTextField] setPlaceholder:NSLocalizedString(@"Value", @"numeric value placeholder")];        
     }
     else {
-        NSString *numString = [[[self item] quantity] stringValue];
+        NSString *numString = [numFormatter stringFromNumber:[[self item] quantity]];
         [[self numericTextField] setText:numString];
     }
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
+    [[self numericTextField] setKeyboardType:UIKeyboardTypeDecimalPad];
     [[self numericTextField] becomeFirstResponder];
+    firstDigitEntered = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -95,6 +100,18 @@
 
 #pragma mark -
 #pragma mark UITextField delegate methods
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([string isEqualToString:@""]) return  YES;
+    NSString *decimalChar = [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
+    if (![string isEqualToString:decimalChar]) return YES;
+    NSString *text = [textField text];
+    NSArray *parts = [text componentsSeparatedByString:decimalChar];
+    return ([parts count] == 1);
+
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
