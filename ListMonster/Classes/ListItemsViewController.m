@@ -355,6 +355,8 @@
     NSNumber *qty = [item quantity];
     NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
     NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
+    if ([item unitOfMeasure])
+        qtyString = @"1";
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
 
 }

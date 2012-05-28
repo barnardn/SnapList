@@ -49,14 +49,16 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBSegmentControlStyle">3</int>
-						<int key="IBNumberOfSegments">3</int>
+						<int key="IBNumberOfSegments">4</int>
 						<int key="IBSelectedSegmentIndex">0</int>
 						<array key="IBSegmentTitles">
 							<string>English</string>
 							<string>Metric</string>
 							<string>Custom</string>
+							<string>None</string>
 						</array>
 						<array class="NSMutableArray" key="IBSegmentWidths">
+							<real value="0.0"/>
 							<real value="0.0"/>
 							<real value="0.0"/>
 							<real value="0.0"/>
@@ -65,14 +67,17 @@
 							<boolean value="YES"/>
 							<boolean value="YES"/>
 							<boolean value="YES"/>
+							<boolean value="YES"/>
 						</array>
 						<array class="NSMutableArray" key="IBSegmentContentOffsets">
+							<string>{0, 0}</string>
 							<string>{0, 0}</string>
 							<string>{0, 0}</string>
 							<string>{0, 0}</string>
 						</array>
 						<array class="NSMutableArray" key="IBSegmentImages">
 							<object class="NSNull" id="4"/>
+							<reference ref="4"/>
 							<reference ref="4"/>
 							<reference ref="4"/>
 						</array>
@@ -106,7 +111,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<int key="IBUIBorderStyle">3</int>
-								<string key="IBUIPlaceholder">Unit Name</string>
+								<string key="IBUIPlaceholder">Unit Name (Meters)</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
@@ -117,6 +122,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+									<int key="IBUIAutocapitalizationType">1</int>
 									<int key="IBUIReturnKeyType">9</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
@@ -145,7 +151,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<int key="IBUIBorderStyle">3</int>
-								<string key="IBUIPlaceholder">Measure</string>
+								<string key="IBUIPlaceholder">Measure (Length)</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
@@ -154,6 +160,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+									<int key="IBUIAutocapitalizationType">1</int>
 									<int key="IBUIReturnKeyType">9</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
@@ -164,7 +171,7 @@
 							<object class="IBUITextField" id="919284032">
 								<reference key="NSNextResponder" ref="75491685"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 79}, {139, 31}}</string>
+								<string key="NSFrame">{{20, 79}, {144, 31}}</string>
 								<reference key="NSSuperview" ref="75491685"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="515961420"/>
@@ -175,7 +182,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
 								<int key="IBUIBorderStyle">3</int>
-								<string key="IBUIPlaceholder">Abbreviation</string>
+								<string key="IBUIPlaceholder">Abbreviation (m)</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
@@ -516,7 +523,7 @@
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<integer value="2" key="4.IUISegmentedControlInspectorSelectedSegmentMetadataKey"/>
+				<integer value="3" key="4.IUISegmentedControlInspectorSelectedSegmentMetadataKey"/>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>

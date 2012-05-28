@@ -86,6 +86,7 @@
     [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Custom", nil) forSegmentAtIndex:emvCUSTOM_UNIT_INDEX];
+    [[self unitSelector] setTitle:NSLocalizedString(@"None", nil) forSegmentAtIndex:emvNONE_UNIT_INDEX];
     NSInteger measurementSet = 0;
     if ([[[self item] unitOfMeasure] isMetricUnit])
         measurementSet = emvMETRIC_UNIT_INDEX;
@@ -151,15 +152,29 @@
 - (IBAction)UnitSelectorTapped:(id)sender 
 {
     NSInteger measurementSet = [[self unitSelector] selectedSegmentIndex];
+    if (measurementSet == emvNONE_UNIT_INDEX) {
+        [self setSelectedMeasure:nil];
+        [self setSelectedMeasureKey:nil];
+        [UIView animateWithDuration:0.25f animations:^{
+            [[self customMeasureView] setAlpha:0.0f];
+            [[self measurePicker] setAlpha:0.0f];
+        } completion:^(BOOL finished) {
+            [[self customMeasureView] setHidden:YES];
+            [[self measurePicker] setHidden:YES];
+        }];
+        return;
+    }
     [self loadMeasurementSet:measurementSet];
     [self setSelectedMeasureKey:nil];
     [self setSelectedMeasure:nil];
     [UIView animateWithDuration:0.25f animations:^{
+        [[self measurePicker] setAlpha:1.0f];
         if (measurementSet == emvCUSTOM_UNIT_INDEX)
             [[self customMeasureView] setAlpha:1.0f];        
         else
             [[self customMeasureView] setAlpha:0.0f];
     } completion:^(BOOL finished) {
+        [[self measurePicker] setHidden:NO];
         if (measurementSet == emvCUSTOM_UNIT_INDEX) {
             [[self customMeasureView] setHidden:NO];
         }
@@ -453,6 +468,13 @@
 {
     if (!measure) {
         [[self unitSelector] setSelectedSegmentIndex:[self defaultUnitSelection]];
+        if ([self defaultUnitSelection] == emvCUSTOM_UNIT_INDEX) {
+            [UIView animateWithDuration:0.25f animations:^{
+                [[self customMeasure] setAlpha:1.0f];
+            } completion:^(BOOL finished) {
+                [[self customMeasureView] setHidden:NO];
+            }];            
+        }
         return;
     }
     NSArray *measures = nil;
@@ -478,9 +500,10 @@
     NSInteger unitRow = [units indexOfObject:measure];
     DLog(@"defaults (%d,%d)", measureRow,unitRow);
     [self setSelectedMeasureKey:[measure measure]];    
+    [[self measurePicker] reloadAllComponents];
     [[self measurePicker] selectRow:measureRow inComponent:emvMEASURE_COMPONENT_INDEX animated:NO];
     [[self measurePicker] selectRow:unitRow inComponent:emvUNIT_COMPONENT_INDEX animated:NO];    
-    [[self measurePicker] reloadAllComponents];
+    
 }
 
 

@@ -15,6 +15,7 @@
 #define emvENGLISH_UNIT_INDEX       0
 #define emvMETRIC_UNIT_INDEX        1
 #define emvCUSTOM_UNIT_INDEX        2
+#define emvNONE_UNIT_INDEX          3
 
 #define emvMEASURE_COMPONENT_INDEX  0
 #define emvUNIT_COMPONENT_INDEX     1
