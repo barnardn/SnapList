@@ -14,6 +14,7 @@
 @implementation Measure
 
 @dynamic measure;
+@dynamic isCustom;
 @dynamic unit;
 @dynamic unitAbbreviation;
 @dynamic isMetric;
@@ -60,5 +61,10 @@
     return (1 == [[self isMetric] intValue]);
 }
 
+ - (BOOL)isCustomUnit
+{
+    if (![self isCustom]) return NO;
+    return (1 == [[self isCustom] intValue]);
+}
 
 @end

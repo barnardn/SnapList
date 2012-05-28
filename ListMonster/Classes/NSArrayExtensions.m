@@ -35,6 +35,25 @@
     return newArr;
 }
 
+- (id)findFirst:(BOOL (^)(id obj))predicate
+{
+    for (id item in self) {
+        if (predicate(item))
+            return item;
+    }
+    return nil;
+}
+
+- (NSInteger)findFirstIndex:(BOOL (^)(id obj))predicate
+{
+    for (NSUInteger idx = 0; idx < [self count]; idx++) {
+        if (predicate([self objectAtIndex:idx]))
+            return idx;
+    }
+    return -1;
+}
+
+
 - (NSArray *)sliceAt:(NSInteger)start withLength:(NSInteger)length {
     
     if (start > ([self count] - 1)) return nil;
@@ -44,6 +63,13 @@
 
     return newArr;
 }
+
+- (NSArray *)sortedOnKey:(NSString *)sortKey ascending:(BOOL)ascending
+{
+    NSSortDescriptor *onKey = [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:ascending];
+    return [self sortedArrayUsingDescriptors:[NSArray arrayWithObject:onKey]];
+}
+
 
 
 @end

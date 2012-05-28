@@ -30,6 +30,18 @@
 //
 // a slice of the array starting at start with length length.
 //
+- (id)findFirst:(BOOL (^)(id obj))predicate;
+//
+// find and return the first item satisfying the predicate, nil otherwise
+//
+- (NSInteger)findFirstIndex:(BOOL (^)(id obj))predicate;
+//
+// find and return the index of the item satisfying predicate, -1 otherwise
+//
+- (NSArray *)sortedOnKey:(NSString *)sortKey ascending:(BOOL)ascending;
+//
+// sort the array based on key 
+//
 
 
 @end
