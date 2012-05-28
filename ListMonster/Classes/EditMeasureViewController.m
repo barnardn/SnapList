@@ -87,7 +87,7 @@
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Custom", nil) forSegmentAtIndex:emvCUSTOM_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"None", nil) forSegmentAtIndex:emvNONE_UNIT_INDEX];
-    NSInteger measurementSet = 0;
+    NSInteger measurementSet = [self defaultUnitSelection];
     if ([[[self item] unitOfMeasure] isMetricUnit])
         measurementSet = emvMETRIC_UNIT_INDEX;
     else if ([[[self item] unitOfMeasure] isCustomUnit])
