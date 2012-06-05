@@ -353,9 +353,10 @@
     ZAssert(lbl != nil, @"Whoa! missing name label in configureCell:withItem:");
     [lbl setText:[item name]];
     NSNumber *qty = [item quantity];
+    DLog(@"quantity : %@", qty);
     NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
     NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
-    if ([item unitOfMeasure])
+    if ([item unitOfMeasure] && [qty intValue] == 0)
         qtyString = @"1";
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
 
