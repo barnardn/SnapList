@@ -440,6 +440,7 @@
     if (!allMeasures) {
         allMeasures = [[[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] mutableCopy];
         [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:allMeasures withKey:@"measures"];
+        [allMeasures release];
     }
     NSPredicate *byMeasurementSet = nil;
     if (measureSet == emvMETRIC_UNIT_INDEX)
