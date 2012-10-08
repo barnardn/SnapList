@@ -13,6 +13,6 @@
 
 }
 
-@property(nonatomic,retain) NSString *name;
+@property(nonatomic,strong) NSString *name;
 
 @end

@@ -54,13 +54,6 @@
 }
 
 
-- (void)dealloc 
-{
-    [priorityList release];
-    [theItem release];
-    [lastIndexPath release];
-    [super dealloc];
-}
 
 
 #pragma mark -
@@ -111,7 +104,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
     NSNumber *priorityVal = [t first];
     NSNumber *itemPriority = [[self theItem] priority];

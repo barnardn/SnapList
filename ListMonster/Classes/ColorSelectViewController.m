@@ -47,19 +47,12 @@
 }
 
 
-- (void)dealloc {
-    [allColors release];
-    [theList release];
-    [lastSelectedIndexPath release];
-    [super dealloc];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setLastSelectedIndexPath:nil];
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
     [[self tableView] setBackgroundView:backgroundView];
-    [backgroundView release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -90,7 +83,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
     [[cell textLabel] setText:[color name]];

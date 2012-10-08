@@ -37,15 +37,15 @@
     NSIndexPath *lastSelectedIndexPath;
 }
 
-@property(nonatomic,retain) IBOutlet UISegmentedControl *dateSelectionMode;
-@property(nonatomic,retain) IBOutlet UIDatePicker *datePicker;
-@property(nonatomic,retain) IBOutlet UITableView *simpleDateTable;
-@property(nonatomic,retain) NSArray *simpleDates;
-@property(nonatomic,retain) id reminderItem;
-@property(nonatomic,retain) NSDate *selectedReminderDate;  // for picker only!?!?!?
-@property(nonatomic,retain) NSString *viewTitle;
-@property(nonatomic,retain) Tuple *selectedSimpleDate;
-@property(nonatomic,retain) NSIndexPath *lastSelectedIndexPath;
+@property(nonatomic,strong) IBOutlet UISegmentedControl *dateSelectionMode;
+@property(nonatomic,strong) IBOutlet UIDatePicker *datePicker;
+@property(nonatomic,strong) IBOutlet UITableView *simpleDateTable;
+@property(nonatomic,strong) NSArray *simpleDates;
+@property(nonatomic,strong) id reminderItem;
+@property(nonatomic,strong) NSDate *selectedReminderDate;  // for picker only!?!?!?
+@property(nonatomic,strong) NSString *viewTitle;
+@property(nonatomic,strong) Tuple *selectedSimpleDate;
+@property(nonatomic,strong) NSIndexPath *lastSelectedIndexPath;
 
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(id<ReminderItemProtocol>)anItem; // designated initializer

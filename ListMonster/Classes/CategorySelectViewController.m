@@ -21,7 +21,7 @@
 
 @implementation CategorySelectViewController
 
-@synthesize resultsController, theList, newCategory, selectedCategory;
+@synthesize resultsController, theList, theCategory, selectedCategory;
 @synthesize lastSelectedIndexPath;
 
 #pragma mark -
@@ -62,15 +62,6 @@
     [super viewDidUnload];
 }
 
-- (void)dealloc 
-{
-    [theList release];
-    [resultsController release];
-    [newCategory release];
-    [selectedCategory release];
-    [lastSelectedIndexPath release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -89,12 +80,9 @@
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [[self navigationItem] setRightBarButtonItem:editBtn];
     [[self navigationItem] setTitle:NSLocalizedString(@"Select Category", @"category selection only view title")];
-    [backBtn release];
-    [editBtn release];
     [self setLastSelectedIndexPath:nil];
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
     [[self tableView] setBackgroundView:backgroundView];
-    [backgroundView release];
     
 }
 
@@ -136,7 +124,6 @@
     if (inEditMode) {
         UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addBtnPressed:)];
         [[self navigationItem] setLeftBarButtonItem:addBtn];
-        [addBtn release];
     } else {
         [[self navigationItem] setLeftBarButtonItem:nil];
     }
@@ -149,10 +136,9 @@
     [ecvc setDelegate:self];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
     Category *newCat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
-    [self setNewCategory:newCat];
-    [ecvc setCategory:[self newCategory]];  // analyzer false positive  -- yes 'new' in name is against convention and confusing analyzer
+    [self setTheCategory:newCat];
+    [ecvc setCategory:[self theCategory]];  // analyzer false positive  -- yes 'new' in name is against convention and confusing analyzer
     [self presentModalViewController:ecvc animated:YES];
-    [ecvc release];
 }
 
 #pragma mark -
@@ -173,7 +159,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setEditingAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
     }
     Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
@@ -226,7 +212,6 @@
     [ecvc setDelegate:self];
     [ecvc setCategory:cat];
     [[self navigationController] pushViewController:ecvc animated:YES];
-    [ecvc release];
 }
 
 #pragma mark -
@@ -243,7 +228,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath
 {
     UITableViewCell *cell = nil;
-    Category *theCategory =  nil;
+    Category *cat =  nil;
     switch (type) {
         case NSFetchedResultsChangeInsert:
             [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
@@ -261,10 +246,10 @@
                             withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         case NSFetchedResultsChangeUpdate:
-            theCategory = [[self resultsController] objectAtIndexPath:indexPath];
-            if ([[theCategory changedValues] count] == 0) return;
+            cat = [[self resultsController] objectAtIndexPath:indexPath];
+            if ([[cat changedValues] count] == 0) return;
             cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-            [[cell textLabel] setText:[theCategory name]];
+            [[cell textLabel] setText:[cat name]];
             [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
                                     withRowAnimation:UITableViewRowAnimationNone];
         default:
@@ -281,7 +266,7 @@
 
 - (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(Category *)category {
     if (!category) {
-        [[[self theList] managedObjectContext] deleteObject:[self newCategory]];  // analyzer false positive due to 'new' in name
+        [[[self theList] managedObjectContext] deleteObject:[self theCategory]];  // analyzer false positive due to 'new' in name
     } else {
         [[self theList] setCategory:category];
     }
@@ -300,10 +285,8 @@
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byName,nil];
     
     [request setSortDescriptors:sortDescriptors];
-    [byName release];
-    [sortDescriptors release];
     
-    return [request autorelease];
+    return request;
 }
 
 - (void)deleteCategory:(Category *)aCategory {

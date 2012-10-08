@@ -26,13 +26,13 @@
     BOOL reminderDateChanged;
 }
 
-@property (nonatomic, retain) NSString *itemIdentity;
-@property (nonatomic, retain) NSNumber *isChecked;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSNumber *quantity;
-@property (nonatomic, retain) MetaList *list;
-@property (nonatomic, retain) NSNumber *priority;
-@property (nonatomic, retain) Measure *unitOfMeasure;
+@property (nonatomic, strong) NSString *itemIdentity;
+@property (nonatomic, strong) NSNumber *isChecked;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSNumber *quantity;
+@property (nonatomic, strong) MetaList *list;
+@property (nonatomic, strong) NSNumber *priority;
+@property (nonatomic, strong) Measure *unitOfMeasure;
 
 
 - (BOOL)isComplete;

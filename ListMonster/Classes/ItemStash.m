@@ -29,12 +29,10 @@
     NSError *error = nil;
     NSArray *stash = [ctx executeFetchRequest:fetchStashItems error:&error];
     if (error) {
-        DLog(@"Unable to fetch stashed items", [error localizedDescription]);
-        [fetchStashItems release];
-        [ctx release];  // prof rcmd
+        DLog(@"Unable to fetch stashed items %@", [error localizedDescription]);
+          // prof rcmd
         return;
     }
-    [fetchStashItems release];
     NSPredicate *hasItemName = [NSPredicate predicateWithFormat:@"self.name == %@", [anItem name]];
     NSArray *exists = [stash filteredArrayUsingPredicate:hasItemName];
     ItemStash *stashItem = nil;
@@ -53,7 +51,6 @@
     if (error) {
         DLog(@"Unable to save item to stash: %@", [error localizedDescription]);
     }
-    [ctx release];
 }
 
 + (NSString *)nameForPriority:(NSNumber *)priority

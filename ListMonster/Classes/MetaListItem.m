@@ -120,7 +120,6 @@
     [localNotice setAlertBody:[self messageForNotificationAlert]];
     [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
-    [localNotice release];
     DLog(@"Scheduled new notification for %@", [localNotice fireDate]);
 }
 

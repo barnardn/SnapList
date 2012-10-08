@@ -8,6 +8,7 @@
 
 #import "ListMonsterAppDelegate.h"
 #import "ListNameViewController.h"
+#import "MetaList.h"
 
 @interface ListNameViewController()
 
@@ -83,12 +84,6 @@
 }
 
 
-- (void)dealloc {
-    [textField release];
-    [theList release];
-    [backgroundImageView release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark UITextField delegate methods

@@ -60,17 +60,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc 
-{
-    [simpleDateTable release];
-    [datePicker release];
-    [dateSelectionMode release];
-    [simpleDates release];
-    [backgroundImageFilename release];
-    [viewTitle release];
-    [lastSelectedIndexPath release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark View Life cycle
@@ -88,7 +77,6 @@
                                                                target:nil 
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release];
     [[self simpleDateTable] setAllowsSelection:YES];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
@@ -258,7 +246,7 @@
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell)
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
     if (dow == [self selectedSimpleDate] && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];

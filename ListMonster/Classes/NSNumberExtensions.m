@@ -19,7 +19,7 @@
     if (!stringValue || [stringValue isEqualToString:@""]) 
         return nil;
     
-    NSNumberFormatter *formatter = [[[NSNumberFormatter alloc] init] autorelease];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     NSArray *stringParts = [stringValue componentsSeparatedByString:@"."];
     if ([stringParts count] == 1) {
         NSNumber *intNum = [formatter numberFromString:stringValue];
@@ -31,7 +31,7 @@
 
 + (NSNumber *)numberWithString:(NSString *)stringValue {
     
-    return [[[NSNumber alloc] initWithString:stringValue] autorelease];
+    return [[NSNumber alloc] initWithString:stringValue];
 }
 
 @end

@@ -45,7 +45,6 @@
         NSEntityDescription *listEntity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
         MetaList *l = [[MetaList alloc] initWithEntity:listEntity insertIntoManagedObjectContext:moc];
         [self setTheList:l];
-        [l release];
         [self setIsNewList:YES];
     }
     return self;
@@ -69,11 +68,6 @@
 }
 
 
-- (void)dealloc {
-    [theList release];
-    [notificationMessage release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -82,7 +76,6 @@
     [super viewDidLoad];
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
     [[self tableView] setBackgroundView:backgroundView];
-    [backgroundView release];
     if ([self isNewList]) {
         [self setupNavigationBarForModalView];
         return;
@@ -118,7 +111,6 @@
                                                                  action:@selector(cancelPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [[self navigationItem] setRightBarButtonItem:[self doneButton]];
-    [cancelBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Add List", @"add new list view title")];
 }
 
@@ -128,7 +120,7 @@
                                                                 style:UIBarButtonItemStyleDone 
                                                                target:self
                                                                action:@selector(donePressed:)];
-    return [doneBtn autorelease];
+    return doneBtn;
 }
 
 
@@ -209,7 +201,7 @@
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     NSInteger selectorIdx = [indexPath section];
@@ -283,27 +275,23 @@
 - (void)pushNameEditView {
     ListNameViewController *lnvc = [[ListNameViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:lnvc animated:YES];
-    [lnvc release];
 }
 
 - (void)pushColorSelectView {
     ColorSelectViewController *csvc = [[ColorSelectViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:csvc animated:YES];
-    [csvc release];
     
 }
 
 - (void)pushCategoryEditView {
     CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:cvc animated:YES];
-    [cvc release];
 }
 
 - (void)pushNoteEditView {
     
     EditNoteViewController *envc = [[EditNoteViewController alloc] initWithList:[self theList]];
     [[self navigationController] pushViewController:envc animated:YES];
-    [envc release];
 }
 
 

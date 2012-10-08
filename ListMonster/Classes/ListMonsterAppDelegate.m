@@ -55,7 +55,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
-    [rvc release];  // profiler reccomendation
+      // profiler reccomendation
     [[self window] addSubview:[navController view]];
     [[self window] makeKeyAndVisible];
     return YES;
@@ -116,13 +116,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [self flushCache];
 }
 
-- (void)dealloc 
-{
-    [window release];
-    [navController release];
-    [cachedItems release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Misc methods
@@ -173,7 +166,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
         NSString *defaultDb = [[NSBundle mainBundle] pathForResource:@"listmonster" ofType:@"sqlite"];
         NSError *error = nil;
         if (defaultDb && ![fileMan copyItemAtPath:defaultDb toPath:dbPath error:&error]) {
-            DLog(@"%@:%s Error copying file %@", [self class], _cmd, error);
+            DLog(@"%@ Error copying file %@", [self class], error);
         }
     }
     NSURL *url = [NSURL fileURLWithPath:dbPath];
@@ -188,15 +181,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:storeOptions error:&error]) {
         return persistentStoreCoordinator;
     }
-    [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
-    NSDictionary *userInfo = [error userInfo];
-    if (![userInfo valueForKey:NSDetailedErrorsKey]) {
-        DLog(@"%@:%s Error adding store %@", [self class], _cmd, [error localizedDescription]);
-    } else {
-        for (NSError *subError in [userInfo valueForKey:NSDetailedErrorsKey]) {
-            DLog(@"%@:%s Error: %@", [self class], _cmd, [subError localizedDescription]);
-        }
-    }
+    persistentStoreCoordinator = nil;
     ZAssert(NO, @"Failed to initialize persistent store.");
     return nil;
 
@@ -211,7 +196,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [managedObjectContext setPersistentStoreCoordinator:psc];
     NSUndoManager *undoManager = [[NSUndoManager alloc] init];
     [managedObjectContext setUndoManager:undoManager];
-    [undoManager release];
     return managedObjectContext;
 }
 
@@ -228,7 +212,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     if (!ok) {      // show an alert box or something here...
         DLog(@"Error fetching request: %@", [error localizedDescription]);
     }
-    return [frc autorelease];
+    return frc;
 }
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName 
@@ -237,7 +221,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     if (attributeName) {
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
         sortDescriptors = [NSArray arrayWithObject:sd];
-        [sd release];
     }
     return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
 }
@@ -257,7 +240,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [fetchReq setPredicate:filter];
     NSError *error = nil;
     NSArray *resultSet = [moc executeFetchRequest:fetchReq error:&error];
-    [fetchReq release];
     if (!resultSet) {
         DLog(@"Error fetching all instances of %@", entityName);
     }

@@ -14,10 +14,10 @@
 @interface ItemStash : NSManagedObject {
 }
 
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSNumber *quantity;
-@property (nonatomic, retain) NSNumber *unitIdentifier;
-@property (nonatomic, retain) NSNumber *priority;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSNumber *quantity;
+@property (nonatomic, strong) NSNumber *unitIdentifier;
+@property (nonatomic, strong) NSNumber *priority;
 
 + (void)addToStash:(MetaListItem *)anItem;
 + (NSString *)nameForPriority:(NSNumber *)priority;

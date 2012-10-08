@@ -34,7 +34,6 @@
     [lbl setShadowColor:[UIColor blackColor]];
     [self addSubview:lbl];
     [self setTitleLabel:lbl];
-    [lbl release];
     return self;
 }
 

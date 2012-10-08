@@ -14,7 +14,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        [self initWithFirst:nil second:nil];
+        if (!(self = [self initWithFirst:nil second:nil])) return nil;
     }
     return self;
 }
@@ -33,14 +33,9 @@
 }
 
 + (id)tupleWithFirst:(id)f second:(id)s {
-    return [[[Tuple alloc] initWithFirst:f second:s] autorelease];
+    return [[Tuple alloc] initWithFirst:f second:s];
 }
 
 
-- (void)dealloc {
-    [first release];
-    [second release];
-    [super dealloc];
-}
 
 @end

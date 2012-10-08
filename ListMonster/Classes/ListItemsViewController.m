@@ -72,16 +72,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [backgroundImageFilename release];
-    [listItems release];
-    [allItemsTableView release];
-    [theList release];
-    [checkedState release];
-    [addItemBtn release];
-    [moreActionsBtn release];
-    [toolBar release];
-    [editBtn release];
-    [super dealloc];
 }
 
 
@@ -93,7 +83,7 @@
                                                                target:self 
                                                                action:@selector(editBtnPressed:)];
     [self setEditBtn:btn];
-    [btn release];  // prof rcmd
+      // prof rcmd
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
     if ([[self theList] color]) {
@@ -101,7 +91,6 @@
         [self setBackgroundImageFilename:bgImagePath];
         UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
         [[self allItemsTableView] setBackgroundView:bgView];
-        [bgView release];
     }
     [[self allItemsTableView] setAllowsSelectionDuringEditing:YES];
 }
@@ -114,7 +103,7 @@
     }
     [self enabledStateForEditControls:YES];
     [self filterItemsByCheckedState];           // TODO: refactor to take sorted list then assign to datasource
-    [editItemNavController release], editItemNavController = nil;
+    editItemNavController = nil;
     [[self allItemsTableView] reloadData];
 }
 
@@ -146,7 +135,6 @@
     [eivc setDelegate:self];
     editItemNavController = [[UINavigationController alloc] initWithRootViewController:eivc];
     [self presentModalViewController:editItemNavController animated:YES];
-    [eivc release];
 }
 
 
@@ -168,7 +156,6 @@
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
     [actionSheet addButtonWithTitle:NSLocalizedString(@"View List Note", nil)];
     [actionSheet showFromToolbar:[self toolBar]];
-    [actionSheet release];
 }
 
 - (void)cancelBtnPressed:(id)sender {
@@ -203,7 +190,6 @@
     NSMutableArray *filteredItems = [[[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState] mutableCopy];
     [self setListItems:filteredItems];
     [self updateCheckedStateCountWithFilteredItems:filteredItems usingSelectedIndex:selectedSegmentIdx];
-    [filteredItems release]; 
 }
 
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor {
@@ -270,7 +256,6 @@
                                                     target:self 
                                                     action:@selector(cancelBtnPressed:)];
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-    [cancelBtn release];
 }
 
 #pragma mark -
@@ -286,7 +271,7 @@
 -(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item
 {
     [[self theList] addItem:item];
-    [item release];  // maybe...
+      // maybe...
 }
 
 
@@ -310,7 +295,7 @@
     if (isEmtpyList) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmptyCell"];
         if (!cell)
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmptyCell"] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EmptyCell"];
         [self configureForEmtpyList:cell];
         return cell;
     }
@@ -364,7 +349,7 @@
 
 - (ListItemCell *)makeItemCell
 {
-    ListItemCell *cell = [[[ListItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease]; 
+    ListItemCell *cell = [[ListItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"]; 
     
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
     [lbl setBackgroundColor:[UIColor clearColor]];
@@ -374,7 +359,6 @@
     [lbl setFont:[UIFont systemFontOfSize:14.0f]];
     [lbl setTag:1];
     [[cell contentView] addSubview:lbl];
-    [lbl release];
     return cell;
 }  
 
@@ -426,7 +410,6 @@
         MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];    
         EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
         [[self navigationController] pushViewController:eivc animated:YES];
-        [eivc release];
     }
 }
 
@@ -506,14 +489,12 @@
 {
     ItemStashViewController *isvc = [[ItemStashViewController alloc] initWithList:[self theList]];
     [self presentModalViewController:isvc animated:YES];
-    [isvc release];
 }
 
 - (void)showListNote 
 {
     DisplayListNoteViewController *noteVc = [[DisplayListNoteViewController alloc] initWithList:[self theList]];
     [self presentModalViewController:noteVc animated:YES];
-    [noteVc release];
 }
 
 #pragma mark -

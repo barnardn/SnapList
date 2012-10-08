@@ -28,12 +28,6 @@
 }
 
 
-- (void)dealloc {
-    [nameLabel release];
-    [categoryLabel release];
-    [countsLabel release];
-    [super dealloc];
-}
 
 
 @end

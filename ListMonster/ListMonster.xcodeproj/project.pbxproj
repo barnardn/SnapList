@@ -39,6 +39,7 @@
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
 		49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49851B3B14BA749800CBB385 /* TableHeaderView.m */; };
+		498627991622548C0040858A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498627981622548C0040858A /* Default-568h@2x.png */; };
 		498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498885421458D42600FC3294 /* EditMeasureViewController.m */; };
 		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
@@ -55,7 +56,6 @@
 		499F4E08133AC4920048D35B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E06133AC4920048D35B /* Icon.png */; };
 		499F4E09133AC4920048D35B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E07133AC4920048D35B /* Icon@2x.png */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
-		49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0206A12E5276C005B1D0E /* RegexKitLite.m */; };
 		49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */; };
 		49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* Category.m */; };
 		49AD7A9012E39FF7006E6AC6 /* 0x000000.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8812E39FF7006E6AC6 /* 0x000000.png */; };
@@ -146,6 +146,7 @@
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
 		49851B3A14BA749800CBB385 /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		49851B3B14BA749800CBB385 /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
+		498627981622548C0040858A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		498885411458D42600FC3294 /* EditMeasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMeasureViewController.h; sourceTree = "<group>"; };
 		498885421458D42600FC3294 /* EditMeasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMeasureViewController.m; sourceTree = "<group>"; };
 		498885431458D42600FC3294 /* EditMeasureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditMeasureView.xib; path = Classes/EditMeasureView.xib; sourceTree = "<group>"; };
@@ -167,8 +168,6 @@
 		499F4E07133AC4920048D35B /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
-		49A0206912E5276C005B1D0E /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
-		49A0206A12E5276C005B1D0E /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectViewController.h; sourceTree = "<group>"; };
 		49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectViewController.m; sourceTree = "<group>"; };
 		49AD7A4C12E380D9006E6AC6 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
@@ -270,6 +269,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				498627981622548C0040858A /* Default-568h@2x.png */,
 				49D225C314C512BD009D9769 /* Default@2x.png */,
 				49D225BF14C4FA09009D9769 /* iTunesArtwork */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -367,8 +367,6 @@
 		49A0206812E52756005B1D0E /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				49A0206912E5276C005B1D0E /* RegexKitLite.h */,
-				49A0206A12E5276C005B1D0E /* RegexKitLite.m */,
 			);
 			name = ThirdParty;
 			sourceTree = "<group>";
@@ -568,6 +566,7 @@
 				49C68AA315279CD0007A062F /* btn-add@2x.png in Resources */,
 				49C68AA415279CD0007A062F /* btn-remove.png in Resources */,
 				49C68AA515279CD0007A062F /* btn-remove@2x.png in Resources */,
+				498627991622548C0040858A /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,7 +587,6 @@
 				49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */,
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
-				49A0206B12E5276C005B1D0E /* RegexKitLite.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
 				49BEEBD312EBC3680088707A /* ListColor.m in Sources */,
 				49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */,
@@ -635,6 +633,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -652,6 +651,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Norman Barnard";
 				COPY_PHASE_STRIP = YES;
@@ -675,7 +675,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-licucore";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "135E23B1-4127-4499-B5CA-3EE776B59514";
@@ -695,7 +695,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-licucore";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "135E23B1-4127-4499-B5CA-3EE776B59514";

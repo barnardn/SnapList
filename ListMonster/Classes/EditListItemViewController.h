@@ -22,20 +22,20 @@
     MetaListItem *theItem;
     NSArray *editPropertySections;
     BOOL isModal;
-    id<ListItemsViewControllerProtocol> delegate;
+    id<ListItemsViewControllerProtocol> __weak delegate;
     BOOL skipSaveLogic;
     NSString *backgroundImageFilename;
     
 }
 
-@property(nonatomic,retain) IBOutlet UITableView *listItemTableView;
-@property(nonatomic,retain) IBOutlet UIToolbar *toolBar;
-@property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) MetaListItem *theItem;
-@property(nonatomic,retain) NSArray *editPropertySections;
+@property(nonatomic,strong) IBOutlet UITableView *listItemTableView;
+@property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
+@property(nonatomic,strong) MetaList *theList;
+@property(nonatomic,strong) MetaListItem *theItem;
+@property(nonatomic,strong) NSArray *editPropertySections;
 @property(nonatomic,assign) BOOL isModal;
-@property(nonatomic,assign) id<ListItemsViewControllerProtocol> delegate;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
+@property(nonatomic,weak) id<ListItemsViewControllerProtocol> delegate;
+@property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (IBAction)moreActionsBtnPressed:(id)sender;
 - (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;

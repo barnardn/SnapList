@@ -18,13 +18,13 @@
 
 }
 
-@property (nonatomic, retain) NSDate *dateCreated;
-@property (nonatomic, retain) NSString *listID;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *note;
-@property (nonatomic, retain) NSSet *items;
-@property (nonatomic, retain) Category *category;
-@property (nonatomic, retain) ListColor *color;
+@property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, strong) NSString *listID;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *note;
+@property (nonatomic, strong) NSSet *items;
+@property (nonatomic, strong) Category *category;
+@property (nonatomic, strong) ListColor *color;
 
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;

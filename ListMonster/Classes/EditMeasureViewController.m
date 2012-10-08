@@ -77,7 +77,6 @@
                                                                action:nil];
     [[self customMeasureView] setHidden:YES];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release];
     if ([self backgroundImageFilename]) {
         [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     } else {
@@ -130,22 +129,6 @@
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void)dealloc 
-{
-    [unitSelector release];
-    [measurePicker release];
-    [selectedMeasure release];
-    [viewTitle release];
-    [item release];
-    [customMeasureName release];
-    [customMeasure release];
-    [customMeasureAbbrev release];
-    [customMeasureView release];
-    [addCustomMeasure release];
-    [removeCustomMeasure release];
-    [selectedMeasureKey release];
-    [super dealloc];
-}
 
 #pragma mark - Actions
 
@@ -440,7 +423,6 @@
     if (!allMeasures) {
         allMeasures = [[[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] mutableCopy];
         [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:allMeasures withKey:@"measures"];
-        [allMeasures release];
     }
     NSPredicate *byMeasurementSet = nil;
     if (measureSet == emvMETRIC_UNIT_INDEX)

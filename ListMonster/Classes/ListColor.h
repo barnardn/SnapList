@@ -18,10 +18,10 @@
 {
 }
 
-@property (nonatomic, retain) NSNumber *rgbValue;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *swatchFilename;
-@property (nonatomic, retain) NSSet *list;
+@property (nonatomic, strong) NSNumber *rgbValue;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *swatchFilename;
+@property (nonatomic, strong) NSSet *list;
 
 - (UIColor *)uiColor;
 + (ListColor *)blackColor;

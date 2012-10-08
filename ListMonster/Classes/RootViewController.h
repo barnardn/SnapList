@@ -20,8 +20,8 @@
     NSMutableArray *overdueItems;
 }
 
-@property(nonatomic,retain) NSMutableDictionary *allLists;
-@property(nonatomic,retain) NSArray *categoryNameKeys;
-@property(nonatomic,retain) NSMutableArray *overdueItems;
+@property(nonatomic,strong) NSMutableDictionary *allLists;
+@property(nonatomic,strong) NSArray *categoryNameKeys;
+@property(nonatomic,strong) NSMutableArray *overdueItems;
 
 @end

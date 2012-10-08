@@ -28,12 +28,6 @@
     return nil;
 }
 
-- (void)dealloc
-{
-    [list release];
-    [backgroundImageFilename release];
-    [super dealloc];
-}
 
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +51,6 @@
     [self setBackgroundImageFilename:bgImagePath];
     UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
     [[self tableView] setBackgroundView:bgView];
-    [bgView release];
     
 }
 
@@ -109,7 +102,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
         if (isTextCell) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
             label = [[UILabel alloc] initWithFrame:CGRectZero];
             [label setLineBreakMode:UILineBreakModeWordWrap];
             [label setMinimumFontSize:FONT_SIZE];
@@ -117,9 +110,9 @@
             [label setFont:[UIFont systemFontOfSize:FONT_SIZE]];
             [label setTag:1];
             [[cell contentView] addSubview:label];
-            [label release]; label = nil;
+             label = nil;
         } else {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         }
     }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -138,7 +131,7 @@
         [label setFrame:CGRectMake(NOTECELL_CONTENT_MARGIN, NOTECELL_CONTENT_MARGIN, NOTECELL_CONTENT_WIDTH - (NOTECELL_CONTENT_MARGIN * 2), MAX(size.height, 34.0f))];
     } else {
         UIImage *dismissButtonImage = [[UIImage imageNamed:@"blueButton.png"] stretchableImageWithLeftCapWidth:12.0f topCapHeight:0.0f];
-        UIImageView *dismissBgView = [[[UIImageView alloc] initWithImage:dismissButtonImage] autorelease];
+        UIImageView *dismissBgView = [[UIImageView alloc] initWithImage:dismissButtonImage];
         [cell setBackgroundView:dismissBgView];
         [[cell textLabel] setText:NSLocalizedString(@"Dismiss", nil)];
         [[cell textLabel] setBackgroundColor:[UIColor clearColor]];
@@ -154,12 +147,12 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel *emptyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)] autorelease];
+    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)];
     [emptyLabel setBackgroundColor:[UIColor clearColor]];
     if (section != 0) return emptyLabel;
     
     TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:[[self list] name]];
-    return [header autorelease];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -81,14 +81,6 @@
     [super viewDidUnload];
 }
 
-- (void)dealloc 
-{
-    [theItem release];
-    [theList release];
-    [listItemTableView release];
-    [toolBar release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -108,7 +100,6 @@
         [self setBackgroundImageFilename:bgImagePath];
         UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
         [[self tableView] setBackgroundView:bgView];
-        [bgView release];
     }
     [self preparePropertySections];
 }
@@ -125,8 +116,6 @@
                                                                action:@selector(donePressed:)];    
     [[self navigationItem] setLeftBarButtonItem:cancelBtn];
     [[self navigationItem] setRightBarButtonItem:doneBtn];
-    [cancelBtn release];
-    [doneBtn release];
 }
 
 - (void)configureAsChildNavigationView 
@@ -136,7 +125,6 @@
                                                                target:nil 
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release];    
 }
  
 - (void)cancelPressed:(id)sender
@@ -219,7 +207,7 @@
     NSInteger sectionIdx = [indexPath section];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     NSDictionary *sectDict = [[self editPropertySections] objectAtIndex:sectionIdx];
     [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
     NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
@@ -279,7 +267,7 @@
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
     [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
-    [vc release];  // prof rcmd
+      // prof rcmd
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -298,7 +286,6 @@
     [actionSheet addButtonWithTitle:markTitle];
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Add to Quick Stash",nil)];
     [actionSheet showFromToolbar:[self toolBar]];
-    [actionSheet release];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 

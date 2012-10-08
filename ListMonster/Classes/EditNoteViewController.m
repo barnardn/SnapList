@@ -33,12 +33,6 @@
     [self setBackgroundImageView:nil];
 }
 
-- (void)dealloc {
-    [theList release];
-    [noteTextView release];
-    [backgroundImageView release];
-    [super dealloc];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,18 +41,15 @@
                                                                 target:nil 
                                                                 action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    [backBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Enter Note", @"edit note view title")];
     UIBarButtonItem *clearTextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", nil) 
                                                                         style:UIBarButtonItemStylePlain 
                                                                        target:self 
                                                                        action:@selector(clearText:)];
     [[self navigationItem] setRightBarButtonItem:clearTextButton];
-    [clearTextButton release];
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     [[self view] addGestureRecognizer:tapRecognizer];
-    [tapRecognizer release];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

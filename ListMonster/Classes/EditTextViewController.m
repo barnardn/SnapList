@@ -9,6 +9,7 @@
 #import "Alerts.h"
 #import "EditTextViewController.h"
 #import "NSNumberExtensions.h"
+#import "MetaListItem.h"
 
 
 @implementation EditTextViewController
@@ -35,12 +36,6 @@
     [self setTextView:nil];
 }
 
-- (void)dealloc 
-{
-    [textView release];
-    [item release];
-    [super dealloc];
-}
 
 - (void)viewDidLoad 
 {
@@ -58,11 +53,9 @@
                                                                        target:self 
                                                                        action:@selector(clearText:)];
     [[self navigationItem] setRightBarButtonItem:clearTextButton];
-    [clearTextButton release];
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     [[self view] addGestureRecognizer:tapRecognizer];
-    [tapRecognizer release];
     [[self textView] becomeFirstResponder];
 }
 

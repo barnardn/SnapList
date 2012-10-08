@@ -13,14 +13,14 @@
 @interface EditTextViewController : UIViewController <EditItemViewProtocol> {
 
     UITextView *textView;
-    NSString *viewTitle;
+    NSString *__weak viewTitle;
     NSString *backgroundImageFilename;
     MetaListItem *item;
 }
 
-@property(nonatomic,retain) IBOutlet UITextView *textView;
-@property(nonatomic,assign) NSString *viewTitle;
-@property(nonatomic,retain) MetaListItem *item;
+@property(nonatomic,strong) IBOutlet UITextView *textView;
+@property(nonatomic,weak) NSString *viewTitle;
+@property(nonatomic,strong) MetaListItem *item;
 
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;

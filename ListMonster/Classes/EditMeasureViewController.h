@@ -26,20 +26,20 @@
 }
 
 
-@property (retain, nonatomic) NSString *selectedMeasureKey;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *unitSelector;
-@property (retain, nonatomic) IBOutlet UIPickerView *measurePicker;
-@property (retain, nonatomic) IBOutlet UIView *customMeasureView;
-@property (retain, nonatomic) IBOutlet UITextField *customMeasure;
-@property (retain, nonatomic) IBOutlet UITextField *customMeasureName;
-@property (retain, nonatomic) IBOutlet UITextField *customMeasureAbbrev;
-@property (retain, nonatomic) IBOutlet UIButton *addCustomMeasure;
-@property (retain, nonatomic) IBOutlet UIButton *removeCustomMeasure;
+@property (strong, nonatomic) NSString *selectedMeasureKey;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *unitSelector;
+@property (strong, nonatomic) IBOutlet UIPickerView *measurePicker;
+@property (strong, nonatomic) IBOutlet UIView *customMeasureView;
+@property (strong, nonatomic) IBOutlet UITextField *customMeasure;
+@property (strong, nonatomic) IBOutlet UITextField *customMeasureName;
+@property (strong, nonatomic) IBOutlet UITextField *customMeasureAbbrev;
+@property (strong, nonatomic) IBOutlet UIButton *addCustomMeasure;
+@property (strong, nonatomic) IBOutlet UIButton *removeCustomMeasure;
 
-@property (retain, nonatomic) NSMutableDictionary *currentMeasures;
-@property (retain, nonatomic) Measure *selectedMeasure;
-@property (retain, nonatomic) MetaListItem *item;
-@property (retain, nonatomic) NSString *viewTitle;
+@property (strong, nonatomic) NSMutableDictionary *currentMeasures;
+@property (strong, nonatomic) Measure *selectedMeasure;
+@property (strong, nonatomic) MetaListItem *item;
+@property (strong, nonatomic) NSString *viewTitle;
 @property (assign) NSInteger defaultUnitSelection;
 
 - (IBAction)UnitSelectorTapped:(id)sender;

@@ -21,10 +21,10 @@
     NSString *notificationMessage;
 }
 
-@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,strong) MetaList *theList;
 @property(nonatomic,assign) BOOL editActionCancelled;
 @property(nonatomic,assign) BOOL isNewList;
-@property(nonatomic,retain) NSString *notificationMessage;
+@property(nonatomic,strong) NSString *notificationMessage;
 
 - (id)initWithList:(MetaList *)aList;
 

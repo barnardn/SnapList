@@ -53,13 +53,6 @@
 }
 
 
-- (void)dealloc {
-    [navBar release];
-    [categoryNameField release];
-    [category release];
-    [backgroundImageView release];
-    [super dealloc];
-}
 
 
 #pragma mark -
@@ -109,17 +102,15 @@
     [navItem setLeftBarButtonItem:cancelBtn];
     [navItem setRightBarButtonItem:[self doneButton]];
     [nb pushNavigationItem:navItem animated:NO];
-    [cancelBtn release];
-    [navItem release];
-    return [nb autorelease];
+    return nb;
 }
 
 - (UIBarButtonItem *)doneButton {
     
-    return [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button")
+    return [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button")
                                              style:UIBarButtonItemStyleDone 
                                             target:self 
-                                            action:@selector(donePressed:)] autorelease];
+                                            action:@selector(donePressed:)];
 }
 
 - (void)adjustTextFieldForModalView {

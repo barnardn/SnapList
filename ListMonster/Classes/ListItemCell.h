@@ -17,8 +17,8 @@
 
 @interface ListItemCell : UITableViewCell
 
-@property(nonatomic,retain) UIImage *editModeImage;
-@property(nonatomic,retain) UIImage *normalModeImage;
+@property(nonatomic,strong) UIImage *editModeImage;
+@property(nonatomic,strong) UIImage *normalModeImage;
 
 
 @end

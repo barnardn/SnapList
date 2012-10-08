@@ -24,14 +24,14 @@
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSFetchRequest *matchingUnitFetch = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *matchingUnitFetch = [[NSFetchRequest alloc] init];
     [matchingUnitFetch setEntity:[NSEntityDescription entityForName:@"Measure" inManagedObjectContext:moc]];
     NSPredicate *byMatchingMeasure = [NSPredicate predicateWithFormat:@"unitIdentifier = %d", [measure unitIdentifier]];
     [matchingUnitFetch setPredicate:byMatchingMeasure];
     NSError *error = nil;
     NSArray *soughtMeasure = [moc executeFetchRequest:matchingUnitFetch error:&error];
     if (error) {
-        DLog(@"Unable to fetch a meatching measure items", [error localizedDescription]);
+        DLog(@"Unable to fetch a meatching measure items %@", [error localizedDescription]);
         return nil;
     }
     return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
@@ -39,7 +39,7 @@
 
 + (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc
 {
-    NSFetchRequest *matchingUnitFetch = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *matchingUnitFetch = [[NSFetchRequest alloc] init];
     if (!moc)
         moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     [matchingUnitFetch setEntity:[NSEntityDescription entityForName:@"Measure" inManagedObjectContext:moc]];
@@ -48,7 +48,7 @@
     NSError *error = nil;
     NSArray *soughtMeasure = [moc executeFetchRequest:matchingUnitFetch error:&error];
     if (error) {
-        DLog(@"Unable to fetch a meatching measure items", [error localizedDescription]);
+        DLog(@"Unable to fetch a meatching measure items %@", [error localizedDescription]);
         return nil;
     }
     return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;

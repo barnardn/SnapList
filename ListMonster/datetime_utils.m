@@ -51,7 +51,7 @@ NSDate *date_by_adding_days(NSDate *from_date, NSInteger num_days)
 {
     NSCalendar *cal = [NSCalendar currentCalendar];
     [cal setLocale:[NSLocale currentLocale]];
-    NSDateComponents *day_offset = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *day_offset = [[NSDateComponents alloc] init];
     [day_offset setDay:num_days];
     NSDate *new_date = [cal dateByAddingComponents:day_offset toDate:from_date options:0];
     return new_date;
@@ -95,14 +95,14 @@ BOOL has_midnight_timecomponent(NSDate *date)
 {
     NSCalendar *cal = [NSCalendar currentCalendar];
     NSDateComponents *hours = [cal components:dtuHOURSMIN_CALUNITS fromDate:date];
-    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setLocale:[NSLocale currentLocale]];
     return ([hours hour] == 0 && [hours minute] == 0);
 }
 
 NSString *formatted_date_with_format_string(NSDate *date, NSString *formatString)
 {
-    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setLocale:[NSLocale currentLocale]];
     [dateFmt setDateFormat:formatString];
     return [dateFmt stringFromDate:date];
@@ -111,7 +111,7 @@ NSString *formatted_date_with_format_string(NSDate *date, NSString *formatString
 
 NSString *dayname_for_date(NSDate *date)
 {
-    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setLocale:[NSLocale currentLocale]];
     [dateFmt setDateFormat:@"EEE, MMM d"];
     return [dateFmt stringFromDate:date];
@@ -121,7 +121,7 @@ NSString *formatted_date(NSDate *date)
 {
     NSCalendar *cal = [NSCalendar currentCalendar];
     NSDateComponents *hours = [cal components:dtuHOURSMIN_CALUNITS fromDate:date];
-    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setLocale:[NSLocale currentLocale]];
     if ([hours hour] == 0 && [hours minute] == 0)
         [dateFmt setDateFormat:@"EEE, MMM d"];
@@ -132,7 +132,7 @@ NSString *formatted_date(NSDate *date)
 
 NSString *formatted_time(NSDate *date)
 {
-    NSDateFormatter *dateFmt = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     [dateFmt setLocale:[NSLocale currentLocale]];
     [dateFmt setDateFormat:@"h:mm a"];
     return [dateFmt stringFromDate:date];

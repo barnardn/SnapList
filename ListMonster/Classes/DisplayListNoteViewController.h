@@ -16,8 +16,8 @@
 
 @interface DisplayListNoteViewController : UITableViewController
 
-@property(nonatomic, retain) MetaList *list;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
+@property(nonatomic, strong) MetaList *list;
+@property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)aList;
 - (IBAction)dismissButtonPressed:(id)sender;

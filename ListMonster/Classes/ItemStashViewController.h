@@ -25,12 +25,12 @@
     
 }
 
-@property(nonatomic,retain) IBOutlet UITableView *stashTableView;
-@property(nonatomic,retain) IBOutlet UINavigationBar *navBar;
-@property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) NSFetchedResultsController *resultsController;
-@property(nonatomic,retain) ItemStash *selectedItem;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
+@property(nonatomic,strong) IBOutlet UITableView *stashTableView;
+@property(nonatomic,strong) IBOutlet UINavigationBar *navBar;
+@property(nonatomic,strong) MetaList *theList;
+@property(nonatomic,strong) NSFetchedResultsController *resultsController;
+@property(nonatomic,strong) ItemStash *selectedItem;
+@property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)list;
 

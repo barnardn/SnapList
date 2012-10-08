@@ -20,16 +20,16 @@
     Category *category;
     MetaList *theList;
     UINavigationBar *navBar;        // for use when presented modally
-    id<EditCategoryDelegate>delegate;
+    id<EditCategoryDelegate>__weak delegate;
     
 }
 
-@property(nonatomic,retain) IBOutlet UIImageView *backgroundImageView;
-@property(nonatomic,retain) IBOutlet UITextField *categoryNameField;
-@property(nonatomic,retain) Category *category;
-@property(nonatomic,retain) UINavigationBar *navBar;
-@property(nonatomic,assign) id<EditCategoryDelegate> delegate;
-@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,strong) IBOutlet UIImageView *backgroundImageView;
+@property(nonatomic,strong) IBOutlet UITextField *categoryNameField;
+@property(nonatomic,strong) Category *category;
+@property(nonatomic,strong) UINavigationBar *navBar;
+@property(nonatomic,weak) id<EditCategoryDelegate> delegate;
+@property(nonatomic,strong) MetaList *theList;
 
 - (id)initWithList:(MetaList *)aList;
 

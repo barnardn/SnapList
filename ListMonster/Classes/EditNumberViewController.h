@@ -23,9 +23,9 @@
     BOOL firstDigitEntered;
 }
 
-@property(nonatomic,retain) IBOutlet UITextField *numericTextField;
-@property(nonatomic,retain) MetaListItem *item;
-@property(nonatomic,retain) NSString *viewTitle;
+@property(nonatomic,strong) IBOutlet UITextField *numericTextField;
+@property(nonatomic,strong) MetaListItem *item;
+@property(nonatomic,strong) NSString *viewTitle;
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
 

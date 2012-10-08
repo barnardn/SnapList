@@ -66,16 +66,6 @@
 }
 
 
-- (void)dealloc 
-{
-    [numFormatter release];
-    [resultsController release];
-    [backgroundImageFilename release];
-    [theList release];
-    [navBar release];
-    [stashTableView release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -89,7 +79,6 @@
     [self setBackgroundImageFilename:bgImagePath];
     UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
     [[self stashTableView] setBackgroundView:bgView];
-    [bgView release];
 
     UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
                                                                   style:UIBarButtonItemStylePlain 
@@ -104,9 +93,6 @@
     [navItem setLeftBarButtonItem:cancelBtn];
     [navItem setRightBarButtonItem:doneBtn];
     [[self navBar] pushNavigationItem:navItem animated:NO];
-    [cancelBtn release];
-    [doneBtn release];
-    [navItem release];
 }
 
 - (void)cancelPressed:(id)sender {
@@ -176,7 +162,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
@@ -277,10 +263,8 @@
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byName,nil];
     
     [request setSortDescriptors:sortDescriptors];
-    [byName release];
-    [sortDescriptors release];
     
-    return [request autorelease];
+    return request;
 }
 
 

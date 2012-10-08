@@ -20,10 +20,10 @@
     
 }
 
-@property(nonatomic, retain) IBOutlet UIWindow *window;
-@property(nonatomic,retain) UINavigationController *navController;
-@property(nonatomic,retain) NSArray *allColors;
-@property(nonatomic,retain) NSMutableDictionary *cachedItems;
+@property(nonatomic, strong) IBOutlet UIWindow *window;
+@property(nonatomic,strong) UINavigationController *navController;
+@property(nonatomic,strong) NSArray *allColors;
+@property(nonatomic,strong) NSMutableDictionary *cachedItems;
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
 - (NSManagedObjectModel *)managedObjectModel;

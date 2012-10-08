@@ -43,16 +43,16 @@
     NSString *backgroundImageFilename;
 }
 
-@property(nonatomic,retain) IBOutlet UITableView *allItemsTableView;
-@property(nonatomic,retain) IBOutlet UIToolbar *toolBar;
-@property(nonatomic,retain) IBOutlet UISegmentedControl *checkedState;
-@property(nonatomic,retain) IBOutlet UIBarButtonItem *addItemBtn;
-@property(nonatomic,retain) IBOutlet UIBarButtonItem *moreActionsBtn;
-@property(nonatomic,retain) IBOutlet UIBarButtonItem *editBtn;
-@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,strong) IBOutlet UITableView *allItemsTableView;
+@property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
+@property(nonatomic,strong) IBOutlet UISegmentedControl *checkedState;
+@property(nonatomic,strong) IBOutlet UIBarButtonItem *addItemBtn;
+@property(nonatomic,strong) IBOutlet UIBarButtonItem *moreActionsBtn;
+@property(nonatomic,strong) IBOutlet UIBarButtonItem *editBtn;
+@property(nonatomic,strong) MetaList *theList;
 @property(nonatomic,assign) BOOL inEditMode;
-@property(nonatomic,retain) NSMutableArray *listItems;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
+@property(nonatomic,strong) NSMutableArray *listItems;
+@property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)aList;
 - (IBAction)addItemBtnPressed:(id)sender;

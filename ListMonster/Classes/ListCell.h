@@ -15,9 +15,9 @@
     UILabel *countsLabel;
 }
 
-@property(nonatomic,retain) IBOutlet UILabel *nameLabel;
-@property(nonatomic,retain) IBOutlet UILabel *categoryLabel;
-@property(nonatomic,retain) IBOutlet UILabel *countsLabel;
+@property(nonatomic,strong) IBOutlet UILabel *nameLabel;
+@property(nonatomic,strong) IBOutlet UILabel *categoryLabel;
+@property(nonatomic,strong) IBOutlet UILabel *countsLabel;
 
 
 @end

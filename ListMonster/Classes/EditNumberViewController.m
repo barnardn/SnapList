@@ -45,15 +45,6 @@
             (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
 }
 
-- (void)dealloc 
-{
-    [numFormatter release];
-    [backgroundImageFilename release];
-    [numericTextField release];
-    [item release];
-    [viewTitle release];
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning 
 {

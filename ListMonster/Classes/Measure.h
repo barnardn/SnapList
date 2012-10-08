@@ -14,14 +14,14 @@
 
 @interface Measure : NSManagedObject
 
-@property (nonatomic, retain) NSString *measure;
-@property (nonatomic, retain) NSString *unit;
-@property (nonatomic, retain) NSString *unitAbbreviation;
-@property (nonatomic, retain) NSNumber *isMetric;
-@property (nonatomic, retain) NSNumber *isCustom;
-@property (nonatomic, retain) NSNumber *sortOrder;
-@property (nonatomic, retain) NSNumber *unitIdentifier;
-@property (nonatomic, retain) NSSet *items;
+@property (nonatomic, strong) NSString *measure;
+@property (nonatomic, strong) NSString *unit;
+@property (nonatomic, strong) NSString *unitAbbreviation;
+@property (nonatomic, strong) NSNumber *isMetric;
+@property (nonatomic, strong) NSNumber *isCustom;
+@property (nonatomic, strong) NSNumber *sortOrder;
+@property (nonatomic, strong) NSNumber *unitIdentifier;
+@property (nonatomic, strong) NSSet *items;
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc;
 + (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc;

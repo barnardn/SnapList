@@ -8,7 +8,6 @@
 //
 
 #import "Alerts.h"
-#import "RegexKitLite.h"
 
 #pragma mark -
 #pragma mark Modal Alert Delegate 
@@ -18,12 +17,12 @@
     CFRunLoopRef currentLoop;
     NSInteger btnIndex;
     NSString *userText;
-    UIAlertView *requestorView;
+    UIAlertView *__weak requestorView;
 }
 
 @property(readonly) NSInteger btnIndex;
-@property(retain) NSString *userText;
-@property(nonatomic,assign) UIAlertView *requestorView;
+@property(strong) NSString *userText;
+@property(nonatomic,weak) UIAlertView *requestorView;
 
 @end
 
@@ -93,10 +92,6 @@
     }
 }
 
-- (void)dealloc {
-    [userText release];
-    [super dealloc];
-}
 
 
 @end
@@ -115,8 +110,6 @@
     [alert show];
     CFRunLoopRun();
     
-    [alert release];
-    [ead release];
 }
 
 @end
@@ -134,8 +127,6 @@
     [alert show];
     CFRunLoopRun();
     
-    [alert release];
-    [ead release];  
     return NO;
 }
 
@@ -159,8 +150,6 @@
     [vdad show];
     CFRunLoopRun();
     hasSelectedViewDetails = ([ead btnIndex] == 1);
-    [vdad release];
-    [ead release];
     return hasSelectedViewDetails;
 }
 
@@ -172,11 +161,11 @@
 
 + (UIAlertView *)showWithMessage:(NSString *)message {
     
-    UIAlertView *loadingAlert = [[[UIAlertView alloc] initWithTitle:@"Please Wait" 
+    UIAlertView *loadingAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
                                                             message:message 
                                                            delegate:self 
                                                   cancelButtonTitle:nil 
-                                                  otherButtonTitles:nil] autorelease];
+                                                  otherButtonTitles:nil];
     [loadingAlert show];
     UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];    
     CGPoint aivCenter = CGPointMake(loadingAlert.bounds.size.width/2.0f, loadingAlert.bounds.size.height-40.0f);
@@ -187,7 +176,6 @@
         [aiv startAnimating]; // but only show the activity indicator if the center is valid
         [loadingAlert addSubview:aiv];
     }
-    [aiv release];
     
     return loadingAlert;
 }
@@ -200,11 +188,13 @@
 + (NSNumber *)requestNumberWith:(NSString *)question prompt:(NSString *)prompt {
     
     NSString *string = [InputRequestor requestInputWith:question placeHolder:prompt keyboardType:UIKeyboardTypeNumberPad];
+    /*
     NSString *match = [string stringByMatching:@"^(\\d+)|(\\d*)\\.(\\d+)$"];
     if (!match || [match isEqual:@""]) {
         [ErrorAlert showWithTitle:@"Bad Number" andMessage:@"Please enter a valid number."];
         return nil;
-    } 
+    }
+     */
     NSNumber *num = [NSNumber numberWithFloat:[string floatValue]];
     return num;
 }
@@ -233,7 +223,6 @@
     
     UITextField *junk = [[UITextField alloc] init];
     UIFont *tfFont = [junk font];
-    [junk release];
     
     CGSize placeHolderTextSize = [placeHolder sizeWithFont:tfFont];
     CGFloat minWidth = MAX(150.0f, placeHolderTextSize.width + 50.0f);
@@ -255,7 +244,6 @@
     CGPoint tfCenter = CGPointMake(bounds.size.width/2.0f, bounds.size.height/2.0f - 10.0f);
     [tf setCenter:tfCenter];
     [inputRequestor addSubview:tf];
-    [tf release];
     
     [mad performSelector:@selector(moveAlert:) withObject:inputRequestor afterDelay:0.7f];
 
@@ -267,8 +255,6 @@
     } else {
         userInput = [mad userText];
     }
-    [inputRequestor release];
-    [mad release];
     return userInput;
 }
 

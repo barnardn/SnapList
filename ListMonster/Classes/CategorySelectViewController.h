@@ -17,17 +17,17 @@
     
     MetaList *theList;
     NSFetchedResultsController *resultsController;
-    Category *newCategory;
+    Category *theCategory;
     Category *selectedCategory;
     NSIndexPath *lastSelectedIndexPath;
     
 }
 
-@property(nonatomic,retain) MetaList *theList;
-@property(nonatomic,retain) NSFetchedResultsController *resultsController;
-@property(nonatomic,retain) Category *newCategory;
-@property(nonatomic,retain) Category *selectedCategory;
-@property(nonatomic,retain) NSIndexPath *lastSelectedIndexPath;
+@property(nonatomic,strong) MetaList *theList;
+@property(nonatomic,strong) NSFetchedResultsController *resultsController;
+@property(nonatomic,strong) Category *theCategory;
+@property(nonatomic,strong) Category *selectedCategory;
+@property(nonatomic,strong) NSIndexPath *lastSelectedIndexPath;
 
 - (id)initWithList:(MetaList *)aList;
 

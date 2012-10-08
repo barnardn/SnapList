@@ -16,10 +16,10 @@
     MetaListItem *theItem;
 }
 
-@property(nonatomic,retain) NSArray *priorityList;
-@property(nonatomic,retain) MetaListItem *theItem;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
-@property(nonatomic,retain) NSIndexPath *lastIndexPath;
+@property(nonatomic,strong) NSArray *priorityList;
+@property(nonatomic,strong) MetaListItem *theItem;
+@property(nonatomic,strong) NSString *backgroundImageFilename;
+@property(nonatomic,strong) NSIndexPath *lastIndexPath;
 
 -(id)initWithTitle:(NSString *)title listItem:(MetaListItem *)anItem;
 @end

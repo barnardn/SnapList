@@ -7,6 +7,7 @@
 //
 
 #import "Alerts.h"
+#import "Category.h"
 #import "datetime_utils.h"
 #import "EditListViewController.h"
 #import "EditListItemViewController.h"
@@ -75,10 +76,6 @@
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [allLists release];
-    [categoryNameKeys release];
-    [edListNav release];
-    [super dealloc];
 }
 
 #pragma mark -
@@ -99,7 +96,6 @@
                                                                             target:self 
                                                                             action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
-    [addBtn release];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
     [self setAllLists:[self loadAllLists]];
     [self setOverdueItems:[self loadOverdueItems]];
@@ -124,7 +120,6 @@
 {
     UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
     [[self tableView] setBackgroundView:bgView];
-    [bgView release];    
 }
 
 
@@ -149,7 +144,6 @@
         [self presentModalViewController:edListNav animated:YES];
     else
         [[self navigationController] pushViewController:evc animated:YES];
-    [evc release];
 }
 
 #pragma mark -
@@ -247,7 +241,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    [edListNav release], edListNav = nil;
+    edListNav = nil;
     BOOL enableEditButton = ([[self allLists] count] > 0);
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
 }
@@ -286,7 +280,7 @@
     if ([[self allLists] count] == 0) {
         UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:EmptyCellId];
         if (!emptyCell)
-            emptyCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EmptyCellId] autorelease];
+            emptyCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EmptyCellId];
         [[emptyCell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
         [[emptyCell textLabel] setTextAlignment:UITextAlignmentCenter];
         [[emptyCell textLabel] setTextColor:[UIColor lightGrayColor]];
@@ -314,7 +308,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ItemCellID];
     if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ItemCellID] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ItemCellID];
         [[cell textLabel] setFont:[UIFont systemFontOfSize:14.0f]];
     }
     [[cell textLabel] setText:[item name]];
@@ -442,7 +436,6 @@
         MetaListItem *listItem = [[self overdueItems] objectAtIndex:[indexPath row]];
         EditListItemViewController *elivc = [[EditListItemViewController alloc] initWithList:[listItem list] editItem:listItem];
         [[self navigationController] pushViewController:elivc animated:YES];
-        [elivc release];
         return;
     }
     if ([[self allLists] count] == 0) {
@@ -452,7 +445,6 @@
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];
-    [livc release];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
@@ -468,7 +460,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel *emptyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)] autorelease];
+    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)];
     [emptyLabel setBackgroundColor:[UIColor clearColor]];
     BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
     if ((section == 0) && haveOverdueItems)
@@ -479,7 +471,7 @@
         section--;
     NSString *headerTitle = [[self categoryNameKeys] objectAtIndex:section];
     TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:headerTitle];
-    return [header autorelease];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -492,8 +484,8 @@
 
 - (NSArray *)overdueItemsSortCriteria 
 {
-    NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-    NSSortDescriptor *byDate = [[[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES] autorelease];
+    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSSortDescriptor *byDate = [[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:byDate,byName,nil];
     return sortDescriptors;
 }
@@ -509,13 +501,13 @@
 //    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[overdue count]];
     
-    return ([overdue count] == 0) ? nil : [[overdue mutableCopy] autorelease];
+    return ([overdue count] == 0) ? nil : [overdue mutableCopy];
 }
 
 - (NSMutableDictionary *)loadAllLists 
 {
-    NSSortDescriptor *byName = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-    NSSortDescriptor *byCategory = [[[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
+    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
     NSArray *lists =  [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaList" sortDescriptors:sortDescriptors];
     NSMutableDictionary *listDict = [NSMutableDictionary dictionary];

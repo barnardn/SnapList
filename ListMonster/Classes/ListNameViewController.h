@@ -18,9 +18,9 @@
     MetaList *theList;
 }
 
-@property(nonatomic,retain) IBOutlet UIImageView *backgroundImageView;
-@property(nonatomic,retain) IBOutlet UITextField *textField;
-@property(nonatomic,retain) MetaList *theList;
+@property(nonatomic,strong) IBOutlet UIImageView *backgroundImageView;
+@property(nonatomic,strong) IBOutlet UITextField *textField;
+@property(nonatomic,strong) MetaList *theList;
 
 -(id)initWithList:(MetaList *)aList;
 
