@@ -23,7 +23,7 @@
     NSArray *stringParts = [stringValue componentsSeparatedByString:@"."];
     if ([stringParts count] == 1) {
         NSNumber *intNum = [formatter numberFromString:stringValue];
-        return (intNum) ? [[NSNumber alloc] initWithInt:[intNum intValue]] : nil;
+        return (intNum) ? @([intNum intValue]) : nil;
     } 
     NSNumber *decimalNum = [formatter numberFromString:stringValue];
     return (decimalNum) ? [self initWithDouble:[decimalNum doubleValue]] : nil;

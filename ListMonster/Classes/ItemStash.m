@@ -37,7 +37,7 @@
     NSArray *exists = [stash filteredArrayUsingPredicate:hasItemName];
     ItemStash *stashItem = nil;
     if ([exists count] > 0) {
-        stashItem = [exists objectAtIndex:0];
+        stashItem = exists[0];
     } else {
         stashItem = [NSEntityDescription insertNewObjectForEntityForName:@"ItemStash" inManagedObjectContext:ctx];
         [stashItem setName:[anItem name]];

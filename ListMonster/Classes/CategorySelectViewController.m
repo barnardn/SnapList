@@ -149,7 +149,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectInfo = [[[self resultsController] sections] objectAtIndex:section];
+    id<NSFetchedResultsSectionInfo> sectInfo = [[self resultsController] sections][section];
     return [sectInfo numberOfObjects];
 }
 
@@ -231,16 +231,16 @@
     Category *cat =  nil;
     switch (type) {
         case NSFetchedResultsChangeInsert:
-            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+            [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] 
                                     withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             break;
         case NSFetchedResultsChangeDelete:
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] 
                                     withRowAnimation:UITableViewRowAnimationFade];
             break;
         case NSFetchedResultsChangeMove:
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] 
+            [[self tableView] deleteRowsAtIndexPaths:@[newIndexPath] 
                                     withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:[newIndexPath section]] 
                             withRowAnimation:UITableViewRowAnimationFade];
@@ -250,7 +250,7 @@
             if ([[cat changedValues] count] == 0) return;
             cell = [[self tableView] cellForRowAtIndexPath:indexPath];
             [[cell textLabel] setText:[cat name]];
-            [[self tableView] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+            [[self tableView] reloadRowsAtIndexPaths:@[indexPath]
                                     withRowAnimation:UITableViewRowAnimationNone];
         default:
             break;
@@ -282,7 +282,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc]];
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byName,nil];
+    NSArray *sortDescriptors = @[byName];
     
     [request setSortDescriptors:sortDescriptors];
     

@@ -112,7 +112,7 @@
     [self cancelReminder];
     UILocalNotification *localNotice = [[UILocalNotification alloc] init];
     [localNotice setFireDate:[self reminderDate]];
-    NSDictionary *infoDict = [NSDictionary dictionaryWithObject:[self itemIdentity] forKey:mliREMINDER_KEY];
+    NSDictionary *infoDict = @{mliREMINDER_KEY: [self itemIdentity]};
     [localNotice setUserInfo:infoDict];
     ///NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
     [localNotice setApplicationIconBadgeNumber:1];  // was badgeNumber + 1
@@ -140,7 +140,7 @@
         NSString *notificationName = [[ln userInfo] valueForKey:mliREMINDER_KEY];
         return ([notificationName isEqualToString:[self itemIdentity]]);
     }];
-    return ([matching count]) ? [matching objectAtIndex:0] : nil;
+    return ([matching count]) ? matching[0] : nil;
 }
 
 - (NSString *)messageForNotificationAlert

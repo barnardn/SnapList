@@ -47,7 +47,7 @@
 - (NSInteger)findFirstIndex:(BOOL (^)(id obj))predicate
 {
     for (NSUInteger idx = 0; idx < [self count]; idx++) {
-        if (predicate([self objectAtIndex:idx]))
+        if (predicate(self[idx]))
             return idx;
     }
     return -1;
@@ -59,7 +59,7 @@
     if (start > ([self count] - 1)) return nil;
     NSMutableArray *newArr = [NSMutableArray arrayWithCapacity:length];
     for (int idx = start; idx < (start + length); idx++)
-        [newArr addObject:[self objectAtIndex:idx]];
+        [newArr addObject:self[idx]];
 
     return newArr;
 }
@@ -67,7 +67,7 @@
 - (NSArray *)sortedOnKey:(NSString *)sortKey ascending:(BOOL)ascending
 {
     NSSortDescriptor *onKey = [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:ascending];
-    return [self sortedArrayUsingDescriptors:[NSArray arrayWithObject:onKey]];
+    return [self sortedArrayUsingDescriptors:@[onKey]];
 }
 
 

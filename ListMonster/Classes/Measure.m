@@ -34,7 +34,7 @@
         DLog(@"Unable to fetch a meatching measure items %@", [error localizedDescription]);
         return nil;
     }
-    return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
+    return ([soughtMeasure count]) ? soughtMeasure[0] : nil;
 }
 
 + (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc
@@ -51,7 +51,7 @@
         DLog(@"Unable to fetch a meatching measure items %@", [error localizedDescription]);
         return nil;
     }
-    return ([soughtMeasure count]) ? [soughtMeasure objectAtIndex:0] : nil;
+    return ([soughtMeasure count]) ? soughtMeasure[0] : nil;
 
 }
 

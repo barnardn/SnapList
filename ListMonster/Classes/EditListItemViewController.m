@@ -160,7 +160,7 @@
                                          @"priority", @"attrib", [PriorityViewController class], @"vc", nil];
     NSMutableDictionary *unitDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Units", @"title",
                                      @"unitOfMeasure", @"attrib", [EditMeasureViewController class], @"vc", nil];
-    NSArray *sects = [NSArray arrayWithObjects:nameDict, priorityDict, qtyDict, unitDict, reminderDict, nil];
+    NSArray *sects = @[nameDict, priorityDict, qtyDict, unitDict, reminderDict];
     [self setEditPropertySections:sects];
 }
 
@@ -208,7 +208,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
-    NSDictionary *sectDict = [[self editPropertySections] objectAtIndex:sectionIdx];
+    NSDictionary *sectDict = [self editPropertySections][sectionIdx];
     [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
     NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
     [[cell detailTextLabel] setText:displayValue];
@@ -261,9 +261,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     skipSaveLogic = YES;
-    NSMutableDictionary *sectDict = [[self editPropertySections] objectAtIndex:[indexPath section]];
-    Class vcClass = [sectDict objectForKey:@"vc"];
-    NSString *viewTitle = [sectDict objectForKey:@"title"];
+    NSMutableDictionary *sectDict = [self editPropertySections][[indexPath section]];
+    Class vcClass = sectDict[@"vc"];
+    NSString *viewTitle = sectDict[@"title"];
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
     [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];

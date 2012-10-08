@@ -36,7 +36,7 @@
         ListColor *color = obj;
         return (NSOrderedSame == [[color rgbValue] compare:INT_OBJ(0)]);
     }];
-    return [blackColor objectAtIndex:0];
+    return blackColor[0];
 }
 
 

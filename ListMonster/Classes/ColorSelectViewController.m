@@ -85,7 +85,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
+    ListColor *color = [self allColors][[indexPath row]];
     [[cell textLabel] setText:[color name]];
     [[cell textLabel] setTextColor:[color uiColor]];
     
@@ -104,7 +104,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
-    ListColor *color = [[self allColors] objectAtIndex:[indexPath row]];
+    ListColor *color = [self allColors][[indexPath row]];
     [[self theList] setColor:color];
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];

@@ -132,7 +132,7 @@
             [[self dateSelectionMode] setSelectedSegmentIndex:rvPICKER_MODE];
             return;
         } else {
-            [self setSelectedSimpleDate:[matches objectAtIndex:0]];
+            [self setSelectedSimpleDate:matches[0]];
         }
     } else {
         [[self datePicker] setDate:date];
@@ -207,12 +207,12 @@
     NSInteger curWeekday = weekday_for_today();
     for (int dayOffset = 0; dayOffset < 7; dayOffset++) {
         NSInteger weekDayIdx = (curWeekday - 1) + dayOffset;
-        Tuple *t = [Tuple tupleWithFirst:[dayNames objectAtIndex:(weekDayIdx%7)] second:INT_OBJ(dayOffset)];
+        Tuple *t = [Tuple tupleWithFirst:dayNames[(weekDayIdx%7)] second:INT_OBJ(dayOffset)];
         if (dayOffset == 0)
             [t setSecond:INT_OBJ(7)];       // for one week from today
         NSInteger replacePoint = (weekDayIdx % 7) + 3;
         DLog(@"%@ at %d", t, replacePoint);
-        [dow replaceObjectAtIndex:replacePoint withObject:t];
+        dow[replacePoint] = t;
     }
     [self setSimpleDates:dow];
 }
@@ -247,7 +247,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    Tuple *dow = [[self simpleDates] objectAtIndex:[indexPath row]];
+    Tuple *dow = [self simpleDates][[indexPath row]];
     if (dow == [self selectedSimpleDate] && ![self lastSelectedIndexPath]) {
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
         [self setLastSelectedIndexPath:indexPath];
@@ -264,7 +264,7 @@
 {
     DLog(@"didSelectRow");
     if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
-    Tuple *selected = [[self simpleDates] objectAtIndex:[indexPath row]];
+    Tuple *selected = [self simpleDates][[indexPath row]];
     [self setSelectedSimpleDate:selected];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];

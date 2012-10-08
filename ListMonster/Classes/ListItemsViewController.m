@@ -164,7 +164,7 @@
     [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
     [self toggleCancelButton:[self inEditMode]];
     for (NSIndexPath *p in [[self allItemsTableView] indexPathsForVisibleRows]) {
-        MetaListItem *item = [[self listItems] objectAtIndex:[p row]];
+        MetaListItem *item = [self listItems][[p row]];
         ListItemCell *cell = (ListItemCell *)[[self allItemsTableView] cellForRowAtIndexPath:p];
         if ([item isComplete])
             [cell setEditModeImage:[UIImage imageNamed:@"radio-on"]];
@@ -196,7 +196,7 @@
     
     NSArray *allItems = [[[self theList] items] allObjects];
     NSSortDescriptor *bySortOrder = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
-    return [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:bySortOrder, sortDescriptor, nil]];
+    return [allItems sortedArrayUsingDescriptors:@[bySortOrder, sortDescriptor]];
 }
 
 - (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex
@@ -299,7 +299,7 @@
         [self configureForEmtpyList:cell];
         return cell;
     }
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    MetaListItem *item = [self listItems][[indexPath row]];
     ListItemCell *cell = (ListItemCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell)
         cell = [self makeItemCell];
@@ -371,15 +371,15 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if (editingStyle != UITableViewCellEditingStyleDelete) return;
-    MetaListItem *deleteItem = [[self listItems] objectAtIndex:[indexPath row]];
+    MetaListItem *deleteItem = [self listItems][[indexPath row]];
     [[self listItems] removeObject:deleteItem];
     [[[self theList] managedObjectContext] deleteObject:deleteItem];
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];    
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];    
     [[self theList] removeItem:deleteItem];
     if ([[[self theList] items] count] == 0) {  // just deleted the last item
         [self enabledStateForEditControls:NO];
         NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:ipath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView insertRowsAtIndexPaths:@[ipath] withRowAnimation:UITableViewRowAnimationFade];
     }
     [self commitAnyChanges];
 }
@@ -391,7 +391,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {    
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    MetaListItem *item = [self listItems][[indexPath row]];
     NSString *text = [item name];
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
@@ -407,7 +407,7 @@
     } else if ([self inEditMode]) {
         [self itemSelectedAtIndexPath:indexPath];
     } else {
-        MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];    
+        MetaListItem *item = [self listItems][[indexPath row]];    
         EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
         [[self navigationController] pushViewController:eivc animated:YES];
     }
@@ -416,7 +416,7 @@
 - (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath 
 {    
     ListItemCell *cell = (ListItemCell *)[[self allItemsTableView] cellForRowAtIndexPath:indexPath];
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    MetaListItem *item = [self listItems][[indexPath row]];
     NSNumber *checkedValue = ([item isComplete]) ? INT_OBJ(0) : INT_OBJ(1);  // reverse of the current state
     [item setIsChecked:checkedValue];
     [self updateCheckboxButtonForItem:item atCell:cell];
@@ -454,9 +454,9 @@
         checkStateSelector = @"uncheckAllItems";
     else
         checkStateSelector = @"checkAllItems";
-    NSArray *actionSelectors = [NSArray arrayWithObjects:@"deleteAllItems", checkStateSelector, 
-                                @"pickFromStash",@"showListNote", nil];
-    [self performSelector:NSSelectorFromString([actionSelectors objectAtIndex:buttonIndex- 1])];
+    NSArray *actionSelectors = @[@"deleteAllItems", checkStateSelector, 
+                                @"pickFromStash",@"showListNote"];
+    [self performSelector:NSSelectorFromString(actionSelectors[buttonIndex- 1])];
 }
 
 - (void)deleteAllItems 

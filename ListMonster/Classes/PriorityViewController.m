@@ -23,10 +23,9 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
     [self setTheItem:anItem];
-    NSArray *priorities = [NSArray arrayWithObjects:[Tuple tupleWithFirst:INT_OBJ(-1) second:@"Low"],
+    NSArray *priorities = @[[Tuple tupleWithFirst:INT_OBJ(-1) second:@"Low"],
                            [Tuple tupleWithFirst:INT_OBJ(0) second:@"Normal"],
-                           [Tuple tupleWithFirst:INT_OBJ(1) second:@"High"],
-                           nil];
+                           [Tuple tupleWithFirst:INT_OBJ(1) second:@"High"]];
     [self setPriorityList:priorities];
     lastIndexPath = nil;
     return self;
@@ -105,7 +104,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
+    Tuple *t = [self priorityList][[indexPath row]];
     NSNumber *priorityVal = [t first];
     NSNumber *itemPriority = [[self theItem] priority];
     if (!itemPriority)
@@ -131,7 +130,7 @@
     UITableViewCell *lastCell = [[self tableView ]  cellForRowAtIndexPath:[self lastIndexPath]];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     [lastCell setAccessoryType:UITableViewCellAccessoryNone];
-    Tuple *t = [[self priorityList] objectAtIndex:[indexPath row]];
+    Tuple *t = [self priorityList][[indexPath row]];
     NSNumber *priorityVal = [t first];
     [[self theItem] setPriority:priorityVal];
     [self setLastIndexPath:indexPath];

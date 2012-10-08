@@ -196,8 +196,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";   
-    NSArray *cellConfigSelectors = [NSArray arrayWithObjects:@"cellAsNameCell:", @"cellAsColorCell:", 
-                                    @"cellAsCategoryCell:",@"cellAsNoteCell:", nil];
+    NSArray *cellConfigSelectors = @[@"cellAsNameCell:", @"cellAsColorCell:", 
+                                    @"cellAsCategoryCell:",@"cellAsNoteCell:"];
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -205,7 +205,7 @@
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     NSInteger selectorIdx = [indexPath section];
-    SEL configSelector = NSSelectorFromString([cellConfigSelectors objectAtIndex:selectorIdx]);
+    SEL configSelector = NSSelectorFromString(cellConfigSelectors[selectorIdx]);
     return [self performSelector:configSelector withObject:cell];
 }
 
@@ -214,13 +214,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSArray *nextNavSelectors = [NSArray arrayWithObjects:@"pushNameEditView", @"pushColorSelectView", 
-                                 @"pushCategoryEditView",@"pushNoteEditView", nil];
+    NSArray *nextNavSelectors = @[@"pushNameEditView", @"pushColorSelectView", 
+                                 @"pushCategoryEditView",@"pushNoteEditView"];
     NSInteger sectionIdx = [indexPath section];
-    NSString *selString = [nextNavSelectors objectAtIndex:sectionIdx];
+    NSString *selString = nextNavSelectors[sectionIdx];
     if ([selString compare:@""] == NSOrderedSame)
         return;
-    SEL selector = NSSelectorFromString([nextNavSelectors objectAtIndex:sectionIdx]);
+    SEL selector = NSSelectorFromString(nextNavSelectors[sectionIdx]);
     [self performSelector:selector];
 }
 

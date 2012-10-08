@@ -151,7 +151,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectInfo = [[[self resultsController] sections] objectAtIndex:section];
+    id<NSFetchedResultsSectionInfo> sectInfo = [[self resultsController] sections][section];
     return [sectInfo numberOfObjects];
 }
 
@@ -240,7 +240,7 @@
 {
     switch (type) {
         case NSFetchedResultsChangeDelete:
-            [[self stashTableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] 
+            [[self stashTableView] deleteRowsAtIndexPaths:@[indexPath] 
                                     withRowAnimation:UITableViewRowAnimationFade];
             break;
         default:
@@ -260,7 +260,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ItemStash" inManagedObjectContext:moc]];
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:byName,nil];
+    NSArray *sortDescriptors = @[byName];
     
     [request setSortDescriptors:sortDescriptors];
     

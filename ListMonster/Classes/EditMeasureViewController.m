@@ -61,7 +61,7 @@
 
 - (void)setDefaultUnitSelection:(NSInteger)unitIdx;
 {
-    NSNumber *idxObj = [NSNumber numberWithInt:unitIdx];
+    NSNumber *idxObj = @(unitIdx);
     [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:idxObj withKey:@"defaultUnit"];
 }
 
@@ -201,7 +201,7 @@
     [newMeasure setUnit:measureName];
     [newMeasure setUnitAbbreviation:measureAbbrev];
     [newMeasure setIsCustom:BOOL_OBJ(YES)];
-    [newMeasure setUnitIdentifier:[NSNumber numberWithInteger:[NSDate timeIntervalSinceReferenceDate]]];
+    [newMeasure setUnitIdentifier:@([NSDate timeIntervalSinceReferenceDate])];
     [moc save:nil];
     [self setSelectedMeasure:newMeasure];
     [self setSelectedMeasureKey:measure];
@@ -249,20 +249,20 @@
 {
     NSArray *measurements = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
     if ([measurements count] == 0) return;
-    [self setSelectedMeasureKey:[measurements objectAtIndex:measureIdx]];
-    NSArray *unsorted = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+    [self setSelectedMeasureKey:measurements[measureIdx]];
+    NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
     NSArray *units = [unsorted sortedOnKey:@"unit" ascending:YES];
     if ([units count] == 0) {
         [self setSelectedMeasureKey:nil];
         return;
     }
-    [self setSelectedMeasure:[units objectAtIndex:unitIndex]];
+    [self setSelectedMeasure:units[unitIndex]];
 }
 
 
 - (NSUInteger)calculateMeasurementIndexAfterDeletionOfUnit:(Measure *)unit
 {
-    NSArray *remainingUnits = [[self currentMeasures] objectForKey:[unit measure]];
+    NSArray *remainingUnits = [self currentMeasures][[unit measure]];
     BOOL isLastUnitInMeasure = ([remainingUnits count] == 1);
     NSArray *measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
     NSUInteger measureIndexDeleted = [measures indexOfObject:[unit measure]];    
@@ -279,7 +279,7 @@
 
 - (NSUInteger)calculateUnitIndexAtMeasurementIndex:(NSUInteger)measureIndex afterDeletionOfUnit:(Measure *)unit
 {
-    NSArray *remainingUnits = [[self currentMeasures] objectForKey:[unit measure]];
+    NSArray *remainingUnits = [self currentMeasures][[unit measure]];
     NSArray *sorted = [remainingUnits sortedOnKey:@"unit" ascending:YES];
     NSUInteger unitIndex = [sorted indexOfObject:unit];
     if (unitIndex == NSNotFound || unitIndex == 0)
@@ -294,7 +294,7 @@
     NSInteger measRow = [measures findFirstIndex:^BOOL(NSString *ms) {
         return [ms isEqualToString:[newMeasure measure]];
     }];
-    NSArray *unsorted = [[self currentMeasures] objectForKey:[newMeasure measure]];
+    NSArray *unsorted = [self currentMeasures][[newMeasure measure]];
     NSArray *units = [unsorted sortedOnKey:@"unit" ascending:YES];
     NSInteger unitRow = [units findFirstIndex:^BOOL(Measure *m) {
         NSString *us = [m unit];
@@ -336,11 +336,11 @@
     NSArray *measurements = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
     if ([measurements count] == 0) return 0;
     if (![self selectedMeasureKey]) {
-        NSString *key = [measurements objectAtIndex:0];
-        NSArray *units = [[self currentMeasures] objectForKey:key];
+        NSString *key = measurements[0];
+        NSArray *units = [self currentMeasures][key];
         return [units count];
     }
-    NSArray *units = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+    NSArray *units = [self currentMeasures][[self selectedMeasureKey]];
     return [units count];
 }
 
@@ -351,24 +351,24 @@
     NSArray *componentList;
     if (emvMEASURE_COMPONENT_INDEX == component)  { // measures
         componentList = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        return [componentList objectAtIndex:row];
+        return componentList[row];
     }
     if (![self selectedMeasureKey]) {
         Measure *itemUnit = [[self item] unitOfMeasure];
         if (itemUnit) {
             [self setSelectedMeasureKey:[itemUnit measure]];
         } else {
-            NSString *k = [[[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+            NSString *k = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)][0];
             [self setSelectedMeasureKey:k];
         }
     }
     if ([unitSelector selectedSegmentIndex] == emvCUSTOM_UNIT_INDEX) {
-        NSArray *unsorted = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+        NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
         componentList = [unsorted sortedOnKey:@"unit" ascending:YES];
     } else {
-        componentList = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+        componentList = [self currentMeasures][[self selectedMeasureKey]];
     }
-    Measure *m = [componentList objectAtIndex:row];
+    Measure *m = componentList[row];
     return [m unit];
 }
 
@@ -379,16 +379,16 @@
     if (emvMEASURE_COMPONENT_INDEX == component) {
         NSArray *measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
         if ([measures count] == 0) return;
-        [self setSelectedMeasureKey:[measures objectAtIndex:row]];
+        [self setSelectedMeasureKey:measures[row]];
         DLog(@"smk: %@", [self selectedMeasureKey]);
         [[self measurePicker] reloadComponent:emvUNIT_COMPONENT_INDEX];
         if (measurementSet == emvCUSTOM_UNIT_INDEX) {
-            NSArray *unsorted = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+            NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
             units = [unsorted sortedOnKey:@"unit" ascending:YES];
         } else {
-            units = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+            units = [self currentMeasures][[self selectedMeasureKey]];
         }
-        [self setSelectedMeasure:[units objectAtIndex:0]];
+        [self setSelectedMeasure:units[0]];
         
         if (measurementSet == emvCUSTOM_UNIT_INDEX)
             [self populateCustomMeasureTextFields:[self selectedMeasure]];
@@ -397,12 +397,12 @@
     if (![self selectedMeasureKey]) return;
     
     if (measurementSet == emvCUSTOM_UNIT_INDEX) {
-        NSArray *unsorted = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+        NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
         units = [unsorted sortedOnKey:@"unit" ascending:YES];            
     } else {
-        units = [[self currentMeasures] objectForKey:[self selectedMeasureKey]];
+        units = [self currentMeasures][[self selectedMeasureKey]];
     }
-    [self setSelectedMeasure:[units objectAtIndex:row]];
+    [self setSelectedMeasure:units[row]];
     if (measurementSet == emvCUSTOM_UNIT_INDEX)
         [self populateCustomMeasureTextFields:[self selectedMeasure]];
 }
@@ -436,10 +436,10 @@
     
     NSMutableDictionary *measureMap = [NSMutableDictionary dictionaryWithCapacity:0];
     [selectedMeasures forEach:^ (id m) {
-        NSMutableArray *unitList = [measureMap objectForKey:[m measure]];
+        NSMutableArray *unitList = measureMap[[m measure]];
         if (!unitList) {
             unitList = [NSMutableArray arrayWithObject:m];
-            [measureMap setObject:unitList forKey:[m measure]];
+            measureMap[[m measure]] = unitList;
         } else {
             [unitList addObject:m];
         }
@@ -473,11 +473,11 @@
             [self populateCustomMeasureTextFields:measure];
         }];
         measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        NSArray *unsorted = [[self currentMeasures] objectForKey:[measure measure]];
+        NSArray *unsorted = [self currentMeasures][[measure measure]];
         units = [unsorted sortedOnKey:@"unit" ascending:YES];
     } else {
         measures = [[self currentMeasures] allKeys];
-        units = [[self currentMeasures] objectForKey:[measure measure]];
+        units = [self currentMeasures][[measure measure]];
     }
     NSInteger measureRow = [measures indexOfObject:[measure measure]];
     NSInteger unitRow = [units indexOfObject:measure];

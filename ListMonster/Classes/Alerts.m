@@ -195,7 +195,7 @@
         return nil;
     }
      */
-    NSNumber *num = [NSNumber numberWithFloat:[string floatValue]];
+    NSNumber *num = @([string floatValue]);
     return num;
 }
 

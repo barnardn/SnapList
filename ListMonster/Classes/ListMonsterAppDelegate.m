@@ -48,7 +48,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 {    
 //    [self cancelRogueLocalNotifications];
     [self setCachedItems:[NSMutableDictionary dictionaryWithCapacity:0]];
-    UILocalNotification *launchNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    UILocalNotification *launchNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (launchNotification) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
     }
@@ -123,13 +123,13 @@ static ListMonsterAppDelegate *appDelegateInstance;
 - (NSString *)documentsFolder 
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docPath = [paths objectAtIndex:0];
+    NSString *docPath = paths[0];
     return docPath;
 }
 
 - (void)cancelRogueLocalNotifications
 {
-    NSString *path = [NSString pathWithComponents:[NSArray arrayWithObjects:[self documentsFolder], @"rogue-notifications.dat", nil]];
+    NSString *path = [NSString pathWithComponents:@[[self documentsFolder], @"rogue-notifications.dat"]];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [[NSFileManager defaultManager] createFileAtPath:path contents:nil attributes:nil];
@@ -170,10 +170,8 @@ static ListMonsterAppDelegate *appDelegateInstance;
         }
     }
     NSURL *url = [NSURL fileURLWithPath:dbPath];
-   NSDictionary *storeOptions = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  BOOL_OBJ(YES), NSMigratePersistentStoresAutomaticallyOption,
-                                  BOOL_OBJ(YES), NSInferMappingModelAutomaticallyOption,
-                                  nil];
+   NSDictionary *storeOptions = @{NSMigratePersistentStoresAutomaticallyOption: BOOL_OBJ(YES),
+                                  NSInferMappingModelAutomaticallyOption: BOOL_OBJ(YES)};
     NSManagedObjectModel *mom = [self managedObjectModel];
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
     
@@ -220,7 +218,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
     NSArray *sortDescriptors = nil;
     if (attributeName) {
         NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
-        sortDescriptors = [NSArray arrayWithObject:sd];
+        sortDescriptors = @[sd];
     }
     return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
 }
@@ -250,7 +248,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (void)addCacheObject:(id)object withKey:(NSString *)key
 {
-    [[self cachedItems] setObject:object forKey:key];
+    [self cachedItems][key] = object;
 }
 - (void)deleteCacheObjectForKey:(NSString *)key
 {
@@ -258,7 +256,7 @@ static ListMonsterAppDelegate *appDelegateInstance;
 }
 - (id)cacheObjectForKey:(NSString *)key
 {
-    return [[self cachedItems] objectForKey:key];
+    return [self cachedItems][key];
 }
 - (void)flushCache
 {
