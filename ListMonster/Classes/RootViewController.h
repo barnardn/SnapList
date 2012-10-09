@@ -6,13 +6,14 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : UITableViewController  {
+@interface RootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>  {
 
     NSMutableDictionary *allLists;
     NSArray *categoryNameKeys;

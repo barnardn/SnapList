@@ -20,6 +20,7 @@
 #import "NSArrayExtensions.h"
 #import "RootViewController.h"
 #import "TableHeaderView.h"
+#import "ThemeManager.h"
 
 @interface RootViewController()
 
@@ -35,7 +36,8 @@
 - (void)updateIncompleteCountForList:(MetaList *)list;
 - (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
 - (NSArray *)overdueItemsSortCriteria;
-- (void)setBackgroundView;
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @end
 
@@ -48,13 +50,15 @@
 
 - (id)init 
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
+    if (!self) return nil;
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style 
+
+- (NSString *)nibName
 {
-    return [self init];
+    return @"RootView";
 }
 
 #pragma mark -
@@ -83,23 +87,27 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-main.png"]]];
+    
     [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
                                                                             target:self 
                                                                             action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
+    
+    CGSize cellSize = [[UIImage imageNamed:@"bg-cell-topbottom"] size];
+    [[self tableView] setRowHeight:cellSize.height];
+    
     [self setAllLists:[self loadAllLists]];
     [self setOverdueItems:[self loadOverdueItems]];
-    [self setBackgroundView];
     
     [[self tableView] reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -114,14 +122,8 @@
                                              selector:@selector(didReceiveOverdueReminderNotification:) 
                                                  name:NOTICE_OVERDUE_ITEM 
                                                object:nil];
-}
 
-- (void)setBackgroundView
-{
-    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
-    [[self tableView] setBackgroundView:bgView];
 }
-
 
 - (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated 
 {
@@ -193,7 +195,7 @@
         if ([[self overdueItems] count] == 1) {
             [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         } else {
-            NSArray *idxPaths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:notificationItemIndex inSection:0]];
+            NSArray *idxPaths = @[[NSIndexPath indexPathForRow:notificationItemIndex inSection:0]];
             [[self tableView] insertRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
         }
     }
@@ -218,7 +220,7 @@
     NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:key];
     if ([[self overdueItems] count] > 0)
         sectionIdx++;
-    NSArray *itemsForCategory = [[self allLists] objectForKey:key];
+    NSArray *itemsForCategory = [self allLists][key];
     NSInteger rowIdx = [itemsForCategory indexOfObject:list];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
     return indexPath;
@@ -244,6 +246,10 @@
     edListNav = nil;
     BOOL enableEditButton = ([[self allLists] count] > 0);
     [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
+    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
+    if (selectedIndexPath)
+        [[self tableView] deselectRowAtIndexPath:selectedIndexPath animated:NO];
+    
 }
 
 
@@ -268,43 +274,78 @@
     if (sectionCount == 0)
         return 1;
     if (haveOverdueItems) section--;
-    NSArray *listArr = [[self allLists] objectForKey:[[self categoryNameKeys] objectAtIndex:section]];
+    NSArray *listArr = [self allLists][[self categoryNameKeys][section]];
     return [listArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     static NSString *CellId = @"ListCell";
-    static NSString *EmptyCellId = @"EmptyCell";
     
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellId];
+        [self customizeCell:cell atIndexPath:indexPath];
+    }
     if ([[self allLists] count] == 0) {
-        UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:EmptyCellId];
-        if (!emptyCell)
-            emptyCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:EmptyCellId];
-        [[emptyCell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
-        [[emptyCell textLabel] setTextAlignment:UITextAlignmentCenter];
-        [[emptyCell textLabel] setTextColor:[UIColor lightGrayColor]];
-        [emptyCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        return emptyCell;
+        [[cell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
+        [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
+        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
+        return cell;
+    } else {
+        [[cell textLabel] setTextAlignment:UITextAlignmentLeft];
+        [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     }
     if ([self overdueItems] && [indexPath section] == 0) 
         return [self tableView:tableView overdueItemCellForRowAtIndexPath:indexPath];
     
-    ListCell *cell = (ListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"ListCell" owner:self options:nil];
-        cell = (ListCell *)[nib objectAtIndex:0];
-    }
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
-    [self updateCell:cell forMetaList:listObj];
+    [[cell textLabel] setText:[listObj name]];
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath 
+- (void)customizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *unselectFileFmt = @"bg-cell-%@";
+    NSString *selectedFileFmt = @"bg-cell-%@-selected";
+    
+    NSString *selectedBg, *unselectedBg;
+    NSArray *listForCategory = [self listAtIndexPath:indexPath];
+    
+    if ([indexPath row] == 0) {
+        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"top"];
+        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"top"];
+    }  else if ([indexPath row] == [listForCategory count] - 1) {
+        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"bottom"];
+        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"bottom"];
+    } else {
+        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"middle"];
+        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"middle"];
+    }
+    DLog(@"bg: %@", selectedBg);
+    
+    [[cell textLabel] setFont:[ThemeManager fontForListName]];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:unselectedBg]];
+    [cell setBackgroundView:iv];
+    /*[[[cell backgroundView] layer] setShadowOffset:CGSizeMake(1.0f, 1.0f)];
+    [[[cell backgroundView] layer] setShadowOpacity:0.5f]; */
+    UIImageView *siv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:selectedBg]];
+    [cell setSelectedBackgroundView:siv];
+/*    [[[cell selectedBackgroundView] layer] setShadowOffset:CGSizeMake(1.0f, 1.0f)];
+    [[[cell selectedBackgroundView] layer] setShadowOpacity:0.5f]; */
+    [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+
+    
+}
+
+
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *ItemCellID = @"ItemCell";
     NSInteger rowIdx = [indexPath row];
-    MetaListItem *item = [[self overdueItems] objectAtIndex:rowIdx];
+    MetaListItem *item = [self overdueItems][rowIdx];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ItemCellID];
     if (!cell) {
@@ -334,16 +375,21 @@
     return cell;
 }
 
-         
-- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath 
+- (NSMutableArray *)listAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger sectionIdx = [indexPath section];
     if ([[self overdueItems] count] > 0)
         sectionIdx--;
     
-    NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
-    NSMutableArray *listArr = [[self allLists] objectForKey:key];
-    return [listArr objectAtIndex:[indexPath row]];
+    NSString *key = [self categoryNameKeys][sectionIdx];
+    NSMutableArray *listArr = [self allLists][key];
+    return listArr;
+}
+                                            
+- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath 
+{
+    NSMutableArray *listArr = [self listAtIndexPath:indexPath];
+    return listArr[[indexPath row]];
 }                                     
                                      
 - (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList 
@@ -382,9 +428,9 @@
     if (haveOverdueItems && [deletionIndexPath section] == 0) return;
     
     NSInteger sectionIdx = (haveOverdueItems) ? [deletionIndexPath section] - 1 : [deletionIndexPath section];
-    NSString *key = [[self categoryNameKeys] objectAtIndex:sectionIdx];
-    NSMutableArray *listArr = [[self allLists] objectForKey:key];
-    MetaList *dl = [listArr objectAtIndex:[indexPath row]];
+    NSString *key = [self categoryNameKeys][sectionIdx];
+    NSMutableArray *listArr = [self allLists][key];
+    MetaList *dl = listArr[[indexPath row]];
     if (haveOverdueItems) {
         BOOL haveRemovedOverdueSection = [self didRemoveOverdueSectionInTableView:tableView forOverdueItems:[self overdueItems] inDeletedList:dl];
         if (haveRemovedOverdueSection)
@@ -392,7 +438,7 @@
     }
     [self deleteListEntity:dl];
     [listArr removeObjectAtIndex:[deletionIndexPath row]];
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:deletionIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [tableView deleteRowsAtIndexPaths:@[deletionIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     if ([listArr count] == 0) {
         [[self allLists] removeObjectForKey:key];
         NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
@@ -410,7 +456,7 @@
     NSSet *overdueSet = [NSSet setWithArray:overdue];
     if (![overdueSet intersectsSet:[deletedList items]]) return haveRemovedOverdueItemSection; 
     for (NSInteger idx = 0; idx < [overdue count]; idx++) {
-        if ([[deletedList items] containsObject:[overdue objectAtIndex:idx]]) {
+        if ([[deletedList items] containsObject:overdue[idx]]) {
             [overdue removeObjectAtIndex:idx];
             if ([overdue count] == 0) {
                 NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
@@ -418,7 +464,7 @@
                 haveRemovedOverdueItemSection = YES;
             } else {
                 NSIndexPath *overdueIndexPath = [NSIndexPath indexPathForRow:idx inSection:0];
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:overdueIndexPath] withRowAnimation:UITableViewRowAnimationFade]; 
+                [tableView deleteRowsAtIndexPaths:@[overdueIndexPath] withRowAnimation:UITableViewRowAnimationFade]; 
             }
         }
     }
@@ -433,7 +479,7 @@
 {
     BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
     if (haveOverdueItems && [indexPath section] == 0) {
-        MetaListItem *listItem = [[self overdueItems] objectAtIndex:[indexPath row]];
+        MetaListItem *listItem = [self overdueItems][[indexPath row]];
         EditListItemViewController *elivc = [[EditListItemViewController alloc] initWithList:[listItem list] editItem:listItem];
         [[self navigationController] pushViewController:elivc animated:YES];
         return;
@@ -442,7 +488,7 @@
         [self addList:nil];
         return ;
     }
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    MetaList *list = [self listObjectAtIndexPath:indexPath];    
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];
 }
@@ -451,11 +497,6 @@
 {
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     [self showEditViewWithList:list];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    return 54.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -469,7 +510,7 @@
         return emptyLabel;
     if (haveOverdueItems)
         section--;
-    NSString *headerTitle = [[self categoryNameKeys] objectAtIndex:section];
+    NSString *headerTitle = [self categoryNameKeys][section];
     TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:headerTitle];
     return header;
 }
@@ -486,7 +527,7 @@
 {
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSSortDescriptor *byDate = [[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:byDate,byName,nil];
+    NSArray *sortDescriptors = @[byDate,byName];
     return sortDescriptors;
 }
 
@@ -508,15 +549,15 @@
 {
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:byCategory, byName, nil];
+    NSArray *sortDescriptors = @[byCategory, byName];
     NSArray *lists =  [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaList" sortDescriptors:sortDescriptors];
     NSMutableDictionary *listDict = [NSMutableDictionary dictionary];
     for (MetaList *l in lists) {
         NSString *key = ([l category]) ? [[l category] name] : @"";
-        if (![listDict objectForKey:key])
-            [listDict setObject:[NSMutableArray arrayWithObject:l] forKey:key];
+        if (!listDict[key])
+            listDict[key] = [NSMutableArray arrayWithObject:l];
         else {
-            NSMutableArray *listArr = [listDict objectForKey:key];
+            NSMutableArray *listArr = listDict[key];
             [listArr addObject:l];
         }
     }
