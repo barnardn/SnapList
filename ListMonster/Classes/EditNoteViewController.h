@@ -12,12 +12,10 @@
 
 @interface EditNoteViewController : UIViewController {
 
-    UIImageView *backgroundImageView;
     UITextView *noteTextView;
     MetaList *theList;
 }
 
-@property(nonatomic,strong) IBOutlet UIImageView *backgroundImageView;
 @property(nonatomic,strong) IBOutlet UITextView *noteTextView;
 @property(nonatomic,strong) MetaList *theList;
 

@@ -90,17 +90,12 @@
     [super viewDidLoad];
     NSString *viewTitle = ([[self theItem] name]) ? [[self theItem] name] :  NSLocalizedString(@"New Item", @"new item title");
     [[self navigationItem] setTitle:viewTitle];
-    if ([self isModal]) {
+    if ([self isModal])
         [self configureAsModalView];
-    } else {
+    else
         [self configureAsChildNavigationView];
-    }
-    if ([[self theList] color]) {
-        NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self theList] color] swatchFilename]];
-        [self setBackgroundImageFilename:bgImagePath];
-        UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
-        [[self tableView] setBackgroundView:bgView];
-    }
+    
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-main"]]];
     [self preparePropertySections];
 }
 
@@ -208,6 +203,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
+
     NSDictionary *sectDict = [self editPropertySections][sectionIdx];
     [[cell textLabel] setText:[sectDict valueForKey:@"title"]];
     NSString *displayValue = [self listItem:[self theItem] stringForAttribute:[sectDict valueForKey:@"attrib"]];
@@ -265,7 +261,6 @@
     Class vcClass = sectDict[@"vc"];
     NSString *viewTitle = sectDict[@"title"];
     UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
-    [vc setBackgroundImageFilename:[self backgroundImageFilename]];
     [[self navigationController] pushViewController:vc animated:YES];
       // prof rcmd
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

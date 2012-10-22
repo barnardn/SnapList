@@ -14,7 +14,7 @@
 
 @implementation EditNumberViewController
 
-@synthesize numericTextField, item, viewTitle, backgroundImageFilename;
+@synthesize numericTextField, item, viewTitle;
 
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem 
@@ -64,9 +64,6 @@
     else {
         NSString *numString = [numFormatter stringFromNumber:[[self item] quantity]];
         [[self numericTextField] setText:numString];
-    }
-    if ([self backgroundImageFilename]) {
-        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
     }
     [[self numericTextField] setKeyboardType:UIKeyboardTypeDecimalPad];
     [[self numericTextField] becomeFirstResponder];

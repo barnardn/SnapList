@@ -18,7 +18,6 @@
     UITextField *numericTextField;
     MetaListItem *item;
     NSString *viewTitle;
-    NSString *backgroundImageFilename;
     NSNumberFormatter *numFormatter;
     BOOL firstDigitEntered;
 }

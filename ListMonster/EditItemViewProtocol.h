@@ -11,8 +11,8 @@
 @protocol EditItemViewProtocol
 
 @required
+
 -(id)initWithTitle:(NSString *)title listItem:(MetaListItem *)anItem;
-@property(nonatomic,retain) NSString *backgroundImageFilename;
 
 @end
 

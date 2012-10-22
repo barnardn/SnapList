@@ -18,7 +18,6 @@
     MetaList *theList;
 }
 
-@property(nonatomic,strong) IBOutlet UIImageView *backgroundImageView;
 @property(nonatomic,strong) IBOutlet UITextField *textField;
 @property(nonatomic,strong) MetaList *theList;
 

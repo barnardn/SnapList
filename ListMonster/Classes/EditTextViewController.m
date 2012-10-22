@@ -14,7 +14,7 @@
 
 @implementation EditTextViewController
 
-@synthesize textView, viewTitle,backgroundImageFilename, item;
+@synthesize textView, viewTitle, item;
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem 
 {
@@ -45,9 +45,6 @@
         [[self textView] setText:@""];        
     else 
         [[self textView] setText:[[self item] name]];
-    if ([self backgroundImageFilename]) {
-        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
-    }
     UIBarButtonItem *clearTextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", nil) 
                                                                         style:UIBarButtonItemStylePlain 
                                                                        target:self 

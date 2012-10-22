@@ -23,7 +23,7 @@
 @implementation ReminderViewController
 
 @synthesize selectedReminderDate, dateSelectionMode, datePicker, simpleDateTable; 
-@synthesize simpleDates, reminderItem, backgroundImageFilename, viewTitle;
+@synthesize simpleDates, reminderItem, viewTitle;
 @synthesize selectedSimpleDate, lastSelectedIndexPath;
 
 - (id)initWithTitle:(id)aTitle listItem:(id<ReminderItemProtocol>)item;
@@ -51,8 +51,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
 - (void)didReceiveMemoryWarning 
@@ -78,9 +77,6 @@
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [[self simpleDateTable] setAllowsSelection:YES];
-    if ([self backgroundImageFilename]) {
-        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
-    }
     [[self navigationItem] setTitle:NSLocalizedString(@"Set Reminder", @"reminder view title")];
 
 }

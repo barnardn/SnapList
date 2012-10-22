@@ -29,7 +29,7 @@
 @implementation EditMeasureViewController
 
 @synthesize unitSelector, measurePicker, currentMeasures, defaultUnitSelection;
-@synthesize backgroundImageFilename, selectedMeasure, item, viewTitle;
+@synthesize selectedMeasure, item, viewTitle;
 @synthesize customMeasureView, customMeasure, customMeasureAbbrev, customMeasureName;
 @synthesize addCustomMeasure, removeCustomMeasure;
 @synthesize selectedMeasureKey;
@@ -77,11 +77,7 @@
                                                                action:nil];
     [[self customMeasureView] setHidden:YES];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    if ([self backgroundImageFilename]) {
-        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:[self backgroundImageFilename]]]];
-    } else {
-        [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Backgrounds/normal"]]];        
-    }
+    
     [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Custom", nil) forSegmentAtIndex:emvCUSTOM_UNIT_INDEX];

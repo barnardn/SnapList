@@ -81,8 +81,7 @@
     [[self navigationItem] setRightBarButtonItem:editBtn];
     [[self navigationItem] setTitle:NSLocalizedString(@"Select Category", @"category selection only view title")];
     [self setLastSelectedIndexPath:nil];
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
-    [[self tableView] setBackgroundView:backgroundView];
+
     
 }
 
@@ -95,8 +94,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
 

@@ -45,7 +45,7 @@
 @implementation ListItemsViewController
 
 @synthesize allItemsTableView, theList, checkedState, addItemBtn, moreActionsBtn;
-@synthesize toolBar,inEditMode, listItems, editBtn, backgroundImageFilename;
+@synthesize toolBar,inEditMode, listItems, editBtn;
 
 - (id)initWithList:(MetaList *)aList {
     self = [super initWithNibName:@"ListItemsView" bundle:nil];
@@ -86,12 +86,6 @@
       // prof rcmd
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
-    if ([[self theList] color]) {
-        NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self theList] color] swatchFilename]];
-        [self setBackgroundImageFilename:bgImagePath];
-        UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
-        [[self allItemsTableView] setBackgroundView:bgView];
-    }
     [[self allItemsTableView] setAllowsSelectionDuringEditing:YES];
 }
 
@@ -114,8 +108,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
 
@@ -167,9 +160,9 @@
         MetaListItem *item = [self listItems][[p row]];
         ListItemCell *cell = (ListItemCell *)[[self allItemsTableView] cellForRowAtIndexPath:p];
         if ([item isComplete])
-            [cell setEditModeImage:[UIImage imageNamed:@"radio-on"]];
+            [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox-checked"]];
         else
-            [cell setEditModeImage:[UIImage imageNamed:@"radio-off"]];
+            [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox"]];
     }
     [[self allItemsTableView] setEditing:NO animated:YES];
     [self enableToolbarItems:YES];
@@ -318,7 +311,7 @@
 
 - (void)configureCell:(ListItemCell *)cell withItem:(MetaListItem *)item
 {    
-    NSString *stateImageFile = ([item isComplete]) ? @"radio-on" : @"radio-off";
+    NSString *stateImageFile = ([item isComplete]) ? @"btn-checkbox-checked" : @"btn-checkbox";
     UIImage *radioImage = [UIImage imageNamed:stateImageFile];
     [cell setEditModeImage:radioImage];
     UIImage *priorityImage = nil;
@@ -424,7 +417,7 @@
 
 - (void)updateCheckboxButtonForItem:(MetaListItem *)item atCell:(ListItemCell *)cell 
 {    
-    NSString *stateImageFile = ([item isComplete]) ? @"radio-on" : @"radio-off";
+    NSString *stateImageFile = ([item isComplete]) ? @"btn-checkbox-checked" : @"btn-checkbox";
     UIImage *radioStateImage = [UIImage imageNamed:stateImageFile];
     [[cell imageView] setImage:radioStateImage];
     [cell setEditModeImage:radioStateImage];

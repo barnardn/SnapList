@@ -34,7 +34,6 @@
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 - (NSMutableArray *)loadOverdueItems;
 - (void)updateIncompleteCountForList:(MetaList *)list;
-- (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList;
 - (NSArray *)overdueItemsSortCriteria;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
@@ -77,6 +76,13 @@
     [super viewDidUnload];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
+    if (selectedIndexPath)
+        [[self tableView] deselectRowAtIndexPath:selectedIndexPath animated:NO];
+}
+
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -94,22 +100,18 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-main.png"]]];
-    
-    [[self navigationItem] setRightBarButtonItem:[self editButtonItem]];
     UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
                                                                             target:self 
                                                                             action:@selector(addList:)];
     [[self navigationItem] setLeftBarButtonItem:addBtn];
     [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
     
-    CGSize cellSize = [[UIImage imageNamed:@"bg-cell-topbottom"] size];
+    CGSize cellSize = [[UIImage imageNamed:@"bg-cell"] size];
     [[self tableView] setRowHeight:cellSize.height];
     
     [self setAllLists:[self loadAllLists]];
     [self setOverdueItems:[self loadOverdueItems]];
-    
-    [[self tableView] reloadData];
+
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(didReceiveListCountChangeNotification:) 
                                                  name:NOTICE_LIST_COUNTS
@@ -123,13 +125,6 @@
                                                  name:NOTICE_OVERDUE_ITEM 
                                                object:nil];
 
-}
-
-- (void)setEditing:(BOOL)inEditMode animated:(BOOL)animated 
-{
-    [super setEditing:inEditMode animated:animated];
-    BOOL enableEditButton = ([[self allLists] count] > 0);
-    [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
 }
 
 - (void)addList:(id)sender 
@@ -226,8 +221,6 @@
     return indexPath;
 }
 
-
-    
 #pragma mark -
 #pragma mark Error handler routine
 
@@ -239,19 +232,6 @@
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
     [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
 }
-
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:animated];
-    edListNav = nil;
-    BOOL enableEditButton = ([[self allLists] count] > 0);
-    [[[self navigationItem] rightBarButtonItem] setEnabled:enableEditButton];
-    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
-    if (selectedIndexPath)
-        [[self tableView] deselectRowAtIndexPath:selectedIndexPath animated:NO];
-    
-}
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -301,44 +281,16 @@
     
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
     [[cell textLabel] setText:[listObj name]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
     return cell;
 }
 
 - (void)customizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *unselectFileFmt = @"bg-cell-%@";
-    NSString *selectedFileFmt = @"bg-cell-%@-selected";
-    
-    NSString *selectedBg, *unselectedBg;
-    NSArray *listForCategory = [self listAtIndexPath:indexPath];
-    
-    if ([indexPath row] == 0) {
-        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"top"];
-        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"top"];
-    }  else if ([indexPath row] == [listForCategory count] - 1) {
-        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"bottom"];
-        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"bottom"];
-    } else {
-        selectedBg = [NSString stringWithFormat:selectedFileFmt, @"middle"];
-        unselectedBg = [NSString stringWithFormat:unselectFileFmt, @"middle"];
-    }
-    DLog(@"bg: %@", selectedBg);
-    
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
-    UIImageView *iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:unselectedBg]];
-    [cell setBackgroundView:iv];
-    /*[[[cell backgroundView] layer] setShadowOffset:CGSizeMake(1.0f, 1.0f)];
-    [[[cell backgroundView] layer] setShadowOpacity:0.5f]; */
-    UIImageView *siv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:selectedBg]];
-    [cell setSelectedBackgroundView:siv];
-/*    [[[cell selectedBackgroundView] layer] setShadowOffset:CGSizeMake(1.0f, 1.0f)];
-    [[[cell selectedBackgroundView] layer] setShadowOpacity:0.5f]; */
     [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-
-    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
 }
-
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -415,60 +367,6 @@
         return ([[self allLists] count] > 0);
     else
         return ([indexPath section] > 0);       // don't allow edits on the overdue items
-
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    if (editingStyle != UITableViewCellEditingStyleDelete) return;
-    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    
-    NSIndexPath *deletionIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:[indexPath section]];
-    
-    if (haveOverdueItems && [deletionIndexPath section] == 0) return;
-    
-    NSInteger sectionIdx = (haveOverdueItems) ? [deletionIndexPath section] - 1 : [deletionIndexPath section];
-    NSString *key = [self categoryNameKeys][sectionIdx];
-    NSMutableArray *listArr = [self allLists][key];
-    MetaList *dl = listArr[[indexPath row]];
-    if (haveOverdueItems) {
-        BOOL haveRemovedOverdueSection = [self didRemoveOverdueSectionInTableView:tableView forOverdueItems:[self overdueItems] inDeletedList:dl];
-        if (haveRemovedOverdueSection)
-            deletionIndexPath = [NSIndexPath indexPathForRow:[deletionIndexPath row] inSection:[deletionIndexPath section] - 1];
-    }
-    [self deleteListEntity:dl];
-    [listArr removeObjectAtIndex:[deletionIndexPath row]];
-    [tableView deleteRowsAtIndexPaths:@[deletionIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-    if ([listArr count] == 0) {
-        [[self allLists] removeObjectForKey:key];
-        NSArray *catKeys = [[[self allLists] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        [self setCategoryNameKeys:catKeys];
-    }
-    if (([[self allLists] count] == 0) && ([self isEditing]))
-        [self setEditing:NO animated:YES];
-    [tableView reloadData];  
-
-}
-
-- (BOOL)didRemoveOverdueSectionInTableView:(UITableView *)tableView forOverdueItems:(NSMutableArray *)overdue inDeletedList:(MetaList *)deletedList
-{
-    BOOL haveRemovedOverdueItemSection = NO;
-    NSSet *overdueSet = [NSSet setWithArray:overdue];
-    if (![overdueSet intersectsSet:[deletedList items]]) return haveRemovedOverdueItemSection; 
-    for (NSInteger idx = 0; idx < [overdue count]; idx++) {
-        if ([[deletedList items] containsObject:overdue[idx]]) {
-            [overdue removeObjectAtIndex:idx];
-            if ([overdue count] == 0) {
-                NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
-                [tableView deleteSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
-                haveRemovedOverdueItemSection = YES;
-            } else {
-                NSIndexPath *overdueIndexPath = [NSIndexPath indexPathForRow:idx inSection:0];
-                [tableView deleteRowsAtIndexPaths:@[overdueIndexPath] withRowAnimation:UITableViewRowAnimationFade]; 
-            }
-        }
-    }
-    return haveRemovedOverdueItemSection;
 }
 
 
@@ -499,21 +397,18 @@
     [self showEditViewWithList:list];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    UILabel *emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 320.0f, 24.0f)];
-    [emptyLabel setBackgroundColor:[UIColor clearColor]];
     BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
     if ((section == 0) && haveOverdueItems)
-        return emptyLabel;
+        return nil;
     if ([[self allLists] count] == 0)
-        return emptyLabel;
+        return nil;
     if (haveOverdueItems)
         section--;
-    NSString *headerTitle = [self categoryNameKeys][section];
-    TableHeaderView *header = [[TableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 24.0f) headerTitle:headerTitle];
-    return header;
+    return [self categoryNameKeys][section];
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -538,8 +433,6 @@
     DLog(@"root view: today_at_midnight = %@", tam);
     NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:(SECONDS_PER_DAY-1)]];
     NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];
-    
-//    NSInteger badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[overdue count]];
     
     return ([overdue count] == 0) ? nil : [overdue mutableCopy];

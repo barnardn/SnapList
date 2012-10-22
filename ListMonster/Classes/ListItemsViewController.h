@@ -52,7 +52,6 @@
 @property(nonatomic,strong) MetaList *theList;
 @property(nonatomic,assign) BOOL inEditMode;
 @property(nonatomic,strong) NSMutableArray *listItems;
-@property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (id)initWithList:(MetaList *)aList;
 - (IBAction)addItemBtnPressed:(id)sender;

@@ -12,7 +12,7 @@
 
 @implementation EditNoteViewController
 
-@synthesize noteTextView, theList, backgroundImageView;
+@synthesize noteTextView, theList;
 
 
 - (id)initWithList:(MetaList *)list {
@@ -30,7 +30,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     [self setNoteTextView:nil];
-    [self setBackgroundImageView:nil];
 }
 
 
