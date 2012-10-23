@@ -109,7 +109,7 @@
     MetaListItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"MetaListItem" inManagedObjectContext:moc];
     [newItem setName:[selectedItem name]];
     if ([[selectedItem quantity] isEqualToNumber:INT_OBJ(0)])
-        [newItem setQuantity:INT_OBJ(1)];
+        [newItem setQuantity:@1];
     else
         [newItem setQuantity:[selectedItem quantity]];
     [newItem setPriority:[selectedItem priority]];

@@ -9,22 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "_MetaList.h"
 
 @class MetaListItem;
 @class Category;
 @class ListColor;
 
-@interface MetaList : NSManagedObject {
+@interface MetaList : _MetaList {
 
 }
-
-@property (nonatomic, strong) NSDate *dateCreated;
-@property (nonatomic, strong) NSString *listID;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *note;
-@property (nonatomic, strong) NSSet *items;
-@property (nonatomic, strong) Category *category;
-@property (nonatomic, strong) ListColor *color;
 
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;

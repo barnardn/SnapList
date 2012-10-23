@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "_Category.h"
 
-@interface Category : NSManagedObject {
+@interface Category : _Category {
 
 }
-
-@property(nonatomic,strong) NSString *name;
 
 @end

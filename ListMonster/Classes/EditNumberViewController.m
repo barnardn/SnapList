@@ -75,7 +75,7 @@
     [super viewWillDisappear:animated];
     [[self numericTextField] resignFirstResponder];
     NSString *enteredText = [[self numericTextField] text];
-    NSNumber *number = [NSNumber numberWithString:enteredText];
+    NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:enteredText];
     if ([number compare:INT_OBJ(0)] == NSOrderedAscending) {
         NSString *errorMessage = NSLocalizedString(@"Enter a number greater than 0", @">0 error message");
         NSString *errorTitle = NSLocalizedString(@"Bad Value", @"error title");

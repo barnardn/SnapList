@@ -41,6 +41,12 @@
 		496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 496B7B331623A73C00EBE286 /* ThemeManager.m */; };
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
+		49836D8C163619EC006F8A1E /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D81163619EC006F8A1E /* _Category.m */; };
+		49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D83163619EC006F8A1E /* _ItemStash.m */; };
+		49836D8E163619EC006F8A1E /* _ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D85163619EC006F8A1E /* _ListColor.m */; };
+		49836D8F163619EC006F8A1E /* _Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D87163619EC006F8A1E /* _Measure.m */; };
+		49836D90163619EC006F8A1E /* _MetaList.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D89163619EC006F8A1E /* _MetaList.m */; };
+		49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D8B163619EC006F8A1E /* _MetaListItem.m */; };
 		49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49851B3B14BA749800CBB385 /* TableHeaderView.m */; };
 		498627991622548C0040858A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498627981622548C0040858A /* Default-568h@2x.png */; };
 		4986279F162259D40040858A /* bg-listmgt.png in Resources */ = {isa = PBXBuildFile; fileRef = 4986279B162259D40040858A /* bg-listmgt.png */; };
@@ -155,6 +161,18 @@
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
 		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
+		49836D80163619EC006F8A1E /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
+		49836D81163619EC006F8A1E /* _Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Category.m; sourceTree = "<group>"; };
+		49836D82163619EC006F8A1E /* _ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ItemStash.h; sourceTree = "<group>"; };
+		49836D83163619EC006F8A1E /* _ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemStash.m; sourceTree = "<group>"; };
+		49836D84163619EC006F8A1E /* _ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListColor.h; sourceTree = "<group>"; };
+		49836D85163619EC006F8A1E /* _ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ListColor.m; sourceTree = "<group>"; };
+		49836D86163619EC006F8A1E /* _Measure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Measure.h; sourceTree = "<group>"; };
+		49836D87163619EC006F8A1E /* _Measure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Measure.m; sourceTree = "<group>"; };
+		49836D88163619EC006F8A1E /* _MetaList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MetaList.h; sourceTree = "<group>"; };
+		49836D89163619EC006F8A1E /* _MetaList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MetaList.m; sourceTree = "<group>"; };
+		49836D8A163619EC006F8A1E /* _MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MetaListItem.h; sourceTree = "<group>"; };
+		49836D8B163619EC006F8A1E /* _MetaListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MetaListItem.m; sourceTree = "<group>"; };
 		49851B3A14BA749800CBB385 /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		49851B3B14BA749800CBB385 /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		498627981622548C0040858A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -382,6 +400,25 @@
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
 		};
+		49836D7F163619EC006F8A1E /* mogenerated */ = {
+			isa = PBXGroup;
+			children = (
+				49836D80163619EC006F8A1E /* _Category.h */,
+				49836D81163619EC006F8A1E /* _Category.m */,
+				49836D82163619EC006F8A1E /* _ItemStash.h */,
+				49836D83163619EC006F8A1E /* _ItemStash.m */,
+				49836D84163619EC006F8A1E /* _ListColor.h */,
+				49836D85163619EC006F8A1E /* _ListColor.m */,
+				49836D86163619EC006F8A1E /* _Measure.h */,
+				49836D87163619EC006F8A1E /* _Measure.m */,
+				49836D88163619EC006F8A1E /* _MetaList.h */,
+				49836D89163619EC006F8A1E /* _MetaList.m */,
+				49836D8A163619EC006F8A1E /* _MetaListItem.h */,
+				49836D8B163619EC006F8A1E /* _MetaListItem.m */,
+			);
+			path = mogenerated;
+			sourceTree = "<group>";
+		};
 		4986279A162259D40040858A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -429,6 +466,7 @@
 		49F180EA12C91C800066B454 /* CoreDataModels */ = {
 			isa = PBXGroup;
 			children = (
+				49836D7F163619EC006F8A1E /* mogenerated */,
 				49AD7A4C12E380D9006E6AC6 /* Category.h */,
 				49AD7A4D12E380D9006E6AC6 /* Category.m */,
 				49FDFF3C135233A400F6A3DA /* ItemStash.h */,
@@ -650,6 +688,12 @@
 				49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */,
 				4941A8591572FCD100EF158B /* NSString+EmptyString.m in Sources */,
 				496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */,
+				49836D8C163619EC006F8A1E /* _Category.m in Sources */,
+				49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */,
+				49836D8E163619EC006F8A1E /* _ListColor.m in Sources */,
+				49836D8F163619EC006F8A1E /* _Measure.m in Sources */,
+				49836D90163619EC006F8A1E /* _MetaList.m in Sources */,
+				49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

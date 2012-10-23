@@ -7,17 +7,14 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "_ItemStash.h"
 
 @class MetaListItem;
 @class Measure;
 
-@interface ItemStash : NSManagedObject {
+@interface ItemStash : _ItemStash {
 }
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *quantity;
-@property (nonatomic, strong) NSNumber *unitIdentifier;
-@property (nonatomic, strong) NSNumber *priority;
 
 + (void)addToStash:(MetaListItem *)anItem;
 + (NSString *)nameForPriority:(NSNumber *)priority;

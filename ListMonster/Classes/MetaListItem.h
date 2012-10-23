@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "_MetaListItem.h"
+
 #define mliREMINDER_KEY  @"SnaplistReminder"
 #define mleMAX_REMINDER_WORDS   10
 
@@ -22,17 +24,9 @@
 
 @end
 
-@interface MetaListItem : NSManagedObject <ReminderItemProtocol> {
+@interface MetaListItem : _MetaListItem <ReminderItemProtocol> {
     BOOL reminderDateChanged;
 }
-
-@property (nonatomic, strong) NSString *itemIdentity;
-@property (nonatomic, strong) NSNumber *isChecked;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *quantity;
-@property (nonatomic, strong) MetaList *list;
-@property (nonatomic, strong) NSNumber *priority;
-@property (nonatomic, strong) Measure *unitOfMeasure;
 
 
 - (BOOL)isComplete;

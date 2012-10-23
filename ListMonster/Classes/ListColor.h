@@ -8,20 +8,17 @@
 
 #import <CoreData/CoreData.h>
 
+#import "_ListColor.h"
+
 #define lcRED_MASK      0x00ff0000
 #define lcGREEN_MASK    0x0000ff00
 #define lcBLUE_MASK     0x000000ff
 
 @class MetaList;
 
-@interface ListColor :  NSManagedObject  
+@interface ListColor :  _ListColor
 {
 }
-
-@property (nonatomic, strong) NSNumber *rgbValue;
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *swatchFilename;
-@property (nonatomic, strong) NSSet *list;
 
 - (UIColor *)uiColor;
 + (ListColor *)blackColor;
