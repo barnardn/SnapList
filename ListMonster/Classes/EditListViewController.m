@@ -7,7 +7,7 @@
 //
 
 #import "Alerts.h"
-#import "Category.h"
+#import "ListCategory.h"
 #import "CategorySelectViewController.h"
 #import "ColorSelectViewController.h"
 #import "EditListViewController.h"
@@ -254,7 +254,7 @@
 
 - (UITableViewCell *)cellAsCategoryCell:(UITableViewCell *)cell {
     
-    Category *category = [[self theList] category];
+    ListCategory *category = [[self theList] category];
     [[cell textLabel] setText:NSLocalizedString(@"Category", @"select a category prompt")];
     [[cell detailTextLabel] setText:[category name]];
     return cell;

@@ -6,10 +6,10 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import "Category.h"
+#import "ListCategory.h"
 
 
-@implementation Category
+@implementation ListCategory
 
 @dynamic name;
 

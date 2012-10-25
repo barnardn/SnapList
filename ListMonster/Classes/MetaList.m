@@ -6,7 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import "Category.h"
+#import "ListCategory.h"
 #import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
@@ -23,7 +23,6 @@
 
 @implementation MetaList
 
-@dynamic name, listID, dateCreated, items, category, color, note;
 
 
 #pragma mark -

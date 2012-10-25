@@ -12,12 +12,12 @@
 #define kBoldFontName       @"GeezaPro-Bold"
 
 #define kSizeListNameFont   18.0f
-
+#define kSizeStandardFont   16.0f
 
 @interface ThemeManager : NSObject
 
 + (UIFont *)fontForListName;
-
++ (UIFont *)fontForStandardListText;
 
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;

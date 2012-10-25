@@ -15,6 +15,11 @@
     return [UIFont fontWithName:kBoldFontName size:kSizeListNameFont];
 }
 
++ (UIFont *)fontForStandardListText
+{
+    return [UIFont fontWithName:kRegularFontName size:kSizeStandardFont];
+}
+
 + (UIColor *)standardTextColor
 {
     return [UIColor darkTextColor];

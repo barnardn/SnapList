@@ -7,7 +7,7 @@
 //
 
 #import "Alerts.h"
-#import "Category.h"
+#import "ListCategory.h"
 #import "EditCategoryViewController.h"
 
 @interface EditCategoryViewController()

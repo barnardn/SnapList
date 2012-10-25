@@ -6,6 +6,7 @@
 
 extern const struct MetaListItemAttributes {
 	__unsafe_unretained NSString *isChecked;
+	__unsafe_unretained NSString *isNew;
 	__unsafe_unretained NSString *itemIdentity;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *priority;
@@ -23,6 +24,7 @@ extern const struct MetaListItemFetchedProperties {
 
 @class MetaList;
 @class Measure;
+
 
 
 
@@ -51,6 +53,18 @@ extern const struct MetaListItemFetchedProperties {
 - (void)setIsCheckedValue:(BOOL)value_;
 
 //- (BOOL)validateIsChecked:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* isNew;
+
+
+@property BOOL isNewValue;
+- (BOOL)isNewValue;
+- (void)setIsNewValue:(BOOL)value_;
+
+//- (BOOL)validateIsNew:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -129,6 +143,15 @@ extern const struct MetaListItemFetchedProperties {
 
 - (BOOL)primitiveIsCheckedValue;
 - (void)setPrimitiveIsCheckedValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveIsNew;
+- (void)setPrimitiveIsNew:(NSNumber*)value;
+
+- (BOOL)primitiveIsNewValue;
+- (void)setPrimitiveIsNewValue:(BOOL)value_;
 
 
 

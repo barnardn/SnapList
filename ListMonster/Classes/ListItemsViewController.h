@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import <CoreData/CoreData.h>
 
 #define livcSEGMENT_UNCHECKED   0
@@ -28,22 +29,21 @@
 @interface ListItemsViewController : UIViewController <UITableViewDataSource,
                                                        UITableViewDelegate, 
                                                        UIActionSheetDelegate,
+                                                       UITextViewDelegate,
                                                        ListItemsViewControllerProtocol>
 {
-    UITableView *allItemsTableView;
     UIToolbar *toolBar;
     UISegmentedControl *checkedState;
     UIBarButtonItem *addItemBtn;
     UIBarButtonItem *moreActionsBtn;
     UIBarButtonItem *editBtn;
     MetaList *theList;
-    NSMutableArray *listItems;
     BOOL inEditMode;
     UINavigationController *editItemNavController;
     NSString *backgroundImageFilename;
 }
 
-@property(nonatomic,strong) IBOutlet UITableView *allItemsTableView;
+@property(nonatomic,strong) IBOutlet UITableView *tableView;;
 @property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
 @property(nonatomic,strong) IBOutlet UISegmentedControl *checkedState;
 @property(nonatomic,strong) IBOutlet UIBarButtonItem *addItemBtn;
@@ -51,7 +51,7 @@
 @property(nonatomic,strong) IBOutlet UIBarButtonItem *editBtn;
 @property(nonatomic,strong) MetaList *theList;
 @property(nonatomic,assign) BOOL inEditMode;
-@property(nonatomic,strong) NSMutableArray *listItems;
+
 
 - (id)initWithList:(MetaList *)aList;
 - (IBAction)addItemBtnPressed:(id)sender;

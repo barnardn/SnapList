@@ -7,7 +7,7 @@
 //
 
 #import "Alerts.h"
-#import "Category.h"
+#import "ListCategory.h"
 #import "CategorySelectViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
@@ -15,7 +15,7 @@
 @interface CategorySelectViewController()
 
 - (NSFetchRequest *)fetchRequestInContext:(NSManagedObjectContext *)moc;
-- (void)deleteCategory:(Category *)aCategory;
+- (void)deleteCategory:(ListCategory *)aCategory;
 
 @end
 
@@ -133,7 +133,7 @@
     EditCategoryViewController *ecvc = [[EditCategoryViewController alloc] initWithList:[self theList]];
     [ecvc setDelegate:self];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];
-    Category *newCat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
+    ListCategory *newCat = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc];
     [self setTheCategory:newCat];
     [ecvc setCategory:[self theCategory]];  // analyzer false positive  -- yes 'new' in name is against convention and confusing analyzer
     [self presentModalViewController:ecvc animated:YES];
@@ -160,10 +160,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setEditingAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
     }
-    Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
+    ListCategory *cat = [[self resultsController] objectAtIndexPath:indexPath];
     [[cell textLabel] setText:[cat name]];
     
-    Category *listCategory = [[self theList] category];
+    ListCategory *listCategory = [[self theList] category];
     BOOL isSelectedCategory = (NSOrderedSame == [[listCategory name] compare:[cat name]]);
     if (!listCategory) isSelectedCategory = NO;
     
@@ -178,7 +178,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
+        ListCategory *cat = [[self resultsController] objectAtIndexPath:indexPath];
         [self deleteCategory:cat];
     }   
 }
@@ -189,7 +189,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if ([self lastSelectedIndexPath] && ([indexPath row] == [[self lastSelectedIndexPath] row])) return;
-    Category *category = [[self resultsController] objectAtIndexPath:indexPath];
+    ListCategory *category = [[self resultsController] objectAtIndexPath:indexPath];
     [self setSelectedCategory:category];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
@@ -204,7 +204,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
 {
-    Category *cat = [[self resultsController] objectAtIndexPath:indexPath];
+    ListCategory *cat = [[self resultsController] objectAtIndexPath:indexPath];
     
     EditCategoryViewController *ecvc = [[EditCategoryViewController alloc] initWithList:[self theList]];
     [ecvc setDelegate:self];
@@ -226,7 +226,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath
 {
     UITableViewCell *cell = nil;
-    Category *cat =  nil;
+    ListCategory *cat =  nil;
     switch (type) {
         case NSFetchedResultsChangeInsert:
             [[self tableView] insertRowsAtIndexPaths:@[newIndexPath] 
@@ -262,7 +262,7 @@
 #pragma mark -
 #pragma mark Edit Category Delegate Method
 
-- (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(Category *)category {
+- (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(ListCategory *)category {
     if (!category) {
         [[[self theList] managedObjectContext] deleteObject:[self theCategory]];  // analyzer false positive due to 'new' in name
     } else {
@@ -287,7 +287,7 @@
     return request;
 }
 
-- (void)deleteCategory:(Category *)aCategory {
+- (void)deleteCategory:(ListCategory *)aCategory {
     if (aCategory == [self selectedCategory])
         [self setSelectedCategory:nil];
     NSManagedObjectContext *moc = [[self theList] managedObjectContext];

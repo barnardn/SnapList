@@ -1,40 +1,40 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Category.m instead.
+// Make changes to ListCategory.m instead.
 
-#import "_Category.h"
+#import "_ListCategory.h"
 
-const struct CategoryAttributes CategoryAttributes = {
+const struct ListCategoryAttributes ListCategoryAttributes = {
 	.name = @"name",
 };
 
-const struct CategoryRelationships CategoryRelationships = {
+const struct ListCategoryRelationships ListCategoryRelationships = {
 	.list = @"list",
 };
 
-const struct CategoryFetchedProperties CategoryFetchedProperties = {
+const struct ListCategoryFetchedProperties ListCategoryFetchedProperties = {
 };
 
-@implementation CategoryID
+@implementation ListCategoryID
 @end
 
-@implementation _Category
+@implementation _ListCategory
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"ListCategory" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"Category";
+	return @"ListCategory";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"Category" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"ListCategory" inManagedObjectContext:moc_];
 }
 
-- (CategoryID*)objectID {
-	return (CategoryID*)[super objectID];
+- (ListCategoryID*)objectID {
+	return (ListCategoryID*)[super objectID];
 }
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {

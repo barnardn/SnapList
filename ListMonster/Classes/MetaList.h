@@ -12,7 +12,7 @@
 #import "_MetaList.h"
 
 @class MetaListItem;
-@class Category;
+@class ListCategory;
 @class ListColor;
 
 @interface MetaList : _MetaList {

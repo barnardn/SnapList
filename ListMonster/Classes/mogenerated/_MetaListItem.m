@@ -5,6 +5,7 @@
 
 const struct MetaListItemAttributes MetaListItemAttributes = {
 	.isChecked = @"isChecked",
+	.isNew = @"isNew",
 	.itemIdentity = @"itemIdentity",
 	.name = @"name",
 	.priority = @"priority",
@@ -50,6 +51,10 @@ const struct MetaListItemFetchedProperties MetaListItemFetchedProperties = {
 		NSSet *affectingKey = [NSSet setWithObject:@"isChecked"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
+	if ([key isEqualToString:@"isNewValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isNew"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"priorityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"priority"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -81,6 +86,32 @@ const struct MetaListItemFetchedProperties MetaListItemFetchedProperties = {
 
 - (void)setPrimitiveIsCheckedValue:(BOOL)value_ {
 	[self setPrimitiveIsChecked:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic isNew;
+
+
+
+- (BOOL)isNewValue {
+	NSNumber *result = [self isNew];
+	return [result boolValue];
+}
+
+- (void)setIsNewValue:(BOOL)value_ {
+	[self setIsNew:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsNewValue {
+	NSNumber *result = [self primitiveIsNew];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsNewValue:(BOOL)value_ {
+	[self setPrimitiveIsNew:[NSNumber numberWithBool:value_]];
 }
 
 

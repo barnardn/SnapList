@@ -20,7 +20,7 @@ extern const struct MetaListRelationships {
 extern const struct MetaListFetchedProperties {
 } MetaListFetchedProperties;
 
-@class Category;
+@class ListCategory;
 @class ListColor;
 @class MetaListItem;
 
@@ -74,7 +74,7 @@ extern const struct MetaListFetchedProperties {
 
 
 
-@property (nonatomic, strong) Category* category;
+@property (nonatomic, strong) ListCategory* category;
 
 //- (BOOL)validateCategory:(id*)value_ error:(NSError**)error_;
 
@@ -135,8 +135,8 @@ extern const struct MetaListFetchedProperties {
 
 
 
-- (Category*)primitiveCategory;
-- (void)setPrimitiveCategory:(Category*)value;
+- (ListCategory*)primitiveCategory;
+- (void)setPrimitiveCategory:(ListCategory*)value;
 
 
 

@@ -181,14 +181,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">allItemsTableView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="14068135"/>
-					</object>
-					<int key="connectionID">13</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">checkedState</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="105650495"/>
@@ -210,6 +202,14 @@
 						<reference key="destination" ref="930139914"/>
 					</object>
 					<int key="connectionID">16</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="14068135"/>
+					</object>
+					<int key="connectionID">26</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -386,7 +386,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">25</int>
+			<int key="maxID">26</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -438,19 +438,19 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addItemBtn</string>
-							<string>allItemsTableView</string>
 							<string>checkedState</string>
 							<string>editBtn</string>
 							<string>moreActionsBtn</string>
+							<string>tableView</string>
 							<string>toolBar</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UITableView</string>
 							<string>UISegmentedControl</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
+							<string>UITableView</string>
 							<string>UIToolbar</string>
 						</object>
 					</object>
@@ -459,10 +459,10 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addItemBtn</string>
-							<string>allItemsTableView</string>
 							<string>checkedState</string>
 							<string>editBtn</string>
 							<string>moreActionsBtn</string>
+							<string>tableView</string>
 							<string>toolBar</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -470,10 +470,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">addItemBtn</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">allItemsTableView</string>
-								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">checkedState</string>
@@ -486,6 +482,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">moreActionsBtn</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolBar</string>

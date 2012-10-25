@@ -10,14 +10,14 @@
 #import <CoreData/CoreData.h>
 
 @protocol EditCategoryDelegate;
-@class Category;
+@class ListCategory;
 @class MetaList;
 
 @interface EditCategoryViewController : UIViewController <UITextFieldDelegate> {
 
     UIImageView *backgroundImageView;
     UITextField *categoryNameField; 
-    Category *category;
+    ListCategory *category;
     MetaList *theList;
     UINavigationBar *navBar;        // for use when presented modally
     id<EditCategoryDelegate>__weak delegate;
@@ -26,7 +26,7 @@
 
 @property(nonatomic,strong) IBOutlet UIImageView *backgroundImageView;
 @property(nonatomic,strong) IBOutlet UITextField *categoryNameField;
-@property(nonatomic,strong) Category *category;
+@property(nonatomic,strong) ListCategory *category;
 @property(nonatomic,strong) UINavigationBar *navBar;
 @property(nonatomic,weak) id<EditCategoryDelegate> delegate;
 @property(nonatomic,strong) MetaList *theList;
@@ -39,6 +39,6 @@
 @protocol EditCategoryDelegate
 
 // category nil on cancel
-- (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(Category *)category;
+- (void)editCategoryViewController:(EditCategoryViewController *)editCategoryViewController didEditCategory:(ListCategory *)category;
 
 @end

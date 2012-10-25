@@ -39,9 +39,9 @@
 		4965E0221625070300631E13 /* btn-checkbox-checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0201625070300631E13 /* btn-checkbox-checked.png */; };
 		4965E0231625070300631E13 /* btn-checkbox-checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */; };
 		496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 496B7B331623A73C00EBE286 /* ThemeManager.m */; };
+		49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49700A5A1638BD43004DC7C4 /* _ListCategory.m */; };
 		498002941353C1AF002B3D9B /* ItemStashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498002931353C1AF002B3D9B /* ItemStashViewController.m */; };
 		498002D31353CFD7002B3D9B /* ItemStashView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498002D21353CFD7002B3D9B /* ItemStashView.xib */; };
-		49836D8C163619EC006F8A1E /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D81163619EC006F8A1E /* _Category.m */; };
 		49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D83163619EC006F8A1E /* _ItemStash.m */; };
 		49836D8E163619EC006F8A1E /* _ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D85163619EC006F8A1E /* _ListColor.m */; };
 		49836D8F163619EC006F8A1E /* _Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D87163619EC006F8A1E /* _Measure.m */; };
@@ -70,7 +70,7 @@
 		499F4E09133AC4920048D35B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E07133AC4920048D35B /* Icon@2x.png */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */; };
-		49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* Category.m */; };
+		49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* ListCategory.m */; };
 		49AD7A9012E39FF7006E6AC6 /* 0x000000.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8812E39FF7006E6AC6 /* 0x000000.png */; };
 		49AD7A9112E39FF7006E6AC6 /* 0x00b800.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8912E39FF7006E6AC6 /* 0x00b800.png */; };
 		49AD7A9212E39FF7006E6AC6 /* 0x0000ff.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD7A8A12E39FF7006E6AC6 /* 0x0000ff.png */; };
@@ -157,12 +157,12 @@
 		4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-checkbox-checked@2x.png"; sourceTree = "<group>"; };
 		496B7B321623A73C00EBE286 /* ThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThemeManager.h; path = Classes/ThemeManager.h; sourceTree = "<group>"; };
 		496B7B331623A73C00EBE286 /* ThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeManager.m; path = Classes/ThemeManager.m; sourceTree = "<group>"; };
+		49700A591638BD43004DC7C4 /* _ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListCategory.h; sourceTree = "<group>"; };
+		49700A5A1638BD43004DC7C4 /* _ListCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ListCategory.m; sourceTree = "<group>"; };
 		497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 4.xcdatamodel"; sourceTree = "<group>"; };
 		498002921353C1AF002B3D9B /* ItemStashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStashViewController.h; sourceTree = "<group>"; };
 		498002931353C1AF002B3D9B /* ItemStashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStashViewController.m; sourceTree = "<group>"; };
 		498002D21353CFD7002B3D9B /* ItemStashView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemStashView.xib; sourceTree = "<group>"; };
-		49836D80163619EC006F8A1E /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
-		49836D81163619EC006F8A1E /* _Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Category.m; sourceTree = "<group>"; };
 		49836D82163619EC006F8A1E /* _ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ItemStash.h; sourceTree = "<group>"; };
 		49836D83163619EC006F8A1E /* _ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemStash.m; sourceTree = "<group>"; };
 		49836D84163619EC006F8A1E /* _ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListColor.h; sourceTree = "<group>"; };
@@ -173,6 +173,7 @@
 		49836D89163619EC006F8A1E /* _MetaList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MetaList.m; sourceTree = "<group>"; };
 		49836D8A163619EC006F8A1E /* _MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MetaListItem.h; sourceTree = "<group>"; };
 		49836D8B163619EC006F8A1E /* _MetaListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MetaListItem.m; sourceTree = "<group>"; };
+		49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 6.xcdatamodel"; sourceTree = "<group>"; };
 		49851B3A14BA749800CBB385 /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		49851B3B14BA749800CBB385 /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		498627981622548C0040858A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -203,8 +204,8 @@
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
 		49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectViewController.h; sourceTree = "<group>"; };
 		49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectViewController.m; sourceTree = "<group>"; };
-		49AD7A4C12E380D9006E6AC6 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
-		49AD7A4D12E380D9006E6AC6 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		49AD7A4C12E380D9006E6AC6 /* ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategory.h; sourceTree = "<group>"; };
+		49AD7A4D12E380D9006E6AC6 /* ListCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategory.m; sourceTree = "<group>"; };
 		49AD7A8812E39FF7006E6AC6 /* 0x000000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x000000.png; sourceTree = "<group>"; };
 		49AD7A8912E39FF7006E6AC6 /* 0x00b800.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x00b800.png; sourceTree = "<group>"; };
 		49AD7A8A12E39FF7006E6AC6 /* 0x0000ff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0x0000ff.png; sourceTree = "<group>"; };
@@ -403,8 +404,8 @@
 		49836D7F163619EC006F8A1E /* mogenerated */ = {
 			isa = PBXGroup;
 			children = (
-				49836D80163619EC006F8A1E /* _Category.h */,
-				49836D81163619EC006F8A1E /* _Category.m */,
+				49700A591638BD43004DC7C4 /* _ListCategory.h */,
+				49700A5A1638BD43004DC7C4 /* _ListCategory.m */,
 				49836D82163619EC006F8A1E /* _ItemStash.h */,
 				49836D83163619EC006F8A1E /* _ItemStash.m */,
 				49836D84163619EC006F8A1E /* _ListColor.h */,
@@ -467,8 +468,8 @@
 			isa = PBXGroup;
 			children = (
 				49836D7F163619EC006F8A1E /* mogenerated */,
-				49AD7A4C12E380D9006E6AC6 /* Category.h */,
-				49AD7A4D12E380D9006E6AC6 /* Category.m */,
+				49AD7A4C12E380D9006E6AC6 /* ListCategory.h */,
+				49AD7A4D12E380D9006E6AC6 /* ListCategory.m */,
 				49FDFF3C135233A400F6A3DA /* ItemStash.h */,
 				49FDFF3D135233A400F6A3DA /* ItemStash.m */,
 				49BEEBD112EBC3680088707A /* ListColor.h */,
@@ -659,7 +660,7 @@
 				49F1812312C9364E0066B454 /* NSArrayExtensions.m in Sources */,
 				49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */,
 				49F1814B12C958F20066B454 /* RootViewController.m in Sources */,
-				49AD7A4E12E380D9006E6AC6 /* Category.m in Sources */,
+				49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */,
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
@@ -688,12 +689,12 @@
 				49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */,
 				4941A8591572FCD100EF158B /* NSString+EmptyString.m in Sources */,
 				496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */,
-				49836D8C163619EC006F8A1E /* _Category.m in Sources */,
 				49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */,
 				49836D8E163619EC006F8A1E /* _ListColor.m in Sources */,
 				49836D8F163619EC006F8A1E /* _Measure.m in Sources */,
 				49836D90163619EC006F8A1E /* _MetaList.m in Sources */,
 				49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */,
+				49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,13 +813,14 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */,
 				49C68AA61527ECE8007A062F /* ListMonster 5.xcdatamodel */,
 				497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */,
 				495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */,
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 49C68AA61527ECE8007A062F /* ListMonster 5.xcdatamodel */;
+			currentVersion = 49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */;
 			path = ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

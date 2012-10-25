@@ -10,23 +10,23 @@
 #import <CoreData/CoreData.h>
 #import "EditCategoryViewController.h"
 
-@class Category;
+@class ListCategory;
 @class MetaList;
 
 @interface CategorySelectViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditCategoryDelegate> {
     
     MetaList *theList;
     NSFetchedResultsController *resultsController;
-    Category *theCategory;
-    Category *selectedCategory;
+    ListCategory *theCategory;
+    ListCategory *selectedCategory;
     NSIndexPath *lastSelectedIndexPath;
     
 }
 
 @property(nonatomic,strong) MetaList *theList;
 @property(nonatomic,strong) NSFetchedResultsController *resultsController;
-@property(nonatomic,strong) Category *theCategory;
-@property(nonatomic,strong) Category *selectedCategory;
+@property(nonatomic,strong) ListCategory *theCategory;
+@property(nonatomic,strong) ListCategory *selectedCategory;
 @property(nonatomic,strong) NSIndexPath *lastSelectedIndexPath;
 
 - (id)initWithList:(MetaList *)aList;

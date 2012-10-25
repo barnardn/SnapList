@@ -1,32 +1,32 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Category.h instead.
+// Make changes to ListCategory.h instead.
 
 #import <CoreData/CoreData.h>
 
 
-extern const struct CategoryAttributes {
+extern const struct ListCategoryAttributes {
 	__unsafe_unretained NSString *name;
-} CategoryAttributes;
+} ListCategoryAttributes;
 
-extern const struct CategoryRelationships {
+extern const struct ListCategoryRelationships {
 	__unsafe_unretained NSString *list;
-} CategoryRelationships;
+} ListCategoryRelationships;
 
-extern const struct CategoryFetchedProperties {
-} CategoryFetchedProperties;
+extern const struct ListCategoryFetchedProperties {
+} ListCategoryFetchedProperties;
 
 @class MetaList;
 
 
 
-@interface CategoryID : NSManagedObjectID {}
+@interface ListCategoryID : NSManagedObjectID {}
 @end
 
-@interface _Category : NSManagedObject {}
+@interface _ListCategory : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (CategoryID*)objectID;
+- (ListCategoryID*)objectID;
 
 
 
@@ -50,7 +50,7 @@ extern const struct CategoryFetchedProperties {
 
 @end
 
-@interface _Category (CoreDataGeneratedAccessors)
+@interface _ListCategory (CoreDataGeneratedAccessors)
 
 - (void)addList:(NSSet*)value_;
 - (void)removeList:(NSSet*)value_;
@@ -59,7 +59,7 @@ extern const struct CategoryFetchedProperties {
 
 @end
 
-@interface _Category (CoreDataGeneratedPrimitiveAccessors)
+@interface _ListCategory (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveName;

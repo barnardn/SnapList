@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "_Category.h"
+#import "_ListCategory.h"
 
-@interface Category : _Category {
+@interface ListCategory : _ListCategory {
 
 }
 

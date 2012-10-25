@@ -13,10 +13,8 @@
 #import "NSArrayExtensions.h"
 #import "datetime_utils.h"
 
-@implementation MetaListItem
 
-@dynamic name, quantity, isChecked, list, reminderDate, priority, unitOfMeasure;
-@dynamic itemIdentity;
+@implementation MetaListItem
 
 #pragma mark -
 #pragma mark Custom accessors
@@ -63,10 +61,12 @@
 
 - (void)awakeFromInsert 
 {
+    [super awakeFromInsert];
     [self setPrimitiveValue:@"New Item" forKey:@"name"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"quantity"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"isChecked"];
     [self setPrimitiveValue:[[NSProcessInfo processInfo] globallyUniqueString] forKey:@"itemIdentity"];
+    [self setPrimitiveIsNewValue:YES];
 }
 
 - (void)willSave
