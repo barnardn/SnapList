@@ -27,6 +27,9 @@
 #define ROW_HEIGHT  44.0f
 #define EDITCELL_TEXTVIEW_HMARGIN   10.0f
 #define EDITCELL_TEXTVIEW_VMARGIN   5.0f
+#define CELL_VMARGIN                25.0f
+#define CELL_CONTENT_WIDTH          245.0f
+#define TAG_TEXTVIEW                1001
 
 static char editCellKey;
 
@@ -164,26 +167,6 @@ static char editCellKey;
     [actionSheet showFromToolbar:[self toolBar]];
 }
 
-/*
-- (void)cancelBtnPressed:(id)sender
-{
-    [self setInEditMode:NO];
-    [self rollbackAnyChanges];
-    [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
-    [self toggleCancelButton:[self inEditMode]];
-    for (NSIndexPath *p in [[self tableView] indexPathsForVisibleRows]) {
-        MetaListItem *item = [self listItems][[p row]];
-        ListItemCell *cell = (ListItemCell *)[[self tableView] cellForRowAtIndexPath:p];
-        if ([item isComplete])
-            [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox-checked"]];
-        else
-            [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox"]];
-    }
-    [[self tableView] setEditing:NO animated:YES];
-    [self enableToolbarItems:YES];
-}
-*/
-
 - (IBAction)checkedStateValueChanged:(id)sender {
     
 //    [self filterItemsByCheckedState];
@@ -288,6 +271,25 @@ static char editCellKey;
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    MetaListItem *item = [self listItems][[indexPath row]];
+    if ([indexPath row] == 0) {
+        MetaListItem *item = [[self listItems] objectAtIndex:0];
+        if ([item isNewValue]) {
+            CGSize textSize = [[item name] sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:CGSizeMake(CELL_CONTENT_WIDTH, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
+            return MAX(ROW_HEIGHT, textSize.height + 2 * EDITCELL_TEXTVIEW_VMARGIN);
+        }
+    }
+    NSString *text = [item name];
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH, 20000.0f);
+    CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    return size.height + CELL_VMARGIN;
+
+}
+
+
+
 #pragma mark -
 #pragma mark Table data source methods
 
@@ -306,53 +308,31 @@ static char editCellKey;
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     if ([item isNewValue]) {
         UITableViewCell *editCell = [tableView dequeueReusableCellWithIdentifier:@"EditCell"];
-        if (!editCell) {
+        if (!editCell) 
             editCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EditCell"];
-            UITextView *tv = [self textViewForCell:editCell];
-            [[editCell contentView] addSubview:tv];
-            [tv becomeFirstResponder];
+        else {
+            [[editCell textLabel] setText:nil];
+            CGRect contentFrame = [[editCell contentView] frame];
+            contentFrame.size.height = [@"X" sizeWithFont:[ThemeManager fontForStandardListText]].height;
         }
+        UITextView *tv = [self textViewForCell:editCell];
+        [[editCell contentView] addSubview:tv];
+        [tv becomeFirstResponder];
         return editCell;
     }
-    
-    ListItemCell *cell = (ListItemCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    UITableViewCell *cell = (ListItemCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell)
         cell = [self makeItemCell];
     [self configureCell:cell withItem:item];
     return cell;
 }
 
-
-
-- (void)configureCell:(ListItemCell *)cell withItem:(MetaListItem *)item
-{    
-    NSString *stateImageFile = ([item isComplete]) ? @"btn-checkbox-checked" : @"btn-checkbox";
-    UIImage *radioImage = [UIImage imageNamed:stateImageFile];
-    [cell setEditModeImage:radioImage];
-    UIImage *priorityImage = nil;
-    if (![[item priority] isEqualToNumber:INT_OBJ(0)]) {
-        NSString *priorityName = [item priorityName];
-        priorityImage = [UIImage imageNamed:priorityName];
-    }
-    [cell setNormalModeImage:priorityImage];    
-    if ([self inEditMode]) {
-        [[cell imageView] setImage:radioImage];
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-    } else {
-        [[cell imageView] setImage:priorityImage];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    } 
-    UILabel *lbl = (UILabel *)[cell viewWithTag:1];
-    ZAssert(lbl != nil, @"Whoa! missing name label in configureCell:withItem:");
-    [lbl setText:[item name]];
-    NSNumber *qty = [item quantity];
-    DLog(@"quantity : %@", qty);
-    NSString *qtyString = ([qty compare:INT_OBJ(0)] == NSOrderedSame) ? @"" : [qty stringValue]; 
+- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
+{
+    [[cell textLabel] setText:[item name]];
+    NSString *qtyString = ([[item quantity] intValue] == 0) ? @"" : [[item quantity] stringValue];
     NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
-    if ([item unitOfMeasure] && [qty intValue] == 0)
-        qtyString = @"1";
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
-
 }
 
 - (UITextView *)textViewForCell:(UITableViewCell *)cell
@@ -371,24 +351,21 @@ static char editCellKey;
     [[tv layer] setBorderWidth:1.0f];
     [tv setReturnKeyType:UIReturnKeyDone];
     [tv setDelegate:self];
+    [tv setTag:TAG_TEXTVIEW];
     objc_setAssociatedObject(tv, &editCellKey, cell, OBJC_ASSOCIATION_ASSIGN);
     return tv;
 }
 
-
-- (ListItemCell *)makeItemCell
+- (UITableViewCell *)makeItemCell
 {
-    ListItemCell *cell = [[ListItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
+    UITableViewCell *cell = [[ListItemCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+    [[cell textLabel] setNumberOfLines:0];
+    [[cell textLabel] setFont:[ThemeManager fontForStandardListText]];
+    [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
     
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectZero];
-    [lbl setBackgroundColor:[UIColor clearColor]];
-    [lbl setLineBreakMode:UILineBreakModeWordWrap];
-    [lbl setNumberOfLines:0];
-    [lbl setFont:[ThemeManager fontForStandardListText]];
-    [lbl setTag:1];
-    [[cell contentView] addSubview:lbl];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
     return cell;
-}  
+ }
 
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -396,51 +373,19 @@ static char editCellKey;
     //return YES;
 }
 
-/*
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    if (editingStyle != UITableViewCellEditingStyleDelete) return;
-    MetaListItem *deleteItem = [self listItems][[indexPath row]];
-    [[self listItems] removeObject:deleteItem];
-    [[[self theList] managedObjectContext] deleteObject:deleteItem];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];    
-    [[self theList] removeItem:deleteItem];
-    if ([[[self theList] items] count] == 0) {  // just deleted the last item
-        NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
-        [tableView insertRowsAtIndexPaths:@[ipath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    [self commitAnyChanges];
-}
-*/
+
 
 #pragma mark -
 #pragma mark TableView delegate methods
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{    
-    MetaListItem *item = [self listItems][[indexPath row]];
-    if ([indexPath row] == 0) {
-        MetaListItem *item = [[self listItems] objectAtIndex:0];
-        if ([item isNewValue]) {
-            CGSize textSize = [[item name] sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:CGSizeMake(260.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
-            return MAX(ROW_HEIGHT, textSize.height + 2 * EDITCELL_TEXTVIEW_VMARGIN);
-        }
-    }
-    NSString *text = [item name];
-    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    CGFloat height = MAX(size.height, 34.0f);
-    return height + (CELL_CONTENT_MARGIN * 2);
-}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        MetaListItem *item = [self listItems][[indexPath row]];
-        EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
-        [[self navigationController] pushViewController:eivc animated:YES];
-
+    MetaListItem *item = [self listItems][[indexPath row]];
+    EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
+    [[self navigationController] pushViewController:eivc animated:YES];
 }
 
 - (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath 
@@ -541,7 +486,6 @@ static char editCellKey;
     CGFloat viewWidth = CGRectGetWidth([textView frame]);
     
     CGSize textSize = [newText sizeWithFont:[textView font] constrainedToSize:CGSizeMake(viewWidth - 20.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
-    DLog(@"(%4.1f, %4.1f) tsw: %4.1f", textSize.height, CGRectGetHeight([textView frame]), textSize.width);
     if (textSize.height <= CGRectGetHeight([textView frame])) return YES;
     
     UITableViewCell *editCell = objc_getAssociatedObject(textView, &editCellKey);
@@ -568,10 +512,10 @@ static char editCellKey;
     [item setIsNewValue:NO];
     [[[self theList] itemsSet] addObject:item];
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:editCell];
-    [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-
+    editCell = nil;
+    if (indexPath)
+        [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
-
 
 #pragma mark -
 #pragma mark Commit moc changes
@@ -599,3 +543,51 @@ static char editCellKey;
 }
 
 @end
+
+/** old methods  **/
+
+/*
+
+ 
+ */
+
+
+
+/*
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle != UITableViewCellEditingStyleDelete) return;
+ MetaListItem *deleteItem = [self listItems][[indexPath row]];
+ [[self listItems] removeObject:deleteItem];
+ [[[self theList] managedObjectContext] deleteObject:deleteItem];
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ [[self theList] removeItem:deleteItem];
+ if ([[[self theList] items] count] == 0) {  // just deleted the last item
+ NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
+ [tableView insertRowsAtIndexPaths:@[ipath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ [self commitAnyChanges];
+ }
+ */
+
+
+
+/*
+ - (void)cancelBtnPressed:(id)sender
+ {
+ [self setInEditMode:NO];
+ [self rollbackAnyChanges];
+ [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
+ [self toggleCancelButton:[self inEditMode]];
+ for (NSIndexPath *p in [[self tableView] indexPathsForVisibleRows]) {
+ MetaListItem *item = [self listItems][[p row]];
+ ListItemCell *cell = (ListItemCell *)[[self tableView] cellForRowAtIndexPath:p];
+ if ([item isComplete])
+ [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox-checked"]];
+ else
+ [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox"]];
+ }
+ [[self tableView] setEditing:NO animated:YES];
+ [self enableToolbarItems:YES];
+ }
+ */

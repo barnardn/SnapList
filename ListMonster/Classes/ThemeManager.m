@@ -20,6 +20,11 @@
     return [UIFont fontWithName:kRegularFontName size:kSizeStandardFont];
 }
 
++ (UIFont *)fontForListDetails
+{
+    return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
+}
+
 + (UIColor *)standardTextColor
 {
     return [UIColor darkTextColor];

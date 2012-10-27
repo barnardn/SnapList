@@ -8,16 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-#define kRegularFontName    @"GeezaPro"
-#define kBoldFontName       @"GeezaPro-Bold"
+#define kRegularFontName    @"Thonburi"
+#define kBoldFontName       @"Thonburi-Bold"
 
-#define kSizeListNameFont   18.0f
-#define kSizeStandardFont   16.0f
+#define kSizeListNameFont   20.0f
+#define kSizeStandardFont   18.0f
+#define kSizeSmallFont   14.0f
 
 @interface ThemeManager : NSObject
 
 + (UIFont *)fontForListName;
 + (UIFont *)fontForStandardListText;
++ (UIFont *)fontForListDetails;
 
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;
