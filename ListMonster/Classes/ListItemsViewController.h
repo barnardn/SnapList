@@ -34,7 +34,6 @@
 {
     UIToolbar *toolBar;
     UISegmentedControl *checkedState;
-    UIBarButtonItem *addItemBtn;
     UIBarButtonItem *moreActionsBtn;
     UIBarButtonItem *editBtn;
     MetaList *theList;
@@ -46,7 +45,6 @@
 @property(nonatomic,strong) IBOutlet UITableView *tableView;;
 @property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
 @property(nonatomic,strong) IBOutlet UISegmentedControl *checkedState;
-@property(nonatomic,strong) IBOutlet UIBarButtonItem *addItemBtn;
 @property(nonatomic,strong) IBOutlet UIBarButtonItem *moreActionsBtn;
 @property(nonatomic,strong) IBOutlet UIBarButtonItem *editBtn;
 @property(nonatomic,strong) MetaList *theList;
@@ -54,7 +52,6 @@
 
 
 - (id)initWithList:(MetaList *)aList;
-- (IBAction)addItemBtnPressed:(id)sender;
 - (IBAction)moreActionsBtnPressed:(id)sender;
 - (IBAction)checkedStateValueChanged:(id)sender;
 

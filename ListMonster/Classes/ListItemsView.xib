@@ -74,6 +74,7 @@
 								<string key="NSFrame">{{75, 8}, {169, 30}}</string>
 								<reference key="NSSuperview" ref="930139914"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUITag">1001</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -136,11 +137,6 @@
 								<reference key="IBUIToolbar" ref="930139914"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="828559290">
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<reference key="IBUIToolbar" ref="930139914"/>
-								<int key="IBUISystemItemIdentifier">4</int>
-							</object>
 						</object>
 					</object>
 				</object>
@@ -170,14 +166,6 @@
 						<reference key="destination" ref="191373211"/>
 					</object>
 					<int key="connectionID">3</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">addItemBtn</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="828559290"/>
-					</object>
-					<int key="connectionID">12</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -244,14 +232,6 @@
 					</object>
 					<int key="connectionID">19</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">addItemBtnPressed:</string>
-						<reference key="source" ref="828559290"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">25</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -299,7 +279,6 @@
 							<reference ref="996507210"/>
 							<reference ref="537789974"/>
 							<reference ref="415204291"/>
-							<reference ref="828559290"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -332,11 +311,6 @@
 						<reference key="object" ref="415204291"/>
 						<reference key="parent" ref="930139914"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">9</int>
-						<reference key="object" ref="828559290"/>
-						<reference key="parent" ref="930139914"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -355,14 +329,12 @@
 					<string>6.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
-					<string>9.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>ListItemsViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
