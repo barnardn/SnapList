@@ -41,7 +41,6 @@ static char editCellKey;
 - (void)commitAnyChanges;
 - (void)rollbackAnyChanges;
 - (void)toggleCancelButton:(BOOL)editMode;
-// - (void)cancelBtnPressed:(id)sender;
 - (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
 - (void)pickFromStash;
@@ -113,7 +112,7 @@ static char editCellKey;
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
     [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
     [[self tableView] setAllowsSelectionDuringEditing:YES];
-
+    [[self tableView] setScrollsToTop:YES];
     [[self tableView] addGestureRecognizer:[self leftSwipe]];
     [[self tableView] addGestureRecognizer:[self rightSwipe]];
 }
@@ -136,13 +135,14 @@ static char editCellKey;
 #pragma mark Button action
 
 
-
 - (void)addButtonTapped:(UIBarButtonItem *)barBtn
 {
     MetaListItem *item = [MetaListItem insertInManagedObjectContext:[[self theList] managedObjectContext]];
     [[self tableView] beginUpdates];
     [[self listItems] insertObject:item atIndex:0];
-    [[self tableView] insertRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:0 inSection:0] ] withRowAnimation:UITableViewRowAnimationAutomatic];
+    NSIndexPath *topIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [[self tableView] insertRowsAtIndexPaths:@[topIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [[self tableView] scrollToRowAtIndexPath:topIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
     [[self tableView] endUpdates];
 }
 
@@ -435,7 +435,13 @@ static char editCellKey;
 
 - (void)rightSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
+        // TODO: handle item completion flag from data model
+    
     DLog(@"right swipe");
+    if ([self cellForDeletionCancel]) {
+        [self cancelItemDelete];
+        return;
+    }
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
     UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
     [swipedCell setAccessoryType:UITableViewCellAccessoryNone];
@@ -481,6 +487,9 @@ static char editCellKey;
 
 - (void)leftSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
+    // TODO: handle item deletion from datamodel
+    
+    
     DLog(@"left swipe");
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
     UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
@@ -513,8 +522,8 @@ static char editCellKey;
                                                                    320.0f,
                                                                    CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY([swipedCell frame]))];
         [btm setBackgroundColor:[UIColor clearColor]];
-        [top addTarget:self action:@selector(deletionCancelled:) forControlEvents:UIControlEventTouchUpInside];
-        [btm addTarget:self action:@selector(deletionCancelled:) forControlEvents:UIControlEventTouchUpInside];
+        [top addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [btm addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
         [[self view] addSubview:top];
         [[self view] addSubview:btm];
         [self setDeleteCancelRegions:@[top, btm]];
@@ -545,7 +554,12 @@ static char editCellKey;
 
 }
 
-- (void)deletionCancelled:(UIButton *)btn
+- (void)deleteCancelRegionTapped:(UIButton *)region
+{
+    [self cancelItemDelete];
+}
+
+- (void)cancelItemDelete
 {
     UILabel *lbl = (UILabel *)[[self cellForDeletionCancel] viewWithTag:TAG_COMPLETELABEL];
     UIImageView *iv = (UIImageView *)[[self cellForDeletionCancel] viewWithTag:TAG_COMPLETEVIEW];
@@ -633,7 +647,6 @@ static char editCellKey;
     DisplayListNoteViewController *noteVc = [[DisplayListNoteViewController alloc] initWithList:[self theList]];
     [self presentModalViewController:noteVc animated:YES];
 }
-
 
 
 #pragma mark -
