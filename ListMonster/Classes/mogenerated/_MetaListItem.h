@@ -9,6 +9,7 @@ extern const struct MetaListItemAttributes {
 	__unsafe_unretained NSString *isNew;
 	__unsafe_unretained NSString *itemIdentity;
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *order;
 	__unsafe_unretained NSString *priority;
 	__unsafe_unretained NSString *quantity;
 	__unsafe_unretained NSString *reminderDate;
@@ -24,6 +25,7 @@ extern const struct MetaListItemFetchedProperties {
 
 @class MetaList;
 @class Measure;
+
 
 
 
@@ -81,6 +83,18 @@ extern const struct MetaListItemFetchedProperties {
 
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* order;
+
+
+@property int16_t orderValue;
+- (int16_t)orderValue;
+- (void)setOrderValue:(int16_t)value_;
+
+//- (BOOL)validateOrder:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -164,6 +178,15 @@ extern const struct MetaListItemFetchedProperties {
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOrder;
+- (void)setPrimitiveOrder:(NSNumber*)value;
+
+- (int16_t)primitiveOrderValue;
+- (void)setPrimitiveOrderValue:(int16_t)value_;
 
 
 

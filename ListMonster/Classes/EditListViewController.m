@@ -193,6 +193,9 @@
     return 1;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";   
@@ -223,7 +226,7 @@
     SEL selector = NSSelectorFromString(nextNavSelectors[sectionIdx]);
     [self performSelector:selector];
 }
-
+#pragma clang diagnostic pop
 
 #pragma mark -
 #pragma mark Cell configuration methods

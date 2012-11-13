@@ -37,7 +37,7 @@ static char editCellKey;
 @interface ListItemsViewController()
 
 - (UITableViewCell *)makeItemCell;
-- (void)editBtnPressed:(id)sender;
+- (IBAction)editBtnPressed:(UIBarButtonItem *)editButton;
 - (void)commitAnyChanges;
 - (void)rollbackAnyChanges;
 - (void)toggleCancelButton:(BOOL)editMode;
@@ -60,7 +60,7 @@ static char editCellKey;
 
 @implementation ListItemsViewController
 
-@synthesize theList, checkedState, moreActionsBtn;
+@synthesize theList, moreActionsBtn;
 @synthesize toolBar,inEditMode, editBtn;
 
 - (id)initWithList:(MetaList *)aList
@@ -110,8 +110,7 @@ static char editCellKey;
     [self setEditBtn:btn];
 
     [[self navigationItem] setRightBarButtonItem:[self editBtn]];
-    [[self checkedState] setSelectedSegmentIndex:livcSEGMENT_UNCHECKED];
-    [[self tableView] setAllowsSelectionDuringEditing:YES];
+    [[self tableView] setAllowsSelectionDuringEditing:NO];
     [[self tableView] setScrollsToTop:YES];
     [[self tableView] addGestureRecognizer:[self leftSwipe]];
     [[self tableView] addGestureRecognizer:[self rightSwipe]];
@@ -142,7 +141,8 @@ static char editCellKey;
     [[self listItems] insertObject:item atIndex:0];
     NSIndexPath *topIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [[self tableView] insertRowsAtIndexPaths:@[topIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [[self tableView] scrollToRowAtIndexPath:topIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    if ([[self listItems] count] > 1)
+        [[self tableView] scrollToRowAtIndexPath:topIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
     [[self tableView] endUpdates];
 }
 
@@ -156,10 +156,6 @@ static char editCellKey;
     if ([[[self theList] items] count] > 0) {
         [actionSheet addButtonWithTitle:NSLocalizedString(@"Delete All", @"delete all action button")];
         [actionSheet setDestructiveButtonIndex:1];
-        if ([[self checkedState] selectedSegmentIndex] == livcSEGMENT_CHECKED)
-            [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Incomplete", @"uncheck all")];
-        else
-            [actionSheet addButtonWithTitle:NSLocalizedString(@"Mark All Complete",@"check all")];
     }
     [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
     [actionSheet addButtonWithTitle:NSLocalizedString(@"View List Note", nil)];
@@ -197,8 +193,14 @@ static char editCellKey;
                 forSegmentAtIndex:livcSEGMENT_CHECKED];
 }
 
-- (void)editBtnPressed:(id)sender 
+- (IBAction)editBtnPressed:(UIBarButtonItem *)editButton
 {
+    if ([[self tableView] isEditing])
+        [[self tableView] setEditing:NO animated:YES];
+    else
+        [[self tableView] setEditing:YES animated:YES];
+    
+/*
     if ([self inEditMode]) {
         [self setInEditMode:NO];
         [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
@@ -217,11 +219,11 @@ static char editCellKey;
     
     if (![self inEditMode]) 
         [[self tableView] reloadData];
+*/
 }
 
 - (void)enableToolbarItems:(BOOL)enabled
 {
-    [[self checkedState] setEnabled:enabled];
     [[self moreActionsBtn] setEnabled:enabled];
 }
 
@@ -352,17 +354,39 @@ static char editCellKey;
     return tv;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    //return  NO;
-    return YES;
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return  YES;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    return ![item isNew];
+    if ([item isNewValue])
+        ALog(@"cant move row at index path: %@", indexPath);
+    return ![item isNewValue];
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    DLog(@"taking cell from %d to %d", [fromIndexPath row], [toIndexPath row]);
+    MetaListItem *item = [[self listItems] objectAtIndex:[fromIndexPath row]];
+    [[self listItems] removeObject:item];
+    [[self listItems] insertObject:item atIndex:[toIndexPath row]];
+    [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *mli, NSUInteger idx, BOOL *stop) {
+        [mli setOrderValue:idx];
+    }];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
 
 #pragma mark -
 #pragma mark TableView delegate methods
@@ -424,11 +448,13 @@ static char editCellKey;
     [[editCell textLabel] setText:text];
     MetaListItem *item = [[self listItems] objectAtIndex:0];
     [item setIsNewValue:NO];
+    DLog(@"new value for item %@ is %d", [item name], [item isNewValue]);
     [[[self theList] itemsSet] addObject:item];
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:editCell];
     editCell = nil;
     if (indexPath)
         [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self commitAnyChanges];
 }
 
 #pragma mark - gesture recognizer actions
@@ -592,6 +618,9 @@ static char editCellKey;
 #pragma mark -
 #pragma mark Action sheet delegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (!buttonIndex) return;
@@ -600,15 +629,11 @@ static char editCellKey;
         [self pickFromStash];
         return;
     }
-    NSString *checkStateSelector = nil;
-    if (livcSEGMENT_CHECKED == [[self checkedState] selectedSegmentIndex])
-        checkStateSelector = @"uncheckAllItems";
-    else
-        checkStateSelector = @"checkAllItems";
-    NSArray *actionSelectors = @[@"deleteAllItems", checkStateSelector,
-    @"pickFromStash",@"showListNote"];
+    NSArray *actionSelectors = @[@"deleteAllItems", @"pickFromStash",@"showListNote"];
     [self performSelector:NSSelectorFromString(actionSelectors[buttonIndex- 1])];
 }
+
+#pragma  clang diagnostic pop
 
 - (void)deleteAllItems
 {
