@@ -28,13 +28,10 @@
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
-- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
-- (NSMutableArray *)loadOverdueItems;
 - (void)updateIncompleteCountForList:(MetaList *)list;
-- (NSArray *)overdueItemsSortCriteria;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
@@ -42,7 +39,7 @@
 
 @implementation RootViewController
 
-@synthesize allLists, categoryNameKeys, overdueItems;
+@synthesize allLists, categoryNameKeys;
 
 #pragma mark -
 #pragma mark Initializers
@@ -80,7 +77,7 @@
 {
     NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
     if (selectedIndexPath)
-        [[self tableView] deselectRowAtIndexPath:selectedIndexPath animated:NO];
+        [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)dealloc 
@@ -110,21 +107,6 @@
     [[self tableView] setRowHeight:cellSize.height];
     
     [self setAllLists:[self loadAllLists]];
-    [self setOverdueItems:[self loadOverdueItems]];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveListCountChangeNotification:) 
-                                                 name:NOTICE_LIST_COUNTS
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveListChangeNotification:) 
-                                                 name:NOTICE_LIST_UPDATE
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveOverdueReminderNotification:) 
-                                                 name:NOTICE_OVERDUE_ITEM 
-                                               object:nil];
-
 }
 
 - (void)addList:(id)sender 
@@ -150,7 +132,6 @@
 - (void)didReceiveListChangeNotification:(NSNotification *)notification 
 {
     [self setAllLists:[self loadAllLists]];
-    [self setOverdueItems:[self loadOverdueItems]];
     [[self tableView] reloadData];
     MetaList *scrollToList = [notification object];
     NSIndexPath *scrollToPath = [self indexPathForList:scrollToList];
@@ -162,39 +143,6 @@
 {
     MetaList *list = [notification object];
     [self updateIncompleteCountForList:list];
-}
-
-- (void)didReceiveOverdueReminderNotification:(NSNotification *)notification
-{
-    if (![[self view] isHidden] || ![notification object]) {
-        [self setOverdueItems:[self loadOverdueItems]];    
-        [[self tableView] reloadData];
-        return;
-    } else {
-        MetaListItem *item = [notification object];
-        if (!item) {
-            [self setOverdueItems:[self loadOverdueItems]];    
-            [[self tableView] reloadData];
-            return;            
-        }
-        NSInteger notificationItemIndex = -1;
-        if (![self overdueItems]) {
-            [self setOverdueItems:[NSMutableArray arrayWithObject:item]];
-            notificationItemIndex = 0;
-        }
-        if ([[self overdueItems] count] > 1) {
-            NSArray *sortDescriptors = [self overdueItemsSortCriteria];
-            [[self overdueItems] sortUsingDescriptors:sortDescriptors];
-            notificationItemIndex = [[self overdueItems] indexOfObject:item];
-        }
-        if ([[self overdueItems] count] == 1) {
-            [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        } else {
-            NSArray *idxPaths = @[[NSIndexPath indexPathForRow:notificationItemIndex inSection:0]];
-            [[self tableView] insertRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
-        }
-    }
-    
 }
 
 - (void)updateIncompleteCountForList:(MetaList *)list 
@@ -213,8 +161,6 @@
     NSString *categoryName = [[list category] name];
     NSString *key = (categoryName) ? categoryName : @"";
     NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:key];
-    if ([[self overdueItems] count] > 0)
-        sectionIdx++;
     NSArray *itemsForCategory = [self allLists][key];
     NSInteger rowIdx = [itemsForCategory indexOfObject:list];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
@@ -239,21 +185,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
     NSInteger sectionCount = [[self allLists] count];
-    if ([[self overdueItems] count] > 0)
-        sectionCount++;
     return (sectionCount == 0) ? 1 : sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    if (section == 0 && haveOverdueItems)
-        return [[self overdueItems] count];
-    
     NSInteger sectionCount = [[self allLists] count];
     if (sectionCount == 0)
         return 1;
-    if (haveOverdueItems) section--;
     NSArray *listArr = [self allLists][[self categoryNameKeys][section]];
     return [listArr count];
 }
@@ -276,9 +215,6 @@
         [[cell textLabel] setTextAlignment:UITextAlignmentLeft];
         [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     }
-    if ([self overdueItems] && [indexPath section] == 0) 
-        return [self tableView:tableView overdueItemCellForRowAtIndexPath:indexPath];
-    
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
     [[cell textLabel] setText:[listObj name]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
@@ -292,47 +228,9 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *ItemCellID = @"ItemCell";
-    NSInteger rowIdx = [indexPath row];
-    MetaListItem *item = [self overdueItems][rowIdx];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ItemCellID];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ItemCellID];
-        [[cell textLabel] setFont:[UIFont systemFontOfSize:14.0f]];
-    }
-    [[cell textLabel] setText:[item name]];
-    [[cell textLabel] setTextColor:[UIColor whiteColor]];
-    NSInteger dayDiff = date_diff([NSDate date], [item reminderDate]);
-    NSString *dateFmt = nil;
-    [cell setBackgroundColor:[UIColor colorWithRed:1.0 green:0.36 blue:0.36 alpha:1.0]];
-    if (dayDiff == 0) {
-        if (has_midnight_timecomponent([item reminderDate]))
-            dateFmt = @"'Today'";
-        else
-            dateFmt = @"h:mm a";
-        [cell setBackgroundColor:[UIColor colorWithRed:0.36 green:1.0 blue:0.36 alpha:1.0]];
-        [[cell textLabel] setTextColor:[UIColor blackColor]];
-    }
-    else if (dayDiff == -1)
-        dateFmt = @"'Yesterday'";
-    else if (dayDiff < -1)
-        dateFmt = @"MMM d";
-    [[cell detailTextLabel] setText:formatted_date_with_format_string([item reminderDate], dateFmt)];
-    [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    return cell;
-}
-
 - (NSMutableArray *)listAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger sectionIdx = [indexPath section];
-    if ([[self overdueItems] count] > 0)
-        sectionIdx--;
-    
     NSString *key = [self categoryNameKeys][sectionIdx];
     NSMutableArray *listArr = [self allLists][key];
     return listArr;
@@ -363,10 +261,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if (![self overdueItems])
-        return ([[self allLists] count] > 0);
-    else
-        return ([indexPath section] > 0);       // don't allow edits on the overdue items
+    return YES;
 }
 
 
@@ -375,13 +270,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    if (haveOverdueItems && [indexPath section] == 0) {
-        MetaListItem *listItem = [self overdueItems][[indexPath row]];
-        EditListItemViewController *elivc = [[EditListItemViewController alloc] initWithList:[listItem list] editItem:listItem];
-        [[self navigationController] pushViewController:elivc animated:YES];
-        return;
-    }
     if ([[self allLists] count] == 0) {
         [self addList:nil];
         return ;
@@ -389,6 +277,7 @@
     MetaList *list = [self listObjectAtIndexPath:indexPath];    
     ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
     [[self navigationController] pushViewController:livc animated:YES];
+
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
@@ -399,13 +288,8 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    BOOL haveOverdueItems = ([[self overdueItems] count] > 0);
-    if ((section == 0) && haveOverdueItems)
-        return nil;
     if ([[self allLists] count] == 0)
         return nil;
-    if (haveOverdueItems)
-        section--;
     return [self categoryNameKeys][section];
 }
 
@@ -417,26 +301,6 @@
 
 #pragma mark -
 #pragma mark Other core data related methods
-
-- (NSArray *)overdueItemsSortCriteria 
-{
-    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSSortDescriptor *byDate = [[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:YES];
-    NSArray *sortDescriptors = @[byDate,byName];
-    return sortDescriptors;
-}
-
-- (NSMutableArray *)loadOverdueItems
-{
-    NSArray *sortDescriptors = [self overdueItemsSortCriteria];
-    NSDate *tam = today_at_midnight();
-    DLog(@"root view: today_at_midnight = %@", tam);
-    NSPredicate *beforeTomorrow = [NSPredicate predicateWithFormat:@"reminderDate <= %@ AND isChecked == 0", [tam dateByAddingTimeInterval:(SECONDS_PER_DAY-1)]];
-    NSArray *overdue = [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaListItem" sortDescriptors:sortDescriptors filteredBy:beforeTomorrow];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[overdue count]];
-    
-    return ([overdue count] == 0) ? nil : [overdue mutableCopy];
-}
 
 - (NSMutableDictionary *)loadAllLists 
 {

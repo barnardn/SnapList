@@ -42,7 +42,6 @@ static char editCellKey;
 - (UITableViewCell *)makeItemCell;
 - (IBAction)editBtnPressed:(UIBarButtonItem *)editButton;
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
-- (void)pickFromStash;
 - (void)enableToolbarItems:(BOOL)enabled;
 
 @property (nonatomic,strong) NSMutableArray *listItems;

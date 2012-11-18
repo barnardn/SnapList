@@ -50,8 +50,5 @@
 
 
 - (id)initWithList:(MetaList *)aList;
-- (IBAction)moreActionsBtnPressed:(id)sender;
-- (IBAction)checkedStateValueChanged:(id)sender;
-
 
 @end
