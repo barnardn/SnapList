@@ -129,15 +129,8 @@ static char editCellKey;
 
 - (void)insertHeaderView
 {
-    UIImage *backgroundImage = [[UIImage imageNamed:@"bg-tableheader"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
-    CGRect cellFrame = CGRectMake(0.0f, 0.0f, CGRectGetWidth([[self tableView] frame]), HEADERVIEW_HEIGHT);
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:cellFrame];
-    [backgroundView setImage:backgroundImage];
-    UILabel *lblListName  = [ThemeManager labelForTableHeadingsWithText:[[self theList] name]];
-    CGRect labelFrame = CDO_CGRectCenteredInRect(cellFrame, CGRectGetWidth([lblListName frame]), CGRectGetHeight([lblListName frame]));
-    [lblListName setFrame:labelFrame];
-    [backgroundView addSubview:lblListName];
-    [[self view] addSubview:backgroundView];
+    UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), HEADERVIEW_HEIGHT)];
+    [[self view] addSubview:headerView];
 }
 
 

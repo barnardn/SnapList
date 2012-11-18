@@ -6,7 +6,9 @@
 //
 //
 
+#import "CDOGeometry.h"
 #import "ThemeManager.h"
+
 
 @implementation ThemeManager
 
@@ -56,6 +58,20 @@
     [label setShadowOffset:CGSizeMake(1.0f, 1.0f)];
     return label;
 }
+
++ (UIView *)headerViewTitled:(NSString *)title withDimenions:(CGSize)dimensions
+{
+    UIImage *backgroundImage = [[UIImage imageNamed:@"bg-tableheader"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
+    CGRect backgroundFrame = CGRectMake(0.0f, 0.0f, dimensions.width, dimensions.height);
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:backgroundFrame];
+    [backgroundView setImage:backgroundImage];
+    UILabel *lblListName  = [ThemeManager labelForTableHeadingsWithText:title];
+    CGRect labelFrame = CDO_CGRectCenteredInRect(backgroundFrame, CGRectGetWidth([lblListName frame]), CGRectGetHeight([lblListName frame]));
+    [lblListName setFrame:labelFrame];
+    [backgroundView addSubview:lblListName];
+    return backgroundView;
+}
+
 
 
 @end

@@ -27,5 +27,6 @@
 + (UIColor *)ghostedTextColor;
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text;
++ (UIView *)headerViewTitled:(NSString *)title withDimenions:(CGSize)dimensions;
 
 @end
