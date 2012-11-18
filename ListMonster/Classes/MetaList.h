@@ -19,8 +19,11 @@
 
 }
 
+- (void)save;
+- (void)deleteItem:(MetaListItem *)item;
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
+- (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted;
 - (NSArray *)allCompletedItems;
 - (NSArray *)allIncompletedItems;
 - (NSString *)excerptOfLength:(NSInteger)numWords;

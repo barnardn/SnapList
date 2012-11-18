@@ -16,8 +16,6 @@
 
 @interface MetaList()
 
-- (NSArray *)itemsForCompletedState:(BOOL)state;
-
 @end
 
 
@@ -34,6 +32,20 @@
     [self setColor:[ListColor blackColor]];
 }
 
+
+#pragma mark - helper methods
+
+- (void)save
+{
+    NSError *error;
+    ZAssert([[self managedObjectContext] save:&error], @"Unable to save list %@: %@", [self name], [error localizedDescription]);
+}
+
+- (void)deleteItem:(MetaListItem *)item
+{
+    [[self managedObjectContext] deleteObject:item];
+    [self save];
+}
 
 - (BOOL)deleteAllItems {
     
@@ -75,12 +87,25 @@
 }
 
 - (NSArray *)allCompletedItems {
-    return [self itemsForCompletedState:YES];
+    [NSException raise:@"Deprecated method" format:@"MetaListItem:allCompletedItems"];
+    return nil;
 }
 
 - (NSArray *)allIncompletedItems {
-    return [self itemsForCompletedState:NO];
+    [NSException raise:@"Deprecated method" format:@"MetaListItem:allCompletedItems"];
+    return nil;
 }
+
+- (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted
+{
+    NSArray *allItems = [[self items] allObjects];
+    NSSortDescriptor *byOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+    NSArray *sorted = [allItems sortedArrayUsingDescriptors:@[byOrder]];
+    if (includeCompleted) return sorted;
+    NSPredicate *onlyIncomplete = [NSPredicate predicateWithFormat:@"isChecked == 0"];
+    return [sorted filteredArrayUsingPredicate:onlyIncomplete];
+}
+
 
 - (NSString *)excerptOfLength:(NSInteger)numWords {
     

@@ -42,6 +42,9 @@
 //
 // sort the array based on key 
 //
-
+- (id)firstItem;
+//
+// returns the first item in the array, nil if the array is empty
+//
 
 @end

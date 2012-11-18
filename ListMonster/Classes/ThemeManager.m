@@ -25,6 +25,11 @@
     return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
 }
 
++ (UIFont *)fontForListHeader
+{
+    return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
+}
+
 + (UIColor *)standardTextColor
 {
     return [UIColor darkTextColor];
@@ -39,5 +44,18 @@
 {
     return [UIColor lightGrayColor];
 }
+
++ (UILabel *)labelForTableHeadingsWithText:(NSString *)text
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setText:text];
+    [label sizeToFit];
+    [label setShadowColor:[UIColor darkGrayColor]];
+    [label setShadowOffset:CGSizeMake(1.0f, 1.0f)];
+    return label;
+}
+
 
 @end

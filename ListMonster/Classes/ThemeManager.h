@@ -20,9 +20,12 @@
 + (UIFont *)fontForListName;
 + (UIFont *)fontForStandardListText;
 + (UIFont *)fontForListDetails;
++ (UIFont *)fontForListHeader;
 
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;
 + (UIColor *)ghostedTextColor;
+
++ (UILabel *)labelForTableHeadingsWithText:(NSString *)text;
 
 @end

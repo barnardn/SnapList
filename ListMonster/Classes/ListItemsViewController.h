@@ -28,8 +28,7 @@
 
 @interface ListItemsViewController : UIViewController <UITableViewDataSource,
                                                        UITableViewDelegate, 
-                                                       UIActionSheetDelegate,
-                                                       UITextViewDelegate,
+                                                       UITextViewDelegate, 
                                                        ListItemsViewControllerProtocol>
 {
     UIToolbar *toolBar;

@@ -19,17 +19,29 @@
 #pragma mark -
 #pragma mark Custom accessors
 
-- (void)setIsChecked:(NSNumber *)checkedState
+
+- (void)setIsComplete:(BOOL)complete
 {
-    [self willChangeValueForKey:@"isChecked"];
-    [self setPrimitiveValue:checkedState forKey:@"isChecked"];
-    [self didChangeValueForKey:@"isChecked"];
-    if ([checkedState intValue] == 1 && [self reminderDate]) {
+    [self setIsCheckedValue:complete];
+    if (complete && [self reminderDate]) {
         [self decrementBadgeNumberForFiredNotification];
         [self setReminderDate:nil];
-        [self cancelReminder];
+        [self cancelReminder];        
     }
 }
+
+- (BOOL)isComplete
+{
+    return [self isCheckedValue];
+}
+
+
+- (void)save
+{
+    NSError *error;
+    ZAssert([[self managedObjectContext] save:&error], @"Unable to save list item %@: %@", [self name], [error localizedDescription]);
+}
+
 
 // NOTE: some date checks are required.
 // if the previous reminder date is prior to "right now" then the notification was fired, and bumped up 
@@ -49,12 +61,6 @@
 }
 
 
-- (BOOL)isComplete 
-{
-    if (![self isChecked]) return NO;
-    NSInteger intVal = [[self isChecked] intValue];
-    return (intVal > 0);
-}
 
 #pragma mark -
 #pragma mark NSManagedObject overrides

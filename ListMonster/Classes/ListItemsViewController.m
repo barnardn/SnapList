@@ -9,6 +9,7 @@
 #import <objc/objc-runtime.h>
 
 #import "Alerts.h"
+#import "CDOGeometry.h"
 #import "DisplayListNoteViewController.h"
 #import "EditListItemViewController.h"
 #import "ItemStashViewController.h"
@@ -31,6 +32,8 @@
 #define TAG_TEXTVIEW                1001
 #define TAG_COMPLETEVIEW            1002
 #define TAG_COMPLETELABEL           1003
+#define HEADERVIEW_HEIGHT           25.0f
+
 
 static char editCellKey;
 
@@ -38,22 +41,16 @@ static char editCellKey;
 
 - (UITableViewCell *)makeItemCell;
 - (IBAction)editBtnPressed:(UIBarButtonItem *)editButton;
-- (void)commitAnyChanges;
-- (void)rollbackAnyChanges;
-- (void)toggleCancelButton:(BOOL)editMode;
-- (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor;
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
 - (void)pickFromStash;
-- (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath;
-- (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex;
 - (void)enableToolbarItems:(BOOL)enabled;
 
-@property(nonatomic,strong) NSMutableArray *listItems;
-@property(nonatomic,strong) UISwipeGestureRecognizer *leftSwipe;
-@property(nonatomic,strong) UISwipeGestureRecognizer *rightSwipe;
-@property(nonatomic,strong) UITableViewCell *cellForDeletionCancel;
-@property(nonatomic,strong) NSArray *deleteCancelRegions;
-
+@property (nonatomic,strong) NSMutableArray *listItems;
+@property (nonatomic,strong) UISwipeGestureRecognizer *leftSwipe;
+@property (nonatomic,strong) UISwipeGestureRecognizer *rightSwipe;
+@property (nonatomic,strong) UITableViewCell *cellForDeletionCancel;
+@property (nonatomic,strong) NSArray *deleteCancelRegions;
+@property  (nonatomic, strong) UIBarButtonItem *addButton;
 
 @end
 
@@ -68,7 +65,7 @@ static char editCellKey;
     self = [super init];
     if (!self) return nil;
     [self setTheList:aList];
-    _listItems = [NSMutableArray arrayWithArray:[[aList items] allObjects]];
+    _listItems = [[aList sortedItemsIncludingComplete:NO] mutableCopy];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTICE_LIST_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveListChangeNotification:) name:NOTICE_LIST_UPDATE object:nil];
 
@@ -107,20 +104,21 @@ static char editCellKey;
     [super viewDidLoad];
     [[self navigationItem] setTitle:[[self theList] name]];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonTapped:)];
-    [self setEditBtn:btn];
-
-    [[self navigationItem] setRightBarButtonItem:[self editBtn]];
+    [self setAddButton:btn];
+    
+    [[self navigationItem] setRightBarButtonItem:[self addButton]];
     [[self tableView] setAllowsSelectionDuringEditing:NO];
     [[self tableView] setScrollsToTop:YES];
     [[self tableView] addGestureRecognizer:[self leftSwipe]];
     [[self tableView] addGestureRecognizer:[self rightSwipe]];
+    
+    [[self tableView] setContentInset:UIEdgeInsetsMake(25.0f,0,0,0)];
+    [self insertHeaderView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    //[self filterItemsByCheckedState];           // TODO: refactor to take sorted list then assign to datasource
     editItemNavController = nil;
-    [[self tableView] reloadData];
 }
 
 
@@ -129,6 +127,20 @@ static char editCellKey;
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
+- (void)insertHeaderView
+{
+    UIImage *backgroundImage = [[UIImage imageNamed:@"bg-tableheader"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
+    CGRect cellFrame = CGRectMake(0.0f, 0.0f, CGRectGetWidth([[self tableView] frame]), HEADERVIEW_HEIGHT);
+    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:cellFrame];
+    [backgroundView setImage:backgroundImage];
+    UILabel *lblListName  = [ThemeManager labelForTableHeadingsWithText:[[self theList] name]];
+    CGRect labelFrame = CDO_CGRectCenteredInRect(cellFrame, CGRectGetWidth([lblListName frame]), CGRectGetHeight([lblListName frame]));
+    [lblListName setFrame:labelFrame];
+    [backgroundView addSubview:lblListName];
+    [[self view] addSubview:backgroundView];
+}
+
+
 
 #pragma mark -
 #pragma mark Button action
@@ -136,125 +148,58 @@ static char editCellKey;
 
 - (void)addButtonTapped:(UIBarButtonItem *)barBtn
 {
+    MetaListItem *firstItem = [[self listItems] firstItem];
+    if ([firstItem isNew]) {
+        UITableViewCell *editCell = [[self tableView] cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        UITextView *textView = (UITextView *)[[editCell contentView] viewWithTag:TAG_TEXTVIEW];
+        [textView endEditing:YES];
+    }
     MetaListItem *item = [MetaListItem insertInManagedObjectContext:[[self theList] managedObjectContext]];
     [[self tableView] beginUpdates];
     [[self listItems] insertObject:item atIndex:0];
     NSIndexPath *topIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [[self tableView] insertRowsAtIndexPaths:@[topIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    if ([[self listItems] count] > 1)
-        [[self tableView] scrollToRowAtIndexPath:topIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
     [[self tableView] endUpdates];
-}
-
--(IBAction)moreActionsBtnPressed:(id)sender {
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title") 
-                                                             delegate:self 
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:nil];
-    if ([[[self theList] items] count] > 0) {
-        [actionSheet addButtonWithTitle:NSLocalizedString(@"Delete All", @"delete all action button")];
-        [actionSheet setDestructiveButtonIndex:1];
-    }
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Pick item from stash", @"stash button")];    
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"View List Note", nil)];
-    [actionSheet showFromToolbar:[self toolBar]];
-}
-
-- (IBAction)checkedStateValueChanged:(id)sender {
     
-    [[self tableView] reloadData];
-}
-
- 
-- (NSArray *)itemsSortedBy:(NSSortDescriptor *)sortDescriptor
-{
+    if ([[self listItems] count] > 1)
+        [[self tableView] scrollToRowAtIndexPath:topIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
-    NSArray *allItems = [[[self theList] items] allObjects];
-    NSSortDescriptor *bySortOrder = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
-    return [allItems sortedArrayUsingDescriptors:@[bySortOrder, sortDescriptor]];
-}
-
-- (void)updateCheckedStateCountWithFilteredItems:(NSArray *)filteredItems usingSelectedIndex:(NSInteger )selectedIndex
-{
-    UISegmentedControl *checkedStateSegCtrl = (UISegmentedControl *)[[self toolBar] viewWithTag:livcSEGMENT_VIEW_TAG];
-    int nComplete, nIncomplete;
-    if (livcSEGMENT_CHECKED == selectedIndex) {
-        nComplete = [filteredItems count];
-        nIncomplete = [[[self theList] items] count] - nComplete;
-    } else {
-        nIncomplete = [filteredItems count];
-        nComplete = [[[self theList] items] count] - nIncomplete;
-    }
-    [checkedStateSegCtrl setTitle:[NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"Incomplete",nil),nIncomplete] 
-                forSegmentAtIndex:livcSEGMENT_UNCHECKED];
-    [checkedStateSegCtrl setTitle:[NSString stringWithFormat:@"%@(%d)",NSLocalizedString(@"Complete", nil),nComplete] 
-                forSegmentAtIndex:livcSEGMENT_CHECKED];
 }
 
 - (IBAction)editBtnPressed:(UIBarButtonItem *)editButton
 {
-    if ([[self tableView] isEditing])
+    if ([[self tableView] isEditing]) {
         [[self tableView] setEditing:NO animated:YES];
-    else
-        [[self tableView] setEditing:YES animated:YES];
-    
-/*
-    if ([self inEditMode]) {
-        [self setInEditMode:NO];
-        [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
-        [[self editBtn] setStyle:UIBarButtonItemStylePlain];
-        [self commitAnyChanges];
-        [self enableToolbarItems:YES];
-
-    } else {
-        [self setInEditMode:YES];
-        [[self editBtn] setTitle:NSLocalizedString(@"Done", @"done button")];
-        [[self editBtn] setStyle:UIBarButtonItemStyleDone];
-        [self enableToolbarItems:NO];
+        [[self editBtn] setImage:[UIImage imageNamed:@"btn-reorder"]];
     }
-    [[self tableView] setEditing:[self inEditMode] animated:YES];
-    [self toggleCancelButton:[self inEditMode]];
-    
-    if (![self inEditMode]) 
-        [[self tableView] reloadData];
-*/
+    else {
+        [[self tableView] setEditing:YES animated:YES];
+        [[self editBtn] setImage:[UIImage imageNamed:@"btn-done"]];
+    }
 }
 
+
+// TODO:  is this method necessary???
 - (void)enableToolbarItems:(BOOL)enabled
 {
     [[self moreActionsBtn] setEnabled:enabled];
 }
 
 
-- (void)toggleCancelButton:(BOOL)editMode {
-    
-    UIBarButtonItem *cancelBtn = nil;
-    if (editMode)
-        cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button title") 
-                                                     style:UIBarButtonItemStyleDone 
-                                                    target:self 
-                                                    action:@selector(cancelBtnPressed:)];
-    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-}
-
 #pragma mark -
 #pragma mark ListItemsViewControllerProtocol method 
 
 -(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didCancelEditOnNewItem:(MetaListItem *)item
 {
-    NSManagedObjectContext *moc = [[self theList] managedObjectContext];
-    [moc deleteObject:item];
-    DLog(@"item cancel item count: %d", [[[self theList] items] count]);
+    [NSException raise:@"Deprecated method" format:@"Method editListItemViewController:didCancelEditOnNewItem: no longer needed"];
 }
 
 -(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item
 {
-    [[self theList] addItem:item];
-      // maybe...
+    [NSException raise:@"Deprecated method" format:@"Method editListItemViewController:didAddNewItem: no longer needed"];
 }
 
+#pragma mark - table view methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
@@ -272,9 +217,6 @@ static char editCellKey;
     return size.height + CELL_VMARGIN;
 
 }
-
-#pragma mark -
-#pragma mark Table data source methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -311,49 +253,6 @@ static char editCellKey;
     return cell;
 }
 
-- (UITableViewCell *)makeItemCell
-{
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
-    [[cell textLabel] setNumberOfLines:0];
-    [[cell textLabel] setFont:[ThemeManager fontForStandardListText]];
-    [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
-    [cell setShowsReorderControl:YES];
-    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    return cell;
-}
-
-- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
-{
-    [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
-    [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
-    [[cell textLabel] setText:[item name]];
-    NSString *qtyString = ([[item quantity] intValue] == 0) ? @"" : [[item quantity] stringValue];
-    NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
-    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
-}
-
-- (UITextView *)textViewForCell:(UITableViewCell *)cell
-{
-    CGSize textSize = [@"XX" sizeWithFont:[ThemeManager fontForStandardListText]];
-    CGRect frame = [[cell contentView] frame];
-    frame.origin.x = EDITCELL_TEXTVIEW_HMARGIN;
-    frame.origin.y = EDITCELL_TEXTVIEW_VMARGIN;
-    frame.size.height = textSize.height;
-    frame.size.width -= 2*EDITCELL_TEXTVIEW_HMARGIN;
-    UITextView *tv = [[UITextView alloc] initWithFrame:frame];
-    [tv setBackgroundColor:[UIColor yellowColor]];
-    [tv setSpellCheckingType:UITextSpellCheckingTypeNo];
-    [tv setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [tv setFont:[ThemeManager fontForStandardListText]];
-    [[tv layer] setBorderWidth:1.0f];
-    [tv setReturnKeyType:UIReturnKeyDone];
-    [tv setDelegate:self];
-    [tv setTag:TAG_TEXTVIEW];
-    objc_setAssociatedObject(tv, &editCellKey, cell, OBJC_ASSOCIATION_ASSIGN);
-    return tv;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return  YES;
@@ -374,13 +273,14 @@ static char editCellKey;
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    DLog(@"taking cell from %d to %d", [fromIndexPath row], [toIndexPath row]);
+    if ([fromIndexPath row] == [toIndexPath row]) return;
     MetaListItem *item = [[self listItems] objectAtIndex:[fromIndexPath row]];
     [[self listItems] removeObject:item];
     [[self listItems] insertObject:item atIndex:[toIndexPath row]];
     [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *mli, NSUInteger idx, BOOL *stop) {
         [mli setOrderValue:idx];
     }];
+    [[self theList] save];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
@@ -388,26 +288,63 @@ static char editCellKey;
     return NO;
 }
 
-#pragma mark -
-#pragma mark TableView delegate methods
-  
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaListItem *item = [self listItems][[indexPath row]];
     EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
     [[self navigationController] pushViewController:eivc animated:YES];
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-- (void)itemSelectedAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    UITableViewCell *cell = (UITableViewCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
-    MetaListItem *item = [self listItems][[indexPath row]];
-    NSNumber *checkedValue = ([item isComplete]) ? INT_OBJ(0) : INT_OBJ(1);  // reverse of the current state
-    [item setIsChecked:checkedValue];
-//    [self updateCheckboxButtonForItem:item atCell:cell];
+
+#pragma mark - cell creation and setup methods
+
+- (UITableViewCell *)makeItemCell
+{
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+    [[cell textLabel] setNumberOfLines:0];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    [[cell textLabel] setFont:[ThemeManager fontForStandardListText]];
+    [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+    [cell setShowsReorderControl:YES];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    return cell;
 }
 
+- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
+{
+    [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
+    [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
+    [[cell textLabel] setText:[item name]];
+    UIColor *textColor = ([item isCheckedValue]) ? [ThemeManager ghostedTextColor] : [ThemeManager standardTextColor];
+    [[cell textLabel] setTextColor:textColor];
+    NSString *qtyString = ([[item quantity] intValue] == 0) ? @"" : [[item quantity] stringValue];
+    NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
+}
+
+- (UITextView *)textViewForCell:(UITableViewCell *)cell
+{
+    CGSize textSize = [@"XX" sizeWithFont:[ThemeManager fontForStandardListText]];
+    CGRect frame = [[cell contentView] frame];
+    frame.origin.x = EDITCELL_TEXTVIEW_HMARGIN;
+    frame.origin.y = EDITCELL_TEXTVIEW_VMARGIN;
+    frame.size.height = textSize.height;
+    frame.size.width -= 2*EDITCELL_TEXTVIEW_HMARGIN;
+    UITextView *tv = [[UITextView alloc] initWithFrame:frame];
+    [tv setBackgroundColor:[UIColor clearColor]];
+    [tv setSpellCheckingType:UITextSpellCheckingTypeNo];
+    [tv setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [tv setFont:[ThemeManager fontForStandardListText]];
+    [[tv layer] setBorderWidth:1.0f];
+    [[tv layer] setBorderColor:[UIColor lightGrayColor].CGColor];
+    [tv setReturnKeyType:UIReturnKeyDone];
+    [tv setDelegate:self];
+    [tv setTag:TAG_TEXTVIEW];
+    objc_setAssociatedObject(tv, &editCellKey, cell, OBJC_ASSOCIATION_ASSIGN);
+    return tv;
+}
 
 
 #pragma mark - UITextView delegate method
@@ -445,8 +382,17 @@ static char editCellKey;
     objc_removeAssociatedObjects(textView);
     [textView resignFirstResponder];
     [textView removeFromSuperview];
-    [[editCell textLabel] setText:text];
     MetaListItem *item = [[self listItems] objectAtIndex:0];
+    if ([text length] == 0) {
+        [[self tableView] beginUpdates];
+        [[self listItems] removeObject:item];
+        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] endUpdates];
+        [[self theList] deleteItem:item];
+        return;
+    }
+    
+    [[editCell textLabel] setText:text];
     [item setIsNewValue:NO];
     DLog(@"new value for item %@ is %d", [item name], [item isNewValue]);
     [[[self theList] itemsSet] addObject:item];
@@ -454,28 +400,29 @@ static char editCellKey;
     editCell = nil;
     if (indexPath)
         [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self commitAnyChanges];
+    
+    [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
+        [item setOrderValue:idx];
+    }];
+    
+    [[self theList] save];
 }
 
 #pragma mark - gesture recognizer actions
 
 - (void)rightSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
-        // TODO: handle item completion flag from data model
-    
-    DLog(@"right swipe");
     if ([self cellForDeletionCancel]) {
         [self cancelItemDelete];
         return;
     }
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
     UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
+    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     [swipedCell setAccessoryType:UITableViewCellAccessoryNone];
     CGAffineTransform xlation = CGAffineTransformMakeTranslation(320.0f, 0.0f);
     UIImage *imgBackground = [[UIImage imageNamed:@"bg-complete"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
-    CGRect cellFrame = [swipedCell frame];
-    cellFrame.origin.x = -320.0f;
-    cellFrame.origin.y = 0.0f;
+    CGRect cellFrame = CDO_CGRectByReplacingOrigin([swipedCell frame], CGPointMake(-320.0f, 0.0f));
     UIImageView *ivBg = [[UIImageView alloc] initWithFrame:cellFrame];
     [ivBg setImage:imgBackground];
     [ivBg setTag:TAG_COMPLETEVIEW];
@@ -485,15 +432,21 @@ static char editCellKey;
         [[swipedCell detailTextLabel] setTransform:xlation];
         [ivBg setTransform:xlation];
     } completion:^(BOOL finished) {
-        CGPoint center = [[swipedCell contentView] center];
-        center.x = (int)center.x;
-        center.y = (int)center.y;
-        [swipedCell addSubview:[self swipeActionLabelWithText:@"Complete" centeredAt:center]];
+        CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
+        BOOL checkValue = ![item isComplete];
+        [item setIsComplete:checkValue];
+        [item save];
+        NSString *actionTitle = ([item isComplete]) ? NSLocalizedString(@"Complete", nil) : NSLocalizedString(@"Not Done", nil);
+        [swipedCell addSubview:[self swipeActionLabelWithText:actionTitle centeredAt:center]];
         [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
         [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
         [[self tableView] beginUpdates];
-        [[self listItems] removeObjectAtIndex:[indexPath row]];
-        [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if ([item isComplete]) {
+            [[self listItems] removeObjectAtIndex:[indexPath row]];
+            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
         [[self tableView] endUpdates];
     }];
 }
@@ -513,9 +466,6 @@ static char editCellKey;
 
 - (void)leftSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
-    // TODO: handle item deletion from datamodel
-    
-    
     DLog(@"left swipe");
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
     UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
@@ -535,9 +485,7 @@ static char editCellKey;
         [[swipedCell detailTextLabel] setTransform:xlation];
         [ivBg setTransform:xlation];
     } completion:^(BOOL finished) {
-        CGPoint center = [[swipedCell contentView] center];
-        center.x = (int)center.x;
-        center.y = (int)center.y;
+        CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
         [swipedCell addSubview:[self swipeActionLabelWithText:@"Delete" centeredAt:center]];
 
         UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY([swipedCell frame]))];
@@ -563,6 +511,9 @@ static char editCellKey;
     
 }
 
+
+#pragma mark - cell/item deletion handlers
+
 - (void)deletionConfirmed:(UITapGestureRecognizer *)tap
 {
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[tap locationInView:[self tableView]]];
@@ -574,7 +525,10 @@ static char editCellKey;
     [self setCellForDeletionCancel:nil];    
 
     [[self tableView] beginUpdates];
-    [[self listItems] removeObjectAtIndex:[indexPath row]];
+    MetaListItem *itemToDelete = [[self listItems] objectAtIndex:[indexPath row]];
+    [[self listItems] removeObject:itemToDelete];
+    [[[self theList] managedObjectContext] deleteObject:itemToDelete];
+    [[self theList] save];
     [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];
 
@@ -606,7 +560,6 @@ static char editCellKey;
 }
 
 
-
 #pragma mark - list changed notification methods
 
 - (void)didReceiveListChangeNotification:(NSNotification *)notification
@@ -615,143 +568,5 @@ static char editCellKey;
 }
 
 
-#pragma mark -
-#pragma mark Action sheet delegate
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (!buttonIndex) return;
-    
-    if ([[self listItems] count] == 0 && buttonIndex == 1) {
-        [self pickFromStash];
-        return;
-    }
-    NSArray *actionSelectors = @[@"deleteAllItems", @"pickFromStash",@"showListNote"];
-    [self performSelector:NSSelectorFromString(actionSelectors[buttonIndex- 1])];
-}
-
-#pragma  clang diagnostic pop
-
-- (void)deleteAllItems
-{
-    BOOL isOk = [[self theList] deleteAllItems];
-    if (!isOk) {
-        [ErrorAlert showWithTitle:@"Error Deleting Items" andMessage:@"Items could not be deleted"];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
-    [[self navigationController] popViewControllerAnimated:YES];
-}
-
-- (void)checkAllItems
-{
-    NSPredicate *uncheckedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 0"];
-    [[self theList] setItemsMatching:uncheckedItems toCheckedState:1];
-    //[self filterItemsByCheckedState];
-    [[self tableView] reloadData];
-}
-
-- (void)uncheckAllItems
-{
-    NSPredicate *checkedItems = [NSPredicate predicateWithFormat:@"self.isChecked == 1"];
-    [[self theList] setItemsMatching:checkedItems toCheckedState:0];
-    //[self filterItemsByCheckedState];
-    [[self tableView] reloadData];
-}
-
-- (void)pickFromStash
-{
-    ItemStashViewController *isvc = [[ItemStashViewController alloc] initWithList:[self theList]];
-    [self presentModalViewController:isvc animated:YES];
-}
-
-- (void)showListNote
-{
-    DisplayListNoteViewController *noteVc = [[DisplayListNoteViewController alloc] initWithList:[self theList]];
-    [self presentModalViewController:noteVc animated:YES];
-}
-
-
-#pragma mark -
-#pragma mark Commit moc changes
-
-- (void)commitAnyChanges {
-    
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    if (![moc hasChanges]) return;
-    NSPredicate *itemsForCountUpdate = [NSPredicate predicateWithFormat:@"isChecked == YES OR isDeleted == YES"];
-    NSSet *filteredSet = [[[self theList] items] filteredSetUsingPredicate:itemsForCountUpdate];
-    if ([filteredSet count] > 0)
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:[self theList]];
-    NSError *error = nil;
-    [moc save:&error];
-    if (error) {
-        DLog(@"Unable to save changes: %@", [error localizedDescription]);
-    }
-}
-
-- (void)rollbackAnyChanges {
-    
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    if (![moc hasChanges]) return;
-    [moc rollback];
-}
-
 @end
 
-/** old methods  **/
-
-/*
- - (void)filterItemsByCheckedState {
- 
- NSInteger selectedSegmentIdx = [[self checkedState] selectedSegmentIndex];
- NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"self.isChecked == %d", selectedSegmentIdx];
- NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
- //TODO: revist this, not the most efficient.
- NSMutableArray *filteredItems = [[[self itemsSortedBy:byName] filteredArrayUsingPredicate:byCheckedState] mutableCopy];
- [self setListItems:filteredItems];
- [self updateCheckedStateCountWithFilteredItems:filteredItems usingSelectedIndex:selectedSegmentIdx];
- }
- */
-
-
-/*
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle != UITableViewCellEditingStyleDelete) return;
- MetaListItem *deleteItem = [self listItems][[indexPath row]];
- [[self listItems] removeObject:deleteItem];
- [[[self theList] managedObjectContext] deleteObject:deleteItem];
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- [[self theList] removeItem:deleteItem];
- if ([[[self theList] items] count] == 0) {  // just deleted the last item
- NSIndexPath *ipath = [NSIndexPath indexPathForRow:0 inSection:0];
- [tableView insertRowsAtIndexPaths:@[ipath] withRowAnimation:UITableViewRowAnimationFade];
- }
- [self commitAnyChanges];
- }
- */
-
-
-
-/*
- - (void)cancelBtnPressed:(id)sender
- {
- [self setInEditMode:NO];
- [self rollbackAnyChanges];
- [[self editBtn] setTitle:NSLocalizedString(@"Select", @"edit button")];
- [self toggleCancelButton:[self inEditMode]];
- for (NSIndexPath *p in [[self tableView] indexPathsForVisibleRows]) {
- MetaListItem *item = [self listItems][[p row]];
- ListItemCell *cell = (ListItemCell *)[[self tableView] cellForRowAtIndexPath:p];
- if ([item isComplete])
- [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox-checked"]];
- else
- [cell setEditModeImage:[UIImage imageNamed:@"btn-checkbox"]];
- }
- [[self tableView] setEditing:NO animated:YES];
- [self enableToolbarItems:YES];
- }
- */

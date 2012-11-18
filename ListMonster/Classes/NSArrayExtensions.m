@@ -70,6 +70,9 @@
     return [self sortedArrayUsingDescriptors:@[onKey]];
 }
 
-
+- (id)firstItem
+{
+    return ([self count] > 0) ? [self objectAtIndex:0] : nil;
+}
 
 @end
