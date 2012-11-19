@@ -65,18 +65,30 @@
     return YES;
 }
 
+- (NSInteger)countOfItemsCompleted:(BOOL)completed
+{
+    NSArray *itemsArray = [[self items] allObjects];
+    NSPredicate *byIsChecked = [NSPredicate predicateWithFormat:@"self.IsChecked == %u", completed];
+    return [[itemsArray filteredArrayUsingPredicate:byIsChecked] count];
+}
+
 - (void)removeItem:(MetaListItem *)item
 {
+    [NSException raise:@"Deprecated method" format:@"MetaListItem:removeItem:"];
+    /*
     NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
     [mutableItems removeObject:item];
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self];
+    */
 }
 
 - (void)addItem:(MetaListItem *)item
 {
+    [NSException raise:@"Deprecated method" format:@"MetaListItem:removeItem:"];
+    /*
     NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
     [mutableItems addObject:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self]; */
 }
 
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state {
@@ -117,20 +129,6 @@
     NSString *excerpt = [[words sliceAt:0 withLength:numWords] componentsJoinedByString:@" "];
     return [NSString stringWithFormat:@"%@...", excerpt];
 }
-
-
-#pragma mark -
-#pragma mark Category Methods
-
-- (NSArray *)itemsForCompletedState:(BOOL)state {
-    
-    NSArray *allItems = [[self items] allObjects];
-    NSPredicate *byCheckedState = [NSPredicate predicateWithFormat:@"isChecked == %d AND isDeleted == NO", (int)state];
-    NSArray *filteredItems = [allItems filteredArrayUsingPredicate:byCheckedState];
-    return filteredItems;
-    
-}
-
 
 
 @end

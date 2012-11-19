@@ -72,6 +72,15 @@
     return backgroundView;
 }
 
-
++ (CGFloat)heightForHeaderview
+{
+    static CGFloat staticHeight;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIImage *img = [UIImage imageNamed:@"bg-tableheader"];
+        staticHeight = CDO_CGSizeGetHeight(img);
+    });
+    return staticHeight;
+}
 
 @end

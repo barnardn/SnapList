@@ -24,14 +24,12 @@
 
 @interface RootViewController()
 
-- (void)updateCell:(UITableViewCell *)cell forMetaList:(MetaList *)metaList;
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
-- (void)updateIncompleteCountForList:(MetaList *)list;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
@@ -93,7 +91,6 @@
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
@@ -125,25 +122,6 @@
         [[self navigationController] pushViewController:evc animated:YES];
 }
 
-#pragma mark -
-#pragma mark Notification Handlers
-
-// a list property changed (category or name) - reload all lists..
-- (void)didReceiveListChangeNotification:(NSNotification *)notification 
-{
-    [self setAllLists:[self loadAllLists]];
-    [[self tableView] reloadData];
-    MetaList *scrollToList = [notification object];
-    NSIndexPath *scrollToPath = [self indexPathForList:scrollToList];
-    [[self tableView] scrollToRowAtIndexPath:scrollToPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-    [self setEditing:NO animated:YES];
-}
-
-- (void)didReceiveListCountChangeNotification:(NSNotification *)notification 
-{
-    MetaList *list = [notification object];
-    [self updateIncompleteCountForList:list];
-}
 
 - (void)updateIncompleteCountForList:(MetaList *)list 
 {
@@ -179,8 +157,7 @@
     [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
 }
 
-#pragma mark -
-#pragma mark Table view data source
+#pragma mark - Table view datasource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -196,77 +173,43 @@
     NSArray *listArr = [self allLists][[self categoryNameKeys][section]];
     return [listArr count];
 }
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     static NSString *CellId = @"ListCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellId];
-        [self customizeCell:cell atIndexPath:indexPath];
-    }
+    if (!cell)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
     if ([[self allLists] count] == 0) {
         [[cell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
         [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
         [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
         return cell;
-    } else {
-        [[cell textLabel] setTextAlignment:UITextAlignmentLeft];
-        [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     }
+    [self customizeListCell:cell];
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
     [[cell textLabel] setText:[listObj name]];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
+    NSInteger countIncomplete = [listObj countOfItemsCompleted:NO];
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
     return cell;
 }
 
-- (void)customizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)customizeListCell:(UITableViewCell *)cell
 {
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
+    [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 }
 
-- (NSMutableArray *)listAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger sectionIdx = [indexPath section];
-    NSString *key = [self categoryNameKeys][sectionIdx];
-    NSMutableArray *listArr = [self allLists][key];
-    return listArr;
-}
-                                            
-- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath 
-{
-    NSMutableArray *listArr = [self listAtIndexPath:indexPath];
-    return listArr[[indexPath row]];
-}                                     
-                                     
-- (void)updateCell:(ListCell *)cell forMetaList:(MetaList *)metaList 
-{
-    [[cell nameLabel] setText:[metaList name]];
-    [[cell nameLabel] setTextColor:[[metaList color] uiColor]];
-    [[cell countsLabel] setText:@""];
-    [[cell categoryLabel] setHidden:YES];
-    CGRect nameFrame = [[cell nameLabel] frame];
-    CGFloat y = ceil((cell.frame.size.height - nameFrame.size.height) / 2.0f);
-    nameFrame.origin.y = y; //13.0f;    
-    [[cell nameLabel] setFrame:nameFrame];    
-    if ([metaList items] && [[metaList items] count] > 0) {
-        NSInteger incompleteCount = [[metaList allIncompletedItems] count];
-        NSString *count = [NSString stringWithFormat:@"%d", incompleteCount];    
-        [[cell countsLabel] setText:count];
-    }    
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    return YES;
-}
-
-
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -293,14 +236,36 @@
     return [self categoryNameKeys][section];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [[self categoryNameKeys] objectAtIndex:section];
+    UIView *headerView = [ThemeManager headerViewTitled:title withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
+    return headerView;
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 24.0f;
+    return [ThemeManager heightForHeaderview];
 }
 
-#pragma mark -
-#pragma mark Other core data related methods
+#pragma mark - list for index path methods
+
+- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *listArr = [self listAtIndexPath:indexPath];
+    return listArr[[indexPath row]];
+}
+
+- (NSMutableArray *)listAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger sectionIdx = [indexPath section];
+    NSString *key = [self categoryNameKeys][sectionIdx];
+    NSMutableArray *listArr = [self allLists][key];
+    return listArr;
+}
+
+#pragma mark - Other core data related methods
 
 - (NSMutableDictionary *)loadAllLists 
 {

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define CDO_GEOMETRY_NO_SIZE      -1.0f
+
 
 /*
  * returns the smallest point that results form converting the coordinates to integers
@@ -26,4 +28,10 @@ CGRect CDO_CGRectByReplacingOrigin(CGRect rect, CGPoint origin);
  * rect, a zero rect is returned.
  */
 CGRect CDO_CGRectCenteredInRect(CGRect outerRect, CGFloat width, CGFloat height);
+
+/*
+ * functions to return an objects width or height. 
+ */
+CGFloat CDO_CGSizeGetWidth(id obj);
+CGFloat CDO_CGSizeGetHeight(id obj);
 

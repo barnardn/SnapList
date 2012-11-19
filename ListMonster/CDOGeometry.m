@@ -27,3 +27,18 @@ CGRect CDO_CGRectCenteredInRect(CGRect outerRect, CGFloat width, CGFloat height)
     CGFloat dy = (outerRect.size.height - height) / 2.0f;
     return CGRectInset(outerRect, dx, dy);
 }
+
+
+CGFloat CDO_CGSizeGetHeight(id obj)
+{
+    if (![obj respondsToSelector:@selector(size)]) return CDO_GEOMETRY_NO_SIZE;
+    CGSize size = [obj size];
+    return size.height;
+}
+
+CGFloat CDO_CGSizeGetWidth(id obj)
+{
+    if (![obj respondsToSelector:@selector(size)]) return CDO_GEOMETRY_NO_SIZE;
+    CGSize size = [obj size];
+    return size.width;
+}

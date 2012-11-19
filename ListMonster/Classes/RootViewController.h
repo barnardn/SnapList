@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+#import "SwipeToEditCellTableViewController.h"
+
 @class ListMonsterAppDelegate;
 @class MetaList;
 

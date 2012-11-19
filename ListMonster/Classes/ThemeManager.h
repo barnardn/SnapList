@@ -13,7 +13,7 @@
 
 #define kSizeListNameFont   20.0f
 #define kSizeStandardFont   18.0f
-#define kSizeSmallFont   14.0f
+#define kSizeSmallFont      14.0f
 
 @interface ThemeManager : NSObject
 
@@ -25,6 +25,8 @@
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;
 + (UIColor *)ghostedTextColor;
+
++ (CGFloat)heightForHeaderview;
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text;
 + (UIView *)headerViewTitled:(NSString *)title withDimenions:(CGSize)dimensions;

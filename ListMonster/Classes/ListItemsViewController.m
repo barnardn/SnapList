@@ -32,8 +32,6 @@
 #define TAG_TEXTVIEW                1001
 #define TAG_COMPLETEVIEW            1002
 #define TAG_COMPLETELABEL           1003
-#define HEADERVIEW_HEIGHT           25.0f
-
 
 static char editCellKey;
 
@@ -63,10 +61,9 @@ static char editCellKey;
 {
     self = [super init];
     if (!self) return nil;
+    
     [self setTheList:aList];
     _listItems = [[aList sortedItemsIncludingComplete:NO] mutableCopy];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NOTICE_LIST_UPDATE object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveListChangeNotification:) name:NOTICE_LIST_UPDATE object:nil];
 
     _leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeHandler:)];
     [_leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft]; 
@@ -128,7 +125,7 @@ static char editCellKey;
 
 - (void)insertHeaderView
 {
-    UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), HEADERVIEW_HEIGHT)];
+    UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
     [[self view] addSubview:headerView];
 }
 
@@ -549,14 +546,6 @@ static char editCellKey;
         [iv removeFromSuperview];
         [self setCellForDeletionCancel:nil];
     }];
-}
-
-
-#pragma mark - list changed notification methods
-
-- (void)didReceiveListChangeNotification:(NSNotification *)notification
-{
-    [[self tableView] reloadData];
 }
 
 

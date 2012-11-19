@@ -20,6 +20,7 @@
 }
 
 - (void)save;
+- (NSInteger)countOfItemsCompleted:(BOOL)completed;
 - (void)deleteItem:(MetaListItem *)item;
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;

@@ -18,6 +18,7 @@
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		49248F451659474300CD9995 /* bg-tableheader.png in Resources */ = {isa = PBXBuildFile; fileRef = 49248F431659474300CD9995 /* bg-tableheader.png */; };
 		49248F461659474300CD9995 /* bg-tableheader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49248F441659474300CD9995 /* bg-tableheader@2x.png */; };
+		49248F491659B61400CD9995 /* SwipeToEditCellTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */; };
 		4937D80F1385930D00E7984D /* Backgrounds in Resources */ = {isa = PBXBuildFile; fileRef = 4937D7FD1385930D00E7984D /* Backgrounds */; };
 		493AE0271656BA6C007994D1 /* CDOGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 493AE0261656BA6C007994D1 /* CDOGeometry.m */; };
 		493AE02A1656E751007994D1 /* btn-reorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 493AE0281656E751007994D1 /* btn-reorder.png */; };
@@ -139,6 +140,8 @@
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
 		49248F431659474300CD9995 /* bg-tableheader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader.png"; sourceTree = "<group>"; };
 		49248F441659474300CD9995 /* bg-tableheader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader@2x.png"; sourceTree = "<group>"; };
+		49248F471659B61400CD9995 /* SwipeToEditCellTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeToEditCellTableViewController.h; sourceTree = "<group>"; };
+		49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeToEditCellTableViewController.m; sourceTree = "<group>"; };
 		4937D7FD1385930D00E7984D /* Backgrounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Backgrounds; sourceTree = "<group>"; };
 		493AE0251656BA6C007994D1 /* CDOGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOGeometry.h; sourceTree = "<group>"; };
 		493AE0261656BA6C007994D1 /* CDOGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOGeometry.m; sourceTree = "<group>"; };
@@ -576,6 +579,8 @@
 				499306A2135FB07300ECBE16 /* ReminderViewController.m */,
 				49F1814812C958F20066B454 /* RootViewController.h */,
 				49F1814912C958F20066B454 /* RootViewController.m */,
+				49248F471659B61400CD9995 /* SwipeToEditCellTableViewController.h */,
+				49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -751,6 +756,7 @@
 				49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */,
 				49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */,
 				493AE0271656BA6C007994D1 /* CDOGeometry.m in Sources */,
+				49248F491659B61400CD9995 /* SwipeToEditCellTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
