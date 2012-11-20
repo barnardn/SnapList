@@ -30,8 +30,6 @@
 #define CELL_VMARGIN                25.0f
 #define ITEM_CELL_CONTENT_WIDTH     245.0f
 #define TAG_TEXTVIEW                1001
-#define TAG_COMPLETEVIEW            1002
-#define TAG_COMPLETELABEL           1003
 
 static char editCellKey;
 
@@ -43,10 +41,6 @@ static char editCellKey;
 - (void)enableToolbarItems:(BOOL)enabled;
 
 @property (nonatomic,strong) NSMutableArray *listItems;
-@property (nonatomic,strong) UISwipeGestureRecognizer *leftSwipe;
-@property (nonatomic,strong) UISwipeGestureRecognizer *rightSwipe;
-@property (nonatomic,strong) UITableViewCell *cellForDeletionCancel;
-@property (nonatomic,strong) NSArray *deleteCancelRegions;
 @property  (nonatomic, strong) UIBarButtonItem *addButton;
 
 @end
@@ -54,22 +48,15 @@ static char editCellKey;
 
 @implementation ListItemsViewController
 
-@synthesize theList, moreActionsBtn;
+@synthesize moreActionsBtn;
 @synthesize toolBar,inEditMode, editBtn;
 
 - (id)initWithList:(MetaList *)aList
 {
     self = [super init];
     if (!self) return nil;
-    
-    [self setTheList:aList];
+    _theList = aList;
     _listItems = [[aList sortedItemsIncludingComplete:NO] mutableCopy];
-
-    _leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeHandler:)];
-    [_leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft]; 
-
-    _rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeHandler:)];
-    [_rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
     return self;
 }
 
@@ -105,8 +92,6 @@ static char editCellKey;
     [[self navigationItem] setRightBarButtonItem:[self addButton]];
     [[self tableView] setAllowsSelectionDuringEditing:NO];
     [[self tableView] setScrollsToTop:YES];
-    [[self tableView] addGestureRecognizer:[self leftSwipe]];
-    [[self tableView] addGestureRecognizer:[self rightSwipe]];
     
     [[self tableView] setContentInset:UIEdgeInsetsMake(25.0f,0,0,0)];
     [self insertHeaderView];
@@ -303,8 +288,6 @@ static char editCellKey;
 
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item
 {
-    [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
-    [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
     [[cell textLabel] setText:[item name]];
     UIColor *textColor = ([item isCheckedValue]) ? [ThemeManager ghostedTextColor] : [ThemeManager standardTextColor];
     [[cell textLabel] setTextColor:textColor];
@@ -383,7 +366,6 @@ static char editCellKey;
     
     [[editCell textLabel] setText:text];
     [item setIsNewValue:NO];
-    DLog(@"new value for item %@ is %d", [item name], [item isNewValue]);
     [[[self theList] itemsSet] addObject:item];
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:editCell];
     editCell = nil;
@@ -397,155 +379,40 @@ static char editCellKey;
     [[self theList] save];
 }
 
-#pragma mark - gesture recognizer actions
+#pragma mark - swipe to edit cell view controller overrides
 
-- (void)rightSwipeHandler:(UISwipeGestureRecognizer *)swipe
+- (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self cellForDeletionCancel]) {
-        [self cancelItemDelete];
-        return;
-    }
-    NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
-    UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    [swipedCell setAccessoryType:UITableViewCellAccessoryNone];
-    CGAffineTransform xlation = CGAffineTransformMakeTranslation(320.0f, 0.0f);
-    UIImage *imgBackground = [[UIImage imageNamed:@"bg-complete"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
-    CGRect cellFrame = CDO_CGRectByReplacingOrigin([swipedCell frame], CGPointMake(-320.0f, 0.0f));
-    UIImageView *ivBg = [[UIImageView alloc] initWithFrame:cellFrame];
-    [ivBg setImage:imgBackground];
-    [ivBg setTag:TAG_COMPLETEVIEW];
-    [swipedCell addSubview:ivBg];
-    [UIView animateWithDuration:0.25f animations:^{
-        [[swipedCell textLabel] setTransform:xlation];
-        [[swipedCell detailTextLabel] setTransform:xlation];
-        [ivBg setTransform:xlation];
-    } completion:^(BOOL finished) {
-        CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
-        BOOL checkValue = ![item isComplete];
-        [item setIsComplete:checkValue];
-        [item save];
-        NSString *actionTitle = ([item isComplete]) ? NSLocalizedString(@"Complete", nil) : NSLocalizedString(@"Not Done", nil);
-        [swipedCell addSubview:[self swipeActionLabelWithText:actionTitle centeredAt:center]];
-        [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
-        [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
-        [[self tableView] beginUpdates];
-        if ([item isComplete]) {
-            [[self listItems] removeObjectAtIndex:[indexPath row]];
-            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        } else {
-            [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-        [[self tableView] endUpdates];
-    }];
+    BOOL complete = ![item isComplete] ? YES : NO;
+    [item setIsComplete:complete];
+    [item save];
 }
 
-- (UILabel *)swipeActionLabelWithText:(NSString *)text centeredAt:(CGPoint)center
+- (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UILabel *lblComplete = [[UILabel alloc] init];
-    [lblComplete setTag:TAG_COMPLETELABEL];
-    [lblComplete setFont:[ThemeManager fontForListName]];
-    [lblComplete setTextColor:[UIColor whiteColor]];
-    [lblComplete setText:text];
-    [lblComplete sizeToFit];
-    [lblComplete setBackgroundColor:[UIColor clearColor]];
-    [lblComplete setCenter:center];
-    return lblComplete;
+    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    return ([item isComplete]) ? @"Not Done" : @"Complete";
 }
 
-- (void)leftSwipeHandler:(UISwipeGestureRecognizer *)swipe
+- (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"left swipe");
-    NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
-    UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
-    [swipedCell setAccessoryType:UITableViewCellAccessoryNone];
-    CGAffineTransform xlation = CGAffineTransformMakeTranslation(-320.0f, 0.0f);
-    CGRect cellFrame = [swipedCell frame];
-    
-    CGRect imgFrame = CGRectMake(320.0f, 0.0f, 320.0f, cellFrame.size.height);
-    UIImageView *ivBg = [[UIImageView alloc] initWithFrame:imgFrame];
-    UIImage *imgBackground = [[UIImage imageNamed:@"bg-deletion"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f)];
-    [ivBg setImage:imgBackground];
-    [ivBg setTag:TAG_COMPLETEVIEW];
-    [swipedCell addSubview:ivBg];
-    
-    [UIView animateWithDuration:0.25f animations:^{
-        [[swipedCell textLabel] setTransform:xlation];
-        [[swipedCell detailTextLabel] setTransform:xlation];
-        [ivBg setTransform:xlation];
-    } completion:^(BOOL finished) {
-        CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
-        [swipedCell addSubview:[self swipeActionLabelWithText:@"Delete" centeredAt:center]];
-
-        UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY([swipedCell frame]))];
-        [top setBackgroundColor:[UIColor clearColor]];
-        
-        UIButton *btm = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
-                                                                   CGRectGetMaxY([swipedCell frame]),
-                                                                   320.0f,
-                                                                   CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY([swipedCell frame]))];
-        [btm setBackgroundColor:[UIColor clearColor]];
-        [top addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [btm addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [[self view] addSubview:top];
-        [[self view] addSubview:btm];
-        [self setDeleteCancelRegions:@[top, btm]];
-        [self setCellForDeletionCancel:swipedCell];
-        [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
-        [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
-
-    }];
-    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deletionConfirmed:)];
-    [[self tableView] addGestureRecognizer:tgr];
-    
+    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    return ([item isComplete]);
 }
 
-
-#pragma mark - cell/item deletion handlers
-
-- (void)deletionConfirmed:(UITapGestureRecognizer *)tap
+- (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[tap locationInView:[self tableView]]];
-    [[self tableView] removeGestureRecognizer:tap];
-    [[self deleteCancelRegions] enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
-        [btn removeFromSuperview];
-    }];
-    [self setDeleteCancelRegions:nil];
-    [self setCellForDeletionCancel:nil];    
-
-    [[self tableView] beginUpdates];
-    MetaListItem *itemToDelete = [[self listItems] objectAtIndex:[indexPath row]];
-    [[self listItems] removeObject:itemToDelete];
-    [[[self theList] managedObjectContext] deleteObject:itemToDelete];
-    [[self theList] save];
-    [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    [[self tableView] endUpdates];
-
+    if ([[self listItems] count] > [indexPath row])
+        [[self listItems] removeObjectAtIndex:[indexPath row]];
 }
 
-- (void)deleteCancelRegionTapped:(UIButton *)region
+- (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self cancelItemDelete];
-}
-
-- (void)cancelItemDelete
-{
-    UILabel *lbl = (UILabel *)[[self cellForDeletionCancel] viewWithTag:TAG_COMPLETELABEL];
-    UIImageView *iv = (UIImageView *)[[self cellForDeletionCancel] viewWithTag:TAG_COMPLETEVIEW];
-    [[self deleteCancelRegions] enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
-        [btn removeFromSuperview];
-    }];
-    [self setDeleteCancelRegions:nil];
-
-    [UIView animateWithDuration:0.25f animations:^{
-        [lbl setAlpha:0.0f];
-        [iv setAlpha:0.0f];
-        [[self cellForDeletionCancel] setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    } completion:^(BOOL finished) {
-        [lbl removeFromSuperview];
-        [iv removeFromSuperview];
-        [self setCellForDeletionCancel:nil];
-    }];
+    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
+    if ([[self listItems] count] > [indexPath row])
+        [[self listItems] removeObjectAtIndex:[indexPath row]];
+    [[self theList] deleteItem:item];
 }
 
 

@@ -133,14 +133,20 @@
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
         [swipedCell addSubview:[self swipeActionLabelWithText:@"Delete" centeredAt:center]];
         
+        DLog(@"miny : %6.2f", CGRectGetMinY([swipedCell frame]));
+        DLog(@"content offset: %.2f", [[self tableView] contentOffset].y);
         UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY([swipedCell frame]))];
-        [top setBackgroundColor:[UIColor clearColor]];
+//        [top setBackgroundColor:[UIColor clearColor]];
+        [top setBackgroundColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:0.25f]];
         
         UIButton *btm = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
                                                                    CGRectGetMaxY([swipedCell frame]),
                                                                    320.0f,
                                                                    CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY([swipedCell frame]))];
-        [btm setBackgroundColor:[UIColor clearColor]];
+         DLog(@"maxy: %6.2f", CGRectGetMaxY([swipedCell frame]));
+        
+//        [btm setBackgroundColor:[UIColor clearColor]];
+        [btm setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:1.0f alpha:0.25f]];
         [top addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
         [btm addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
         [[self view] addSubview:top];
@@ -166,6 +172,8 @@
     [[self deleteCancelRegions] enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
         [btn removeFromSuperview];
     }];
+    UITableViewCell *cell = [self cellForDeletionCancel];
+    
     [self setDeleteCancelRegions:nil];
     [self setCellForDeletionCancel:nil];
     
@@ -174,6 +182,14 @@
     
     [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];
+    
+    int64_t delayInSeconds = 1.0f;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
+        [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
+    });
+
     
 }
 
