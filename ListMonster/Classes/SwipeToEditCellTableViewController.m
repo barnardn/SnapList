@@ -132,21 +132,14 @@
     } completion:^(BOOL finished) {
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
         [swipedCell addSubview:[self swipeActionLabelWithText:@"Delete" centeredAt:center]];
-        
-        DLog(@"miny : %6.2f", CGRectGetMinY([swipedCell frame]));
-        DLog(@"content offset: %.2f", [[self tableView] contentOffset].y);
-        UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY([swipedCell frame]))];
-//        [top setBackgroundColor:[UIColor clearColor]];
-        [top setBackgroundColor:[UIColor colorWithRed:0.0f green:1.0f blue:0.0f alpha:0.25f]];
-        
-        UIButton *btm = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,
-                                                                   CGRectGetMaxY([swipedCell frame]),
-                                                                   320.0f,
-                                                                   CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY([swipedCell frame]))];
-         DLog(@"maxy: %6.2f", CGRectGetMaxY([swipedCell frame]));
-        
-//        [btm setBackgroundColor:[UIColor clearColor]];
-        [btm setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:1.0f alpha:0.25f]];
+
+        CGRect converted = [[self view] convertRect:[swipedCell frame] fromView:[self tableView]];
+        UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY(converted))];
+        [top setBackgroundColor:[UIColor clearColor]];
+
+        CGRect bottomFrame = CGRectMake(0.0f, CGRectGetMaxY(converted), 320.0f, CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY(converted));
+        UIButton *btm = [[UIButton alloc] initWithFrame:bottomFrame];
+        [btm setBackgroundColor:[UIColor clearColor]];
         [top addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
         [btm addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
         [[self view] addSubview:top];
