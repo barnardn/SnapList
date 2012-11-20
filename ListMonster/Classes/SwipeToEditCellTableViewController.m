@@ -73,29 +73,25 @@
         [ivBg setTransform:xlation];
     } completion:^(BOOL finished) {
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
-        [self rightSwipeUpdateAtIndexPath:indexPath];
-        /*
-        MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-        BOOL checkValue = ![item isComplete];
-        [item setIsComplete:checkValue];
-        [item save];
-        NSString *actionTitle = ([item isComplete]) ? NSLocalizedString(@"Complete", nil) : NSLocalizedString(@"Not Done", nil);
-         */
         NSString *actionTitle = [self rightSwipeActionTitleForItemItemAtIndexPath:indexPath];
-
+        [self rightSwipeUpdateAtIndexPath:indexPath];
         [swipedCell addSubview:[self swipeActionLabelWithText:actionTitle centeredAt:center]];
         [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
         [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
         [[self tableView] beginUpdates];
-        //if ([item isComplete]) {
         if ([self rightSwipeShouldDeleteRowAtIndexPath:indexPath]) {
-            //[[self listItems] removeObjectAtIndex:[indexPath row]];
             [self rightSwipeRemoveItemAtIndexPath:indexPath];
             [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         [[self tableView] endUpdates];
+        int64_t delayInSeconds = 1.0f;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[swipedCell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
+            [[swipedCell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
+        });
     }];
 }
 
@@ -175,11 +171,6 @@
     
     [[self tableView] beginUpdates];
     [self leftSwipeDeleteItemAtIndexPath:indexPath];
-    
-    /*MetaListItem *itemToDelete = [[self listItems] objectAtIndex:[indexPath row]];
-    [[self listItems] removeObject:itemToDelete];
-    [[[self theList] managedObjectContext] deleteObject:itemToDelete];
-    [[self theList] save]; */
     
     [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];

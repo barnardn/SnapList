@@ -25,13 +25,11 @@
 @interface RootViewController()
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
-- (void)deleteListEntity:(MetaList *)list;
 - (void)showEditViewWithList:(MetaList *)list;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @end
 
@@ -286,18 +284,46 @@
     [self setCategoryNameKeys:[[listDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
     return listDict;
 }
-            
-- (void)deleteListEntity:(MetaList *)list 
+
+#pragma mark - swipe to edit cell view controller overrides
+
+- (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    [moc deleteObject:list];
-    NSError *error = nil;
-    [moc save:&error];
-    if (error) {
-        NSString *errMsg = NSLocalizedString(@"Unable to delete list", @"list delete error message");
-        [self displayErrorMessage:errMsg forError:error];
-    }
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    BOOL checkAll =  ([list allItemsFinished]) ? NO : YES;
+    [[list itemsSet] enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
+        [item setIsComplete:checkAll];
+    }];
+    //[list save];
 }
+
+- (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    return ([list allItemsFinished]) ? @"List Reset" : @"All Done!";
+}
+
+- (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+- (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return;
+}
+
+- (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *categoryLists = [self listAtIndexPath:indexPath];
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    ZAssert([categoryLists containsObject:list], @"Whoa! list of lists does not contain list to delete");
+    [categoryLists removeObject:list];
+    NSError *error;
+    //ZAssert([[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error], @"Unable to delete list! %@", [error localizedDescription]);
+}
+
+
 
 
 @end

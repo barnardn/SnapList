@@ -21,6 +21,7 @@
 
 - (void)save;
 - (NSInteger)countOfItemsCompleted:(BOOL)completed;
+- (BOOL)allItemsFinished;
 - (void)deleteItem:(MetaListItem *)item;
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;

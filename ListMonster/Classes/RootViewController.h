@@ -15,7 +15,7 @@
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>  {
+@interface RootViewController : SwipeToEditCellTableViewController <UITableViewDataSource, UITableViewDelegate>  {
 
     NSMutableDictionary *allLists;
     NSArray *categoryNameKeys;

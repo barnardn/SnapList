@@ -72,6 +72,12 @@
     return [[itemsArray filteredArrayUsingPredicate:byIsChecked] count];
 }
 
+- (BOOL)allItemsFinished
+{
+    return ([self countOfItemsCompleted:YES] == [[self items] count]);
+}
+
+
 - (void)removeItem:(MetaListItem *)item
 {
     [NSException raise:@"Deprecated method" format:@"MetaListItem:removeItem:"];
