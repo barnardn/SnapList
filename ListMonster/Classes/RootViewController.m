@@ -192,8 +192,14 @@
     [self customizeListCell:cell];
     MetaList *listObj = [self listObjectAtIndexPath:indexPath];
     [[cell textLabel] setText:[listObj name]];
-    NSInteger countIncomplete = [listObj countOfItemsCompleted:NO];
-    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+    if ([listObj allItemsFinished]) {
+        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
+        [[cell detailTextLabel] setText:@"☑"];
+        [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
+    } else {
+        NSInteger countIncomplete = [listObj countOfItemsCompleted:NO];
+        [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+    }
     return cell;
 }
 
@@ -319,8 +325,10 @@
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     ZAssert([categoryLists containsObject:list], @"Whoa! list of lists does not contain list to delete");
     [categoryLists removeObject:list];
-    NSError *error;
+    //NSError *error;
     //ZAssert([[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error], @"Unable to delete list! %@", [error localizedDescription]);
+    DLog(@"remaining lists: %d", [[self allLists] count]);
+    
 }
 
 
