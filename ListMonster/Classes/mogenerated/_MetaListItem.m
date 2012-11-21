@@ -9,7 +9,6 @@ const struct MetaListItemAttributes MetaListItemAttributes = {
 	.itemIdentity = @"itemIdentity",
 	.name = @"name",
 	.order = @"order",
-	.priority = @"priority",
 	.quantity = @"quantity",
 	.reminderDate = @"reminderDate",
 };
@@ -58,10 +57,6 @@ const struct MetaListItemFetchedProperties MetaListItemFetchedProperties = {
 	}
 	if ([key isEqualToString:@"orderValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"order"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-	}
-	if ([key isEqualToString:@"priorityValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"priority"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 	}
 
@@ -157,32 +152,6 @@ const struct MetaListItemFetchedProperties MetaListItemFetchedProperties = {
 
 - (void)setPrimitiveOrderValue:(int16_t)value_ {
 	[self setPrimitiveOrder:[NSNumber numberWithShort:value_]];
-}
-
-
-
-
-
-@dynamic priority;
-
-
-
-- (int16_t)priorityValue {
-	NSNumber *result = [self priority];
-	return [result shortValue];
-}
-
-- (void)setPriorityValue:(int16_t)value_ {
-	[self setPriority:[NSNumber numberWithShort:value_]];
-}
-
-- (int16_t)primitivePriorityValue {
-	NSNumber *result = [self primitivePriority];
-	return [result shortValue];
-}
-
-- (void)setPrimitivePriorityValue:(int16_t)value_ {
-	[self setPrimitivePriority:[NSNumber numberWithShort:value_]];
 }
 
 

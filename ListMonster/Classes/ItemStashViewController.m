@@ -112,7 +112,7 @@
         [newItem setQuantity:[NSDecimalNumber decimalNumberWithString:@"1"]];
     else
         [newItem setQuantity:[selectedItem quantity]];
-    [newItem setPriority:[selectedItem priority]];
+    //[newItem setPriority:[selectedItem priority]];
     if ([selectedItem unitIdentifier]) {
         Measure *measure = [Measure findMeasureMatchingIdentifier:[selectedItem unitIdentifier] inManagedObjectContext:moc];
         [newItem setUnitOfMeasure:measure];

@@ -34,7 +34,6 @@
 - (void)cancelReminder;
 - (NSString *)messageForNotificationAlert;
 - (UILocalNotification *)findScheduledNofication;
-- (NSString *)priorityName;
 - (void)decrementBadgeNumberForFiredNotification;
 - (void)decrementBadgeNumber;
 - (void)save;

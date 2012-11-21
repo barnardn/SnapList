@@ -265,7 +265,7 @@ static char editCellKey;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaListItem *item = [self listItems][[indexPath row]];
-    EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithList:[self theList] editItem:item];
+    EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithItem:item];
     [[self navigationController] pushViewController:eivc animated:YES];
     [[self tableView] deselectRowAtIndexPath:indexPath animated:NO];
 }

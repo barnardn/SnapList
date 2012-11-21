@@ -286,6 +286,7 @@
 		49F1814812C958F20066B454 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		49F1814912C958F20066B454 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
+		49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 7.xcdatamodel"; sourceTree = "<group>"; };
 		49FDFF3C135233A400F6A3DA /* ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStash.h; sourceTree = "<group>"; };
 		49FDFF3D135233A400F6A3DA /* ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStash.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ListMonster-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ListMonster-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -875,6 +876,7 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */,
 				49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */,
 				49C68AA61527ECE8007A062F /* ListMonster 5.xcdatamodel */,
 				497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */,
@@ -882,7 +884,7 @@
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */;
+			currentVersion = 49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */;
 			path = ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -106,7 +106,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     Tuple *t = [self priorityList][[indexPath row]];
     NSNumber *priorityVal = [t first];
-    NSNumber *itemPriority = [[self theItem] priority];
+    NSNumber *itemPriority = @0;
     if (!itemPriority)
         itemPriority = INT_OBJ(0);
     if ([priorityVal isEqualToNumber:itemPriority] && ![self lastIndexPath]) {
@@ -132,7 +132,7 @@
     [lastCell setAccessoryType:UITableViewCellAccessoryNone];
     Tuple *t = [self priorityList][[indexPath row]];
     NSNumber *priorityVal = [t first];
-    [[self theItem] setPriority:priorityVal];
+    //[[self theItem] setPriority:priorityVal];
     [self setLastIndexPath:indexPath];
     [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }

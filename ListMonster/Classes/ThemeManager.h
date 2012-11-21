@@ -15,6 +15,8 @@
 #define kSizeStandardFont   18.0f
 #define kSizeSmallFont      14.0f
 
+#define TABLECELL_VERTICAL_MARGIN   20.0f
+
 @interface ThemeManager : NSObject
 
 + (UIFont *)fontForListName;

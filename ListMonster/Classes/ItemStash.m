@@ -43,7 +43,7 @@
         [stashItem setName:[anItem name]];
     }
     [stashItem setQuantity:[anItem quantity]];
-    [stashItem setPriority:[anItem priority]];
+    //[stashItem setPriority:[anItem priority]];
     if ([anItem unitOfMeasure])
         [stashItem setUnitIdentifier:[[anItem unitOfMeasure] unitIdentifier]];
     error = nil;

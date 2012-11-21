@@ -18,8 +18,6 @@
 
     UITableView *listItemTableView;
     UIToolbar *toolBar;
-    MetaList *theList;
-    MetaListItem *theItem;
     NSArray *editPropertySections;
     BOOL isModal;
     id<ListItemsViewControllerProtocol> __weak delegate;
@@ -30,14 +28,12 @@
 
 @property(nonatomic,strong) IBOutlet UITableView *listItemTableView;
 @property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
-@property(nonatomic,strong) MetaList *theList;
-@property(nonatomic,strong) MetaListItem *theItem;
+@property(nonatomic,strong) MetaListItem *item;
 @property(nonatomic,strong) NSArray *editPropertySections;
-@property(nonatomic,assign) BOOL isModal;
 @property(nonatomic,weak) id<ListItemsViewControllerProtocol> delegate;
 @property(nonatomic,strong) NSString *backgroundImageFilename;
 
 - (IBAction)moreActionsBtnPressed:(id)sender;
-- (id)initWithList:(MetaList *)list editItem:(MetaListItem *)listItem;
+- (id)initWithItem:(MetaListItem *)item;
 
 @end

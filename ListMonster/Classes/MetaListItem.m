@@ -69,7 +69,7 @@
 {
     [super awakeFromInsert];
     [self setPrimitiveValue:@"New Item" forKey:@"name"];
-    [self setPrimitiveValue:INT_OBJ(0) forKey:@"quantity"];
+    [self setPrimitiveValue:INT_OBJ(1) forKey:@"quantity"];
     [self setPrimitiveValue:INT_OBJ(0) forKey:@"isChecked"];
     [self setPrimitiveValue:[[NSProcessInfo processInfo] globallyUniqueString] forKey:@"itemIdentity"];
     [self setPrimitiveIsNewValue:YES];
@@ -159,20 +159,6 @@
     return msg;
 }
 
-- (NSString *)priorityName 
-{
-    if (![self priority])
-        return nil;
-    switch ([[self priority] intValue]) {
-        case 0:
-            return @"Normal";            
-        case 1: 
-            return @"High";
-        case -1:
-            return @"Low";
-    }
-    return nil;
-}
 
 
 @end
