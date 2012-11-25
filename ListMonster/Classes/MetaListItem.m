@@ -42,7 +42,6 @@
     ZAssert([[self managedObjectContext] save:&error], @"Unable to save list item %@: %@", [self name], [error localizedDescription]);
 }
 
-
 // NOTE: some date checks are required.
 // if the previous reminder date is prior to "right now" then the notification was fired, and bumped up 
 // the badge number, so we have to decrement the badge number since were effectively completing this 
@@ -58,6 +57,13 @@
     [self willChangeValueForKey:@"reminderDate"];
     [self setPrimitiveValue:date forKey:@"reminderDate"];
     [self didChangeValueForKey:@"reminderDate"];    
+}
+
+- (NSString *)quantityDescription
+{
+    if ([[self quantity] compare:@(1)] == NSOrderedDescending)
+        return [[self quantity] stringValue];
+    return @"1";
 }
 
 

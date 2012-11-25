@@ -22,8 +22,6 @@
 #import "NSArrayExtensions.h"
 #import "ThemeManager.h"
 
-
-
 #define ROW_HEIGHT  44.0f
 #define EDITCELL_TEXTVIEW_HMARGIN   10.0f
 #define EDITCELL_TEXTVIEW_VMARGIN   5.0f
@@ -99,7 +97,8 @@ static char editCellKey;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    editItemNavController = nil;
+    if ([[self tableView] indexPathForSelectedRow])
+        [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 
@@ -267,7 +266,6 @@ static char editCellKey;
     MetaListItem *item = [self listItems][[indexPath row]];
     EditListItemViewController *eivc = [[EditListItemViewController alloc] initWithItem:item];
     [[self navigationController] pushViewController:eivc animated:YES];
-    [[self tableView] deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 
@@ -282,7 +280,9 @@ static char editCellKey;
     [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
     [cell setShowsReorderControl:YES];
     [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
+    [[cell detailTextLabel] setTextColor:[UIColor blueColor]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [[cell detailTextLabel] setBackgroundColor:[UIColor blueColor]];
     return cell;
 }
 
@@ -291,8 +291,15 @@ static char editCellKey;
     [[cell textLabel] setText:[item name]];
     UIColor *textColor = ([item isCheckedValue]) ? [ThemeManager ghostedTextColor] : [ThemeManager standardTextColor];
     [[cell textLabel] setTextColor:textColor];
-    NSString *qtyString = ([[item quantity] intValue] == 0) ? @"" : [[item quantity] stringValue];
+    NSString *qtyString = @"";
     NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
+    DLog(@"quantity description: %@", [item quantityDescription]);
+    if (![item unitOfMeasure]) {
+        if (![[item quantityDescription] isEqualToString:@"1"])
+            qtyString = [item quantityDescription];
+    }
+    else
+        qtyString = [item quantityDescription];
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
 }
 

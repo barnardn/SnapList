@@ -42,6 +42,9 @@
 @property (strong, nonatomic) NSString *viewTitle;
 @property (assign) NSInteger defaultUnitSelection;
 
+@property (nonatomic, weak) id<EditItemViewDelegate> delegate;
+
+
 - (IBAction)UnitSelectorTapped:(id)sender;
 - (IBAction)addCustomMeasureTapped:(UIButton *)sender;
 - (IBAction)removeCustomMeasureTapped:(UIButton *)sender;

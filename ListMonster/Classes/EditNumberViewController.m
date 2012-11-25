@@ -84,6 +84,7 @@
         return;
     }
     [[self item] setQuantity:number];
+    [[self delegate] editItemViewController:self didChangeValue:number forItem:[self item]];
 }
 
 #pragma mark -

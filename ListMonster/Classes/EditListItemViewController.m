@@ -21,11 +21,14 @@
 #import "ReminderViewController.h"
 #import "ThemeManager.h"
 
-@interface EditListItemViewController()
+@interface EditListItemViewController() <EditItemViewDelegate>
 
-- (NSString *)listItem:(MetaListItem *)item stringForAttribute:(NSString *)attrName;
 - (UITableView *)tableView;
-- (void)toggleCompletedState;
+
+@property (nonatomic,strong) IBOutlet UITableView *listItemTableView;
+@property (nonatomic,strong) IBOutlet UIToolbar *toolBar;
+@property (nonatomic,strong) MetaListItem *item;
+@property (nonatomic, strong) NSArray *editViewControllers;
 
 @end
 
@@ -35,14 +38,12 @@
 #pragma mark -
 #pragma mark Initialization
 
-@synthesize editPropertySections, delegate;
-@synthesize backgroundImageFilename, listItemTableView, toolBar;
-
 - (id)initWithItem:(MetaListItem *)item
 {
     self = [super init];
     if (!self) return nil;
     _item = item;
+    _editViewControllers = @[[EditTextViewController class], [EditNumberViewController class], [EditMeasureViewController class], [ReminderViewController class]];
     return self;
 }
 
@@ -87,30 +88,11 @@
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-main"]]];
 }
 
-
-- (void)preparePropertySections 
-{    
-    NSMutableDictionary *nameDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Item", @"title",
-                                     @"name", @"attrib", [EditTextViewController class], @"vc", nil];
-    NSMutableDictionary *qtyDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Quantity", @"title",
-                                    @"quantity", @"attrib", [EditNumberViewController class], @"vc", nil];
-    NSMutableDictionary *reminderDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Reminder", @"title",
-                                         @"reminderDate", @"attrib", [ReminderViewController class], @"vc", nil];
-    NSMutableDictionary *unitDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Units", @"title",
-                                     @"unitOfMeasure", @"attrib", [EditMeasureViewController class], @"vc", nil];
-    NSArray *sects = @[nameDict,qtyDict, unitDict, reminderDict];
-    [self setEditPropertySections:sects];
-}
-
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    // reload table based on selected index path
-    
-    /*
-    if ([[self theItem] isUpdated] || [[self theItem] isInserted])
-        [[self tableView] reloadData];
-     */
+    if ([[self tableView] indexPathForSelectedRow])
+        [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 
@@ -136,7 +118,7 @@
         CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         return size.height + TABLECELL_VERTICAL_MARGIN;
     }
-    return 44.0f;       // set table row height to a constant. 
+    return 44.0f;       // set table row height to a constant.
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -182,23 +164,15 @@
     return cell;
 }
 
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    /*
-    skipSaveLogic = YES;
-    NSMutableDictionary *sectDict = [self editPropertySections][[indexPath section]];
-    Class vcClass = sectDict[@"vc"];
-    NSString *viewTitle = sectDict[@"title"];
-    UIViewController<EditItemViewProtocol> *vc = [[vcClass alloc ] initWithTitle:viewTitle listItem:[self theItem]];
+    Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section]];
+    UIViewController<EditItemViewProtocol> *vc = [[editControllerClass alloc] initWithTitle:@"Snap!list" listItem:[self item]];
+    [vc setDelegate:self];
     [[self navigationController] pushViewController:vc animated:YES];
-      // prof rcmd
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    */
 }
 
 #pragma mark - cell configuration methods
@@ -245,53 +219,10 @@
 
 }
 
-#pragma mark -
-#pragma mark ActionSheet delegate and ActionSheet
+#pragma mark edit item delegate method
 
--(IBAction)moreActionsBtnPressed:(id)sender {
-    
-    NSString *markTitle = ([[self item] isComplete]) ? NSLocalizedString(@"Mark As Incomplete",nil) : NSLocalizedString(@"Mark As Complete",nil);
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"More Actions", @"more actions title") 
-                                                             delegate:self 
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel action button")
-                                               destructiveButtonTitle:NSLocalizedString(@"Delete", nil)
-                                                    otherButtonTitles:nil];
-    [actionSheet addButtonWithTitle:markTitle];
-    [actionSheet addButtonWithTitle:NSLocalizedString(@"Add to Quick Stash",nil)];
-    [actionSheet showFromToolbar:[self toolBar]];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
+- (void)editItemViewController:(UIViewController *)editViewController didChangeValue:(id)updatedValue forItem:(MetaListItem *)item
 {
-    if (buttonIndex < 0) return;
-    BOOL saveRequired = YES;
-    DLog(@"buttonIndex: %d : %@", buttonIndex, [actionSheet buttonTitleAtIndex:buttonIndex]);
-    switch (buttonIndex) {
-        case 0:        // delete
-            [self deleteItem];
-            break;
-        case 1:
-            saveRequired = NO;
-            break;
-        case 2:
-            [self toggleCompletedState];
-            break;	
-    }
-    [[self navigationController] popViewControllerAnimated:YES];
-
-}
-
-- (void)deleteItem
-{
-    MetaList *list = [[self item] list];
-    [list deleteItem:[self item]];
-}
-
-- (void)toggleCompletedState
-{
-    BOOL checkedState = ([[self item] isComplete]) ? NO : YES;
-    [[self item] setIsComplete:checkedState];
     [[self item] save];
 }
 

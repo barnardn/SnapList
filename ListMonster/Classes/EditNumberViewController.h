@@ -26,6 +26,8 @@
 @property(nonatomic,strong) MetaListItem *item;
 @property(nonatomic,strong) NSString *viewTitle;
 
+@property (nonatomic, weak) id<EditItemViewDelegate> delegate;
+
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem;
 
 @end

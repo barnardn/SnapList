@@ -31,6 +31,7 @@
 
 - (BOOL)isComplete;
 - (void)setIsComplete:(BOOL)complete;
+- (NSString *)quantityDescription;
 - (void)cancelReminder;
 - (NSString *)messageForNotificationAlert;
 - (UILocalNotification *)findScheduledNofication;

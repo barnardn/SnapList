@@ -47,6 +47,7 @@
 @property(nonatomic,strong) Tuple *selectedSimpleDate;
 @property(nonatomic,strong) NSIndexPath *lastSelectedIndexPath;
 
+@property (nonatomic, weak) id<EditItemViewDelegate> delegate;
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(id<ReminderItemProtocol>)anItem; // designated initializer
 - (IBAction)dateSelectionModeChanged:(id)sender;

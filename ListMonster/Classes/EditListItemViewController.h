@@ -14,26 +14,10 @@
 @class MetaListItem;
 @class EditTextViewController;
 
-@interface EditListItemViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
+@interface EditListItemViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-    UITableView *listItemTableView;
-    UIToolbar *toolBar;
-    NSArray *editPropertySections;
-    BOOL isModal;
-    id<ListItemsViewControllerProtocol> __weak delegate;
-    BOOL skipSaveLogic;
-    NSString *backgroundImageFilename;
-    
-}
 
-@property(nonatomic,strong) IBOutlet UITableView *listItemTableView;
-@property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
-@property(nonatomic,strong) MetaListItem *item;
-@property(nonatomic,strong) NSArray *editPropertySections;
 @property(nonatomic,weak) id<ListItemsViewControllerProtocol> delegate;
-@property(nonatomic,strong) NSString *backgroundImageFilename;
-
-- (IBAction)moreActionsBtnPressed:(id)sender;
 - (id)initWithItem:(MetaListItem *)item;
 
 @end

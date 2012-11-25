@@ -36,7 +36,6 @@
     [self setTextView:nil];
 }
 
-
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
@@ -64,6 +63,7 @@
     if (!text || [text isEqualToString:@""]) 
         return;
     [[self item] setName:text];
+    [[self delegate] editItemViewController:self didChangeValue:text forItem:[self item]];
 }
 
 - (void)clearText:(id)sender

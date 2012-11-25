@@ -104,6 +104,7 @@
 {
     [super viewWillDisappear:animated];
     [[self item] setUnitOfMeasure:[self selectedMeasure]];
+    [[self delegate] editItemViewController:self didChangeValue:[self selectedMeasure] forItem:[self item]];
 }
 
 
@@ -484,6 +485,8 @@
     [[self measurePicker] selectRow:unitRow inComponent:emvUNIT_COMPONENT_INDEX animated:NO];    
     
 }
+
+#pragma edit view item delegate method
 
 
 
