@@ -129,8 +129,9 @@
 
 #pragma mark - Actions
 
-- (IBAction)UnitSelectorTapped:(id)sender 
+- (IBAction)unitSelectorTapped:(id)sender
 {
+    [self resignTextfieldsAsFirstResponders];    
     NSInteger measurementSet = [[self unitSelector] selectedSegmentIndex];
     if (measurementSet == emvNONE_UNIT_INDEX) {
         [self setSelectedMeasure:nil];
@@ -169,11 +170,7 @@
 
 - (IBAction)addCustomMeasureTapped:(UIButton *)sender
 {
-    DLog(@"adding");
-    [[self customMeasureName] resignFirstResponder];
-    [[self customMeasure] resignFirstResponder];
-    [[self customMeasureAbbrev] resignFirstResponder];
-    
+    [self resignTextfieldsAsFirstResponders];
     BOOL ok = YES;
     NSString *measure = [[self customMeasure] text];
     if (!measure || [measure isEmptyString]) {
@@ -210,10 +207,7 @@
 
 - (IBAction)removeCustomMeasureTapped:(UIButton *)sender
 {
-    [[self customMeasureName] resignFirstResponder];
-    [[self customMeasure] resignFirstResponder];
-    [[self customMeasureAbbrev] resignFirstResponder];
-    
+
     if (![self selectedMeasure]) return;
 
     // figure out which picker components we need to select after the deletion.
@@ -304,7 +298,6 @@
 
 #pragma mark - text field delegate
 
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     DLog(@"did end");
@@ -317,6 +310,14 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+- (void)resignTextfieldsAsFirstResponders
+{
+    [[self customMeasureName] resignFirstResponder];
+    [[self customMeasure] resignFirstResponder];
+    [[self customMeasureAbbrev] resignFirstResponder];
+}
+
 
 #pragma mark - PickerView datasource
 
@@ -485,11 +486,6 @@
     [[self measurePicker] selectRow:unitRow inComponent:emvUNIT_COMPONENT_INDEX animated:NO];    
     
 }
-
-#pragma edit view item delegate method
-
-
-
 
 
 @end
