@@ -78,7 +78,6 @@
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [[self simpleDateTable] setAllowsSelection:YES];
     [[self navigationItem] setTitle:NSLocalizedString(@"Set Reminder", @"reminder view title")];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated

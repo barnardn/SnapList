@@ -49,7 +49,6 @@
                                                                        target:self 
                                                                        action:@selector(clearText:)];
     [[self navigationItem] setRightBarButtonItem:clearTextButton];
-    
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     [[self view] addGestureRecognizer:tapRecognizer];
     [[self textView] becomeFirstResponder];

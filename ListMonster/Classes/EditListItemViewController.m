@@ -87,7 +87,6 @@
                                                                target:nil
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];    
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-main"]]];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
