@@ -27,6 +27,7 @@
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;
 + (UIColor *)ghostedTextColor;
++ (UIColor *)textColorForListDetails;
 
 + (CGFloat)heightForHeaderview;
 

@@ -47,6 +47,12 @@
     return [UIColor lightGrayColor];
 }
 
++ (UIColor *)textColorForListDetails
+{
+    return [UIColor colorWithRed:0.32f green:0.4f blue:0.57f alpha:1.0f];
+}
+
+
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];

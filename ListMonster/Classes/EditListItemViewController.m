@@ -21,6 +21,8 @@
 #import "ReminderViewController.h"
 #import "ThemeManager.h"
 
+#define ROW_HEIGHT      44.0f
+
 @interface EditListItemViewController() <EditItemViewDelegate>
 
 - (UITableView *)tableView;
@@ -118,7 +120,7 @@
         CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         return size.height + TABLECELL_VERTICAL_MARGIN;
     }
-    return 44.0f;       // set table row height to a constant.
+    return ROW_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -188,6 +190,9 @@
 
 - (void)configureQuantityCell:(UITableViewCell *)cell
 {
+    [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
+    [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
+    
     [[cell textLabel] setText:NSLocalizedString(@"Quantity", nil)];    
     if ([[self item] quantity] == 0) {
         [[cell detailTextLabel] setText:@"1"];
@@ -202,6 +207,9 @@
 
 - (void)configureUnitsCell:(UITableViewCell *)cell
 {
+    [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
+    
     [[cell textLabel] setText:NSLocalizedString(@"Units", nil)];
     Measure *unitOfMeasure = [[self item] unitOfMeasure];    
     if (!unitOfMeasure) return;
@@ -212,7 +220,9 @@
 
 - (void)configureReminderCell:(UITableViewCell *)cell
 {
-    [[cell textLabel] setText:@"Reminder"];
+    [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
+    [[cell textLabel] setText:NSLocalizedString(@"Reminder",nil)];
     if (![[self item] reminderDate]) return;
     NSString *reminderDate = formatted_relative_date([[self item] reminderDate]);
     [[cell detailTextLabel] setText:reminderDate];

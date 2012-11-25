@@ -280,9 +280,8 @@ static char editCellKey;
     [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
     [cell setShowsReorderControl:YES];
     [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
-    [[cell detailTextLabel] setTextColor:[UIColor blueColor]];
+    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    [[cell detailTextLabel] setBackgroundColor:[UIColor blueColor]];
     return cell;
 }
 
@@ -293,7 +292,6 @@ static char editCellKey;
     [[cell textLabel] setTextColor:textColor];
     NSString *qtyString = @"";
     NSString *unitString = ([item unitOfMeasure]) ? [[item unitOfMeasure] unitAbbreviation] : @"";
-    DLog(@"quantity description: %@", [item quantityDescription]);
     if (![item unitOfMeasure]) {
         if (![[item quantityDescription] isEqualToString:@"1"])
             qtyString = [item quantityDescription];
