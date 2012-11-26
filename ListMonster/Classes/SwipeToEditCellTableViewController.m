@@ -166,8 +166,6 @@
     [[self deleteCancelRegions] enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
         [btn removeFromSuperview];
     }];
-    UITableViewCell *cell = [self cellForDeletionCancel];
-    
     [self setDeleteCancelRegions:nil];
     [self setCellForDeletionCancel:nil];
     
@@ -176,15 +174,7 @@
     
     [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];
-    
-    int64_t delayInSeconds = 1.0f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
-        [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
-    });
-
-    
+        
 }
 
 - (void)deleteCancelRegionTapped:(UIButton *)region
