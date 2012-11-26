@@ -46,6 +46,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 323}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="930139914"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -69,16 +70,18 @@
 						</object>
 						<string key="NSFrame">{{0, 323}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="773176841">
+							<object class="IBUIBarButtonItem" id="884832629">
+								<string key="IBUITitle">View All</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="930139914"/>
-								<int key="IBUISystemItemIdentifier">9</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="415204291">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -99,6 +102,7 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 367}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="14068135"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -125,14 +129,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">moreActionsBtn</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="773176841"/>
-					</object>
-					<int key="connectionID">15</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">toolBar</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="930139914"/>
@@ -141,19 +137,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">tableView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="14068135"/>
-					</object>
-					<int key="connectionID">26</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">editBtn</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="743718978"/>
 					</object>
 					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tableView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="14068135"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btnViewAll</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="884832629"/>
+					</object>
+					<int key="connectionID">38</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -173,19 +177,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">moreActionsBtnPressed:</string>
-						<reference key="source" ref="773176841"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">22</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">editBtnPressed:</string>
 						<reference key="source" ref="743718978"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">btnViewAllTapped:</string>
+						<reference key="source" ref="884832629"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">39</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -230,15 +234,15 @@
 						<reference key="object" ref="930139914"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="773176841"/>
 							<reference ref="415204291"/>
 							<reference ref="743718978"/>
+							<reference ref="884832629"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">6</int>
-						<reference key="object" ref="773176841"/>
+						<int key="objectID">27</int>
+						<reference key="object" ref="743718978"/>
 						<reference key="parent" ref="930139914"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -247,8 +251,8 @@
 						<reference key="parent" ref="930139914"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">27</int>
-						<reference key="object" ref="743718978"/>
+						<int key="objectID">36</int>
+						<reference key="object" ref="884832629"/>
 						<reference key="parent" ref="930139914"/>
 					</object>
 				</object>
@@ -264,9 +268,9 @@
 					<string>1.IBPluginDependency</string>
 					<string>11.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
+					<string>36.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
-					<string>6.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -294,7 +298,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">39</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -303,28 +307,51 @@
 					<string key="className">ListItemsViewController</string>
 					<string key="superclassName">SwipeToEditCellTableViewController</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">editBtnPressed:</string>
-						<string key="NS.object.0">UIBarButtonItem</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>btnViewAllTapped:</string>
+							<string>editBtnPressed:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIBarButtonItem</string>
+							<string>UIBarButtonItem</string>
+						</object>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">editBtnPressed:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">editBtnPressed:</string>
-							<string key="candidateClassName">UIBarButtonItem</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>btnViewAllTapped:</string>
+							<string>editBtnPressed:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">btnViewAllTapped:</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">editBtnPressed:</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>btnViewAll</string>
 							<string>editBtn</string>
-							<string>moreActionsBtn</string>
+							<string>tableView</string>
 							<string>toolBar</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
+							<string>UITableView</string>
 							<string>UIToolbar</string>
 						</object>
 					</object>
@@ -332,19 +359,24 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>btnViewAll</string>
 							<string>editBtn</string>
-							<string>moreActionsBtn</string>
+							<string>tableView</string>
 							<string>toolBar</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
+								<string key="name">btnViewAll</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">editBtn</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">moreActionsBtn</string>
-								<string key="candidateClassName">UIBarButtonItem</string>
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolBar</string>

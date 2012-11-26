@@ -38,22 +38,21 @@ static char editCellKey;
 - (void)enableToolbarItems:(BOOL)enabled;
 
 @property (nonatomic,strong) NSMutableArray *listItems;
-@property  (nonatomic, strong) UIBarButtonItem *addButton;
+@property (nonatomic, strong) UIBarButtonItem *addButton;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+
 
 @end
 
 
 @implementation ListItemsViewController
 
-@synthesize moreActionsBtn;
-@synthesize toolBar,inEditMode, editBtn;
-
 - (id)initWithList:(MetaList *)aList
 {
     self = [super init];
     if (!self) return nil;
     _theList = aList;
-    _listItems = [[aList sortedItemsIncludingComplete:NO] mutableCopy];
+    _listItems = [NSMutableArray arrayWithCapacity:0];
     return self;
 }
 
@@ -87,11 +86,23 @@ static char editCellKey;
     [self setAddButton:btn];
     
     [[self navigationItem] setRightBarButtonItem:[self addButton]];
+    
+    if ([[self theList] allItemsFinished]) {
+        [[self btnViewAll] setTag:1];
+        [[self btnViewAll] setTitle:NSLocalizedString(@"Hide Completed", nil)];
+        [self setListItems:[[[self theList] sortedItemsIncludingComplete:YES] mutableCopy]];
+    } else {
+        [[self btnViewAll] setTag:0];
+        [[self btnViewAll] setTitle:NSLocalizedString(@"View All", nil)];
+        [self setListItems:[[[self theList] sortedItemsIncludingComplete:NO] mutableCopy]];
+    }
+    
     [[self tableView] setAllowsSelectionDuringEditing:NO];
     [[self tableView] setScrollsToTop:YES];
     
     [[self tableView] setContentInset:UIEdgeInsetsMake(25.0f,0,0,0)];
     [self insertHeaderView];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,10 +162,42 @@ static char editCellKey;
 }
 
 
+- (IBAction)btnViewAllTapped:(UIBarButtonItem *)btn
+{
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:0];
+    if ([btn tag] == 1) {       // we're viewing all currently
+        [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
+            if ([item isComplete])
+                [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+        }];
+        [[self tableView] beginUpdates];
+        NSMutableArray *filtered = [[[self theList] sortedItemsIncludingComplete:NO] mutableCopy];
+        [self setListItems:filtered];
+        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] endUpdates];
+        [btn setTag:0];
+        [btn setTitle:NSLocalizedString(@"View All", nil)];
+        return;
+    }
+    NSMutableArray *allItems = [[[self theList] sortedItemsIncludingComplete:YES] mutableCopy];
+    [allItems enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
+        DLog(@"is complete %d", [item isComplete]);
+        if ([item isComplete])
+            [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+    }];
+    [[self tableView] beginUpdates];
+    [self setListItems:allItems];
+    [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [[self tableView] endUpdates];
+    [btn setTag:1];
+    [btn setTitle:NSLocalizedString(@"Hide Completed", nil)];
+}
+
+
 // TODO:  is this method necessary???
 - (void)enableToolbarItems:(BOOL)enabled
 {
-    [[self moreActionsBtn] setEnabled:enabled];
+
 }
 
 

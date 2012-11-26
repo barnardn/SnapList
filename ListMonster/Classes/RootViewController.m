@@ -171,6 +171,7 @@
     NSArray *listArr = [self allLists][[self categoryNameKeys][section]];
     return [listArr count];
 }
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
@@ -194,7 +195,7 @@
     [[cell textLabel] setText:[listObj name]];
     if ([listObj allItemsFinished]) {
         [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
-        [[cell detailTextLabel] setText:@"☑"];
+        [[cell detailTextLabel] setText:@"☑"]; 
         [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
     } else {
         NSInteger countIncomplete = [listObj countOfItemsCompleted:NO];
@@ -300,7 +301,7 @@
     [[list itemsSet] enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
         [item setIsComplete:checkAll];
     }];
-    //[list save];
+    [list save];
 }
 
 - (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath

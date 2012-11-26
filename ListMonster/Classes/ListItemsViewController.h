@@ -33,21 +33,15 @@
                                                        UITextViewDelegate, 
                                                        ListItemsViewControllerProtocol>
 {
-    UIToolbar *toolBar;
-    UISegmentedControl *checkedState;
-    UIBarButtonItem *moreActionsBtn;
-    UIBarButtonItem *editBtn;
     BOOL inEditMode;
     UINavigationController *editItemNavController;
     NSString *backgroundImageFilename;
 }
 
-//@property(nonatomic,strong) IBOutlet UITableView *tableView;;
-@property(nonatomic,strong) IBOutlet UIToolbar *toolBar;
-@property(nonatomic,strong) IBOutlet UIBarButtonItem *moreActionsBtn;
-@property(nonatomic,strong) IBOutlet UIBarButtonItem *editBtn;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *editBtn;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *btnViewAll;
 @property(nonatomic,strong) MetaList *theList;
-@property(nonatomic,assign) BOOL inEditMode;
 
 
 - (id)initWithList:(MetaList *)aList;
