@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 
+- (void)removeSwipeActionIndicatorViewsFromCell:(UITableViewCell *)cell;
+
 @end

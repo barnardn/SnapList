@@ -268,6 +268,11 @@ static char editCellKey;
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self removeSwipeActionIndicatorViewsFromCell:cell];
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return  YES;
@@ -341,6 +346,7 @@ static char editCellKey;
     else
         qtyString = [item quantityDescription];
     [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 }
 
 - (UITextView *)textViewForCell:(UITableViewCell *)cell

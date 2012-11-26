@@ -51,6 +51,13 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)removeSwipeActionIndicatorViewsFromCell:(UITableViewCell *)cell
+{
+    [[cell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
+    [[cell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
+}
+
+
 - (void)rightSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
     if ([self cellForDeletionCancel]) {
@@ -86,12 +93,6 @@
             [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         [[self tableView] endUpdates];
-        int64_t delayInSeconds = 1.0f;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [[swipedCell viewWithTag:TAG_COMPLETELABEL] removeFromSuperview];
-            [[swipedCell viewWithTag:TAG_COMPLETEVIEW] removeFromSuperview];
-        });
     }];
 }
 
