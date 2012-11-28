@@ -41,7 +41,6 @@ static char editCellKey;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
-
 @end
 
 
@@ -89,11 +88,11 @@ static char editCellKey;
     
     if ([[self theList] allItemsFinished]) {
         [[self btnViewAll] setTag:1];
-        [[self btnViewAll] setTitle:NSLocalizedString(@"Hide Completed", nil)];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-unfinished"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:YES] mutableCopy]];
     } else {
         [[self btnViewAll] setTag:0];
-        [[self btnViewAll] setTitle:NSLocalizedString(@"View All", nil)];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-showall"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:NO] mutableCopy]];
     }
     
@@ -104,6 +103,7 @@ static char editCellKey;
     [self insertHeaderView];
     
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
@@ -122,7 +122,6 @@ static char editCellKey;
     UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
     [[self view] addSubview:headerView];
 }
-
 
 
 #pragma mark -
@@ -157,7 +156,7 @@ static char editCellKey;
     }
     else {
         [[self tableView] setEditing:YES animated:YES];
-        [[self editBtn] setImage:[UIImage imageNamed:@"btn-done"]];
+        [[self editBtn] setImage:[UIImage imageNamed:@"icon-ok-small"]];
     }
 }
 
@@ -176,7 +175,7 @@ static char editCellKey;
         [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         [[self tableView] endUpdates];
         [btn setTag:0];
-        [btn setTitle:NSLocalizedString(@"View All", nil)];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-showall"]];
         return;
     }
     NSMutableArray *allItems = [[[self theList] sortedItemsIncludingComplete:YES] mutableCopy];
@@ -190,7 +189,7 @@ static char editCellKey;
     [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [[self tableView] endUpdates];
     [btn setTag:1];
-    [btn setTitle:NSLocalizedString(@"Hide Completed", nil)];
+    [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-unfinished"]];
 }
 
 
