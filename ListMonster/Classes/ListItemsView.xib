@@ -80,14 +80,10 @@
 							<object class="IBUIBarButtonItem" id="884832629">
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">icon-showall.png</string>
+									<string key="NSResourceName">icon-show-all.png</string>
 								</object>
-								<double key="IBUIImageInsets.top">0.0</double>
-								<double key="IBUIImageInsets.bottom">5</double>
-								<double key="IBUIImageInsets.left">1</double>
-								<double key="IBUIImageInsets.right">0.0</double>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<float key="IBUIWidth">30</float>
+								<float key="IBUIWidth">60</float>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="930139914"/>
 							</object>
@@ -425,12 +421,12 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>btn-reorder.png</string>
-				<string>icon-showall.png</string>
+				<string>icon-show-all.png</string>
 			</object>
 			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{20, 20}</string>
-				<string>{30, 30}</string>
+				<string>{65, 30}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">1930</string>

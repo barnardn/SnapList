@@ -30,8 +30,7 @@
 
 @interface ListItemsViewController : SwipeToEditCellTableViewController <UITableViewDataSource,
                                                        UITableViewDelegate, 
-                                                       UITextViewDelegate, 
-                                                       ListItemsViewControllerProtocol>
+                                                       UITextViewDelegate>
 {
     BOOL inEditMode;
     UINavigationController *editItemNavController;

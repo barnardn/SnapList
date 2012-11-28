@@ -35,7 +35,6 @@ static char editCellKey;
 - (UITableViewCell *)makeItemCell;
 - (IBAction)editBtnPressed:(UIBarButtonItem *)editButton;
 - (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
-- (void)enableToolbarItems:(BOOL)enabled;
 
 @property (nonatomic,strong) NSMutableArray *listItems;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
@@ -88,11 +87,11 @@ static char editCellKey;
     
     if ([[self theList] allItemsFinished]) {
         [[self btnViewAll] setTag:1];
-        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-unfinished"]];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:YES] mutableCopy]];
     } else {
         [[self btnViewAll] setTag:0];
-        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-showall"]];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-all"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:NO] mutableCopy]];
     }
     
@@ -175,7 +174,7 @@ static char editCellKey;
         [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         [[self tableView] endUpdates];
         [btn setTag:0];
-        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-showall"]];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-all"]];
         return;
     }
     NSMutableArray *allItems = [[[self theList] sortedItemsIncludingComplete:YES] mutableCopy];
@@ -189,29 +188,9 @@ static char editCellKey;
     [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [[self tableView] endUpdates];
     [btn setTag:1];
-    [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-unfinished"]];
+    [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
 }
 
-
-// TODO:  is this method necessary???
-- (void)enableToolbarItems:(BOOL)enabled
-{
-
-}
-
-
-#pragma mark -
-#pragma mark ListItemsViewControllerProtocol method 
-
--(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didCancelEditOnNewItem:(MetaListItem *)item
-{
-    [NSException raise:@"Deprecated method" format:@"Method editListItemViewController:didCancelEditOnNewItem: no longer needed"];
-}
-
--(void)editListItemViewController:(EditListItemViewController *)editListItemViewController didAddNewItem:(MetaListItem *)item
-{
-    [NSException raise:@"Deprecated method" format:@"Method editListItemViewController:didAddNewItem: no longer needed"];
-}
 
 #pragma mark - table view methods
 
