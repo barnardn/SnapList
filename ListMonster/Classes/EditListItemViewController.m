@@ -210,10 +210,10 @@
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     
     [[cell textLabel] setText:NSLocalizedString(@"Units", nil)];
-    Measure *unitOfMeasure = [[self item] unitOfMeasure];    
-    if (!unitOfMeasure) return;
-    NSString *units = [NSString stringWithFormat:@"%@(%@)", [unitOfMeasure measure], [unitOfMeasure unitAbbreviation]];
-
+    Measure *unitOfMeasure = [[self item] unitOfMeasure];
+    NSString *units = @"";
+    if (unitOfMeasure)
+        units = [NSString stringWithFormat:@"%@(%@)", [unitOfMeasure measure], [unitOfMeasure unitAbbreviation]];
     [[cell detailTextLabel] setText:units];
 }
 
@@ -222,8 +222,9 @@
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     [[cell textLabel] setText:NSLocalizedString(@"Reminder",nil)];
-    if (![[self item] reminderDate]) return;
-    NSString *reminderDate = formatted_relative_date([[self item] reminderDate]);
+    NSString *reminderDate = @"";
+    if ([[self item] reminderDate]) return;
+        reminderDate = formatted_relative_date([[self item] reminderDate]);
     [[cell detailTextLabel] setText:reminderDate];
 
 }
