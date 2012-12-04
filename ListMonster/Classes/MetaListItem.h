@@ -13,6 +13,8 @@
 
 #define mliREMINDER_KEY  @"SnaplistReminder"
 #define mleMAX_REMINDER_WORDS   10
+#define ITEM_ENTITY_NAME        @"MetaListItem"
+
 
 @class MetaList;
 @class Measure;
@@ -38,5 +40,7 @@
 - (void)decrementBadgeNumberForFiredNotification;
 - (void)decrementBadgeNumber;
 - (void)save;
+
++ (NSArray *)itemsDueOnOrBefore:(NSDate *)date;
 
 @end

@@ -11,6 +11,8 @@
 
 #import "_MetaList.h"
 
+#define LIST_ENTITY_NAME     @"MetaList"
+
 @class MetaListItem;
 @class ListCategory;
 @class ListColor;
@@ -31,5 +33,8 @@
 - (NSString *)excerptOfLength:(NSInteger)numWords;
 - (void)removeItem:(MetaListItem *)item;
 - (void)addItem:(MetaListItem *)item;
+
++ (NSArray *)allListsInContext:(NSManagedObjectContext *)moc;
+
 
 @end

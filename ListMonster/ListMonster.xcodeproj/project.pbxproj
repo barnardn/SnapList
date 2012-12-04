@@ -55,6 +55,8 @@
 		49836D8F163619EC006F8A1E /* _Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D87163619EC006F8A1E /* _Measure.m */; };
 		49836D90163619EC006F8A1E /* _MetaList.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D89163619EC006F8A1E /* _MetaList.m */; };
 		49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D8B163619EC006F8A1E /* _MetaListItem.m */; };
+		498432AE166BBB54003C624F /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 498432AD166BBB54003C624F /* DataManager.m */; };
+		498432B1166BF253003C624F /* NSDate+FormattedDates.m in Sources */ = {isa = PBXBuildFile; fileRef = 498432B0166BF253003C624F /* NSDate+FormattedDates.m */; };
 		49851B3C14BA749800CBB385 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49851B3B14BA749800CBB385 /* TableHeaderView.m */; };
 		498627991622548C0040858A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498627981622548C0040858A /* Default-568h@2x.png */; };
 		4986279F162259D40040858A /* bg-listmgt.png in Resources */ = {isa = PBXBuildFile; fileRef = 4986279B162259D40040858A /* bg-listmgt.png */; };
@@ -204,6 +206,10 @@
 		49836D8A163619EC006F8A1E /* _MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MetaListItem.h; sourceTree = "<group>"; };
 		49836D8B163619EC006F8A1E /* _MetaListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MetaListItem.m; sourceTree = "<group>"; };
 		49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 6.xcdatamodel"; sourceTree = "<group>"; };
+		498432AC166BBB54003C624F /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		498432AD166BBB54003C624F /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		498432AF166BF253003C624F /* NSDate+FormattedDates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+FormattedDates.h"; sourceTree = "<group>"; };
+		498432B0166BF253003C624F /* NSDate+FormattedDates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FormattedDates.m"; sourceTree = "<group>"; };
 		49851B3A14BA749800CBB385 /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		49851B3B14BA749800CBB385 /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		498627981622548C0040858A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -328,7 +334,7 @@
 				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
 				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
 				49F1810F12C935FB0066B454 /* Categories */,
-				49F180EA12C91C800066B454 /* CoreDataModels */,
+				49F180EA12C91C800066B454 /* CoreData */,
 				4955B038132302BC00722C3F /* Custom Table Cells */,
 				1D3623240D0F684500981E51 /* ListMonsterAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ListMonsterAppDelegate.m */,
@@ -543,7 +549,7 @@
 			name = Objects;
 			sourceTree = "<group>";
 		};
-		49F180EA12C91C800066B454 /* CoreDataModels */ = {
+		49F180EA12C91C800066B454 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
 				49836D7F163619EC006F8A1E /* mogenerated */,
@@ -559,8 +565,10 @@
 				49F180EF12C920AD0066B454 /* MetaList.m */,
 				49F180EB12C91CA40066B454 /* MetaListItem.h */,
 				49F180EC12C91CA40066B454 /* MetaListItem.m */,
+				498432AC166BBB54003C624F /* DataManager.h */,
+				498432AD166BBB54003C624F /* DataManager.m */,
 			);
-			name = CoreDataModels;
+			name = CoreData;
 			sourceTree = "<group>";
 		};
 		49F1810F12C935FB0066B454 /* Categories */ = {
@@ -574,6 +582,8 @@
 				495EAC30130882E900F4A64E /* NSNumberExtensions.m */,
 				4941A8571572FCD100EF158B /* NSString+EmptyString.h */,
 				4941A8581572FCD100EF158B /* NSString+EmptyString.m */,
+				498432AF166BF253003C624F /* NSDate+FormattedDates.h */,
+				498432B0166BF253003C624F /* NSDate+FormattedDates.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -794,6 +804,8 @@
 				49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */,
 				493AE0271656BA6C007994D1 /* CDOGeometry.m in Sources */,
 				49248F491659B61400CD9995 /* SwipeToEditCellTableViewController.m in Sources */,
+				498432AE166BBB54003C624F /* DataManager.m in Sources */,
+				498432B1166BF253003C624F /* NSDate+FormattedDates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

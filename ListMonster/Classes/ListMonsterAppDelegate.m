@@ -52,7 +52,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     if (launchNotification) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
     }
-    [self prefetchListColors];
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
       // profiler reccomendation
@@ -215,33 +214,24 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName 
 {
-    NSArray *sortDescriptors = nil;
-    if (attributeName) {
-        NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:YES];
-        sortDescriptors = @[sd];
-    }
-    return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors 
 {
-    return [self fetchAllInstancesOf:entityName sortDescriptors:sortDescriptors filteredBy:nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
+    
 }
 
 - (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors filteredBy:(NSPredicate *)filter 
 {
-    NSManagedObjectContext *moc = [self managedObjectContext];
-    NSFetchRequest *fetchReq = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
-    [fetchReq setEntity:entity];
-    [fetchReq setSortDescriptors:sortDescriptors];
-    [fetchReq setPredicate:filter];
-    NSError *error = nil;
-    NSArray *resultSet = [moc executeFetchRequest:fetchReq error:&error];
-    if (!resultSet) {
-        DLog(@"Error fetching all instances of %@", entityName);
-    }
-    return resultSet;
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
+                                 userInfo:nil];    
 }
 
 #pragma mark - Cache methods
@@ -263,16 +253,5 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [[self cachedItems] removeAllObjects];
 }
 
-
-
-#pragma mark -
-#pragma mark Static data initializer methods
-
-- (void)prefetchListColors 
-{
-    NSArray *colors = [self fetchAllInstancesOf:@"ListColor" orderedBy:nil];
-    ZAssert(([colors count] != 0), @"ABORT:  No colors found in the database.");
-    [self setAllColors:colors];
-}
 
 @end

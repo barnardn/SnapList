@@ -39,6 +39,16 @@ NSDate *today_at_midnight()
     
 }
 
+NSDate *tomorrow()
+{
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDate *today = today_at_midnight();
+    NSDateComponents *oneDay = [[NSDateComponents alloc] init];
+    [oneDay setDay:1];
+    return [cal dateByAddingComponents:oneDay toDate:today options:0];
+}
+
+
 NSDate *date_minus_seconds(NSDate *date)
 {
     NSCalendar *cal = [NSCalendar currentCalendar];

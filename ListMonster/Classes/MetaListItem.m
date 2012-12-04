@@ -6,6 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "DataManager.h"
 #import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaList.h"
@@ -14,7 +15,21 @@
 #import "datetime_utils.h"
 
 
+
 @implementation MetaListItem
+
+#pragma mark - class methods
+
++ (NSArray *)itemsDueOnOrBefore:(NSDate *)date
+{
+    NSPredicate *havingDateOnOrBefore = [NSPredicate predicateWithFormat:@"self.reminderDate <= %@", date];
+    NSSortDescriptor *byDate = [NSSortDescriptor sortDescriptorWithKey:@"reminderDate" ascending:YES];
+    NSArray *items = [DataManager fetchAllInstancesOf:ITEM_ENTITY_NAME
+                                      sortDescriptors:@[byDate]
+                                           filteredBy:havingDateOnOrBefore
+                                            inContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
+    return items;
+}
 
 #pragma mark -
 #pragma mark Custom accessors
@@ -126,9 +141,7 @@
     [localNotice setFireDate:[self reminderDate]];
     NSDictionary *infoDict = @{mliREMINDER_KEY: [self itemIdentity]};
     [localNotice setUserInfo:infoDict];
-    ///NSInteger badgeNumber = [[[UIApplication sharedApplication] scheduledLocalNotifications] count];
     [localNotice setApplicationIconBadgeNumber:1];  // was badgeNumber + 1
-    //DLog(@"set badge to %d", badgeNumber + 1);
     [localNotice setAlertBody:[self messageForNotificationAlert]];
     [localNotice setAlertAction:NSLocalizedString(@"View", nil)];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
@@ -164,7 +177,5 @@
     }
     return msg;
 }
-
-
 
 @end

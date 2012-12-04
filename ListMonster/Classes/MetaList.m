@@ -6,13 +6,15 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "DataManager.h"
 #import "ListCategory.h"
 #import "ListColor.h"
-#import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSStringExtensions.h"
+
+
 
 @interface MetaList()
 
@@ -20,6 +22,16 @@
 
 
 @implementation MetaList
+
+#pragma mark - class methods
+
++ (NSArray *)allListsInContext:(NSManagedObjectContext *)moc
+{
+    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *lists =  [DataManager fetchAllInstancesOf:LIST_ENTITY_NAME sortDescriptors:@[byCategory, byName] inContext:moc];
+    return lists;
+}
 
 
 
@@ -51,15 +63,14 @@
     
     if ([[self items] count] == 0) return YES;
     
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
     for (MetaListItem *item in [self items]) {
-        [moc deleteObject:item];
+        [[self managedObjectContext] deleteObject:item];
     }
     NSError *error = nil;
-    [moc save:&error];
+    [[self managedObjectContext] save:&error];
     if (error) {
         DLog(@"Unable to delete list items: %@", [error localizedDescription]);
-        [moc rollback];
+        [[self managedObjectContext] rollback];
         return NO;
     }
     return YES;
