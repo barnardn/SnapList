@@ -15,14 +15,12 @@
 @class ListMonsterAppDelegate;
 @class MetaList;
 
-@interface RootViewController : SwipeToEditCellTableViewController <UITableViewDataSource, UITableViewDelegate>  {
-
-    NSMutableDictionary *allLists;
-    NSArray *categoryNameKeys;
+@interface RootViewController : SwipeToEditCellTableViewController <UITableViewDataSource, UITableViewDelegate>
+{
     UINavigationController *edListNav;
 }
 
-@property(nonatomic,strong) NSMutableDictionary *allLists;
-@property(nonatomic,strong) NSArray *categoryNameKeys;
+
+
 
 @end

@@ -15,6 +15,7 @@
 #define dtuHOURSMIN_CALUNITS NSHourCalendarUnit|NSMinuteCalendarUnit
 
 
+NSDate *tomorrow();
 NSInteger weekday_for_date(NSDate *current_date);
 NSInteger weekday_for_today() ;
 NSDate *today_at_midnight();

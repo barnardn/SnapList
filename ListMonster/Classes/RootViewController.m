@@ -18,9 +18,12 @@
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
+#import "NSDate+FormattedDates.h"
 #import "RootViewController.h"
 #import "TableHeaderView.h"
 #import "ThemeManager.h"
+
+#define KEY_OVERDUE     @"--overdue--"
 
 @interface RootViewController()
 
@@ -30,12 +33,13 @@
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 
+@property(nonatomic,strong) NSMutableArray *categoryNameKeys;
+@property(nonatomic,strong) NSMutableDictionary *allLists;
 
 @end
 
 @implementation RootViewController
 
-@synthesize allLists, categoryNameKeys;
 
 #pragma mark -
 #pragma mark Initializers
@@ -74,6 +78,51 @@
     NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
     if (selectedIndexPath)
         [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    
+    NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
+    
+    [[self tableView] beginUpdates];
+    if ([overdue count] == 0) {
+
+        NSArray *filtered = [[self categoryNameKeys] filterBy:^BOOL(NSString *categoryKey) {
+            return !([categoryKey isEqualToString:KEY_OVERDUE]);
+        }];
+        if ([filtered count] > 0) {
+            [[self allLists] removeObjectForKey:KEY_OVERDUE];
+            [self setCategoryNameKeys:[filtered mutableCopy]];
+            [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    } else {
+        
+        NSArray *previousOverdue = [[self allLists] objectForKey:KEY_OVERDUE];
+        if ([previousOverdue count] > [overdue count]) {  // we now have fewer overdue items than before, remove cells
+            NSMutableSet *itemsToDelete = [NSMutableSet setWithArray:previousOverdue];
+            [itemsToDelete minusSet:[NSSet setWithArray:overdue]];
+            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:[itemsToDelete count]];
+            [itemsToDelete enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
+                NSUInteger idx = [previousOverdue indexOfObject:item];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+            }];
+            [[self allLists] setObject:overdue forKey:KEY_OVERDUE];
+            [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            if ([previousOverdue count] == 0) {
+                [[self categoryNameKeys] insertObject:KEY_OVERDUE atIndex:0];
+                [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            }
+            NSMutableSet *itemsToAdd = [NSMutableSet setWithArray:overdue];
+            NSArray *previousOverdue = [[self allLists] objectForKey:KEY_OVERDUE];
+            [itemsToAdd minusSet:[NSSet setWithArray:previousOverdue]];
+            NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:[itemsToAdd count]];
+            [itemsToAdd enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
+                NSUInteger idx = [overdue indexOfObject:item];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+            }];
+            [[self allLists] setObject:overdue forKey:KEY_OVERDUE];
+            [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+         }
+    }
+    [[self tableView] endUpdates];
 }
 
 - (void)dealloc 
@@ -121,17 +170,6 @@
 }
 
 
-- (void)updateIncompleteCountForList:(MetaList *)list 
-{
-    NSIndexPath *indexPath = [self indexPathForList:list];
-    ListCell *listCell = (ListCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
-    NSInteger incompleteCount = [[list allIncompletedItems] count];
-    NSString *countText = (incompleteCount == 0) ? @"" : [NSString stringWithFormat:@"%d", incompleteCount];
-    [[listCell countsLabel] setText:countText];
-    [[self tableView] scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-    
-}
-
 - (NSIndexPath *)indexPathForList:(MetaList *)list 
 {
     NSString *categoryName = [[list category] name];
@@ -172,10 +210,12 @@
     return [listArr count];
 }
 
+/*
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
 }
+ */
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -189,66 +229,75 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
-    if ([[self allLists] count] == 0) {
-        [[cell textLabel] setText:NSLocalizedString(@"Tap '+' to add a new list", @"add list instruction cell text")];
-        [[cell textLabel] setTextAlignment:UITextAlignmentCenter];
-        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
-        return cell;
-    }
-    [self customizeListCell:cell];
-    MetaList *listObj = [self listObjectAtIndexPath:indexPath];
-    [[cell textLabel] setText:[listObj name]];
-    if ([listObj allItemsFinished]) {
-        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
-        [[cell detailTextLabel] setText:@"☑"]; 
-        [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
-    } else {
-        NSInteger countIncomplete = [listObj countOfItemsCompleted:NO];
-        [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
-    }
-    return cell;
-}
-
-- (void)customizeListCell:(UITableViewCell *)cell
-{
+    
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
     [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
+    NSManagedObject *obj = [self listObjectAtIndexPath:indexPath];
+    if ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]) {
+        MetaList *list = (MetaList *)obj;
+        [self configureCell:cell forList:list];
+    } else {
+        MetaListItem *item = (MetaListItem *)obj;
+        [self configureCell:cell forOverdueItem:item];
+    }
+    return cell;
 }
+
+- (void)configureCell:(UITableViewCell *)cell forList:(MetaList *)list
+{
+    [[cell textLabel] setText:[list name]];
+    if ([list allItemsFinished]) {
+        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
+        [[cell detailTextLabel] setText:@"☑"];
+        [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
+    } else {
+        NSInteger countIncomplete = [list countOfItemsCompleted:NO];
+        [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+    }
+}
+
+- (void)configureCell:(UITableViewCell *)cell forOverdueItem:(MetaListItem *)item
+{
+    NSString *timeDueString;
+    [[cell textLabel] setText:[item name]];
+    NSInteger numDays = date_diff([item reminderDate], [NSDate date]);
+    if (numDays == 0) // due today, show time
+        timeDueString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Today at: ", nil), [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]]];
+    else
+        timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
+    if (numDays < 0)
+        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForOverdueItems]];
+    [[cell detailTextLabel] setText:timeDueString];
+}
+
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if ([[self allLists] count] == 0) {
-        [self addList:nil];
-        return ;
+    UIViewController *vcToPush;
+    NSManagedObject *listObject = [self listObjectAtIndexPath:indexPath];
+    if ([[[listObject entity] name] isEqualToString:LIST_ENTITY_NAME]) {
+        MetaList *list = (MetaList *)listObject;
+        vcToPush = [[ListItemsViewController alloc] initWithList:list];
+        
+    } else if ([[[listObject entity] name] isEqualToString:ITEM_ENTITY_NAME]) {
+        MetaListItem *item = (MetaListItem *)listObject;
+        vcToPush = [[EditListItemViewController alloc] initWithItem:item];
     }
-    MetaList *list = [self listObjectAtIndexPath:indexPath];    
-    ListItemsViewController *livc = [[ListItemsViewController alloc] initWithList:list];
-    [[self navigationController] pushViewController:livc animated:YES];
-
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath 
-{
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
-    [self showEditViewWithList:list];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if ([[self allLists] count] == 0)
-        return nil;
-    return [self categoryNameKeys][section];
+    [[self navigationController] pushViewController:vcToPush animated:YES];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString *title = [[self categoryNameKeys] objectAtIndex:section];
+    if ([title isEqualToString:KEY_OVERDUE])
+        title = NSLocalizedString(@"Due Today", nil);
     UIView *headerView = [ThemeManager headerViewTitled:title withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
     return headerView;
 }
@@ -277,12 +326,9 @@
 
 #pragma mark - Other core data related methods
 
-- (NSMutableDictionary *)loadAllLists 
+- (NSMutableDictionary *)loadAllLists
 {
-    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSArray *sortDescriptors = @[byCategory, byName];
-    NSArray *lists =  [[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"MetaList" sortDescriptors:sortDescriptors];
+    NSArray *lists =  [MetaList allListsInContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
     NSMutableDictionary *listDict = [NSMutableDictionary dictionary];
     for (MetaList *l in lists) {
         NSString *key = ([l category]) ? [[l category] name] : @"";
@@ -293,7 +339,13 @@
             [listArr addObject:l];
         }
     }
-    [self setCategoryNameKeys:[[listDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]];
+    NSMutableArray *listKeys = [[[listDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
+    NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
+    if ([overdue count] > 0) {
+        [listKeys insertObject:KEY_OVERDUE atIndex:0];
+        [listDict setObject:overdue forKey:KEY_OVERDUE];
+    }
+    [self setCategoryNameKeys:listKeys];
     return listDict;
 }
 

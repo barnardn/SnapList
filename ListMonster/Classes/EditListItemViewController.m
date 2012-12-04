@@ -223,7 +223,7 @@
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     [[cell textLabel] setText:NSLocalizedString(@"Reminder",nil)];
     NSString *reminderDate = @"";
-    if ([[self item] reminderDate]) return;
+    if ([[self item] reminderDate]) 
         reminderDate = formatted_relative_date([[self item] reminderDate]);
     [[cell detailTextLabel] setText:reminderDate];
 

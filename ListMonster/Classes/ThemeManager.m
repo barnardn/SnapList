@@ -52,6 +52,10 @@
     return [UIColor colorWithRed:0.32f green:0.4f blue:0.57f alpha:1.0f];
 }
 
++ (UIColor *)textColorForOverdueItems
+{
+    return [UIColor colorWithRed:0.75f green:0.30f blue:0.0f alpha:1.0f];
+}
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text
 {
