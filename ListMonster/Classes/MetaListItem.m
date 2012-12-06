@@ -15,14 +15,13 @@
 #import "datetime_utils.h"
 
 
-
 @implementation MetaListItem
 
 #pragma mark - class methods
 
 + (NSArray *)itemsDueOnOrBefore:(NSDate *)date
 {
-    NSPredicate *havingDateOnOrBefore = [NSPredicate predicateWithFormat:@"self.reminderDate <= %@", date];
+    NSPredicate *havingDateOnOrBefore = [NSPredicate predicateWithFormat:@"self.reminderDate < %@", date];
     NSSortDescriptor *byDate = [NSSortDescriptor sortDescriptorWithKey:@"reminderDate" ascending:YES];
     NSArray *items = [DataManager fetchAllInstancesOf:ITEM_ENTITY_NAME
                                       sortDescriptors:@[byDate]

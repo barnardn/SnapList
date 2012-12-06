@@ -45,7 +45,9 @@ NSDate *tomorrow()
     NSDate *today = today_at_midnight();
     NSDateComponents *oneDay = [[NSDateComponents alloc] init];
     [oneDay setDay:1];
-    return [cal dateByAddingComponents:oneDay toDate:today options:0];
+    NSDate *tomorrow =  [cal dateByAddingComponents:oneDay toDate:today options:0];
+    DLog(@"tomorrow: %@", tomorrow);
+    return tomorrow;
 }
 
 

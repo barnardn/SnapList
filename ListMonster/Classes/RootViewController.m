@@ -83,13 +83,13 @@
     
     [[self tableView] beginUpdates];
     if ([overdue count] == 0) {
-
-        NSArray *filtered = [[self categoryNameKeys] filterBy:^BOOL(NSString *categoryKey) {
-            return !([categoryKey isEqualToString:KEY_OVERDUE]);
-        }];
-        if ([filtered count] > 0) {
+        NSArray *previousOverdue = [[self allLists] objectForKey:KEY_OVERDUE];
+        if (previousOverdue) {
             [[self allLists] removeObjectForKey:KEY_OVERDUE];
-            [self setCategoryNameKeys:[filtered mutableCopy]];
+            NSArray *userCategories = [[self categoryNameKeys] filterBy:^BOOL(NSString *categoryKey) {
+                return !([categoryKey isEqualToString:KEY_OVERDUE]);
+            }];
+            [self setCategoryNameKeys:[userCategories mutableCopy]];
             [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     } else {
@@ -210,13 +210,6 @@
     return [listArr count];
 }
 
-/*
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
- */
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self removeSwipeActionIndicatorViewsFromCell:cell];
@@ -234,6 +227,7 @@
     [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
+    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
@@ -265,11 +259,15 @@
 {
     NSString *timeDueString;
     [[cell textLabel] setText:[item name]];
-    NSInteger numDays = date_diff([item reminderDate], [NSDate date]);
+    DLog(@"reminder date: %@", [item reminderDate]);    
+    NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
+    DLog(@"numDays: %d", numDays);
     if (numDays == 0) // due today, show time
         timeDueString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Today at: ", nil), [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]]];
-    else
+    else {
+
         timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
+    }
     if (numDays < 0)
         [[cell detailTextLabel] setTextColor:[ThemeManager textColorForOverdueItems]];
     [[cell detailTextLabel] setText:timeDueString];

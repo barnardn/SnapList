@@ -9,6 +9,7 @@
 #import "CDOGeometry.h"
 #import "ThemeManager.h"
 
+#define TO_PERCENT_WHITE(A)    ((A)/255.0f)
 
 @implementation ThemeManager
 
@@ -54,7 +55,7 @@
 
 + (UIColor *)textColorForOverdueItems
 {
-    return [UIColor colorWithRed:0.75f green:0.30f blue:0.0f alpha:1.0f];
+    return [UIColor colorWithRed:TO_PERCENT_WHITE(220) green:TO_PERCENT_WHITE(40) blue:TO_PERCENT_WHITE(40) alpha:1.0f];
 }
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text
