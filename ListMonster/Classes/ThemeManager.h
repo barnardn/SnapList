@@ -14,6 +14,7 @@
 #define kSizeListNameFont   20.0f
 #define kSizeStandardFont   18.0f
 #define kSizeSmallFont      14.0f
+#define kSizeTinyFont       10.0f
 
 #define TABLECELL_VERTICAL_MARGIN   20.0f
 
@@ -24,6 +25,7 @@
 + (UIFont *)fontForStandardListText;
 + (UIFont *)fontForListDetails;
 + (UIFont *)fontForListHeader;
++ (UIFont *)fontForDueDateDetails;
 
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;

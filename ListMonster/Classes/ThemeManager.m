@@ -33,6 +33,11 @@
     return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
 }
 
++ (UIFont *)fontForDueDateDetails
+{
+    return [UIFont fontWithName:kRegularFontName size:kSizeTinyFont];
+}
+
 + (UIColor *)standardTextColor
 {
     return [UIColor darkTextColor];

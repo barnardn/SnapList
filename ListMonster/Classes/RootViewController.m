@@ -217,11 +217,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *CellId = @"ListCell";
+    static NSString *ListCellId = @"ListCell";
+    static NSString *ItemCellId = @"ItemCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
+
+    NSManagedObject *obj = [self listObjectAtIndexPath:indexPath];
+    BOOL isListCell = ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]);
+    
+    NSString *cellId = (isListCell) ? ListCellId : ItemCellId;
+    
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        UITableViewCellStyle cellStyle = (isListCell) ? UITableViewCellStyleValue1 : UITableViewCellStyleSubtitle;
+        cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellId];
+    }
     
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
     [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
@@ -231,8 +241,7 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-    NSManagedObject *obj = [self listObjectAtIndexPath:indexPath];
-    if ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]) {
+    if (isListCell) {
         MetaList *list = (MetaList *)obj;
         [self configureCell:cell forList:list];
     } else {
@@ -258,21 +267,23 @@
 - (void)configureCell:(UITableViewCell *)cell forOverdueItem:(MetaListItem *)item
 {
     NSString *timeDueString;
+
+    [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];
     [[cell textLabel] setText:[item name]];
     DLog(@"reminder date: %@", [item reminderDate]);    
     NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
     DLog(@"numDays: %d", numDays);
     if (numDays == 0) // due today, show time
-        timeDueString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Today at: ", nil), [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]]];
-    else {
-
+        if (has_midnight_timecomponent([item reminderDate]))
+            timeDueString = NSLocalizedString(@"Today", nil);
+        else
+            timeDueString = [NSString stringWithFormat:@"%@ %@", [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]], NSLocalizedString(@"Today", nil)];
+    else
         timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
-    }
     if (numDays < 0)
         [[cell detailTextLabel] setTextColor:[ThemeManager textColorForOverdueItems]];
     [[cell detailTextLabel] setText:timeDueString];
 }
-
 
 #pragma mark - Table view delegate
 
