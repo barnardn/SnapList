@@ -109,7 +109,7 @@ static char editCellKey;
     if ([[self tableView] indexPathForSelectedRow]) {
         NSInteger row = [[[self tableView] indexPathForSelectedRow] row];
         MetaListItem *item = [[self listItems] objectAtIndex:row];
-        if ([item wasDeleted]) {
+        if ([self shouldRemoveSelectedItem:item]) {
             [[self listItems] removeObjectAtIndex:row];
             [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
         } else {
@@ -117,6 +117,14 @@ static char editCellKey;
         }
     }
 }
+
+- (BOOL)shouldRemoveSelectedItem:(MetaListItem *)item;
+{
+    if ([item wasDeleted]) return YES;    
+    // remove the item if were hiding completed and our item is now marked complete
+    return ([[self btnViewAll] tag] == 0 && [item isComplete]);
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {

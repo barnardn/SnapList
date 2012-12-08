@@ -262,6 +262,7 @@
         [[self item] setIsComplete:NO];
     else
         [[self item] setIsComplete:YES];
+    [[self item] save];
 }
 
 - (void)deleteRequestedFromEditItemActionsView:(EditItemActionsView *)view

@@ -44,9 +44,9 @@
 
 - (IBAction)btnMarkCompleteTapped:(UIButton *)sender
 {
+    NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As Done", nil) : NSLocalizedString(@"Mark As Not Done", nil);
+    [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];    
     [[self delegate] markCompleteRequestedFromEditItemActionsView:self];
-    NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As  Done", nil) : NSLocalizedString(@"Mark As Not Done", nil);
-    [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];
 }
 
 - (IBAction)btnDeleteTapped:(UIButton *)sender
