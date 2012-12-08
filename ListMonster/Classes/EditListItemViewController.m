@@ -8,6 +8,7 @@
 
 #import "Alerts.h"
 #import "datetime_utils.h"
+#import "EditItemActionsView.h"
 #import "EditListItemViewController.h"
 #import "EditMeasureViewController.h"
 #import "EditNumberViewController.h"
@@ -22,8 +23,9 @@
 #import "ThemeManager.h"
 
 #define ROW_HEIGHT      44.0f
+#define COUNT_PROPERTY_SECTIONS 4
 
-@interface EditListItemViewController() <EditItemViewDelegate>
+@interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate>
 
 - (UITableView *)tableView;
 
@@ -118,13 +120,15 @@
         CGSize constraint = CGSizeMake(300.0f, 20000.0f);
         CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
         return size.height + TABLECELL_VERTICAL_MARGIN;
+    } else if ([indexPath section] == COUNT_PROPERTY_SECTIONS) {
+        return 100;
     }
     return ROW_HEIGHT;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return COUNT_PROPERTY_SECTIONS + 1;;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
@@ -160,6 +164,9 @@
         case 3:
             [self configureReminderCell:cell];
             break;
+        case 4:
+            [self configureActionsCell:cell];
+            break;
     }
 
     return cell;
@@ -170,11 +177,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    if ([indexPath section] == COUNT_PROPERTY_SECTIONS) return;
     Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section]];
     UIViewController<EditItemViewProtocol> *vc = [[editControllerClass alloc] initWithTitle:@"Snap!list" listItem:[self item]];
     [vc setDelegate:self];
     [[self navigationController] pushViewController:vc animated:YES];
 }
+
 
 #pragma mark - cell configuration methods
 
@@ -229,11 +238,38 @@
 
 }
 
+- (void)configureActionsCell:(UITableViewCell *)cell
+{
+    EditItemActionsView *actionView = [[EditItemActionsView alloc] initWithItem:[self item] frame:CGRectMake(0.0f, 0.0f, 300.0f, 100.0f)];
+    [actionView setDelegate:self];
+    [[cell contentView] addSubview:actionView];
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+}
+
 #pragma mark edit item delegate method
 
 - (void)editItemViewController:(UIViewController *)editViewController didChangeValue:(id)updatedValue forItem:(MetaListItem *)item
 {
     [[self item] save];
+}
+
+#pragma mark - edit item actions delegate methods
+
+- (void)markCompleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
+{
+    if ([[self item] isComplete])
+        [[self item] setIsComplete:NO];
+    else
+        [[self item] setIsComplete:YES];
+}
+
+- (void)deleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
+{
+    // inform the parent view controller (listitems view in this case) to actually delete, it can find the index path
+    [[[self item] list] deleteItem:[self item]];
+    [[self navigationController] popViewControllerAnimated:YES];
+    
 }
 
 

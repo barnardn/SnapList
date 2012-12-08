@@ -106,10 +106,17 @@ static char editCellKey;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
-    if ([[self tableView] indexPathForSelectedRow])
-        [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if ([[self tableView] indexPathForSelectedRow]) {
+        NSInteger row = [[[self tableView] indexPathForSelectedRow] row];
+        MetaListItem *item = [[self listItems] objectAtIndex:row];
+        if ([item wasDeleted]) {
+            [[self listItems] removeObjectAtIndex:row];
+            [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {

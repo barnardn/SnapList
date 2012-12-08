@@ -30,6 +30,7 @@
     BOOL reminderDateChanged;
 }
 
+@property (nonatomic) BOOL wasDeleted;
 
 - (BOOL)isComplete;
 - (void)setIsComplete:(BOOL)complete;
@@ -40,6 +41,7 @@
 - (void)decrementBadgeNumberForFiredNotification;
 - (void)decrementBadgeNumber;
 - (void)save;
+
 
 + (NSArray *)itemsDueOnOrBefore:(NSDate *)date;
 

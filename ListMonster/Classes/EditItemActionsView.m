@@ -7,25 +7,51 @@
 //
 
 #import "EditItemActionsView.h"
+#import "MetaListItem.h"
+#import "ThemeManager.h"
+
+@interface EditItemActionsView()
+
+@property (nonatomic, strong) MetaListItem *item;
+@property (nonatomic, weak) IBOutlet UIButton *btnMarkComplete;
+@property (nonatomic, weak) IBOutlet UIButton *btnDelete;
+
+@end
+
 
 @implementation EditItemActionsView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithItem:(MetaListItem *)item frame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
+    _item = item;
+    if (!self) return nil;
+    [self setBackgroundColor:[UIColor clearColor]];
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EditItemActionsView" owner:self options:nil];
+    [self addSubview:nib[0]];
+    
+    UIImage *deleteBg = [[UIImage imageNamed:@"redButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
+    [[self btnDelete] setBackgroundImage:deleteBg forState:UIControlStateNormal];
+    [[self btnDelete] setTitle:NSLocalizedString(@"Delete", nil) forState:UIControlStateNormal];
+    
+    UIImage *markBg = [[UIImage imageNamed:@"blueButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
+    [[self btnMarkComplete] setBackgroundImage:markBg forState:UIControlStateNormal];
+    NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As Not Done", nil) : NSLocalizedString(@"Mark As Done", nil);
+    [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];
+    
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (IBAction)btnMarkCompleteTapped:(UIButton *)sender
 {
-    // Drawing code
+    [[self delegate] markCompleteRequestedFromEditItemActionsView:self];
+    NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As  Done", nil) : NSLocalizedString(@"Mark As Not Done", nil);
+    [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];
 }
-*/
+
+- (IBAction)btnDeleteTapped:(UIButton *)sender
+{
+    [[self delegate] deleteRequestedFromEditItemActionsView:self];
+}
 
 @end

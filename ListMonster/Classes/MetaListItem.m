@@ -17,6 +17,8 @@
 
 @implementation MetaListItem
 
+@synthesize wasDeleted;
+
 #pragma mark - class methods
 
 + (NSArray *)itemsDueOnOrBefore:(NSDate *)date
@@ -48,7 +50,6 @@
 {
     return [self isCheckedValue];
 }
-
 
 - (void)save
 {
@@ -111,6 +112,7 @@
 
 - (void)prepareForDeletion
 {
+    [self setWasDeleted:YES];
     [self cancelReminder];
 }
 
