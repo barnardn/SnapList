@@ -12,6 +12,7 @@
 #import "EditListViewController.h"
 #import "EditListItemViewController.h"
 #import "ListItemsViewController.h"
+#import "ListManagerViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListCell.h"
 #import "ListColor.h"
@@ -25,7 +26,7 @@
 
 #define KEY_OVERDUE     @"--overdue--"
 
-@interface RootViewController()
+@interface RootViewController() <ListManagerDelegate>
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (void)showEditViewWithList:(MetaList *)list;
@@ -35,6 +36,7 @@
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
+@property (nonatomic, strong) ListManagerViewController *listManagerViewController;
 
 @end
 
@@ -155,18 +157,11 @@
 
 - (void)addList:(id)sender 
 {
-    [self showEditViewWithList:nil];
-}
-
-- (void)showEditViewWithList:(MetaList *)list 
-{
-    EditListViewController *evc = [[EditListViewController alloc] initWithList:list];
-    [evc setNotificationMessage:NOTICE_LIST_UPDATE];
-    edListNav = [[UINavigationController alloc] initWithRootViewController:evc];
-    if (!list)
-        [self presentModalViewController:edListNav animated:YES];
-    else
-        [[self navigationController] pushViewController:evc animated:YES];
+    //[self showEditViewWithList:nil];
+    ListManagerViewController *vclm = [[ListManagerViewController alloc] initWithManagedObjectContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
+    [self setListManagerViewController:vclm];
+    [vclm setDelegate:self];
+    [self presentModalViewController:vclm animated:YES];
 }
 
 
@@ -398,6 +393,13 @@
     
 }
 
+
+#pragma mark - list manager view delegate
+
+- (void)dismissListManagerView
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 
 

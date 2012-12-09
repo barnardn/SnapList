@@ -9,6 +9,7 @@ extern const struct MetaListAttributes {
 	__unsafe_unretained NSString *listID;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *note;
+	__unsafe_unretained NSString *order;
 } MetaListAttributes;
 
 extern const struct MetaListRelationships {
@@ -23,6 +24,7 @@ extern const struct MetaListFetchedProperties {
 @class ListCategory;
 @class ListColor;
 @class MetaListItem;
+
 
 
 
@@ -69,6 +71,18 @@ extern const struct MetaListFetchedProperties {
 
 
 //- (BOOL)validateNote:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* order;
+
+
+@property int16_t orderValue;
+- (int16_t)orderValue;
+- (void)setOrderValue:(int16_t)value_;
+
+//- (BOOL)validateOrder:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -130,6 +144,15 @@ extern const struct MetaListFetchedProperties {
 
 - (NSString*)primitiveNote;
 - (void)setPrimitiveNote:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOrder;
+- (void)setPrimitiveOrder:(NSNumber*)value;
+
+- (int16_t)primitiveOrderValue;
+- (void)setPrimitiveOrderValue:(int16_t)value_;
 
 
 

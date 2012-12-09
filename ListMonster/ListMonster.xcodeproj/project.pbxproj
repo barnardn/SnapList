@@ -60,6 +60,8 @@
 		498627A2162259D40040858A /* btn-checkbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4986279E162259D40040858A /* btn-checkbox@2x.png */; };
 		498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498885421458D42600FC3294 /* EditMeasureViewController.m */; };
 		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
+		4988A2B31673E32D00AA1BA6 /* ListManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4988A2B11673E32D00AA1BA6 /* ListManagerViewController.m */; };
+		4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
@@ -199,6 +201,10 @@
 		498885411458D42600FC3294 /* EditMeasureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMeasureViewController.h; sourceTree = "<group>"; };
 		498885421458D42600FC3294 /* EditMeasureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMeasureViewController.m; sourceTree = "<group>"; };
 		498885431458D42600FC3294 /* EditMeasureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditMeasureView.xib; path = Classes/EditMeasureView.xib; sourceTree = "<group>"; };
+		4988A2AF1673D74E00AA1BA6 /* ListMonster 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 8.xcdatamodel"; sourceTree = "<group>"; };
+		4988A2B01673E32D00AA1BA6 /* ListManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListManagerViewController.h; sourceTree = "<group>"; };
+		4988A2B11673E32D00AA1BA6 /* ListManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListManagerViewController.m; sourceTree = "<group>"; };
+		4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListManagerView.xib; path = Classes/ListManagerView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
@@ -273,6 +279,7 @@
 		49F1814812C958F20066B454 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		49F1814912C958F20066B454 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		49F1814A12C958F20066B454 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Classes/English.lproj/RootView.xib; sourceTree = "<group>"; };
+		49F48F4F16741F650056B173 /* ListMonster 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 9.xcdatamodel"; sourceTree = "<group>"; };
 		49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 7.xcdatamodel"; sourceTree = "<group>"; };
 		49FDFF3C135233A400F6A3DA /* ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStash.h; sourceTree = "<group>"; };
 		49FDFF3D135233A400F6A3DA /* ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStash.m; sourceTree = "<group>"; };
@@ -367,7 +374,6 @@
 				499F4E07133AC4920048D35B /* Icon@2x.png */,
 				8D1107310486CEB800E47090 /* ListMonster-Info.plist */,
 				49BCF2FE134E9884009A48DC /* listmonster.sqlite */,
-				49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -412,6 +418,7 @@
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
 				4955B03D1323033E00722C3F /* ListCell.xib */,
 				495EABF813083F5700F4A64E /* ListItemsView.xib */,
+				4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */,
 				491EBE5012EB744D0084BFCB /* ListNameView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				499306A3135FB07300ECBE16 /* ReminderView.xib */,
@@ -526,6 +533,7 @@
 				49F180EC12C91CA40066B454 /* MetaListItem.m */,
 				498432AC166BBB54003C624F /* DataManager.h */,
 				498432AD166BBB54003C624F /* DataManager.m */,
+				49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -580,6 +588,8 @@
 				49F1814912C958F20066B454 /* RootViewController.m */,
 				49248F471659B61400CD9995 /* SwipeToEditCellTableViewController.h */,
 				49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */,
+				4988A2B01673E32D00AA1BA6 /* ListManagerViewController.h */,
+				4988A2B11673E32D00AA1BA6 /* ListManagerViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -694,6 +704,7 @@
 				49C56BCF1665A4A400BCFAD3 /* icon-show-all.png in Resources */,
 				49C56BD01665A4A400BCFAD3 /* icon-show-all@2x.png in Resources */,
 				49748DD416703347006BE3C2 /* EditItemActionsView.xib in Resources */,
+				4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,6 +759,7 @@
 				498432AE166BBB54003C624F /* DataManager.m in Sources */,
 				498432B1166BF253003C624F /* NSDate+FormattedDates.m in Sources */,
 				49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */,
+				4988A2B31673E32D00AA1BA6 /* ListManagerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,6 +878,8 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				49F48F4F16741F650056B173 /* ListMonster 9.xcdatamodel */,
+				4988A2AF1673D74E00AA1BA6 /* ListMonster 8.xcdatamodel */,
 				49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */,
 				49836D9216362005006F8A1E /* ListMonster 6.xcdatamodel */,
 				49C68AA61527ECE8007A062F /* ListMonster 5.xcdatamodel */,
@@ -874,8 +888,9 @@
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 49F78967165C5BA40063C0B3 /* ListMonster 7.xcdatamodel */;
-			path = ListMonster.xcdatamodeld;
+			currentVersion = 49F48F4F16741F650056B173 /* ListMonster 9.xcdatamodel */;
+			name = ListMonster.xcdatamodeld;
+			path = ../ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

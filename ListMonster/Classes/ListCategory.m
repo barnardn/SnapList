@@ -6,11 +6,23 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import "DataManager.h"
 #import "ListCategory.h"
 
+static NSString * const kCategoryEntityName = @"ListCategory";
 
 @implementation ListCategory
 
-@dynamic name;
++ (NSArray *)allCategoriesInContext:(NSManagedObjectContext *)moc
+{
+    NSSortDescriptor *byOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+    NSArray *categories = [DataManager fetchAllInstancesOf:kCategoryEntityName sortDescriptors:@[byOrder] inContext:moc];
+    return categories;
+}
+
+- (NSArray *)sortedLists
+{
+    return [[self list] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+}
 
 @end

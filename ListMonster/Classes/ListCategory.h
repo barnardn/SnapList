@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+
+
 #import "_ListCategory.h"
 
-@interface ListCategory : _ListCategory {
+@interface ListCategory : _ListCategory
 
-}
++ (NSArray *)allCategoriesInContext:(NSManagedObjectContext *)moc;
+
+- (NSArray *)sortedLists;
 
 @end

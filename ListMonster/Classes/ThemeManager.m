@@ -63,6 +63,12 @@
     return [UIColor colorWithRed:TO_PERCENT_WHITE(220) green:TO_PERCENT_WHITE(40) blue:TO_PERCENT_WHITE(40) alpha:1.0f];
 }
 
++ (UIColor *)textColorForListManagerList
+{
+    return [UIColor colorWithWhite:0.95 alpha:1.0f];
+}
+
+
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];

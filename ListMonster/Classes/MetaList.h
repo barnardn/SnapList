@@ -35,6 +35,6 @@
 - (void)addItem:(MetaListItem *)item;
 
 + (NSArray *)allListsInContext:(NSManagedObjectContext *)moc;
-
++ (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc;
 
 @end

@@ -6,6 +6,7 @@
 
 extern const struct ListCategoryAttributes {
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *order;
 } ListCategoryAttributes;
 
 extern const struct ListCategoryRelationships {
@@ -16,6 +17,7 @@ extern const struct ListCategoryFetchedProperties {
 } ListCategoryFetchedProperties;
 
 @class MetaList;
+
 
 
 
@@ -35,6 +37,18 @@ extern const struct ListCategoryFetchedProperties {
 
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* order;
+
+
+@property int16_t orderValue;
+- (int16_t)orderValue;
+- (void)setOrderValue:(int16_t)value_;
+
+//- (BOOL)validateOrder:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -64,6 +78,15 @@ extern const struct ListCategoryFetchedProperties {
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOrder;
+- (void)setPrimitiveOrder:(NSNumber*)value;
+
+- (int16_t)primitiveOrderValue;
+- (void)setPrimitiveOrderValue:(int16_t)value_;
 
 
 

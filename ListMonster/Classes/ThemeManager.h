@@ -32,6 +32,7 @@
 + (UIColor *)ghostedTextColor;
 + (UIColor *)textColorForListDetails;
 + (UIColor *)textColorForOverdueItems;
++ (UIColor *)textColorForListManagerList;
 
 + (CGFloat)heightForHeaderview;
 

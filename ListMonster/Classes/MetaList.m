@@ -33,7 +33,13 @@
     return lists;
 }
 
-
++ (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc
+{
+    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSPredicate *emptyCategory = [NSPredicate predicateWithFormat:@"self.category == nil"];
+    NSArray *lists = [DataManager fetchAllInstancesOf:LIST_ENTITY_NAME sortDescriptors:@[byName] filteredBy:emptyCategory inContext:moc];
+    return lists;
+}
 
 #pragma mark -
 #pragma mark NSManagedObject overrides
