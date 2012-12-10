@@ -18,7 +18,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @interface ListMonsterAppDelegate()
 
-- (void)prefetchListColors;
 - (void)cancelRogueLocalNotifications;
 
 @end

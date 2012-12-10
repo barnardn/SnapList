@@ -10,12 +10,13 @@
 #import "ListManagerViewController.h"
 #import "MetaList.h"
 #import "NSArrayExtensions.h"
+#import "TextFieldTableCell.h"
 #import "ThemeManager.h"
 
 static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 
 
-@interface ListManagerViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ListManagerViewController () <UITableViewDataSource, UITableViewDelegate, TextFieldTableCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
@@ -26,6 +27,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 @property (nonatomic, strong) NSMutableDictionary *categoryListMap;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *categoryNames;        // to categories sorted.
+@property (nonatomic, strong) NSMutableDictionary *categoriesByName;
 
 @end
 
@@ -38,6 +40,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     _managedObjectContext  = moc;
     _categoryListMap = [NSMutableDictionary dictionary];
     _categoryNames = [NSMutableArray array];
+    _categoriesByName = [NSMutableDictionary dictionary];
     return self;
 }
 
@@ -57,12 +60,13 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [categories forEach:^(ListCategory *lc) {
         [[self categoryListMap] setObject:[[lc sortedLists] mutableCopy] forKey:[lc name]];
         [[self categoryNames] addObject:[lc name]];
+        [[self categoriesByName] setObject:lc forKey:[lc name]];
     }];
     [[self categoryListMap] setObject:[uncategorizedLists mutableCopy] forKey:kUncategorizedListsKey];
     [[self categoryNames] addObject:kUncategorizedListsKey];
     
-    [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [[self tableView] setSeparatorColor:[UIColor clearColor]];
+    [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [[self tableView] setSeparatorColor:[UIColor darkGrayColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,22 +108,68 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     NSString *categoryKey = [[self categoryNames] objectAtIndex:section];
     NSArray *lists = [[self categoryListMap] objectForKey:categoryKey];
-    return [lists count];
+    return [lists count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellId = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    [self configureCell:cell];
     MetaList *list = [self listObjectAtIndexPath:indexPath];
+    if (!list)
+        return [self textCellForIndexPath:indexPath];
+    return [self cellForList:list atIndexPath:indexPath];
+}
+
+- (UITableViewCell *)cellForList:(MetaList *)list atIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellId = @"Cell";
+    UITableViewCell *cell = [[self tableView] dequeueReusableCellWithIdentifier:cellId];
+    if (!cell)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    
+    [[cell textLabel] setFont:[ThemeManager fontForListName]];
+    [[cell textLabel] setTextColor:[ThemeManager textColorForListManagerList]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [cell setBackgroundColor:[UIColor colorWithWhite:0.25 alpha:1.0f]];
+    
     [[cell textLabel] setText:[list name]];
     return cell;
+    
 }
+
+- (UITableViewCell *)textCellForIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellId = @"TextCell";
+    TextFieldTableCell *cell = (TextFieldTableCell *)[[self tableView] dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[TextFieldTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        [cell setDelegate:self];
+    }
+    [cell setBackgroundColor:[UIColor colorWithWhite:0.25 alpha:1.0f]];    
+    return cell;
+}
+
+#pragma mark text field table cell delegate
+
+- (void)textFieldTableCell:(TextFieldTableCell *)tableCell didEndEdittingText:(NSString *)text
+{
+    NSIndexPath *indexPath = [[self tableView] indexPathForCell:tableCell];
+    NSString *categoryKey = [[self categoryNames] objectAtIndex:[indexPath section]];
+    ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
+    MetaList *newList = [MetaList insertInManagedObjectContext:[self managedObjectContext]];
+    [newList setName:text];
+    if (![categoryKey isEqualToString:kUncategorizedListsKey])
+        [newList setCategory:category];
+    [newList setDateCreated:[NSDate date]];
+    [newList save];
+    
+    [[self tableView] beginUpdates];
+    NSMutableArray *lists = [[self categoryListMap] objectForKey:categoryKey];
+    [lists addObject:newList];
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:NO];
+    [[self tableView] insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [[self tableView] endUpdates];
+}
+
 
 #pragma mark - private methods
 
@@ -127,16 +177,11 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     NSString *categoryKey = [[self categoryNames] objectAtIndex:[indexPath section]];
     NSArray *arr = [[self categoryListMap] objectForKey:categoryKey];
+    if ([indexPath row] == [arr count]) return nil;
     return [arr objectAtIndex:[indexPath row]];
 }
 
-- (void)configureCell:(UITableViewCell *)cell
-{
-    [[cell textLabel] setFont:[ThemeManager fontForListName]];
-    [[cell textLabel] setTextColor:[ThemeManager textColorForListManagerList]];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
-    [cell setBackgroundColor:[UIColor colorWithWhite:0.25 alpha:1.0f]];
-}
+
 
 
 @end
