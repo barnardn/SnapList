@@ -71,7 +71,7 @@
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    [label setTextColor:[UIColor whiteColor]];
+    [label setTextColor:textColor];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setText:text];
     [label sizeToFit];

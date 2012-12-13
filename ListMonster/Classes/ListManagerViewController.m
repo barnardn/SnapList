@@ -50,7 +50,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-listmgt"]]];
     UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnDoneTapped:)];
     [[self navigationItem] setLeftBarButtonItem:btnDone];
     [[self navigationItem] setTitle:@"snap!List"];
@@ -64,10 +63,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
         [[self categoriesByName] setObject:lc forKey:[lc name]];
     }];
     [[self categoryListMap] setObject:[uncategorizedLists mutableCopy] forKey:kUncategorizedListsKey];
-    [[self categoryNames] addObject:kUncategorizedListsKey];
-    
-    [[self tableView] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [[self tableView] setSeparatorColor:[UIColor darkGrayColor]];
+    [[self categoryNames] addObject:kUncategorizedListsKey];    
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,17 +171,19 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString *categoryKey = [[self categoryNames] objectAtIndex:section];
-    ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
-    UILabel *lbl = [ThemeManager labelForTableHeadingsWithText:[category name] textColor:[UIColor whiteColor]];
-    return lbl;
+    if ([categoryKey isEqualToString:kUncategorizedListsKey])
+        categoryKey = NSLocalizedString(@"No Category", nil);
+    
+    CGFloat width = CGRectGetWidth([[self tableView] bounds]);
+    UIView *headerView = [ThemeManager headerViewWithStyle:TableHeaderStyleLight
+                                                     title:categoryKey
+                                               dimensions:CGSizeMake(width, [ThemeManager heightForHeaderview])];
+    return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *categoryKey = [[self categoryNames] objectAtIndex:section];
-    ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
-    CGSize textSize = [[category name] sizeWithFont:[ThemeManager fontForListHeader]];
-    return textSize.height + 10.0f;
+    return [ThemeManager heightForHeaderview];
 }
 
 

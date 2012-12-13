@@ -57,7 +57,9 @@
 {
     [super layoutSubviews];
     
-    CGRect tfFrame =  CDO_CGRectCenteredInRect([[self contentView] frame], CGRectGetWidth([[self contentView] frame]) , [self textHeight] + 4.0f);
+    CGFloat width = CGRectGetWidth([[self contentView] frame]) - [self indentationWidth];
+    CGRect tfFrame =  CDO_CGRectCenteredInRect([[self contentView] frame], width , [self textHeight] + 4.0f);
+    tfFrame.origin.x += [self indentationWidth];
     [[self textField] setFrame:tfFrame];
 }
 
