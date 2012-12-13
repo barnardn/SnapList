@@ -65,11 +65,10 @@
 
 + (UIColor *)textColorForListManagerList
 {
-    return [UIColor colorWithWhite:0.95 alpha:1.0f];
+    return [UIColor colorWithWhite:0.85 alpha:1.0f];
 }
 
-
-+ (UILabel *)labelForTableHeadingsWithText:(NSString *)text
++ (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     [label setTextColor:[UIColor whiteColor]];
@@ -78,20 +77,37 @@
     [label sizeToFit];
     [label setShadowColor:[UIColor darkGrayColor]];
     [label setShadowOffset:CGSizeMake(1.0f, 1.0f)];
-    return label;
+    return label;    
 }
 
-+ (UIView *)headerViewTitled:(NSString *)title withDimenions:(CGSize)dimensions
+
++ (UILabel *)labelForTableHeadingsWithText:(NSString *)text
 {
-    UIImage *backgroundImage = [[UIImage imageNamed:@"bg-tableheader"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
+    return [ThemeManager labelForTableHeadingsWithText:text textColor:[UIColor whiteColor]];
+}
+
++ (UIView *)headerViewWithStyle:(TableHeaderStyle)style title:(NSString *)title dimensions:(CGSize)dimensions
+{
+    NSString *bgImageName = (style == TableHeaderStyleNormal) ? @"bg-tableheader" : @"bg-tableheader-light";
+    UIImage *backgroundImage = [[UIImage imageNamed:bgImageName] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
     CGRect backgroundFrame = CGRectMake(0.0f, 0.0f, dimensions.width, dimensions.height);
     UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:backgroundFrame];
     [backgroundView setImage:backgroundImage];
-    UILabel *lblListName  = [ThemeManager labelForTableHeadingsWithText:title];
+    UILabel *lblListName;
+    if (style == TableHeaderStyleNormal)
+        lblListName = [ThemeManager labelForTableHeadingsWithText:title textColor:[UIColor whiteColor]];
+    else
+        lblListName = [ThemeManager labelForTableHeadingsWithText:title textColor:[UIColor blackColor]];
     CGRect labelFrame = CDO_CGRectCenteredInRect(backgroundFrame, CGRectGetWidth([lblListName frame]), CGRectGetHeight([lblListName frame]));
     [lblListName setFrame:labelFrame];
     [backgroundView addSubview:lblListName];
-    return backgroundView;
+    return backgroundView;    
+}
+
+
++ (UIView *)headerViewTitled:(NSString *)title withDimensions:(CGSize)dimensions
+{
+    return [ThemeManager headerViewWithStyle:TableHeaderStyleNormal title:title dimensions:dimensions];
 }
 
 + (CGFloat)heightForHeaderview

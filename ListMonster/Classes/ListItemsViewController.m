@@ -133,7 +133,7 @@ static char editCellKey;
 
 - (void)insertHeaderView
 {
-    UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
+    UIView *headerView = [ThemeManager headerViewTitled:[[self theList] name] withDimensions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
     [[self view] addSubview:headerView];
 }
 

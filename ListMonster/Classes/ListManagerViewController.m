@@ -20,8 +20,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
-@property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *btnDone;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *btnReorder;
 
 @property (nonatomic, strong) NSMutableDictionary *categoryListMap;
@@ -53,6 +51,9 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     [super viewDidLoad];
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg-listmgt"]]];
+    UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnDoneTapped:)];
+    [[self navigationItem] setLeftBarButtonItem:btnDone];
+    [[self navigationItem] setTitle:@"snap!List"];
     
     NSArray *categories = [ListCategory allCategoriesInContext:[self managedObjectContext]];
     NSArray *uncategorizedLists = [MetaList allUncategorizedListsInContext:[self managedObjectContext]];
@@ -96,7 +97,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     }
 }
 
-
 #pragma mark - table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -126,6 +126,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     
+    [cell setShowsReorderControl:YES];
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
     [[cell textLabel] setTextColor:[ThemeManager textColorForListManagerList]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
@@ -133,7 +134,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     
     [[cell textLabel] setText:[list name]];
     return cell;
-    
 }
 
 - (UITableViewCell *)textCellForIndexPath:(NSIndexPath *)indexPath
@@ -144,7 +144,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
         cell = [[TextFieldTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setDelegate:self];
     }
-    [cell setBackgroundColor:[UIColor colorWithWhite:0.25 alpha:1.0f]];    
+    [cell setBackgroundColor:[UIColor colorWithWhite:0.25f alpha:1.0f]];
     return cell;
 }
 
@@ -170,6 +170,81 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [[self tableView] endUpdates];
 }
 
+#pragma - TODO clean up the header views for this section.  they look crappy!
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *categoryKey = [[self categoryNames] objectAtIndex:section];
+    ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
+    UILabel *lbl = [ThemeManager labelForTableHeadingsWithText:[category name] textColor:[UIColor whiteColor]];
+    return lbl;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *categoryKey = [[self categoryNames] objectAtIndex:section];
+    ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
+    CGSize textSize = [[category name] sizeWithFont:[ThemeManager fontForListHeader]];
+    return textSize.height + 10.0f;
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    return (list != nil) ? YES : NO;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    return (list != nil) ? YES : NO;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:proposedDestinationIndexPath];
+    if (list) return proposedDestinationIndexPath;
+    
+    return [NSIndexPath indexPathForRow:[proposedDestinationIndexPath row] - 1 inSection:[proposedDestinationIndexPath section]];
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    DLog(@"source: %@ destination: %@", sourceIndexPath, destinationIndexPath);
+    if ([sourceIndexPath compare:destinationIndexPath] == NSOrderedSame) return;
+    
+    NSString *sourceKey = [[self categoryNames] objectAtIndex:[sourceIndexPath section]];
+    NSString *destKey = [[self categoryNames] objectAtIndex:[destinationIndexPath section]];
+    
+    NSMutableArray *sourceList = [[self categoryListMap] objectForKey:sourceKey];
+    NSMutableArray *destinationList = [[self categoryListMap] objectForKey:destKey];
+    
+    MetaList *list = [sourceList objectAtIndex:[sourceIndexPath row]];
+    [sourceList removeObject:list];
+    [destinationList insertObject:list atIndex:[destinationIndexPath row]];
+    [destinationList enumerateObjectsUsingBlock:^(MetaList *l, NSUInteger idx, BOOL *stop) {
+        [l setOrder:@(idx)];
+    }];
+    if (![sourceKey isEqualToString:destKey]) {
+        ListCategory *sourceCategory = [[self categoriesByName] objectForKey:sourceKey];
+        [sourceCategory removeListObject:list];
+        ListCategory *destCategory = [[self categoriesByName] objectForKey:destKey];
+        [destCategory addListObject:list];
+    }
+    NSError *error = nil;
+    ZAssert([[self managedObjectContext] save:&error], @"Whoa! unable to save lists after reorder: %@", [error localizedDescription]);
+}
 
 #pragma mark - private methods
 
@@ -177,11 +252,8 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     NSString *categoryKey = [[self categoryNames] objectAtIndex:[indexPath section]];
     NSArray *arr = [[self categoryListMap] objectForKey:categoryKey];
-    if ([indexPath row] == [arr count]) return nil;
+    if ([indexPath row] >= [arr count]) return nil;
     return [arr objectAtIndex:[indexPath row]];
 }
-
-
-
 
 @end

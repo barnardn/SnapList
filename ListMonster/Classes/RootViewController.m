@@ -29,14 +29,13 @@
 @interface RootViewController() <ListManagerDelegate>
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
-- (void)showEditViewWithList:(MetaList *)list;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForList:(MetaList *)list;
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
-@property (nonatomic, strong) ListManagerViewController *listManagerViewController;
+@property (nonatomic, strong) UINavigationController *listManagerViewController;
 
 @end
 
@@ -157,11 +156,13 @@
 
 - (void)addList:(id)sender 
 {
-    //[self showEditViewWithList:nil];
+
     ListManagerViewController *vclm = [[ListManagerViewController alloc] initWithManagedObjectContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
-    [self setListManagerViewController:vclm];
     [vclm setDelegate:self];
-    [self presentModalViewController:vclm animated:YES];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vclm];
+    [[navController navigationBar] setTintColor:[UIColor darkGrayColor]];
+    [self setListManagerViewController:navController];
+    [self presentModalViewController:navController animated:YES];
 }
 
 
@@ -302,7 +303,7 @@
     NSString *title = [[self categoryNameKeys] objectAtIndex:section];
     if ([title isEqualToString:KEY_OVERDUE])
         title = NSLocalizedString(@"Due Today", nil);
-    UIView *headerView = [ThemeManager headerViewTitled:title withDimenions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
+    UIView *headerView = [ThemeManager headerViewTitled:title withDimensions:CGSizeMake(CGRectGetWidth([[self tableView] frame]), [ThemeManager heightForHeaderview])];
     return headerView;
 }
 
@@ -399,6 +400,8 @@
 - (void)dismissListManagerView
 {
     [self dismissModalViewControllerAnimated:YES];
+    [self setAllLists:[self loadAllLists]];
+    [[self tableView] reloadData];
 }
 
 

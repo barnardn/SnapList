@@ -29,14 +29,14 @@
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
     [_textField setText:NSLocalizedString(@"Add New List...", nil)];
     [_textField setAdjustsFontSizeToFitWidth:YES];
-    [_textField setFont:[ThemeManager fontForStandardListText]];
-    [_textField setTextColor:[ThemeManager textColorForListManagerList]];
+    [_textField setFont:[ThemeManager fontForListName]];
+    [_textField setTextColor:[UIColor whiteColor]];
     [_textField setEnabled:NO];
     [_textField setDelegate:self];
     [_textField setReturnKeyType:UIReturnKeyDone];
     [[self contentView] addSubview:_textField];
     
-    CGSize txtSize = [@"Add New List..." sizeWithFont:[ThemeManager fontForStandardListText]];
+    CGSize txtSize = [@"Add New List..." sizeWithFont:[ThemeManager fontForListName]];
     _textHeight = txtSize.height;
     return self;
 }
@@ -65,8 +65,8 @@
 {
     [[self textField] setText:NSLocalizedString(@"Add New List...", nil)];
     [[self textField] setAdjustsFontSizeToFitWidth:YES];
-    [[self textField] setFont:[ThemeManager fontForStandardListText]];
-    [[self textField] setTextColor:[ThemeManager textColorForListManagerList]];
+    [[self textField] setFont:[ThemeManager fontForListName]];
+    [[self textField] setTextColor:[UIColor whiteColor]];
     [[self textField] setEnabled:NO];
 }
 

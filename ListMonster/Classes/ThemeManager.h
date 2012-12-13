@@ -18,6 +18,11 @@
 
 #define TABLECELL_VERTICAL_MARGIN   20.0f
 
+typedef enum  {
+  TableHeaderStyleNone,
+  TableHeaderStyleNormal,
+  TableHeaderStyleLight
+} TableHeaderStyle;
 
 @interface ThemeManager : NSObject
 
@@ -37,6 +42,8 @@
 + (CGFloat)heightForHeaderview;
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text;
-+ (UIView *)headerViewTitled:(NSString *)title withDimenions:(CGSize)dimensions;
++ (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor;
++ (UIView *)headerViewTitled:(NSString *)title withDimensions:(CGSize)dimensions;
++ (UIView *)headerViewWithStyle:(TableHeaderStyle)style title:(NSString *)title dimensions:(CGSize)dimensions;
 
 @end

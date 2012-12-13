@@ -109,6 +109,8 @@
 		49E75316163F401B00603F90 /* bg-btn-delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49E75314163F401B00603F90 /* bg-btn-delete@2x.png */; };
 		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
+		49EB7B641676B58D00AC5B33 /* bg-tableheader-light.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */; };
+		49EB7B651676B58D00AC5B33 /* bg-tableheader-light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EB7B631676B58D00AC5B33 /* bg-tableheader-light@2x.png */; };
 		49F180E312C914340066B454 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F180E212C914340066B454 /* CoreData.framework */; };
 		49F180ED12C91CA40066B454 /* MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F180EC12C91CA40066B454 /* MetaListItem.m */; };
 		49F180F012C920AD0066B454 /* MetaList.m in Sources */ = {isa = PBXBuildFile; fileRef = 49F180EF12C920AD0066B454 /* MetaList.m */; };
@@ -179,7 +181,7 @@
 		497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 4.xcdatamodel"; sourceTree = "<group>"; };
 		497EB48516755E130086DF17 /* TextFieldTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableCell.h; sourceTree = "<group>"; };
 		497EB48616755E130086DF17 /* TextFieldTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTableCell.m; sourceTree = "<group>"; };
-		497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 10.xcdatamodel"; sourceTree = "<group>"; };
+		497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 10.xcdatamodel"; sourceTree = "<group>"; };
 		49836D82163619EC006F8A1E /* _ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ItemStash.h; sourceTree = "<group>"; };
 		49836D83163619EC006F8A1E /* _ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemStash.m; sourceTree = "<group>"; };
 		49836D84163619EC006F8A1E /* _ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListColor.h; sourceTree = "<group>"; };
@@ -270,6 +272,8 @@
 		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
 		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
 		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
+		49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader-light.png"; sourceTree = "<group>"; };
+		49EB7B631676B58D00AC5B33 /* bg-tableheader-light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader-light@2x.png"; sourceTree = "<group>"; };
 		49F180E212C914340066B454 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		49F180EB12C91CA40066B454 /* MetaListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaListItem.h; sourceTree = "<group>"; };
 		49F180EC12C91CA40066B454 /* MetaListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetaListItem.m; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 		4986279A162259D40040858A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */,
+				49EB7B631676B58D00AC5B33 /* bg-tableheader-light@2x.png */,
 				49C68A9E15279CD0007A062F /* btn-add.png */,
 				49C68A9F15279CD0007A062F /* btn-add@2x.png */,
 				49C68AA015279CD0007A062F /* btn-remove.png */,
@@ -711,6 +717,8 @@
 				49C56BD01665A4A400BCFAD3 /* icon-show-all@2x.png in Resources */,
 				49748DD416703347006BE3C2 /* EditItemActionsView.xib in Resources */,
 				4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */,
+				49EB7B641676B58D00AC5B33 /* bg-tableheader-light.png in Resources */,
+				49EB7B651676B58D00AC5B33 /* bg-tableheader-light@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
