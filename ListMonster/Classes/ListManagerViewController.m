@@ -50,6 +50,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnDoneTapped:)];
     [[self navigationItem] setLeftBarButtonItem:btnDone];
     [[self navigationItem] setTitle:@"snap!List"];
@@ -244,6 +245,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     ZAssert([[self managedObjectContext] save:&error], @"Whoa! unable to save lists after reorder: %@", [error localizedDescription]);
 }
 
+
 #pragma mark - private methods
 
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath
@@ -252,6 +254,25 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     NSArray *arr = [[self categoryListMap] objectForKey:categoryKey];
     if ([indexPath row] >= [arr count]) return nil;
     return [arr objectAtIndex:[indexPath row]];
+}
+
+#pragma mark - swipe to edit table view overrides
+
+- (BOOL)shouldIgnoreGestureRecognizerForDirection:(SwipeGestureRecognizerDirection)swipeDirection
+{
+    return (swipeDirection == SwipeGestureRecognizerDirectionRight);
+}
+
+- (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    DLog(@"delete list due to left swipe gesture");
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    NSString *categoryKey = [[self categoryNames] objectAtIndex:[indexPath section]];
+    NSMutableArray *arr = [[self categoryListMap] objectForKey:categoryKey];
+    [arr removeObject:list];
+    [[self managedObjectContext] deleteObject:list];
+    NSError *error;
+    ZAssert([[self managedObjectContext] save:&error], @"Whoa! Unable to delete list: %@", [error localizedDescription]);
 }
 
 @end

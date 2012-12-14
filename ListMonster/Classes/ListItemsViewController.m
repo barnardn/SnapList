@@ -427,6 +427,8 @@ static char editCellKey;
 
 #pragma mark - swipe to edit cell view controller overrides
 
+
+
 - (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
