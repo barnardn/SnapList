@@ -60,6 +60,8 @@
 
 - (void)rightSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
+    if ([self shouldIgnoreGestureRecognizerForDirection:SwipeGestureRecognizerDirectionRight]) return;
+    
     if ([self cellForDeletionCancel]) {
         [self cancelItemDelete];
         return;
@@ -113,6 +115,8 @@
 - (void)leftSwipeHandler:(UISwipeGestureRecognizer *)swipe
 {
     DLog(@"left swipe");
+    if ([self shouldIgnoreGestureRecognizerForDirection:SwipeGestureRecognizerDirectionLeft]) return;
+    
     NSIndexPath *indexPath = [[self tableView] indexPathForRowAtPoint:[swipe locationInView:[self tableView]]];
     UITableViewCell *swipedCell = [[self tableView] cellForRowAtIndexPath:indexPath];
     [swipedCell setAccessoryType:UITableViewCellAccessoryNone];
@@ -203,6 +207,12 @@
 }
 
 #pragma mark - datamodel accessor abstract methods
+
+- (BOOL)shouldIgnoreGestureRecognizerForDirection:(SwipeGestureRecognizerDirection)swipeDirection
+{
+    return NO;
+}
+
 
 - (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
 {
