@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum  {
+    SwipeGestureRecognizerDirectionNone,
+    SwipeGestureRecognizerDirectionRight,
+    SwipeGestureRecognizerDirectionLeft
+} SwipeGestureRecognizerDirection;
+
+
 @interface SwipeToEditCellTableViewController : UIViewController
 
 @property (nonatomic, strong) UITableView *tableView;
