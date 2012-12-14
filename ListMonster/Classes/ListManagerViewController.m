@@ -42,6 +42,11 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (NSString *)nibName
 {
     return @"ListManagerView";
@@ -64,13 +69,22 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
         [[self categoriesByName] setObject:lc forKey:[lc name]];
     }];
     [[self categoryListMap] setObject:[uncategorizedLists mutableCopy] forKey:kUncategorizedListsKey];
-    [[self categoryNames] addObject:kUncategorizedListsKey];    
+    [[self categoryNames] addObject:kUncategorizedListsKey];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - actions
@@ -94,6 +108,35 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     }
 }
 
+#pragma mark - keyboard notification handlers
+
+- (void)keyboardDidAppear:(NSNotification *)notification
+{
+    NSDictionary* info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+    UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    [[self tableView] setContentInset:contentInsets];
+    [[self tableView] setScrollIndicatorInsets:contentInsets];
+    
+    CGRect visibleRect = [[self view] frame];
+    visibleRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(visibleRect, [cell frame].origin)) {
+        CGPoint scrollPoint = CGPointMake(0.0, cell.frame.origin.y-kbSize.height+cell.frame.size.height + 10.0f);
+        [[self tableView] setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+- (void)keyboardDidDisappear:(NSNotification *)notification
+{
+    [[self tableView] setContentInset:UIEdgeInsetsZero];
+    [[self tableView] setScrollIndicatorInsets:UIEdgeInsetsZero];
+}
+
+
 #pragma mark - table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -108,6 +151,11 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     return [lists count] + 1;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self removeSwipeActionIndicatorViewsFromCell:cell];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaList *list = [self listObjectAtIndexPath:indexPath];
@@ -115,6 +163,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
         return [self textCellForIndexPath:indexPath];
     return [self cellForList:list atIndexPath:indexPath];
 }
+
 
 - (UITableViewCell *)cellForList:(MetaList *)list atIndexPath:(NSIndexPath *)indexPath
 {
@@ -144,6 +193,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [cell setBackgroundColor:[UIColor colorWithWhite:0.25f alpha:1.0f]];
     return cell;
 }
+
 
 #pragma mark text field table cell delegate
 
