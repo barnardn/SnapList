@@ -67,6 +67,7 @@
 {
     [[self textField] setText:NSLocalizedString(@"Add New List...", nil)];
     [[self textField] setAdjustsFontSizeToFitWidth:YES];
+    [[self textLabel] setMinimumFontSize:kSizeListNameFont];
     [[self textField] setFont:[ThemeManager fontForListName]];
     [[self textField] setTextColor:[UIColor whiteColor]];
     [[self textField] setEnabled:NO];
