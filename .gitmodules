@@ -1,0 +1,3 @@
+[submodule "ListMonster/ThirdParty"]
+	path = ListMonster/ThirdParty
+	url = git://github.com/hayashi311/Color-Picker-for-iOS.git
