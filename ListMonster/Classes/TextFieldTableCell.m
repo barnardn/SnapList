@@ -28,7 +28,7 @@
     
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
     [_textField setText:NSLocalizedString(@"Add New List...", nil)];
-    [_textField setAdjustsFontSizeToFitWidth:YES];
+    [_textField setAdjustsFontSizeToFitWidth:NO];
     [_textField setFont:[ThemeManager fontForListName]];
     [_textField setTextColor:[UIColor whiteColor]];
     [_textField setEnabled:NO];
@@ -73,8 +73,17 @@
     [[self textField] setEnabled:NO];
 }
 
-
 #pragma mark - text field delegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([string length] == 0) return YES;
+    NSMutableString *maybeText = [NSMutableString stringWithString:[textField text]];
+    [maybeText replaceCharactersInRange:range withString:string];
+    CGSize maybeSize = [maybeText sizeWithFont:[textField font]];
+    return (maybeSize.width > CGRectGetWidth([textField frame])) ? NO : YES;
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
