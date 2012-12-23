@@ -22,6 +22,8 @@
 		491EEC9B167EA8410058AF2F /* HRColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC93167EA8410058AF2F /* HRColorPickerView.m */; };
 		491EEC9C167EA8410058AF2F /* HRColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC95167EA8410058AF2F /* HRColorPickerViewController.m */; };
 		491EEC9D167EA8410058AF2F /* HRColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC97167EA8410058AF2F /* HRColorUtil.m */; };
+		491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */; };
+		491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA3167EB1920058AF2F /* BaseTableCellController.m */; };
 		49248F451659474300CD9995 /* bg-tableheader.png in Resources */ = {isa = PBXBuildFile; fileRef = 49248F431659474300CD9995 /* bg-tableheader.png */; };
 		49248F461659474300CD9995 /* bg-tableheader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49248F441659474300CD9995 /* bg-tableheader@2x.png */; };
 		49248F491659B61400CD9995 /* SwipeToEditCellTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */; };
@@ -93,6 +95,9 @@
 		49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9AF2616742547000447E7 /* ListManagerViewController.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
+		49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C3D0C8167FFBA300B1FF16 /* EditListView.xib */; };
+		49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */; };
+		49C3D0CF1683E5AF00B1FF16 /* TextViewTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3D0CE1683E5AF00B1FF16 /* TextViewTableCell.m */; };
 		49C56BCD1665A4A400BCFAD3 /* icon-hide-completed.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C56BC91665A4A400BCFAD3 /* icon-hide-completed.png */; };
 		49C56BCE1665A4A400BCFAD3 /* icon-hide-completed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C56BCA1665A4A400BCFAD3 /* icon-hide-completed@2x.png */; };
 		49C56BCF1665A4A400BCFAD3 /* icon-show-all.png in Resources */ = {isa = PBXBuildFile; fileRef = 49C56BCB1665A4A400BCFAD3 /* icon-show-all.png */; };
@@ -155,6 +160,10 @@
 		491EEC95167EA8410058AF2F /* HRColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerViewController.m; sourceTree = "<group>"; };
 		491EEC96167EA8410058AF2F /* HRColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorUtil.h; sourceTree = "<group>"; };
 		491EEC97167EA8410058AF2F /* HRColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorUtil.m; sourceTree = "<group>"; };
+		491EEC9F167EACD40058AF2F /* TextFieldTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableCellController.h; sourceTree = "<group>"; };
+		491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTableCellController.m; sourceTree = "<group>"; };
+		491EECA2167EB1920058AF2F /* BaseTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableCellController.h; sourceTree = "<group>"; };
+		491EECA3167EB1920058AF2F /* BaseTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableCellController.m; sourceTree = "<group>"; };
 		49248F431659474300CD9995 /* bg-tableheader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader.png"; sourceTree = "<group>"; };
 		49248F441659474300CD9995 /* bg-tableheader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader@2x.png"; sourceTree = "<group>"; };
 		49248F471659B61400CD9995 /* SwipeToEditCellTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeToEditCellTableViewController.h; sourceTree = "<group>"; };
@@ -262,6 +271,11 @@
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
 		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
+		49C3D0C8167FFBA300B1FF16 /* EditListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditListView.xib; sourceTree = "<group>"; };
+		49C3D0CA168149B900B1FF16 /* TextViewTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewTableCellController.h; sourceTree = "<group>"; };
+		49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewTableCellController.m; sourceTree = "<group>"; };
+		49C3D0CD1683E5AF00B1FF16 /* TextViewTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewTableCell.h; sourceTree = "<group>"; };
+		49C3D0CE1683E5AF00B1FF16 /* TextViewTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewTableCell.m; sourceTree = "<group>"; };
 		49C56BC91665A4A400BCFAD3 /* icon-hide-completed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-hide-completed.png"; sourceTree = "<group>"; };
 		49C56BCA1665A4A400BCFAD3 /* icon-hide-completed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-hide-completed@2x.png"; sourceTree = "<group>"; };
 		49C56BCB1665A4A400BCFAD3 /* icon-show-all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-show-all.png"; sourceTree = "<group>"; };
@@ -332,6 +346,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				491EEC9E167EAC8D0058AF2F /* Table Cell Controllers */,
 				49748DCE16703169006BE3C2 /* Views */,
 				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
 				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
@@ -436,6 +451,19 @@
 			path = ColorPicker;
 			sourceTree = "<group>";
 		};
+		491EEC9E167EAC8D0058AF2F /* Table Cell Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				491EEC9F167EACD40058AF2F /* TextFieldTableCellController.h */,
+				491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */,
+				491EECA2167EB1920058AF2F /* BaseTableCellController.h */,
+				491EECA3167EB1920058AF2F /* BaseTableCellController.m */,
+				49C3D0CA168149B900B1FF16 /* TextViewTableCellController.h */,
+				49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */,
+			);
+			name = "Table Cell Controllers";
+			sourceTree = "<group>";
+		};
 		4955B038132302BC00722C3F /* Custom Table Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +471,8 @@
 				4955B03B1323031500722C3F /* ListCell.m */,
 				497EB48516755E130086DF17 /* TextFieldTableCell.h */,
 				497EB48616755E130086DF17 /* TextFieldTableCell.m */,
+				49C3D0CD1683E5AF00B1FF16 /* TextViewTableCell.h */,
+				49C3D0CE1683E5AF00B1FF16 /* TextViewTableCell.m */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -473,6 +503,7 @@
 				499306A3135FB07300ECBE16 /* ReminderView.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
 				49748DD316703347006BE3C2 /* EditItemActionsView.xib */,
+				49C3D0C8167FFBA300B1FF16 /* EditListView.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -759,6 +790,7 @@
 				4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */,
 				49EB7B641676B58D00AC5B33 /* bg-tableheader-light.png in Resources */,
 				49EB7B651676B58D00AC5B33 /* bg-tableheader-light@2x.png in Resources */,
+				49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,6 +853,10 @@
 				491EEC9B167EA8410058AF2F /* HRColorPickerView.m in Sources */,
 				491EEC9C167EA8410058AF2F /* HRColorPickerViewController.m in Sources */,
 				491EEC9D167EA8410058AF2F /* HRColorUtil.m in Sources */,
+				491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */,
+				491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */,
+				49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */,
+				49C3D0CF1683E5AF00B1FF16 /* TextViewTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

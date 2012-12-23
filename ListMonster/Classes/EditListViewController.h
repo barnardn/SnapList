@@ -13,18 +13,8 @@
 
 @class MetaList;
 
-@interface EditListViewController : UITableViewController {
+@interface EditListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-    MetaList *theList;
-    BOOL editActionCancelled;
-    BOOL isNewList;
-    NSString *notificationMessage;
-}
-
-@property(nonatomic,strong) MetaList *theList;
-@property(nonatomic,assign) BOOL editActionCancelled;
-@property(nonatomic,assign) BOOL isNewList;
-@property(nonatomic,strong) NSString *notificationMessage;
 
 - (id)initWithList:(MetaList *)aList;
 

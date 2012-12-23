@@ -6,6 +6,7 @@
 //
 //
 
+#import "EditListViewController.h"
 #import "ListCategory.h"
 #import "ListManagerViewController.h"
 #import "MetaList.h"
@@ -188,10 +189,20 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     TextFieldTableCell *cell = (TextFieldTableCell *)[[self tableView] dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[TextFieldTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        [[cell textField] setClearsOnBeginEditing:YES];
         [cell setDelegate:self];
+        [cell setDefaultText:NSLocalizedString(@"Add New List...", nil)];
     }
-    [cell setBackgroundColor:[UIColor colorWithWhite:0.25f alpha:1.0f]];
+    [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    if (!list) return;
+    EditListViewController *edVC = [[EditListViewController alloc] initWithList:list];
+    [[self navigationController] pushViewController:edVC animated:YES];
 }
 
 

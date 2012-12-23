@@ -68,6 +68,11 @@
     return [UIColor colorWithWhite:0.85 alpha:1.0f];
 }
 
++ (UIColor *)backgroundColorForListManager
+{
+    return [UIColor colorWithWhite:0.25f alpha:1.0f];
+}
+
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];

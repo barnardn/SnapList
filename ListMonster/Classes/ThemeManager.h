@@ -38,6 +38,7 @@ typedef enum  {
 + (UIColor *)textColorForListDetails;
 + (UIColor *)textColorForOverdueItems;
 + (UIColor *)textColorForListManagerList;
++ (UIColor *)backgroundColorForListManager;
 
 + (CGFloat)heightForHeaderview;
 

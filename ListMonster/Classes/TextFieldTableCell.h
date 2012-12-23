@@ -15,6 +15,7 @@
 @property (nonatomic, strong, readonly) UITextField *textField;
 @property (nonatomic, assign) BOOL allowsTextEdit;
 @property (nonatomic, weak) id<TextFieldTableCellDelegate> delegate;
+@property (nonatomic, strong) NSString *defaultText;
 
 @end
 

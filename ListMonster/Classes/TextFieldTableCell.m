@@ -10,6 +10,8 @@
 #import "TextFieldTableCell.h"
 #import "ThemeManager.h"
 
+static const CGFloat kTopTextMargin = 4.0f;
+
 @interface TextFieldTableCell()
 
 @property (nonatomic, assign) CGFloat textHeight;
@@ -27,7 +29,6 @@
     [self setAccessoryType:UITableViewCellAccessoryNone];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
-    [_textField setText:NSLocalizedString(@"Add New List...", nil)];
     [_textField setAdjustsFontSizeToFitWidth:NO];
     [_textField setFont:[ThemeManager fontForListName]];
     [_textField setTextColor:[UIColor whiteColor]];
@@ -36,36 +37,42 @@
     [_textField setReturnKeyType:UIReturnKeyDone];
     [[self contentView] addSubview:_textField];
     
-    CGSize txtSize = [@"Add New List..." sizeWithFont:[ThemeManager fontForListName]];
+    CGSize txtSize = [@"XX" sizeWithFont:[ThemeManager fontForListName]];
     _textHeight = txtSize.height;
     return self;
+}
+
+- (void)setDefaultText:(NSString *)defaultText
+{
+    _defaultText = defaultText;
+    [[self textField] setText:defaultText];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
     if (selected) {
-        [[self textField] setText:@""];
+//        [[self textField] setText:@""];
         [[self textField] setEnabled:YES];
         [[self textField] becomeFirstResponder];
         return;
     }
     [[self textField] setEnabled:NO];
-    [[self textField] setText:NSLocalizedString(@"Add New List...", nil)];    
+    [[self textField] setText:[self defaultText]];
 }
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
     CGFloat width = CGRectGetWidth([[self contentView] frame]) - [self indentationWidth];
-    CGRect tfFrame =  CDO_CGRectCenteredInRect([[self contentView] frame], width , [self textHeight] + 4.0f);
-    tfFrame.origin.x += [self indentationWidth];
+    CGFloat yOffset = (CGRectGetHeight([[self contentView] frame]) - [self textHeight] + kTopTextMargin) / 2.0f;
+    CGRect tfFrame =  CGRectMake([self indentationWidth], yOffset, width, [self textHeight] + kTopTextMargin);
     [[self textField] setFrame:tfFrame];
 }
 
 - (void)prepareForReuse
 {
-    [[self textField] setText:NSLocalizedString(@"Add New List...", nil)];
+    [[self textField] setText:[self defaultText]];
     [[self textField] setAdjustsFontSizeToFitWidth:YES];
     [[self textLabel] setMinimumFontSize:kSizeListNameFont];
     [[self textField] setFont:[ThemeManager fontForListName]];
@@ -89,7 +96,7 @@
 {
     [textField resignFirstResponder];
     [[self delegate] textFieldTableCell:self didEndEdittingText:[textField text]];
-    [[self textField] setText:NSLocalizedString(@"Add New List...", nil)];
+    [[self textField] setText:[self defaultText]];
     [[self textField] setEnabled:NO];    
     return NO;
 }

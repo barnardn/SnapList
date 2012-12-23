@@ -6,92 +6,71 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import "Alerts.h"
+
 #import "ListCategory.h"
 #import "CategorySelectViewController.h"
 #import "ColorSelectViewController.h"
 #import "EditListViewController.h"
 #import "EditNoteViewController.h"
-#import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
-#import "ListNameViewController.h"
 #import "MetaList.h"
+#import "TextFieldTableCell.h"
+#import "TextFieldTableCellController.h"
+#import "TextViewTableCellController.h"
+#import "ThemeManager.h"
 
-@interface EditListViewController()
+@interface EditListViewController() <TableCellControllerDelegate>
 
-- (void)setupNavigationBarForModalView;
-- (UIBarButtonItem *)doneButton;
-- (void)doneAction;
-- (void)dismissView;
-- (BOOL)haveValidList;
-- (void)dismissModalViewWithIOS5Compliance;
+@property (nonatomic, strong) MetaList *list;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray *cellViewControllers;
 
 @end
 
-
 @implementation EditListViewController
-
-@synthesize theList, editActionCancelled, isNewList, notificationMessage;
 
 #pragma mark -
 #pragma mark Initialization
 
-- (id)initWithList:(MetaList *)aList {
-    if (!(self = [super initWithStyle:UITableViewStyleGrouped]))
-        return nil;
-    [self setTheList:aList];
-    if (!aList) {
-        NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-        NSEntityDescription *listEntity = [NSEntityDescription entityForName:@"MetaList" inManagedObjectContext:moc];
-        MetaList *l = [[MetaList alloc] initWithEntity:listEntity insertIntoManagedObjectContext:moc];
-        [self setTheList:l];
-        [self setIsNewList:YES];
-    }
+- (id)initWithList:(MetaList *)aList
+{
+    self = [super init];
+    if (!self) return nil;
+    _list = aList;
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    return [self initWithList:nil];
+- (NSString *)nibName
+{
+    return @"EditListView";
 }
-
 
 #pragma mark -
 #pragma mark Memory management
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-
 }
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
-
-
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Backgrounds/normal"]];
-    [[self tableView] setBackgroundView:backgroundView];
-    if ([self isNewList]) {
-        [self setupNavigationBarForModalView];
-        return;
-    }
-    [[self navigationItem] setTitle:NSLocalizedString(@"Edit List", @"editlist view title")];
-    [[self navigationItem] setRightBarButtonItem:[self doneButton]];
+    [[self navigationItem] setTitle:NSLocalizedString(@"snap!List",nil)];
+    [[self tableView] setRowHeight:44.0f];
+    NSArray *cellControllers = @[
+        [[TextFieldTableCellController alloc] initWithTableView:[self tableView]],
+        [[TextViewTableCellController alloc] initWithTableView:[self tableView]]
+    ];
+    [self setCellViewControllers:cellControllers];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[self tableView] reloadData];    // may be able to eliminate this...
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -100,86 +79,6 @@
             (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
 }
 
-#pragma mark -
-#pragma mark modal view navigation bar methods
-
-- (void)setupNavigationBarForModalView {
-    
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel button")
-                                                                  style:UIBarButtonItemStylePlain 
-                                                                 target:self 
-                                                                 action:@selector(cancelPressed:)];
-    [[self navigationItem] setLeftBarButtonItem:cancelBtn];
-    [[self navigationItem] setRightBarButtonItem:[self doneButton]];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Add List", @"add new list view title")];
-}
-
-- (UIBarButtonItem *)doneButton {
-    
-    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"done button") 
-                                                                style:UIBarButtonItemStyleDone 
-                                                               target:self
-                                                               action:@selector(donePressed:)];
-    return doneBtn;
-}
-
-
-#pragma mark -
-#pragma mark button item actions
-
-- (void)cancelPressed:(id)sender {
-    [[[self theList] managedObjectContext] rollback];
-    [self setEditActionCancelled:YES];
-    [self dismissView];
-}
-
-
-- (void)donePressed:(id)sender {
-    
-    if (![self haveValidList]) {
-        [ErrorAlert showWithTitle:NSLocalizedString(@"Bad Value",@"error title") 
-                       andMessage:NSLocalizedString(@"You must supply a list name", @"bad list name error")];
-        return;
-    } 
-    [self doneAction];
-    [self dismissView];
-}
-
-- (void)doneAction {
-    if ([self editActionCancelled]) return;
-    if (![[[self theList] managedObjectContext] hasChanges]) return;
-    NSError *error = nil;
-    [[[self theList] managedObjectContext] save:&error];
-    if (error) {
-        [ErrorAlert showWithTitle:NSLocalizedString(@"Error", @"error title")
-                       andMessage:NSLocalizedString(@"The changes list could not be saved.", @"cant save list message")];
-        DLog(@"Unable to save list: %@", [error localizedDescription]);
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:[self notificationMessage]
-                                                        object:[self theList]];
-}
-
-- (void)dismissView {
-    
-    if ([self isNewList])
-        [self dismissModalViewWithIOS5Compliance];
-    else
-        [[self navigationController] popViewControllerAnimated:YES];
-}
-
-- (void)dismissModalViewWithIOS5Compliance
-{
-    if ([[self parentViewController] respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
-        [[self parentViewController] dismissModalViewControllerAnimated:YES];
-    else
-        [[self presentingViewController] dismissModalViewControllerAnimated:YES];    
-}
-
-- (BOOL)haveValidList {
-    
-    NSString *listName = [[self theList] name];
-    return listName && ![listName isEqualToString:@""];
-}
 
 
 #pragma mark -
@@ -193,111 +92,50 @@
     return 1;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellId = @"cell";
     
-    static NSString *CellIdentifier = @"Cell";   
-    NSArray *cellConfigSelectors = @[@"cellAsNameCell:", @"cellAsColorCell:", 
-                                    @"cellAsCategoryCell:",@"cellAsNoteCell:"];
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    if ([indexPath section]  <= 1) {
+        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
+        [cellController setDelegate:self];
+        return [cellController tableView:tableView cellForRowAtIndexPath:indexPath];
     }
-    NSInteger selectorIdx = [indexPath section];
-    SEL configSelector = NSSelectorFromString(cellConfigSelectors[selectorIdx]);
-    return [self performSelector:configSelector withObject:cell];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    [[cell textLabel] setText:[NSString stringWithFormat:@"Cell %d", [indexPath section]]];
+    return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    NSArray *nextNavSelectors = @[@"pushNameEditView", @"pushColorSelectView", 
-                                 @"pushCategoryEditView",@"pushNoteEditView"];
-    NSInteger sectionIdx = [indexPath section];
-    NSString *selString = nextNavSelectors[sectionIdx];
-    if ([selString compare:@""] == NSOrderedSame)
-        return;
-    SEL selector = NSSelectorFromString(nextNavSelectors[sectionIdx]);
-    [self performSelector:selector];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath section]  <= 1) {
+        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
+        [cellController setDelegate:self];
+        return [cellController tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+    return [tableView rowHeight];
 }
-#pragma clang diagnostic pop
 
-#pragma mark -
-#pragma mark Cell configuration methods
-
-- (UITableViewCell *)cellAsNameCell:(UITableViewCell *)cell {
-    NSString *cellTitle = NSLocalizedString(@"Name", @"name cell title");
-    NSString *cellText = nil;
-    if (![[self theList] name])
-        cellText = NSLocalizedString(@"Name", @"empty list name placeholder");
-    else
-        cellText = [[self theList] name];
-    [[cell textLabel] setText:cellTitle];
-    [[cell detailTextLabel] setText:cellText];
-    return cell;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath section] == 0) {
+        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:0];
+        [cellController tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
 
 }
 
-- (UITableViewCell *)cellAsColorCell:(UITableViewCell *)cell {
+#pragma mark - table cell controller delegate
 
-    NSString *cellTitle = NSLocalizedString(@"Color", @"color cell title");
-    NSString *colorName = [[[self theList] color] name];
-    UIColor *textColor = [[[self theList] color] uiColor];
-    [[cell textLabel] setText:cellTitle];
-    [[cell detailTextLabel] setText:colorName];
-    [[cell detailTextLabel] setTextColor:textColor];
-    return cell;
+- (id)cellController:(BaseTableCellController *)cellController itemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self list];
 }
-
-- (UITableViewCell *)cellAsCategoryCell:(UITableViewCell *)cell {
-    
-    ListCategory *category = [[self theList] category];
-    [[cell textLabel] setText:NSLocalizedString(@"Category", @"select a category prompt")];
-    [[cell detailTextLabel] setText:[category name]];
-    return cell;
-}
-
-- (UITableViewCell *)cellAsNoteCell:(UITableViewCell *)cell {
-    
-    NSString *cellTitle = NSLocalizedString(@"Note", @"cell note title");
-    [[cell textLabel] setText:cellTitle];
-    [[cell detailTextLabel] setText:[[self theList] excerptOfLength:6]];
-    return cell;
-}
-
-
-#pragma mark -
-#pragma mark Methods that push in the next view controller
-
-- (void)pushNameEditView {
-    ListNameViewController *lnvc = [[ListNameViewController alloc] initWithList:[self theList]];
-    [[self navigationController] pushViewController:lnvc animated:YES];
-}
-
-- (void)pushColorSelectView {
-    ColorSelectViewController *csvc = [[ColorSelectViewController alloc] initWithList:[self theList]];
-    [[self navigationController] pushViewController:csvc animated:YES];
-    
-}
-
-- (void)pushCategoryEditView {
-    CategorySelectViewController *cvc = [[CategorySelectViewController alloc] initWithList:[self theList]];
-    [[self navigationController] pushViewController:cvc animated:YES];
-}
-
-- (void)pushNoteEditView {
-    
-    EditNoteViewController *envc = [[EditNoteViewController alloc] initWithList:[self theList]];
-    [[self navigationController] pushViewController:envc animated:YES];
-}
-
-
 
 @end
 
