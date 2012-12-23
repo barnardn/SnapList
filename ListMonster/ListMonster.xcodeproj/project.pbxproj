@@ -16,12 +16,6 @@
 		491703B9145786750034437B /* Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 491703B8145786750034437B /* Measure.m */; };
 		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
-		491EEC98167EA8410058AF2F /* HRBrightnessCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC8C167EA8410058AF2F /* HRBrightnessCursor.m */; };
-		491EEC99167EA8410058AF2F /* HRCgUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC8E167EA8410058AF2F /* HRCgUtil.m */; };
-		491EEC9A167EA8410058AF2F /* HRColorCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC90167EA8410058AF2F /* HRColorCursor.m */; };
-		491EEC9B167EA8410058AF2F /* HRColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC93167EA8410058AF2F /* HRColorPickerView.m */; };
-		491EEC9C167EA8410058AF2F /* HRColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC95167EA8410058AF2F /* HRColorPickerViewController.m */; };
-		491EEC9D167EA8410058AF2F /* HRColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EEC97167EA8410058AF2F /* HRColorUtil.m */; };
 		491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */; };
 		491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA3167EB1920058AF2F /* BaseTableCellController.m */; };
 		49248F451659474300CD9995 /* bg-tableheader.png in Resources */ = {isa = PBXBuildFile; fileRef = 49248F431659474300CD9995 /* bg-tableheader.png */; };
@@ -147,19 +141,6 @@
 		491EBE4E12EB744D0084BFCB /* ListNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListNameViewController.h; sourceTree = "<group>"; };
 		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
-		491EEC8B167EA8410058AF2F /* HRBrightnessCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRBrightnessCursor.h; sourceTree = "<group>"; };
-		491EEC8C167EA8410058AF2F /* HRBrightnessCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRBrightnessCursor.m; sourceTree = "<group>"; };
-		491EEC8D167EA8410058AF2F /* HRCgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRCgUtil.h; sourceTree = "<group>"; };
-		491EEC8E167EA8410058AF2F /* HRCgUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRCgUtil.m; sourceTree = "<group>"; };
-		491EEC8F167EA8410058AF2F /* HRColorCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorCursor.h; sourceTree = "<group>"; };
-		491EEC90167EA8410058AF2F /* HRColorCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorCursor.m; sourceTree = "<group>"; };
-		491EEC91167EA8410058AF2F /* HRColorPickerMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorPickerMacros.h; sourceTree = "<group>"; };
-		491EEC92167EA8410058AF2F /* HRColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorPickerView.h; sourceTree = "<group>"; };
-		491EEC93167EA8410058AF2F /* HRColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerView.m; sourceTree = "<group>"; };
-		491EEC94167EA8410058AF2F /* HRColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorPickerViewController.h; sourceTree = "<group>"; };
-		491EEC95167EA8410058AF2F /* HRColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerViewController.m; sourceTree = "<group>"; };
-		491EEC96167EA8410058AF2F /* HRColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorUtil.h; sourceTree = "<group>"; };
-		491EEC97167EA8410058AF2F /* HRColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorUtil.m; sourceTree = "<group>"; };
 		491EEC9F167EACD40058AF2F /* TextFieldTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableCellController.h; sourceTree = "<group>"; };
 		491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTableCellController.m; sourceTree = "<group>"; };
 		491EECA2167EB1920058AF2F /* BaseTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableCellController.h; sourceTree = "<group>"; };
@@ -431,26 +412,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		491EEC8A167EA8410058AF2F /* ColorPicker */ = {
-			isa = PBXGroup;
-			children = (
-				491EEC8B167EA8410058AF2F /* HRBrightnessCursor.h */,
-				491EEC8C167EA8410058AF2F /* HRBrightnessCursor.m */,
-				491EEC8D167EA8410058AF2F /* HRCgUtil.h */,
-				491EEC8E167EA8410058AF2F /* HRCgUtil.m */,
-				491EEC8F167EA8410058AF2F /* HRColorCursor.h */,
-				491EEC90167EA8410058AF2F /* HRColorCursor.m */,
-				491EEC91167EA8410058AF2F /* HRColorPickerMacros.h */,
-				491EEC92167EA8410058AF2F /* HRColorPickerView.h */,
-				491EEC93167EA8410058AF2F /* HRColorPickerView.m */,
-				491EEC94167EA8410058AF2F /* HRColorPickerViewController.h */,
-				491EEC95167EA8410058AF2F /* HRColorPickerViewController.m */,
-				491EEC96167EA8410058AF2F /* HRColorUtil.h */,
-				491EEC97167EA8410058AF2F /* HRColorUtil.m */,
-			);
-			path = ColorPicker;
-			sourceTree = "<group>";
-		};
 		491EEC9E167EAC8D0058AF2F /* Table Cell Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -567,7 +528,6 @@
 		49A0206812E52756005B1D0E /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				491EEC8A167EA8410058AF2F /* ColorPicker */,
 			);
 			name = ThirdParty;
 			sourceTree = "<group>";
@@ -847,12 +807,6 @@
 				49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */,
 				49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */,
 				497EB48716755E130086DF17 /* TextFieldTableCell.m in Sources */,
-				491EEC98167EA8410058AF2F /* HRBrightnessCursor.m in Sources */,
-				491EEC99167EA8410058AF2F /* HRCgUtil.m in Sources */,
-				491EEC9A167EA8410058AF2F /* HRColorCursor.m in Sources */,
-				491EEC9B167EA8410058AF2F /* HRColorPickerView.m in Sources */,
-				491EEC9C167EA8410058AF2F /* HRColorPickerViewController.m in Sources */,
-				491EEC9D167EA8410058AF2F /* HRColorUtil.m in Sources */,
 				491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */,
 				491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */,
 				49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */,
