@@ -9,11 +9,11 @@ const struct MetaListAttributes MetaListAttributes = {
 	.name = @"name",
 	.note = @"note",
 	.order = @"order",
+	.tintColor = @"tintColor",
 };
 
 const struct MetaListRelationships MetaListRelationships = {
 	.category = @"category",
-	.color = @"color",
 	.items = @"items",
 };
 
@@ -111,11 +111,14 @@ const struct MetaListFetchedProperties MetaListFetchedProperties = {
 
 
 
+@dynamic tintColor;
+
+
+
+
+
+
 @dynamic category;
-
-	
-
-@dynamic color;
 
 	
 

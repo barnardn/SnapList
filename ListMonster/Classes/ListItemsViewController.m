@@ -12,7 +12,6 @@
 #import "CDOGeometry.h"
 #import "DisplayListNoteViewController.h"
 #import "EditListItemViewController.h"
-#import "ListColor.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListItemsViewController.h"
 #import "Measure.h"

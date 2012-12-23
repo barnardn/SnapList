@@ -26,4 +26,8 @@
 
 - (id)cellController:(BaseTableCellController *)cellController itemAtIndexPath:(NSIndexPath *)indexPath;
 
+@optional
+
+- (void)cellController:(BaseTableCellController *)cellController didSelectItem:(id)item;
+
 @end

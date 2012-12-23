@@ -8,7 +8,6 @@
 
 #import "DataManager.h"
 #import "ListCategory.h"
-#import "ListColor.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -47,8 +46,7 @@
 - (void)awakeFromInsert {
     [self setDateCreated:[NSDate date]];
     [self setListID:[NSString stringWithUUID]];
-    [self setColor:[ListColor blackColor]];
-}
+    }
 
 
 #pragma mark - helper methods

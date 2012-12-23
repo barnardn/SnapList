@@ -15,7 +15,6 @@
 #import "ListManagerViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "ListCell.h"
-#import "ListColor.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"

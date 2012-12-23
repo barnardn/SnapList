@@ -12,7 +12,6 @@
 #import "ListMonsterAppDelegate.h"
 #import "MetaListItem.h"
 #import "RootViewController.h"
-#import "ListColor.h"
 
 static ListMonsterAppDelegate *appDelegateInstance;
 

@@ -49,7 +49,6 @@
 		49748DD416703347006BE3C2 /* EditItemActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49748DD316703347006BE3C2 /* EditItemActionsView.xib */; };
 		497EB48716755E130086DF17 /* TextFieldTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 497EB48616755E130086DF17 /* TextFieldTableCell.m */; };
 		49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D83163619EC006F8A1E /* _ItemStash.m */; };
-		49836D8E163619EC006F8A1E /* _ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D85163619EC006F8A1E /* _ListColor.m */; };
 		49836D8F163619EC006F8A1E /* _Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D87163619EC006F8A1E /* _Measure.m */; };
 		49836D90163619EC006F8A1E /* _MetaList.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D89163619EC006F8A1E /* _MetaList.m */; };
 		49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D8B163619EC006F8A1E /* _MetaListItem.m */; };
@@ -65,6 +64,33 @@
 		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
 		4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */; };
 		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
+		498EBBB716878DF70037DA65 /* ColorPickerCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBB616878DF70037DA65 /* ColorPickerCellController.m */; };
+		498EBBE5168790460037DA65 /* ColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBC4168790460037DA65 /* ColorButton.m */; };
+		498EBBE6168790460037DA65 /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBC6168790460037DA65 /* ColorViewController.m */; };
+		498EBBE7168790460037DA65 /* GzColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBC8168790460037DA65 /* GzColors.m */; };
+		498EBBE8168790460037DA65 /* UIBarButtonItem+WEPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBCB168790460037DA65 /* UIBarButtonItem+WEPopover.m */; };
+		498EBBE9168790460037DA65 /* WEPopoverContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBCD168790460037DA65 /* WEPopoverContainerView.m */; };
+		498EBBEA168790460037DA65 /* WEPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBCF168790460037DA65 /* WEPopoverController.m */; };
+		498EBBEB168790460037DA65 /* WETouchableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBD2168790460037DA65 /* WETouchableView.m */; };
+		498EBBEC168790460037DA65 /* cache2.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD4168790460037DA65 /* cache2.png */; };
+		498EBBED168790460037DA65 /* popoverArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD5168790460037DA65 /* popoverArrowDown.png */; };
+		498EBBEE168790460037DA65 /* popoverArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD6168790460037DA65 /* popoverArrowDown@2x.png */; };
+		498EBBEF168790460037DA65 /* popoverArrowDownSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD7168790460037DA65 /* popoverArrowDownSimple.png */; };
+		498EBBF0168790460037DA65 /* popoverArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD8168790460037DA65 /* popoverArrowLeft.png */; };
+		498EBBF1168790460037DA65 /* popoverArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBD9168790460037DA65 /* popoverArrowLeft@2x.png */; };
+		498EBBF2168790460037DA65 /* popoverArrowLeftSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDA168790460037DA65 /* popoverArrowLeftSimple.png */; };
+		498EBBF3168790460037DA65 /* popoverArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDB168790460037DA65 /* popoverArrowRight.png */; };
+		498EBBF4168790460037DA65 /* popoverArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDC168790460037DA65 /* popoverArrowRight@2x.png */; };
+		498EBBF5168790460037DA65 /* popoverArrowRightSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDD168790460037DA65 /* popoverArrowRightSimple.png */; };
+		498EBBF6168790460037DA65 /* popoverArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDE168790460037DA65 /* popoverArrowUp.png */; };
+		498EBBF7168790460037DA65 /* popoverArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBDF168790460037DA65 /* popoverArrowUp@2x.png */; };
+		498EBBF8168790460037DA65 /* popoverArrowUpSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE0168790460037DA65 /* popoverArrowUpSimple.png */; };
+		498EBBF9168790460037DA65 /* popoverBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE1168790460037DA65 /* popoverBg.png */; };
+		498EBBFA168790460037DA65 /* popoverBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE2168790460037DA65 /* popoverBg@2x.png */; };
+		498EBBFB168790460037DA65 /* popoverBgSimple.png in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE3168790460037DA65 /* popoverBgSimple.png */; };
+		498EBBFC168790460037DA65 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE4168790460037DA65 /* README */; };
+		498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBFE1687933C0037DA65 /* SelectColorView.m */; };
+		498EBC01168793560037DA65 /* SelectColorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498EBC00168793560037DA65 /* SelectColorView.xib */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
@@ -74,7 +100,6 @@
 		499F4E08133AC4920048D35B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E06133AC4920048D35B /* Icon.png */; };
 		499F4E09133AC4920048D35B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499F4E07133AC4920048D35B /* Icon@2x.png */; };
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
-		49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */; };
 		49AD716F16640BFB001897D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AD716E16640BFB001897D3 /* QuartzCore.framework */; };
 		49AD718D1664173A001897D3 /* icon-help.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71851664173A001897D3 /* icon-help.png */; };
 		49AD718E1664173A001897D3 /* icon-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71861664173A001897D3 /* icon-help@2x.png */; };
@@ -88,7 +113,6 @@
 		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9AF2616742547000447E7 /* ListManagerViewController.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
-		49BEEBD312EBC3680088707A /* ListColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BEEBD212EBC3680088707A /* ListColor.m */; };
 		49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C3D0C8167FFBA300B1FF16 /* EditListView.xib */; };
 		49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */; };
 		49C3D0CF1683E5AF00B1FF16 /* TextViewTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C3D0CE1683E5AF00B1FF16 /* TextViewTableCell.m */; };
@@ -193,8 +217,6 @@
 		497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 10.xcdatamodel"; sourceTree = "<group>"; };
 		49836D82163619EC006F8A1E /* _ItemStash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ItemStash.h; sourceTree = "<group>"; };
 		49836D83163619EC006F8A1E /* _ItemStash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemStash.m; sourceTree = "<group>"; };
-		49836D84163619EC006F8A1E /* _ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListColor.h; sourceTree = "<group>"; };
-		49836D85163619EC006F8A1E /* _ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ListColor.m; sourceTree = "<group>"; };
 		49836D86163619EC006F8A1E /* _Measure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Measure.h; sourceTree = "<group>"; };
 		49836D87163619EC006F8A1E /* _Measure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Measure.m; sourceTree = "<group>"; };
 		49836D88163619EC006F8A1E /* _MetaList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MetaList.h; sourceTree = "<group>"; };
@@ -221,6 +243,44 @@
 		4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListManagerView.xib; path = Classes/ListManagerView.xib; sourceTree = "<group>"; };
 		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
 		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
+		498EBBB516878DF70037DA65 /* ColorPickerCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerCellController.h; sourceTree = "<group>"; };
+		498EBBB616878DF70037DA65 /* ColorPickerCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerCellController.m; sourceTree = "<group>"; };
+		498EBBC3168790460037DA65 /* ColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorButton.h; sourceTree = "<group>"; };
+		498EBBC4168790460037DA65 /* ColorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorButton.m; sourceTree = "<group>"; };
+		498EBBC5168790460037DA65 /* ColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
+		498EBBC6168790460037DA65 /* ColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorViewController.m; sourceTree = "<group>"; };
+		498EBBC7168790460037DA65 /* GzColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GzColors.h; sourceTree = "<group>"; };
+		498EBBC8168790460037DA65 /* GzColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GzColors.m; sourceTree = "<group>"; };
+		498EBBCA168790460037DA65 /* UIBarButtonItem+WEPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+WEPopover.h"; sourceTree = "<group>"; };
+		498EBBCB168790460037DA65 /* UIBarButtonItem+WEPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+WEPopover.m"; sourceTree = "<group>"; };
+		498EBBCC168790460037DA65 /* WEPopoverContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverContainerView.h; sourceTree = "<group>"; };
+		498EBBCD168790460037DA65 /* WEPopoverContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WEPopoverContainerView.m; sourceTree = "<group>"; };
+		498EBBCE168790460037DA65 /* WEPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverController.h; sourceTree = "<group>"; };
+		498EBBCF168790460037DA65 /* WEPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WEPopoverController.m; sourceTree = "<group>"; };
+		498EBBD0168790460037DA65 /* WEPopoverParentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WEPopoverParentView.h; sourceTree = "<group>"; };
+		498EBBD1168790460037DA65 /* WETouchableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WETouchableView.h; sourceTree = "<group>"; };
+		498EBBD2168790460037DA65 /* WETouchableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WETouchableView.m; sourceTree = "<group>"; };
+		498EBBD4168790460037DA65 /* cache2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cache2.png; sourceTree = "<group>"; };
+		498EBBD5168790460037DA65 /* popoverArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDown.png; sourceTree = "<group>"; };
+		498EBBD6168790460037DA65 /* popoverArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowDown@2x.png"; sourceTree = "<group>"; };
+		498EBBD7168790460037DA65 /* popoverArrowDownSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowDownSimple.png; sourceTree = "<group>"; };
+		498EBBD8168790460037DA65 /* popoverArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowLeft.png; sourceTree = "<group>"; };
+		498EBBD9168790460037DA65 /* popoverArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowLeft@2x.png"; sourceTree = "<group>"; };
+		498EBBDA168790460037DA65 /* popoverArrowLeftSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowLeftSimple.png; sourceTree = "<group>"; };
+		498EBBDB168790460037DA65 /* popoverArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowRight.png; sourceTree = "<group>"; };
+		498EBBDC168790460037DA65 /* popoverArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowRight@2x.png"; sourceTree = "<group>"; };
+		498EBBDD168790460037DA65 /* popoverArrowRightSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowRightSimple.png; sourceTree = "<group>"; };
+		498EBBDE168790460037DA65 /* popoverArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUp.png; sourceTree = "<group>"; };
+		498EBBDF168790460037DA65 /* popoverArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverArrowUp@2x.png"; sourceTree = "<group>"; };
+		498EBBE0168790460037DA65 /* popoverArrowUpSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverArrowUpSimple.png; sourceTree = "<group>"; };
+		498EBBE1168790460037DA65 /* popoverBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBg.png; sourceTree = "<group>"; };
+		498EBBE2168790460037DA65 /* popoverBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popoverBg@2x.png"; sourceTree = "<group>"; };
+		498EBBE3168790460037DA65 /* popoverBgSimple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popoverBgSimple.png; sourceTree = "<group>"; };
+		498EBBE4168790460037DA65 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		498EBBFD1687933C0037DA65 /* SelectColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectColorView.h; sourceTree = "<group>"; };
+		498EBBFE1687933C0037DA65 /* SelectColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectColorView.m; sourceTree = "<group>"; };
+		498EBC00168793560037DA65 /* SelectColorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectColorView.xib; sourceTree = "<group>"; };
+		498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 11.xcdatamodel"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -233,8 +293,6 @@
 		499F4E07133AC4920048D35B /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		49A0205312E5256A005B1D0E /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		49A0205412E5256A005B1D0E /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
-		49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectViewController.h; sourceTree = "<group>"; };
-		49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSelectViewController.m; sourceTree = "<group>"; };
 		49AD716E16640BFB001897D3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49AD71851664173A001897D3 /* icon-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help.png"; sourceTree = "<group>"; };
 		49AD71861664173A001897D3 /* icon-help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help@2x.png"; sourceTree = "<group>"; };
@@ -250,8 +308,6 @@
 		49AD7B1A12E3DB45006E6AC6 /* Alerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alerts.m; sourceTree = "<group>"; };
 		49B9AF2616742547000447E7 /* ListManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListManagerViewController.m; sourceTree = "<group>"; };
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
-		49BEEBD112EBC3680088707A /* ListColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListColor.h; sourceTree = "<group>"; };
-		49BEEBD212EBC3680088707A /* ListColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListColor.m; sourceTree = "<group>"; };
 		49C3D0C8167FFBA300B1FF16 /* EditListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditListView.xib; sourceTree = "<group>"; };
 		49C3D0CA168149B900B1FF16 /* TextViewTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewTableCellController.h; sourceTree = "<group>"; };
 		49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewTableCellController.m; sourceTree = "<group>"; };
@@ -421,6 +477,8 @@
 				491EECA3167EB1920058AF2F /* BaseTableCellController.m */,
 				49C3D0CA168149B900B1FF16 /* TextViewTableCellController.h */,
 				49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */,
+				498EBBB516878DF70037DA65 /* ColorPickerCellController.h */,
+				498EBBB616878DF70037DA65 /* ColorPickerCellController.m */,
 			);
 			name = "Table Cell Controllers";
 			sourceTree = "<group>";
@@ -443,6 +501,9 @@
 			children = (
 				49748DCF1670319E006BE3C2 /* EditItemActionsView.h */,
 				49748DD01670319E006BE3C2 /* EditItemActionsView.m */,
+				498EBBFD1687933C0037DA65 /* SelectColorView.h */,
+				498EBBFE1687933C0037DA65 /* SelectColorView.m */,
+				498EBC00168793560037DA65 /* SelectColorView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -476,8 +537,6 @@
 				49700A5A1638BD43004DC7C4 /* _ListCategory.m */,
 				49836D82163619EC006F8A1E /* _ItemStash.h */,
 				49836D83163619EC006F8A1E /* _ItemStash.m */,
-				49836D84163619EC006F8A1E /* _ListColor.h */,
-				49836D85163619EC006F8A1E /* _ListColor.m */,
 				49836D86163619EC006F8A1E /* _Measure.h */,
 				49836D87163619EC006F8A1E /* _Measure.m */,
 				49836D88163619EC006F8A1E /* _MetaList.h */,
@@ -525,9 +584,65 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		498EBBC2168790460037DA65 /* ColorPopover */ = {
+			isa = PBXGroup;
+			children = (
+				498EBBC3168790460037DA65 /* ColorButton.h */,
+				498EBBC4168790460037DA65 /* ColorButton.m */,
+				498EBBC5168790460037DA65 /* ColorViewController.h */,
+				498EBBC6168790460037DA65 /* ColorViewController.m */,
+				498EBBC7168790460037DA65 /* GzColors.h */,
+				498EBBC8168790460037DA65 /* GzColors.m */,
+				498EBBC9168790460037DA65 /* Popover */,
+				498EBBD3168790460037DA65 /* popoverImages */,
+			);
+			path = ColorPopover;
+			sourceTree = "<group>";
+		};
+		498EBBC9168790460037DA65 /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				498EBBCA168790460037DA65 /* UIBarButtonItem+WEPopover.h */,
+				498EBBCB168790460037DA65 /* UIBarButtonItem+WEPopover.m */,
+				498EBBCC168790460037DA65 /* WEPopoverContainerView.h */,
+				498EBBCD168790460037DA65 /* WEPopoverContainerView.m */,
+				498EBBCE168790460037DA65 /* WEPopoverController.h */,
+				498EBBCF168790460037DA65 /* WEPopoverController.m */,
+				498EBBD0168790460037DA65 /* WEPopoverParentView.h */,
+				498EBBD1168790460037DA65 /* WETouchableView.h */,
+				498EBBD2168790460037DA65 /* WETouchableView.m */,
+			);
+			path = Popover;
+			sourceTree = "<group>";
+		};
+		498EBBD3168790460037DA65 /* popoverImages */ = {
+			isa = PBXGroup;
+			children = (
+				498EBBD4168790460037DA65 /* cache2.png */,
+				498EBBD5168790460037DA65 /* popoverArrowDown.png */,
+				498EBBD6168790460037DA65 /* popoverArrowDown@2x.png */,
+				498EBBD7168790460037DA65 /* popoverArrowDownSimple.png */,
+				498EBBD8168790460037DA65 /* popoverArrowLeft.png */,
+				498EBBD9168790460037DA65 /* popoverArrowLeft@2x.png */,
+				498EBBDA168790460037DA65 /* popoverArrowLeftSimple.png */,
+				498EBBDB168790460037DA65 /* popoverArrowRight.png */,
+				498EBBDC168790460037DA65 /* popoverArrowRight@2x.png */,
+				498EBBDD168790460037DA65 /* popoverArrowRightSimple.png */,
+				498EBBDE168790460037DA65 /* popoverArrowUp.png */,
+				498EBBDF168790460037DA65 /* popoverArrowUp@2x.png */,
+				498EBBE0168790460037DA65 /* popoverArrowUpSimple.png */,
+				498EBBE1168790460037DA65 /* popoverBg.png */,
+				498EBBE2168790460037DA65 /* popoverBg@2x.png */,
+				498EBBE3168790460037DA65 /* popoverBgSimple.png */,
+				498EBBE4168790460037DA65 /* README */,
+			);
+			path = popoverImages;
+			sourceTree = "<group>";
+		};
 		49A0206812E52756005B1D0E /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				498EBBC2168790460037DA65 /* ColorPopover */,
 			);
 			name = ThirdParty;
 			sourceTree = "<group>";
@@ -566,8 +681,6 @@
 				49AD7A4D12E380D9006E6AC6 /* ListCategory.m */,
 				49FDFF3C135233A400F6A3DA /* ItemStash.h */,
 				49FDFF3D135233A400F6A3DA /* ItemStash.m */,
-				49BEEBD112EBC3680088707A /* ListColor.h */,
-				49BEEBD212EBC3680088707A /* ListColor.m */,
 				491703B7145786750034437B /* Measure.h */,
 				491703B8145786750034437B /* Measure.m */,
 				49F180EE12C920AD0066B454 /* MetaList.h */,
@@ -603,8 +716,6 @@
 			children = (
 				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
 				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
-				49A3E30D12ECBF0A0081D54A /* ColorSelectViewController.h */,
-				49A3E30E12ECBF0A0081D54A /* ColorSelectViewController.m */,
 				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
 				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
 				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
@@ -751,6 +862,24 @@
 				49EB7B641676B58D00AC5B33 /* bg-tableheader-light.png in Resources */,
 				49EB7B651676B58D00AC5B33 /* bg-tableheader-light@2x.png in Resources */,
 				49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */,
+				498EBBEC168790460037DA65 /* cache2.png in Resources */,
+				498EBBED168790460037DA65 /* popoverArrowDown.png in Resources */,
+				498EBBEE168790460037DA65 /* popoverArrowDown@2x.png in Resources */,
+				498EBBEF168790460037DA65 /* popoverArrowDownSimple.png in Resources */,
+				498EBBF0168790460037DA65 /* popoverArrowLeft.png in Resources */,
+				498EBBF1168790460037DA65 /* popoverArrowLeft@2x.png in Resources */,
+				498EBBF2168790460037DA65 /* popoverArrowLeftSimple.png in Resources */,
+				498EBBF3168790460037DA65 /* popoverArrowRight.png in Resources */,
+				498EBBF4168790460037DA65 /* popoverArrowRight@2x.png in Resources */,
+				498EBBF5168790460037DA65 /* popoverArrowRightSimple.png in Resources */,
+				498EBBF6168790460037DA65 /* popoverArrowUp.png in Resources */,
+				498EBBF7168790460037DA65 /* popoverArrowUp@2x.png in Resources */,
+				498EBBF8168790460037DA65 /* popoverArrowUpSimple.png in Resources */,
+				498EBBF9168790460037DA65 /* popoverBg.png in Resources */,
+				498EBBFA168790460037DA65 /* popoverBg@2x.png in Resources */,
+				498EBBFB168790460037DA65 /* popoverBgSimple.png in Resources */,
+				498EBBFC168790460037DA65 /* README in Resources */,
+				498EBC01168793560037DA65 /* SelectColorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,8 +901,6 @@
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
-				49BEEBD312EBC3680088707A /* ListColor.m in Sources */,
-				49A3E31012ECBF0A0081D54A /* ColorSelectViewController.m in Sources */,
 				498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
@@ -795,7 +922,6 @@
 				4941A8591572FCD100EF158B /* NSString+EmptyString.m in Sources */,
 				496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */,
 				49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */,
-				49836D8E163619EC006F8A1E /* _ListColor.m in Sources */,
 				49836D8F163619EC006F8A1E /* _Measure.m in Sources */,
 				49836D90163619EC006F8A1E /* _MetaList.m in Sources */,
 				49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */,
@@ -811,6 +937,15 @@
 				491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */,
 				49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */,
 				49C3D0CF1683E5AF00B1FF16 /* TextViewTableCell.m in Sources */,
+				498EBBB716878DF70037DA65 /* ColorPickerCellController.m in Sources */,
+				498EBBE5168790460037DA65 /* ColorButton.m in Sources */,
+				498EBBE6168790460037DA65 /* ColorViewController.m in Sources */,
+				498EBBE7168790460037DA65 /* GzColors.m in Sources */,
+				498EBBE8168790460037DA65 /* UIBarButtonItem+WEPopover.m in Sources */,
+				498EBBE9168790460037DA65 /* WEPopoverContainerView.m in Sources */,
+				498EBBEA168790460037DA65 /* WEPopoverController.m in Sources */,
+				498EBBEB168790460037DA65 /* WETouchableView.m in Sources */,
+				498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,6 +1064,7 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */,
 				497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */,
 				49F48F4F16741F650056B173 /* ListMonster 9.xcdatamodel */,
 				4988A2AF1673D74E00AA1BA6 /* ListMonster 8.xcdatamodel */,
@@ -940,7 +1076,7 @@
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */;
+			currentVersion = 498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */;
 			name = ListMonster.xcdatamodeld;
 			path = ../ListMonster.xcdatamodeld;
 			sourceTree = "<group>";

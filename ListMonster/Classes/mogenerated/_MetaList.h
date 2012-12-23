@@ -10,11 +10,11 @@ extern const struct MetaListAttributes {
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *note;
 	__unsafe_unretained NSString *order;
+	__unsafe_unretained NSString *tintColor;
 } MetaListAttributes;
 
 extern const struct MetaListRelationships {
 	__unsafe_unretained NSString *category;
-	__unsafe_unretained NSString *color;
 	__unsafe_unretained NSString *items;
 } MetaListRelationships;
 
@@ -22,8 +22,8 @@ extern const struct MetaListFetchedProperties {
 } MetaListFetchedProperties;
 
 @class ListCategory;
-@class ListColor;
 @class MetaListItem;
+
 
 
 
@@ -87,17 +87,18 @@ extern const struct MetaListFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* tintColor;
+
+
+//- (BOOL)validateTintColor:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @property (nonatomic, strong) ListCategory* category;
 
 //- (BOOL)validateCategory:(id*)value_ error:(NSError**)error_;
-
-
-
-
-@property (nonatomic, strong) ListColor* color;
-
-//- (BOOL)validateColor:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -157,14 +158,15 @@ extern const struct MetaListFetchedProperties {
 
 
 
+- (NSString*)primitiveTintColor;
+- (void)setPrimitiveTintColor:(NSString*)value;
+
+
+
+
 
 - (ListCategory*)primitiveCategory;
 - (void)setPrimitiveCategory:(ListCategory*)value;
-
-
-
-- (ListColor*)primitiveColor;
-- (void)setPrimitiveColor:(ListColor*)value;
 
 
 

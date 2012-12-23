@@ -9,7 +9,7 @@
 
 #import "ListCategory.h"
 #import "CategorySelectViewController.h"
-#import "ColorSelectViewController.h"
+#import "ColorPickerCellController.h"
 #import "EditListViewController.h"
 #import "EditNoteViewController.h"
 #import "ListMonsterAppDelegate.h"
@@ -61,8 +61,14 @@
     [super viewDidLoad];
     [[self navigationItem] setTitle:NSLocalizedString(@"snap!List",nil)];
     [[self tableView] setRowHeight:44.0f];
+    
+    ColorPickerCellController *ccColorPicker = [[ColorPickerCellController alloc] initWithTableView:[self tableView]];
+    [ccColorPicker setDelegate:self];
+    [ccColorPicker setList:[self list]];
+    
     NSArray *cellControllers = @[
         [[TextFieldTableCellController alloc] initWithTableView:[self tableView]],
+        ccColorPicker,
         [[TextViewTableCellController alloc] initWithTableView:[self tableView]]
     ];
     [self setCellViewControllers:cellControllers];
@@ -75,11 +81,8 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
-            (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
-
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -96,7 +99,7 @@
 {
     static NSString *cellId = @"cell";
     
-    if ([indexPath section]  <= 1) {
+    if ([indexPath section]  <= 2) {
         BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
         [cellController setDelegate:self];
         return [cellController tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -113,7 +116,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section]  <= 1) {
+    if ([indexPath section]  <= 2) {
         BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
         [cellController setDelegate:self];
         return [cellController tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -136,6 +139,17 @@
 {
     return [self list];
 }
+
+#pragma mark - color picker cell controller delegate method
+
+- (void)cellController:(BaseTableCellController *)cellController didSelectItem:(id)item
+{
+    if ([cellController isKindOfClass:[ColorPickerCellController class]]) {
+        UIColor *color = (UIColor *)item;
+        [[[self navigationController] navigationBar] setTintColor:color];
+    }
+}
+
 
 @end
 

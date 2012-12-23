@@ -7,7 +7,6 @@
 //
 
 #import "DisplayListNoteViewController.h"
-#import "ListColor.h"
 #import "MetaList.h"
 #import "TableHeaderView.h"
 
@@ -43,15 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSString *bgImagePath = [NSString stringWithFormat:@"Backgrounds/normal"];
-    if ([[self list] color])
-        bgImagePath = [NSString stringWithFormat:@"Backgrounds/%@", [[[self list] color] swatchFilename]];
-    
-    [self setBackgroundImageFilename:bgImagePath];
-    UIImageView *bgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:bgImagePath]];
-    [[self tableView] setBackgroundView:bgView];
-    
+    [[self view] setBackgroundColor:[UIColor lightGrayColor]];
 }
 
 - (void)viewDidUnload
