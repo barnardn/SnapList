@@ -91,6 +91,8 @@
 		498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBFE1687933C0037DA65 /* SelectColorView.m */; };
 		498EBC01168793560037DA65 /* SelectColorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498EBC00168793560037DA65 /* SelectColorView.xib */; };
 		498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC04168B7A880037DA65 /* GzColors+HexToName.m */; };
+		498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC07168B955D0037DA65 /* ListCategoryViewController.m */; };
+		498EBC0A168B955E0037DA65 /* ListCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498EBC08168B955E0037DA65 /* ListCategoryView.xib */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
@@ -280,6 +282,10 @@
 		498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 11.xcdatamodel"; sourceTree = "<group>"; };
 		498EBC03168B7A880037DA65 /* GzColors+HexToName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GzColors+HexToName.h"; sourceTree = "<group>"; };
 		498EBC04168B7A880037DA65 /* GzColors+HexToName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GzColors+HexToName.m"; sourceTree = "<group>"; };
+		498EBC06168B955D0037DA65 /* ListCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategoryViewController.h; sourceTree = "<group>"; };
+		498EBC07168B955D0037DA65 /* ListCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategoryViewController.m; sourceTree = "<group>"; };
+		498EBC08168B955E0037DA65 /* ListCategoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCategoryView.xib; path = Classes/ListCategoryView.xib; sourceTree = "<group>"; };
+		498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 12.xcdatamodel"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -509,11 +515,14 @@
 			isa = PBXGroup;
 			children = (
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
+				49748DD316703347006BE3C2 /* EditItemActionsView.xib */,
 				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
+				49C3D0C8167FFBA300B1FF16 /* EditListView.xib */,
 				498885431458D42600FC3294 /* EditMeasureView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
 				49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */,
 				4959AB0513104B460039ACAC /* EditTextView.xib */,
+				498EBC08168B955E0037DA65 /* ListCategoryView.xib */,
 				4955B03D1323033E00722C3F /* ListCell.xib */,
 				495EABF813083F5700F4A64E /* ListItemsView.xib */,
 				4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */,
@@ -521,8 +530,6 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				499306A3135FB07300ECBE16 /* ReminderView.xib */,
 				49F1814D12C959B50066B454 /* RootView.xib */,
-				49748DD316703347006BE3C2 /* EditItemActionsView.xib */,
-				49C3D0C8167FFBA300B1FF16 /* EditListView.xib */,
 			);
 			name = Xibs;
 			sourceTree = "<group>";
@@ -727,6 +734,8 @@
 				49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */,
 				4959AB0313104B460039ACAC /* EditTextViewController.h */,
 				4959AB0413104B460039ACAC /* EditTextViewController.m */,
+				498EBC06168B955D0037DA65 /* ListCategoryViewController.h */,
+				498EBC07168B955D0037DA65 /* ListCategoryViewController.m */,
 				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
 				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
 				4988A2B01673E32D00AA1BA6 /* ListManagerViewController.h */,
@@ -875,6 +884,7 @@
 				498EBBFB168790460037DA65 /* popoverBgSimple.png in Resources */,
 				498EBBFC168790460037DA65 /* README in Resources */,
 				498EBC01168793560037DA65 /* SelectColorView.xib in Resources */,
+				498EBC0A168B955E0037DA65 /* ListCategoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +950,7 @@
 				498EBBEB168790460037DA65 /* WETouchableView.m in Sources */,
 				498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */,
 				498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */,
+				498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1058,6 +1069,7 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */,
 				498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */,
 				497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */,
 				49F48F4F16741F650056B173 /* ListMonster 9.xcdatamodel */,
@@ -1070,7 +1082,7 @@
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */;
+			currentVersion = 498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */;
 			name = ListMonster.xcdatamodeld;
 			path = ../ListMonster.xcdatamodeld;
 			sourceTree = "<group>";
