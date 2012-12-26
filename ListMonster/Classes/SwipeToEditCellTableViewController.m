@@ -206,7 +206,7 @@
     }];
 }
 
-#pragma mark - datamodel accessor abstract methods
+#pragma mark - subclass accessor abstract methods
 
 - (BOOL)shouldIgnoreGestureRecognizerForDirection:(SwipeGestureRecognizerDirection)swipeDirection
 {
