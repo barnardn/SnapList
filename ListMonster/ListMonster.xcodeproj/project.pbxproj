@@ -63,7 +63,6 @@
 		498885441458D42600FC3294 /* EditMeasureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498885421458D42600FC3294 /* EditMeasureViewController.m */; };
 		498885451458D42600FC3294 /* EditMeasureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498885431458D42600FC3294 /* EditMeasureView.xib */; };
 		4988A2B41673E32D00AA1BA6 /* ListManagerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */; };
-		498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498D73B012EE5267001F9364 /* CategorySelectViewController.m */; };
 		498EBBB716878DF70037DA65 /* ColorPickerCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBB616878DF70037DA65 /* ColorPickerCellController.m */; };
 		498EBBE5168790460037DA65 /* ColorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBC4168790460037DA65 /* ColorButton.m */; };
 		498EBBE6168790460037DA65 /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBC6168790460037DA65 /* ColorViewController.m */; };
@@ -242,8 +241,6 @@
 		4988A2AF1673D74E00AA1BA6 /* ListMonster 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 8.xcdatamodel"; sourceTree = "<group>"; };
 		4988A2B01673E32D00AA1BA6 /* ListManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListManagerViewController.h; sourceTree = "<group>"; };
 		4988A2B21673E32D00AA1BA6 /* ListManagerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListManagerView.xib; path = Classes/ListManagerView.xib; sourceTree = "<group>"; };
-		498D73AF12EE5267001F9364 /* CategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategorySelectViewController.h; sourceTree = "<group>"; };
-		498D73B012EE5267001F9364 /* CategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategorySelectViewController.m; sourceTree = "<group>"; };
 		498EBBB516878DF70037DA65 /* ColorPickerCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerCellController.h; sourceTree = "<group>"; };
 		498EBBB616878DF70037DA65 /* ColorPickerCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerCellController.m; sourceTree = "<group>"; };
 		498EBBC3168790460037DA65 /* ColorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorButton.h; sourceTree = "<group>"; };
@@ -719,8 +716,6 @@
 		49F1814712C958880066B454 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				498D73AF12EE5267001F9364 /* CategorySelectViewController.h */,
-				498D73B012EE5267001F9364 /* CategorySelectViewController.m */,
 				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
 				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
 				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
@@ -906,7 +901,6 @@
 				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
-				498D73B112EE5267001F9364 /* CategorySelectViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
