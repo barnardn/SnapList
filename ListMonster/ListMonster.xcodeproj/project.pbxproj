@@ -136,7 +136,6 @@
 		49DE1AF31362563C00D27543 /* Tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DE1AF21362563C00D27543 /* Tuple.m */; };
 		49E75315163F401B00603F90 /* bg-btn-delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 49E75313163F401B00603F90 /* bg-btn-delete.png */; };
 		49E75316163F401B00603F90 /* bg-btn-delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49E75314163F401B00603F90 /* bg-btn-delete@2x.png */; };
-		49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EAC1D8131AED39003738FD /* EditCategoryViewController.m */; };
 		49EAC1DB131AED39003738FD /* EditCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49EAC1D9131AED39003738FD /* EditCategoryView.xib */; };
 		49EB7B641676B58D00AC5B33 /* bg-tableheader-light.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */; };
 		49EB7B651676B58D00AC5B33 /* bg-tableheader-light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49EB7B631676B58D00AC5B33 /* bg-tableheader-light@2x.png */; };
@@ -339,8 +338,6 @@
 		49DE1AF21362563C00D27543 /* Tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tuple.m; sourceTree = "<group>"; };
 		49E75313163F401B00603F90 /* bg-btn-delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-btn-delete.png"; sourceTree = "<group>"; };
 		49E75314163F401B00603F90 /* bg-btn-delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-btn-delete@2x.png"; sourceTree = "<group>"; };
-		49EAC1D7131AED39003738FD /* EditCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCategoryViewController.h; sourceTree = "<group>"; };
-		49EAC1D8131AED39003738FD /* EditCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCategoryViewController.m; sourceTree = "<group>"; };
 		49EAC1D9131AED39003738FD /* EditCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditCategoryView.xib; path = Classes/EditCategoryView.xib; sourceTree = "<group>"; };
 		49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader-light.png"; sourceTree = "<group>"; };
 		49EB7B631676B58D00AC5B33 /* bg-tableheader-light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-tableheader-light@2x.png"; sourceTree = "<group>"; };
@@ -718,8 +715,6 @@
 			children = (
 				494844B713F84DCF00445ED7 /* DisplayListNoteViewController.h */,
 				494844B813F84DCF00445ED7 /* DisplayListNoteViewController.m */,
-				49EAC1D7131AED39003738FD /* EditCategoryViewController.h */,
-				49EAC1D8131AED39003738FD /* EditCategoryViewController.m */,
 				495D8411130E088800933720 /* EditListItemViewController.h */,
 				495D8412130E088800933720 /* EditListItemViewController.m */,
 				49A0205312E5256A005B1D0E /* EditListViewController.h */,
@@ -905,7 +900,6 @@
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 				4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */,
-				49EAC1DA131AED39003738FD /* EditCategoryViewController.m in Sources */,
 				4955B03C1323031500722C3F /* ListCell.m in Sources */,
 				49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */,
 				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,
