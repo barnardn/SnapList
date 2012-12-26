@@ -158,6 +158,7 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 			CGPoint anchorPoint = CGPointZero;
 			
 			switch (theArrowDirection) {
+                case UIPopoverArrowDirectionAny:
 				case UIPopoverArrowDirectionUp:
 					
 					anchorPoint = CGPointMake(CGRectGetMidX(anchorRect), CGRectGetMaxY(anchorRect));
@@ -258,6 +259,8 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 					theArrowRect = CGRectMake(xArrowOffset, yArrowOffset, rightArrowImage.size.width, rightArrowImage.size.height);
 					
 					break;
+                case UIPopoverArrowDirectionUnknown:
+                    break;
 			}
 			
 			CGRect bgFrame = CGRectOffset(theBgRect, theOffset.x, theOffset.y);
@@ -327,6 +330,8 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 	}
 	
 	switch (arrowDirection) {
+        case UIPopoverArrowDirectionUnknown:
+        case UIPopoverArrowDirectionAny:
 		case UIPopoverArrowDirectionUp:
 			arrowImage = upArrowImage;
 			break;
