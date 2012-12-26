@@ -91,6 +91,7 @@
 		498EBBFC168790460037DA65 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 498EBBE4168790460037DA65 /* README */; };
 		498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBBFE1687933C0037DA65 /* SelectColorView.m */; };
 		498EBC01168793560037DA65 /* SelectColorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498EBC00168793560037DA65 /* SelectColorView.xib */; };
+		498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC04168B7A880037DA65 /* GzColors+HexToName.m */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
@@ -281,6 +282,8 @@
 		498EBBFE1687933C0037DA65 /* SelectColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectColorView.m; sourceTree = "<group>"; };
 		498EBC00168793560037DA65 /* SelectColorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectColorView.xib; sourceTree = "<group>"; };
 		498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 11.xcdatamodel"; sourceTree = "<group>"; };
+		498EBC03168B7A880037DA65 /* GzColors+HexToName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GzColors+HexToName.h"; sourceTree = "<group>"; };
+		498EBC04168B7A880037DA65 /* GzColors+HexToName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GzColors+HexToName.m"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -707,6 +710,8 @@
 				4941A8581572FCD100EF158B /* NSString+EmptyString.m */,
 				498432AF166BF253003C624F /* NSDate+FormattedDates.h */,
 				498432B0166BF253003C624F /* NSDate+FormattedDates.m */,
+				498EBC03168B7A880037DA65 /* GzColors+HexToName.h */,
+				498EBC04168B7A880037DA65 /* GzColors+HexToName.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -946,6 +951,7 @@
 				498EBBEA168790460037DA65 /* WEPopoverController.m in Sources */,
 				498EBBEB168790460037DA65 /* WETouchableView.m in Sources */,
 				498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */,
+				498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -109,7 +109,7 @@
     
     UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 240,250)];
     
-    scroll.contentSize = CGSizeMake(200, 320);
+    scroll.contentSize = CGSizeMake(200, 360);
     [self.view addSubview:scroll];
     
 	if (self.buttonCollection != nil) {
@@ -122,7 +122,7 @@
 	self.buttonCollection = [[NSMutableArray alloc]init];
 	
     dispatch_queue_t myQueue = dispatch_queue_create("com.gazapps.myqueue", 0);
-    dispatch_async(myQueue, ^{
+    dispatch_async(myQueue, ^{ 
         int colorNumber = 0;
         for (int i=0; i<=7; i++) {
             for (int j=0; j<=5; j++) {
@@ -159,7 +159,31 @@
                 });//end block
             }
         }
+
+        ColorButton *noColorButton = [ColorButton buttonWithType:UIButtonTypeCustom];
+        CGRect btnFrame = CGRectMake(3.0f, 323.0f, 236.0f, 35.0f);
+        [noColorButton setFrame:btnFrame];
+        [noColorButton setSelected:NO];
+        [noColorButton setNeedsDisplay];
+        [noColorButton addTarget:self action:@selector(buttonPushed:) forControlEvents:UIControlEventTouchUpInside];
+        [noColorButton setBackgroundColor:[UIColor lightGrayColor]];
+        [noColorButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [[noColorButton titleLabel] setFont:[UIFont systemFontOfSize:18.0f]];
+        [noColorButton setHexColor:nil];
+        [[noColorButton layer] setCornerRadius:4.0f];
+        [[noColorButton layer] setMasksToBounds:YES];
+        [[noColorButton layer] setBorderColor:[UIColor blackColor].CGColor];
+        [[noColorButton layer] setBorderWidth:1.0f];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = noColorButton.bounds;
+        gradient.colors = [NSArray arrayWithObjects:(id)[ [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.45] CGColor], (id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1]  CGColor], nil];
+        [[noColorButton layer] insertSublayer:gradient atIndex:0];
         
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.buttonCollection addObject:noColorButton];
+            [noColorButton setTitle:NSLocalizedString(@"No Color", nil) forState:UIControlStateNormal];
+            [scroll addSubview:noColorButton];
+        });//end block
     });//end block
     dispatch_release(myQueue);
 }

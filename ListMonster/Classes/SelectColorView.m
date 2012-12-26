@@ -7,7 +7,7 @@
 //
 
 #import "ColorViewController.h"
-#import "GzColors.h"
+#import "GzColors+HexToName.h"
 #import "SelectColorView.h"
 #import "WEPopoverController.h"
 
@@ -26,7 +26,19 @@
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SelectColorView" owner:self options:nil];
     UIView *v = (UIView *)[nib objectAtIndex:0];
-    [self addSubview:v];    
+    [self addSubview:v];
+    [self setBackgroundColor:[UIColor clearColor]];
+    [[self btnColorName] setTitle:NSLocalizedString(@"Select",nil) forState:UIControlStateNormal];
+    [[self btnColorName] setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [[[self btnColorName] layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[[self btnColorName] layer] setBorderWidth:1.0f];
+    [[[self btnColorName] layer] setCornerRadius:4.0f];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = [[self btnColorName] bounds];
+    gradient.colors = [NSArray arrayWithObjects:(id)[ [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.25] CGColor], (id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]  CGColor], nil];
+    [[[self btnColorName] layer] insertSublayer:gradient atIndex:0];
+    
     return self;
 }
 
@@ -38,7 +50,6 @@
         contentViewController.delegate = self;
 		WEPopoverController *poc = [[WEPopoverController alloc] initWithContentViewController:contentViewController];
 		[poc setDelegate:self];
-		//self.popoverController.passthroughViews = [NSArray arrayWithObject:self.navigationController.navigationBar];
 		[poc presentPopoverFromRect:[sender frame]
                              inView:self
            permittedArrowDirections:(UIPopoverArrowDirectionUp|UIPopoverArrowDirectionDown)
@@ -58,7 +69,8 @@
     UIColor *color = [GzColors colorFromHex:hexColor];
     [[self delegate] selectColorView:self didSelectColor:hexColor];
     [[self btnColorName] setBackgroundColor:color];
-    
+    NSString *colorName = [GzColors colorNameFromHexString:hexColor];
+    [[self lblColorName] setText:colorName];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController

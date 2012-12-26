@@ -7,9 +7,10 @@
 //
 
 #import "ColorPickerCellController.h"
-#import "GzColors.h"
+#import "GzColors+HexToName.h"
 #import "MetaList.h"
 #import "SelectColorView.h"
+#import "ThemeManager.h"
 
 @interface ColorPickerCellController () <SelectColorDelegate>
 
@@ -41,8 +42,13 @@
     } else {
         UIColor *color = [GzColors colorFromHex:[[self list] tintColor]];
         [[scv btnColorName] setBackgroundColor:color];
-        [[scv lblColorName] setText:[[self list] tintColor]];
+        NSString *colorName = [GzColors colorNameFromHexString:[[self list] tintColor]];
+        if (!colorName) colorName = NSLocalizedString(@"None", nil);
+        [[scv lblColorName] setText:colorName];
+        [[scv lblColorName] setFont:[ThemeManager fontForListName]];
+        [[scv lblColorName] setTextColor:[ThemeManager textColorForListManagerList]];
     }
+    [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];    
     [[cell contentView] addSubview:scv];
     return cell;
 }
