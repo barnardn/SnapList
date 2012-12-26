@@ -4,6 +4,7 @@
 #import "_ListCategory.h"
 
 const struct ListCategoryAttributes ListCategoryAttributes = {
+	.isNew = @"isNew",
 	.name = @"name",
 	.order = @"order",
 };
@@ -41,6 +42,10 @@ const struct ListCategoryFetchedProperties ListCategoryFetchedProperties = {
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"isNewValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isNew"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"orderValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"order"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -48,6 +53,32 @@ const struct ListCategoryFetchedProperties ListCategoryFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic isNew;
+
+
+
+- (BOOL)isNewValue {
+	NSNumber *result = [self isNew];
+	return [result boolValue];
+}
+
+- (void)setIsNewValue:(BOOL)value_ {
+	[self setIsNew:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsNewValue {
+	NSNumber *result = [self primitiveIsNew];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsNewValue:(BOOL)value_ {
+	[self setPrimitiveIsNew:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

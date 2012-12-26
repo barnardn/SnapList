@@ -5,6 +5,7 @@
 
 
 extern const struct ListCategoryAttributes {
+	__unsafe_unretained NSString *isNew;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *order;
 } ListCategoryAttributes;
@@ -21,6 +22,7 @@ extern const struct ListCategoryFetchedProperties {
 
 
 
+
 @interface ListCategoryID : NSManagedObjectID {}
 @end
 
@@ -29,6 +31,18 @@ extern const struct ListCategoryFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ListCategoryID*)objectID;
+
+
+
+
+@property (nonatomic, strong) NSNumber* isNew;
+
+
+@property BOOL isNewValue;
+- (BOOL)isNewValue;
+- (void)setIsNewValue:(BOOL)value_;
+
+//- (BOOL)validateIsNew:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -74,6 +88,15 @@ extern const struct ListCategoryFetchedProperties {
 @end
 
 @interface _ListCategory (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveIsNew;
+- (void)setPrimitiveIsNew:(NSNumber*)value;
+
+- (BOOL)primitiveIsNewValue;
+- (void)setPrimitiveIsNewValue:(BOOL)value_;
+
+
 
 
 - (NSString*)primitiveName;
