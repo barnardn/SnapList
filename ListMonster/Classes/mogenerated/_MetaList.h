@@ -6,6 +6,7 @@
 
 extern const struct MetaListAttributes {
 	__unsafe_unretained NSString *dateCreated;
+	__unsafe_unretained NSString *isNew;
 	__unsafe_unretained NSString *listID;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *note;
@@ -31,6 +32,7 @@ extern const struct MetaListFetchedProperties {
 
 
 
+
 @interface MetaListID : NSManagedObjectID {}
 @end
 
@@ -47,6 +49,18 @@ extern const struct MetaListFetchedProperties {
 
 
 //- (BOOL)validateDateCreated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSNumber* isNew;
+
+
+@property BOOL isNewValue;
+- (BOOL)isNewValue;
+- (void)setIsNewValue:(BOOL)value_;
+
+//- (BOOL)validateIsNew:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -127,6 +141,15 @@ extern const struct MetaListFetchedProperties {
 
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitiveIsNew;
+- (void)setPrimitiveIsNew:(NSNumber*)value;
+
+- (BOOL)primitiveIsNewValue;
+- (void)setPrimitiveIsNewValue:(BOOL)value_;
 
 
 

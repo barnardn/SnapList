@@ -8,6 +8,7 @@
 
 
 #import "ListCategory.h"
+#import "ListCategoryCellController.h"
 #import "ColorPickerCellController.h"
 #import "EditListViewController.h"
 #import "EditNoteViewController.h"
@@ -18,7 +19,7 @@
 #import "TextViewTableCellController.h"
 #import "ThemeManager.h"
 
-@interface EditListViewController() <TableCellControllerDelegate>
+@interface EditListViewController() <TableCellControllerDelegate, TextFieldTableCellControllerDelegate>
 
 @property (nonatomic, strong) MetaList *list;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -64,17 +65,28 @@
     ColorPickerCellController *ccColorPicker = [[ColorPickerCellController alloc] initWithTableView:[self tableView]];
     [ccColorPicker setDelegate:self];
     [ccColorPicker setList:[self list]];
+
+    TextFieldTableCellController *ccTf = [[TextFieldTableCellController alloc] initWithTableView:[self tableView]];
+    [ccTf setDelegate:self];
+    [ccTf setTextfieldTextColor:[UIColor whiteColor]];
+    
+    TextViewTableCellController *ccTv = [[TextViewTableCellController alloc] initWithTableView:[self tableView]];
+    [ccTv setDelegate:self];
+    
+    ListCategoryCellController *ccLc = [[ListCategoryCellController alloc] initWithTableView:[self tableView]];
+    [ccLc setDelegate:self];
+    [ccLc setCategory:[[self list] category]];
+    [ccLc setNavController:[self navigationController]];
     
     NSArray *cellControllers = @[
-        [[TextFieldTableCellController alloc] initWithTableView:[self tableView]],
-        ccColorPicker,
-        [[TextViewTableCellController alloc] initWithTableView:[self tableView]]
+        ccTf, ccLc, ccColorPicker, ccTv
     ];
     [self setCellViewControllers:cellControllers];
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 }
 
@@ -86,28 +98,20 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return elvNUM_SECTIONS;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellId = @"cell";
-    
-    if ([indexPath section]  <= 2) {
-        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
-        [cellController setDelegate:self];
-        return [cellController tableView:tableView cellForRowAtIndexPath:indexPath];
-    }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    [[cell textLabel] setText:[NSString stringWithFormat:@"Cell %d", [indexPath section]]];
-    return cell;
+    BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
+    return [cellController tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 #pragma mark -
@@ -115,28 +119,36 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section]  <= 2) {
-        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
-        [cellController setDelegate:self];
-        return [cellController tableView:tableView heightForRowAtIndexPath:indexPath];
-    }
+    BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
+    return [cellController tableView:tableView heightForRowAtIndexPath:indexPath];
     return [tableView rowHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0) {
-        BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:0];
-        [cellController tableView:tableView didSelectRowAtIndexPath:indexPath];
-    }
-
+    BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
+    [cellController tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-#pragma mark - table cell controller delegate
+#pragma mark -  base table cell controller delegate
 
 - (id)cellController:(BaseTableCellController *)cellController itemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self list];
+}
+
+#pragma mark text field cell controller delegate
+
+- (NSString *)defaultTextForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [[self list] name];
+}
+
+- (void)didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self list] setName:text];
+    [[self list] save];
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - color picker cell controller delegate method

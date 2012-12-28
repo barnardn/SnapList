@@ -57,8 +57,8 @@ static const CGFloat kTopTextMargin = 4.0f;
         [[self textField] becomeFirstResponder];
         return;
     }
-    [[self textField] setEnabled:NO];
-    [[self textField] setText:[self defaultText]];
+    //[[self textField] setEnabled:NO];
+    //[[self textField] setText:[self defaultText]];
 }
 - (void)layoutSubviews
 {
@@ -96,7 +96,7 @@ static const CGFloat kTopTextMargin = 4.0f;
 {
     [textField resignFirstResponder];
     [[self delegate] textFieldTableCell:self didEndEdittingText:[textField text]];
-    [[self textField] setText:[self defaultText]];
+    //[[self textField] setText:[self text]];
     [[self textField] setEnabled:NO];    
     return NO;
 }

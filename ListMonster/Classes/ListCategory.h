@@ -17,5 +17,6 @@
 + (NSArray *)allCategoriesInContext:(NSManagedObjectContext *)moc;
 
 - (NSArray *)sortedLists;
+- (void)save;
 
 @end

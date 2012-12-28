@@ -17,7 +17,7 @@ typedef enum  {
 
 @interface SwipeToEditCellTableViewController : UIViewController
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 - (void)removeSwipeActionIndicatorViewsFromCell:(UITableViewCell *)cell;
 

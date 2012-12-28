@@ -68,6 +68,11 @@
     return [UIColor colorWithWhite:0.85 alpha:1.0f];
 }
 
++ (UIColor *)ghostedTextColorForListManager
+{
+    return [UIColor colorWithWhite:0.55 alpha:1.0f];
+}
+
 + (UIColor *)backgroundColorForListManager
 {
     return [UIColor colorWithWhite:0.25f alpha:1.0f];

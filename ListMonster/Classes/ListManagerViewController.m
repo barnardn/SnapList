@@ -87,6 +87,8 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     [super viewWillAppear:animated];
     [[[self navigationController] navigationBar] setTintColor:[UIColor darkGrayColor]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -226,13 +228,15 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
         [newList setCategory:category];
     [newList setDateCreated:[NSDate date]];
     [newList save];
-    
+    [[tableCell textField] setEnabled:NO];
     [[self tableView] beginUpdates];
     NSMutableArray *lists = [[self categoryListMap] objectForKey:categoryKey];
     [lists addObject:newList];
     [[self tableView] deselectRowAtIndexPath:indexPath animated:NO];
     [[self tableView] insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];
+    NSIndexPath *addNewPath = [NSIndexPath indexPathForRow:[indexPath row] + 1 inSection:[indexPath section]];
+    [[self tableView] reloadRowsAtIndexPaths:@[indexPath, addNewPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma - TODO clean up the header views for this section.  they look crappy!

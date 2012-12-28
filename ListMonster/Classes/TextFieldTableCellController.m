@@ -27,15 +27,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"--txtTableCell--";
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
     TextFieldTableCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[TextFieldTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [[cell textField] setClearsOnBeginEditing:NO];
+        [[cell textField] setClearsOnBeginEditing:[self clearTextOnBeginEdit]];
         [cell setDelegate:self];
-        [cell setDefaultText:[list name]];
     }
+    [cell setDefaultText:[[self delegate] defaultTextForItemAtIndexPath:indexPath]];
+    [cell setAccessoryType:UITableViewCellAccessoryNone];
     [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];
+    [[cell textField] setTextColor:[self textfieldTextColor]];
+    [cell setSelected:NO];
     return cell;
 }
 
@@ -47,9 +49,7 @@
 - (void)textFieldTableCell:(TextFieldTableCell *)tableCell didEndEdittingText:(NSString *)text
 {
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:tableCell];
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
-    [list setName:text];
-    [list save];
+    [[self delegate] didEndEdittingText:text forItemAtIndexPath:indexPath];
 }
 
 @end

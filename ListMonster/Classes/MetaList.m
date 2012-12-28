@@ -43,10 +43,12 @@
 #pragma mark -
 #pragma mark NSManagedObject overrides
 
-- (void)awakeFromInsert {
+- (void)awakeFromInsert
+{
     [self setDateCreated:[NSDate date]];
     [self setListID:[NSString stringWithUUID]];
-    }
+    [self setPrimitiveIsNewValue:YES];
+}
 
 
 #pragma mark - helper methods
@@ -55,6 +57,7 @@
 {
     NSError *error;
     ZAssert([[self managedObjectContext] save:&error], @"Unable to save list %@: %@", [self name], [error localizedDescription]);
+    [self setIsNewValue:NO];
 }
 
 - (void)deleteItem:(MetaListItem *)item

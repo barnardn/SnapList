@@ -25,4 +25,18 @@ static NSString * const kCategoryEntityName = @"ListCategory";
     return [[self list] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
 }
 
+- (void)save
+{
+    NSError *error = nil;
+    ZAssert([[self managedObjectContext] save:&error], @"Unable to save category %@: %@", [self name], [error localizedDescription]);
+    [self setIsNewValue:NO];
+}
+
+- (void)awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self setPrimitiveIsNewValue:YES];
+}
+
+
 @end

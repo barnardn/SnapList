@@ -5,6 +5,7 @@
 
 const struct MetaListAttributes MetaListAttributes = {
 	.dateCreated = @"dateCreated",
+	.isNew = @"isNew",
 	.listID = @"listID",
 	.name = @"name",
 	.note = @"note",
@@ -46,6 +47,10 @@ const struct MetaListFetchedProperties MetaListFetchedProperties = {
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"isNewValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"isNew"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+	}
 	if ([key isEqualToString:@"orderValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"order"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -59,6 +64,32 @@ const struct MetaListFetchedProperties MetaListFetchedProperties = {
 
 @dynamic dateCreated;
 
+
+
+
+
+
+@dynamic isNew;
+
+
+
+- (BOOL)isNewValue {
+	NSNumber *result = [self isNew];
+	return [result boolValue];
+}
+
+- (void)setIsNewValue:(BOOL)value_ {
+	[self setIsNew:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveIsNewValue {
+	NSNumber *result = [self primitiveIsNew];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveIsNewValue:(BOOL)value_ {
+	[self setPrimitiveIsNew:[NSNumber numberWithBool:value_]];
+}
 
 
 

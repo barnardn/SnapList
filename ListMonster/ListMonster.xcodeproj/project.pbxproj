@@ -93,6 +93,7 @@
 		498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC04168B7A880037DA65 /* GzColors+HexToName.m */; };
 		498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC07168B955D0037DA65 /* ListCategoryViewController.m */; };
 		498EBC0A168B955E0037DA65 /* ListCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 498EBC08168B955E0037DA65 /* ListCategoryView.xib */; };
+		498EBC11168BAC230037DA65 /* ListCategoryCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498EBC10168BAC230037DA65 /* ListCategoryCellController.m */; };
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
@@ -286,6 +287,9 @@
 		498EBC07168B955D0037DA65 /* ListCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategoryViewController.m; sourceTree = "<group>"; };
 		498EBC08168B955E0037DA65 /* ListCategoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCategoryView.xib; path = Classes/ListCategoryView.xib; sourceTree = "<group>"; };
 		498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 12.xcdatamodel"; sourceTree = "<group>"; };
+		498EBC0F168BAC230037DA65 /* ListCategoryCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategoryCellController.h; sourceTree = "<group>"; };
+		498EBC10168BAC230037DA65 /* ListCategoryCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategoryCellController.m; sourceTree = "<group>"; };
+		498EBC12168E43740037DA65 /* ListMonster 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 13.xcdatamodel"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -482,6 +486,8 @@
 				49C3D0CB168149B900B1FF16 /* TextViewTableCellController.m */,
 				498EBBB516878DF70037DA65 /* ColorPickerCellController.h */,
 				498EBBB616878DF70037DA65 /* ColorPickerCellController.m */,
+				498EBC0F168BAC230037DA65 /* ListCategoryCellController.h */,
+				498EBC10168BAC230037DA65 /* ListCategoryCellController.m */,
 			);
 			name = "Table Cell Controllers";
 			sourceTree = "<group>";
@@ -951,6 +957,7 @@
 				498EBBFF1687933C0037DA65 /* SelectColorView.m in Sources */,
 				498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */,
 				498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */,
+				498EBC11168BAC230037DA65 /* ListCategoryCellController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,6 +1076,7 @@
 		49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				498EBC12168E43740037DA65 /* ListMonster 13.xcdatamodel */,
 				498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */,
 				498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */,
 				497EB488167570690086DF17 /* ListMonster 10.xcdatamodel */,
@@ -1082,7 +1090,7 @@
 				49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */,
 				49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */,
 			);
-			currentVersion = 498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */;
+			currentVersion = 498EBC12168E43740037DA65 /* ListMonster 13.xcdatamodel */;
 			name = ListMonster.xcdatamodeld;
 			path = ../ListMonster.xcdatamodeld;
 			sourceTree = "<group>";

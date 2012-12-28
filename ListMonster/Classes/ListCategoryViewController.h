@@ -10,4 +10,6 @@
 
 @interface ListCategoryViewController : SwipeToEditCellTableViewController <UITableViewDataSource, UITableViewDelegate>
 
+- (id)initWithList:(MetaList *)list;
+
 @end

@@ -24,10 +24,9 @@
 
 @protocol TableCellControllerDelegate <NSObject>
 
-- (id)cellController:(BaseTableCellController *)cellController itemAtIndexPath:(NSIndexPath *)indexPath;
-
 @optional
 
+- (id)cellController:(BaseTableCellController *)cellController itemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)cellController:(BaseTableCellController *)cellController didSelectItem:(id)item;
 
 @end
