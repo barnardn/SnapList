@@ -48,6 +48,11 @@
 #pragma mark -
 #pragma mark Memory management
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -88,6 +93,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -160,6 +172,39 @@
         [[[self navigationController] navigationBar] setTintColor:color];
     }
 }
+
+
+#pragma mark - keyboard notification handlers
+
+#pragma mark - keyboard notification handlers
+
+- (void)keyboardDidAppear:(NSNotification *)notification
+{
+    NSDictionary* info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+    UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    [[self tableView] setContentInset:contentInsets];
+    [[self tableView] setScrollIndicatorInsets:contentInsets];
+    
+    CGRect visibleRect = [[self view] frame];
+    visibleRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(visibleRect, [cell frame].origin)) {
+        CGPoint scrollPoint = CGPointMake(0.0, cell.frame.origin.y-kbSize.height+cell.frame.size.height + 10.0f);
+        [[self tableView] setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+- (void)keyboardDidDisappear:(NSNotification *)notification
+{
+    [[self tableView] setContentInset:UIEdgeInsetsZero];
+    [[self tableView] setScrollIndicatorInsets:UIEdgeInsetsZero];
+}
+
+
 
 
 @end
