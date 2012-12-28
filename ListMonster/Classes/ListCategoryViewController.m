@@ -103,13 +103,15 @@ static const CGFloat kRowHeight = 44.0f;
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [[cell textLabel] setFont:[ThemeManager fontForListName]];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     [[cell textLabel] setText:[category name]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     if (category == [[self list] category]) {
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
+    
     return cell;
 }
 
