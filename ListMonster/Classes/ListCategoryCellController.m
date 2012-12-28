@@ -18,16 +18,16 @@
 {
     static NSString *cellId = @"--categoryCell--";
     
+    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellId];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForListName]];
-    //[[cell detailTextLabel] setTextColor:[ThemeManager textColorForListManagerList]];
     [[cell textLabel] setText:NSLocalizedString(@"Category", nil)];
-    if ([self category]) {
-        [[cell detailTextLabel] setText:[[self category] name]];
+    if ([list category]) {
+        [[cell detailTextLabel] setText:[[list category] name]];
     } else {
         [[cell detailTextLabel] setTextColor:[ThemeManager ghostedTextColorForListManager]];
         [[cell detailTextLabel] setText:@""];
