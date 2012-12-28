@@ -21,16 +21,18 @@
     MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellId];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
-    [[cell detailTextLabel] setFont:[ThemeManager fontForListName]];
-    [[cell textLabel] setText:NSLocalizedString(@"Category", nil)];
+    
+    [[cell textLabel] setTextColor:[ThemeManager textColorForListManagerList]];
+    [[cell textLabel] setFont:[ThemeManager fontForListName]];
+
     if ([list category]) {
-        [[cell detailTextLabel] setText:[[list category] name]];
+        [[cell textLabel] setText:[[list category] name]];
     } else {
-        [[cell detailTextLabel] setTextColor:[ThemeManager ghostedTextColorForListManager]];
-        [[cell detailTextLabel] setText:@""];
+        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColorForListManager]];
+        [[cell textLabel] setText:NSLocalizedString(@"Pick a Category...", nil)];
     }
     return cell;
 }
