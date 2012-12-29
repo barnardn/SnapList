@@ -19,6 +19,7 @@ static const CGFloat kRowHeight = 44.0f;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *btnReorder;
+@property (nonatomic, strong) UIBarButtonItem *btnAdd;
 @property (nonatomic, strong) MetaList *list;
 @property (nonatomic, strong) NSMutableArray *allCategories;
 @property (nonatomic, strong) TextFieldTableCellController *textFieldCellController;
@@ -44,10 +45,11 @@ static const CGFloat kRowHeight = 44.0f;
 {
     [super viewDidLoad];
     [[self navigationItem] setTitle:NSLocalizedString(@"Categories", nil)];
-    UIBarButtonItem *btnAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+    UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                             target:self
                                                                             action:@selector(addButtonTapped:)];
-    [[self navigationItem] setRightBarButtonItem:btnAdd];
+    [[self navigationItem] setRightBarButtonItem:btn];
+    [self setBtnAdd:btn];
     [[self tableView] setRowHeight:kRowHeight];
     NSArray *categories = [ListCategory allCategoriesInContext:[[self list] managedObjectContext]];
     [self setAllCategories:[categories mutableCopy]];
@@ -67,11 +69,25 @@ static const CGFloat kRowHeight = 44.0f;
 
 #pragma mark - button actions
 
-- (IBAction)addButtonTapped:(UIBarButtonItem *)sender
+- (void)addButtonTapped:(UIBarButtonItem *)sender
 {
     ListCategory *category = [ListCategory insertInManagedObjectContext:[[self list] managedObjectContext]];
     [[self allCategories] insertObject:category atIndex:0];
     [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (IBAction)reorderButtonTapped:(UIBarButtonItem *)button
+{
+    if ([[self tableView] isEditing]) {
+        [[self tableView] setEditing:NO animated:YES];
+        [button setImage:[UIImage imageNamed:@"btn-reorder"]];
+        [[self btnAdd] setEnabled:YES];
+    }
+    else {
+        [[self tableView] setEditing:YES animated:YES];
+        [button setImage:[UIImage imageNamed:@"icon-ok-small"]];
+        [[self btnAdd] setEnabled:NO];
+    }
 }
 
 
@@ -107,11 +123,11 @@ static const CGFloat kRowHeight = 44.0f;
     }
     [[cell textLabel] setText:[category name]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
+    [cell setShowsReorderControl:YES];
     if (category == [[self list] category]) {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
-    
     return cell;
 }
 
@@ -121,7 +137,6 @@ static const CGFloat kRowHeight = 44.0f;
 {
     [self removeSwipeActionIndicatorViewsFromCell:cell];
 }
-
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -143,6 +158,50 @@ static const CGFloat kRowHeight = 44.0f;
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ListCategory *category = [[self allCategories] objectAtIndex:[indexPath row]];
+    return ![category isNewValue];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ListCategory *category = [[self allCategories] objectAtIndex:[indexPath row]];
+    return ![category isNewValue];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+       toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    ListCategory *category = [[self allCategories] objectAtIndex:[proposedDestinationIndexPath row]];
+    if (![category isNewValue]) return proposedDestinationIndexPath;
+    
+    NSIndexPath *alternative  = [NSIndexPath indexPathForRow:[proposedDestinationIndexPath row] + 1 inSection:[proposedDestinationIndexPath section]];
+    return alternative;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    ListCategory *category = [[self allCategories] objectAtIndex:[sourceIndexPath row]];
+    [[self allCategories] removeObject:category];
+    [[self allCategories] insertObject:category atIndex:[destinationIndexPath row]];
+    [[self allCategories] enumerateObjectsUsingBlock:^(ListCategory *cat, NSUInteger idx, BOOL *stop) {
+        [cat setOrderValue:idx];
+    }];
+    NSError *error;
+    ZAssert([[[self list] managedObjectContext] save:&error], @"Whoa! cant save after category reorder: %@", [error localizedDescription]);
 }
 
 #pragma mark - text field controller delegate methods
