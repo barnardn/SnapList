@@ -87,6 +87,9 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     [super viewWillAppear:animated];
     [[[self navigationController] navigationBar] setTintColor:[UIColor darkGrayColor]];
+    if ([[self tableView] indexPathForSelectedRow]) {
+        [self adjustCategoryChangeForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];    
 }
@@ -327,6 +330,27 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     if ([indexPath row] >= [arr count]) return nil;
     return [arr objectAtIndex:[indexPath row]];
 }
+
+- (void)adjustCategoryChangeForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    NSString *categoryName = [[self categoryNames] objectAtIndex:[indexPath section]];
+    if ([categoryName isEqualToString:[[list category] name]]) return;
+    NSMutableArray *oldList = [[self categoryListMap] objectForKey:categoryName];
+    NSMutableArray *newList = [[self categoryListMap] objectForKey:[[list category] name]];
+    
+    NSInteger toSection = [[self categoryNames] indexOfObject:[[list category] name]];
+    NSInteger toRow = [newList count];
+    [list setOrderValue:toRow];
+    NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:toSection];
+    [[self tableView] beginUpdates];
+    [oldList removeObject:list];
+    [newList addObject:list];
+    [[self tableView] moveRowAtIndexPath:indexPath toIndexPath:toIndexPath];
+    [[self tableView] endUpdates];
+    [list save];
+}
+
 
 #pragma mark - swipe to edit table view overrides
 
