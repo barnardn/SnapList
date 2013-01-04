@@ -28,6 +28,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSMutableArray *categoryNames;        // to categories sorted.
 @property (nonatomic, strong) NSMutableDictionary *categoriesByName;
+@property (nonatomic, assign) BOOL checkCategoryReorder;
 
 @end
 
@@ -90,6 +91,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     if ([[self tableView] indexPathForSelectedRow]) {
         [self adjustCategoryChangeForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
     }
+    [self adjustCateogryRenamesWhenReordered];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];    
 }
@@ -97,6 +99,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self setCheckCategoryReorder:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -350,6 +353,30 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [[self tableView] endUpdates];
     [list save];
 }
+
+- (void)adjustCateogryRenamesWhenReordered
+{
+    if (![self checkCategoryReorder]) return;
+    
+    [self setCheckCategoryReorder:NO];
+    NSArray *reorderedCategories = [ListCategory allCategoriesInContext:[self managedObjectContext]];
+    __block BOOL adjustOrder = NO;
+    [reorderedCategories enumerateObjectsUsingBlock:^(ListCategory *category, NSUInteger idx, BOOL *stop) {
+        NSString *name = [[self categoryNames] objectAtIndex:idx];
+        if (![name isEqualToString:[category name]]) {
+            *stop = YES;
+            adjustOrder = YES;
+        }
+    }];
+    if (adjustOrder) {
+        NSArray *updatedNames = [reorderedCategories map:^id(ListCategory *category) {
+            return [category name];
+        }];
+        [self setCategoryNames:[updatedNames mutableCopy]];
+        [[self tableView] reloadData];
+    }
+}
+
 
 
 #pragma mark - swipe to edit table view overrides
