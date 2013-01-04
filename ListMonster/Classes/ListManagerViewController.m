@@ -337,12 +337,13 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (void)adjustCategoryChangeForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaList *list = [self listObjectAtIndexPath:indexPath];
+    NSString *destinationCategoryName = (![list category]) ? kUncategorizedListsKey : [[list category] name];
     NSString *categoryName = [[self categoryNames] objectAtIndex:[indexPath section]];
-    if ([categoryName isEqualToString:[[list category] name]]) return;
+    if ([categoryName isEqualToString:destinationCategoryName]) return;
     NSMutableArray *oldList = [[self categoryListMap] objectForKey:categoryName];
-    NSMutableArray *newList = [[self categoryListMap] objectForKey:[[list category] name]];
+    NSMutableArray *newList = [[self categoryListMap] objectForKey:destinationCategoryName];
     
-    NSInteger toSection = [[self categoryNames] indexOfObject:[[list category] name]];
+    NSInteger toSection = [[self categoryNames] indexOfObject:destinationCategoryName];
     NSInteger toRow = [newList count];
     [list setOrderValue:toRow];
     NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:toSection];
@@ -373,6 +374,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
             return [category name];
         }];
         [self setCategoryNames:[updatedNames mutableCopy]];
+        [[self categoryNames] addObject:kUncategorizedListsKey];
         [[self tableView] reloadData];
     }
 }
