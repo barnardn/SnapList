@@ -343,14 +343,32 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     NSMutableArray *oldList = [[self categoryListMap] objectForKey:categoryName];
     NSMutableArray *newList = [[self categoryListMap] objectForKey:destinationCategoryName];
     
+    [[self tableView] beginUpdates];
+    
+    BOOL categoryAdded = NO;
+    if (!newList) { // we must have been added to a newly created category
+        [[self categoryNames] insertObject:destinationCategoryName atIndex:[[[list category] order] integerValue]];
+        [[self categoriesByName] setObject:[list category] forKey:destinationCategoryName];
+        newList = [[[list category] sortedLists] mutableCopy];
+        [[self categoryListMap] setObject:newList  forKey:destinationCategoryName];
+        categoryAdded = YES;
+    }    
+    
     NSInteger toSection = [[self categoryNames] indexOfObject:destinationCategoryName];
-    NSInteger toRow = [newList count];
+    NSInteger toRow = [newList count] - 1;
     [list setOrderValue:toRow];
     NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:toSection];
-    [[self tableView] beginUpdates];
+
     [oldList removeObject:list];
-    [newList addObject:list];
-    [[self tableView] moveRowAtIndexPath:indexPath toIndexPath:toIndexPath];
+    if (![newList containsObject:list])
+        [newList addObject:list];
+    if (categoryAdded) {
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:toSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[self tableView] insertRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else
+        [[self tableView] moveRowAtIndexPath:indexPath toIndexPath:toIndexPath];
     [[self tableView] endUpdates];
     [list save];
 }
