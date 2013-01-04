@@ -356,6 +356,9 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     
     NSInteger toSection = [[self categoryNames] indexOfObject:destinationCategoryName];
     NSInteger toRow = [newList count] - 1;
+    if ([newList count] == 0)
+        toRow = 0;
+
     [list setOrderValue:toRow];
     NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:toSection];
 
