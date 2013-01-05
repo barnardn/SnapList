@@ -96,41 +96,11 @@
     return ([self countOfItemsCompleted:YES] == [[self items] count]);
 }
 
-
-- (void)removeItem:(MetaListItem *)item
-{
-    [NSException raise:@"Deprecated method" format:@"MetaListItem:removeItem:"];
-    /*
-    NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
-    [mutableItems removeObject:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self];
-    */
-}
-
-- (void)addItem:(MetaListItem *)item
-{
-    [NSException raise:@"Deprecated method" format:@"MetaListItem:removeItem:"];
-    /*
-    NSMutableSet *mutableItems = [self mutableSetValueForKey:@"items"];
-    [mutableItems addObject:item];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_LIST_COUNTS object:self]; */
-}
-
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state {
     
     NSArray *allItems = [[self items] allObjects];
     NSArray *filteredItems = [allItems filteredArrayUsingPredicate:predicate];
     [filteredItems setValue:INT_OBJ(state) forKey:@"isChecked"];
-}
-
-- (NSArray *)allCompletedItems {
-    [NSException raise:@"Deprecated method" format:@"MetaListItem:allCompletedItems"];
-    return nil;
-}
-
-- (NSArray *)allIncompletedItems {
-    [NSException raise:@"Deprecated method" format:@"MetaListItem:allCompletedItems"];
-    return nil;
 }
 
 - (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted
@@ -141,18 +111,6 @@
     if (includeCompleted) return sorted;
     NSPredicate *onlyIncomplete = [NSPredicate predicateWithFormat:@"isChecked == 0"];
     return [sorted filteredArrayUsingPredicate:onlyIncomplete];
-}
-
-
-- (NSString *)excerptOfLength:(NSInteger)numWords {
-    
-    if ([[self note] length] <= 0) return nil;
-    NSArray *words = [[self note] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if ([words count] < numWords)
-        return [self note];
-
-    NSString *excerpt = [[words sliceAt:0 withLength:numWords] componentsJoinedByString:@" "];
-    return [NSString stringWithFormat:@"%@...", excerpt];
 }
 
 

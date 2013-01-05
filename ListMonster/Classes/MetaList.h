@@ -28,11 +28,6 @@
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
 - (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted;
-- (NSArray *)allCompletedItems;
-- (NSArray *)allIncompletedItems;
-- (NSString *)excerptOfLength:(NSInteger)numWords;
-- (void)removeItem:(MetaListItem *)item;
-- (void)addItem:(MetaListItem *)item;
 
 + (NSArray *)allListsInContext:(NSManagedObjectContext *)moc;
 + (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc;

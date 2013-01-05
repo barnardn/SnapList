@@ -13,7 +13,7 @@
 #import "MetaListItem.h"
 #import "RootViewController.h"
 
-static ListMonsterAppDelegate *appDelegateInstance;
+//static ListMonsterAppDelegate *appDelegateInstance;
 
 @interface ListMonsterAppDelegate()
 
@@ -25,18 +25,14 @@ static ListMonsterAppDelegate *appDelegateInstance;
 
 @synthesize window, navController, allColors, cachedItems;
 
-- (id)init {
-    
-    if (appDelegateInstance) {
-        return appDelegateInstance;
-    }
-    self = [super init];
-    appDelegateInstance = self;
-    return self;
-}
-
-+ (ListMonsterAppDelegate *)sharedAppDelegate {
-    return appDelegateInstance;
++ (ListMonsterAppDelegate *)sharedAppDelegate
+{
+    static ListMonsterAppDelegate *staticInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        staticInstance = [[[self class] alloc] init];
+    });
+    return staticInstance;
 }
 
 #pragma mark -
@@ -193,45 +189,6 @@ static ListMonsterAppDelegate *appDelegateInstance;
     [managedObjectContext setUndoManager:undoManager];
     return managedObjectContext;
 }
-
-- (NSFetchedResultsController *)fetchedResultsControllerWithFetchRequest:(NSFetchRequest *)theRequest sectionNameKeyPath:(NSString *)sectionNameKeyPath 
-{
-    NSManagedObjectContext *moc = [self managedObjectContext];
-    [NSFetchedResultsController deleteCacheWithName:@"ListMonster"];
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:theRequest 
-                                                                          managedObjectContext:moc 
-                                                                            sectionNameKeyPath:sectionNameKeyPath 
-                                                                                     cacheName:@"ListMonster"];
-    NSError *error = nil;
-    BOOL ok = [frc performFetch:&error];
-    if (!ok) {      // show an alert box or something here...
-        DLog(@"Error fetching request: %@", [error localizedDescription]);
-    }
-    return frc;
-}
-
-- (NSArray *)fetchAllInstancesOf:(NSString *)entityName orderedBy:(NSString *)attributeName 
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
-- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors 
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-    
-}
-
-- (NSArray *)fetchAllInstancesOf:(NSString *)entityName sortDescriptors:(NSArray *)sortDescriptors filteredBy:(NSPredicate *)filter 
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Deprecated method %@",NSStringFromSelector(_cmd)]
-                                 userInfo:nil];    
-}
-
 #pragma mark - Cache methods
 
 - (void)addCacheObject:(id)object withKey:(NSString *)key
