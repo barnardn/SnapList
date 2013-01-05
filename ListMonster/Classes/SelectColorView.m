@@ -28,7 +28,7 @@
     UIView *v = (UIView *)[nib objectAtIndex:0];
     [self addSubview:v];
     [self setBackgroundColor:[UIColor clearColor]];
-    [[self btnColorName] setTitle:NSLocalizedString(@"Select",nil) forState:UIControlStateNormal];
+    [[self btnColorName] setTitle:NSLocalizedString(@"Color",nil) forState:UIControlStateNormal];
     [[self btnColorName] setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [[[self btnColorName] layer] setBorderColor:[UIColor blackColor].CGColor];
     [[[self btnColorName] layer] setBorderWidth:1.0f];
