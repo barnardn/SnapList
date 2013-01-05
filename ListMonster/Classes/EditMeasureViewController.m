@@ -419,7 +419,7 @@
 {
     NSArray *allMeasures = [[ListMonsterAppDelegate sharedAppDelegate] cacheObjectForKey:@"measures"];
     if (!allMeasures) {
-        allMeasures = [[[ListMonsterAppDelegate sharedAppDelegate] fetchAllInstancesOf:@"Measure" orderedBy:@"sortOrder"] mutableCopy];
+        allMeasures = [Measure allMeasuresInContext:[[self item] managedObjectContext]];
         [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:allMeasures withKey:@"measures"];
     }
     NSPredicate *byMeasurementSet = nil;

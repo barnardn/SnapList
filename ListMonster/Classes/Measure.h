@@ -16,6 +16,7 @@
 
 @interface Measure : _Measure
 
++ (NSArray *)allMeasuresInContext:(NSManagedObjectContext *)moc;
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc;
 + (Measure *)findMeasureMatchingIdentifier:(NSNumber *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc;
 

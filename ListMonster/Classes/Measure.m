@@ -6,10 +6,12 @@
 //  Copyright (c) 2011 clamdango.com. All rights reserved.
 //
 
+#import "DataManager.h"
 #import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaListItem.h"
 
+static NSString * const kMeasureEntityName = @"Measure";
 
 @implementation Measure
 
@@ -21,6 +23,13 @@
 @dynamic sortOrder;
 @dynamic unitIdentifier;
 @dynamic items;
+
++ (NSArray *)allMeasuresInContext:(NSManagedObjectContext *)moc
+{
+    NSArray *results = [DataManager fetchAllInstancesOf:kMeasureEntityName orderedBy:@"sortOrder" inContext:moc];
+    return results;
+}
+
 
 + (Measure *)findMatchingMeasure:(Measure *)measure inManagedObjectContext:(NSManagedObjectContext *)moc
 {
