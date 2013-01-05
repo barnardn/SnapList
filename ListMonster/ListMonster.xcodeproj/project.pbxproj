@@ -43,6 +43,7 @@
 		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
 		4965E0221625070300631E13 /* btn-checkbox-checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0201625070300631E13 /* btn-checkbox-checked.png */; };
 		4965E0231625070300631E13 /* btn-checkbox-checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */; };
+		496A17771698CCDC00A561CC /* UIDevice+RetinaDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 496A17761698CCDC00A561CC /* UIDevice+RetinaDetection.m */; };
 		496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 496B7B331623A73C00EBE286 /* ThemeManager.m */; };
 		49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49700A5A1638BD43004DC7C4 /* _ListCategory.m */; };
 		49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49748DD01670319E006BE3C2 /* EditItemActionsView.m */; };
@@ -206,6 +207,8 @@
 		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		4965E0201625070300631E13 /* btn-checkbox-checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-checkbox-checked.png"; sourceTree = "<group>"; };
 		4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-checkbox-checked@2x.png"; sourceTree = "<group>"; };
+		496A17751698CCDC00A561CC /* UIDevice+RetinaDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+RetinaDetection.h"; sourceTree = "<group>"; };
+		496A17761698CCDC00A561CC /* UIDevice+RetinaDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+RetinaDetection.m"; sourceTree = "<group>"; };
 		496B7B321623A73C00EBE286 /* ThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThemeManager.h; path = Classes/ThemeManager.h; sourceTree = "<group>"; };
 		496B7B331623A73C00EBE286 /* ThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeManager.m; path = Classes/ThemeManager.m; sourceTree = "<group>"; };
 		49700A591638BD43004DC7C4 /* _ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListCategory.h; sourceTree = "<group>"; };
@@ -280,16 +283,16 @@
 		498EBBFD1687933C0037DA65 /* SelectColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectColorView.h; sourceTree = "<group>"; };
 		498EBBFE1687933C0037DA65 /* SelectColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectColorView.m; sourceTree = "<group>"; };
 		498EBC00168793560037DA65 /* SelectColorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectColorView.xib; sourceTree = "<group>"; };
-		498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 11.xcdatamodel"; sourceTree = "<group>"; };
+		498EBC02168796DA0037DA65 /* ListMonster 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 11.xcdatamodel"; sourceTree = "<group>"; };
 		498EBC03168B7A880037DA65 /* GzColors+HexToName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GzColors+HexToName.h"; sourceTree = "<group>"; };
 		498EBC04168B7A880037DA65 /* GzColors+HexToName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GzColors+HexToName.m"; sourceTree = "<group>"; };
 		498EBC06168B955D0037DA65 /* ListCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategoryViewController.h; sourceTree = "<group>"; };
 		498EBC07168B955D0037DA65 /* ListCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategoryViewController.m; sourceTree = "<group>"; };
 		498EBC08168B955E0037DA65 /* ListCategoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCategoryView.xib; path = Classes/ListCategoryView.xib; sourceTree = "<group>"; };
-		498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 12.xcdatamodel"; sourceTree = "<group>"; };
+		498EBC0B168B998E0037DA65 /* ListMonster 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 12.xcdatamodel"; sourceTree = "<group>"; };
 		498EBC0F168BAC230037DA65 /* ListCategoryCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategoryCellController.h; sourceTree = "<group>"; };
 		498EBC10168BAC230037DA65 /* ListCategoryCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategoryCellController.m; sourceTree = "<group>"; };
-		498EBC12168E43740037DA65 /* ListMonster 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ListMonster 13.xcdatamodel"; sourceTree = "<group>"; };
+		498EBC12168E43740037DA65 /* ListMonster 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 13.xcdatamodel"; sourceTree = "<group>"; };
 		499306A1135FB07300ECBE16 /* ReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReminderViewController.h; sourceTree = "<group>"; };
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
@@ -719,6 +722,8 @@
 				498432B0166BF253003C624F /* NSDate+FormattedDates.m */,
 				498EBC03168B7A880037DA65 /* GzColors+HexToName.h */,
 				498EBC04168B7A880037DA65 /* GzColors+HexToName.m */,
+				496A17751698CCDC00A561CC /* UIDevice+RetinaDetection.h */,
+				496A17761698CCDC00A561CC /* UIDevice+RetinaDetection.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -958,6 +963,7 @@
 				498EBC05168B7A880037DA65 /* GzColors+HexToName.m in Sources */,
 				498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */,
 				498EBC11168BAC230037DA65 /* ListCategoryCellController.m in Sources */,
+				496A17771698CCDC00A561CC /* UIDevice+RetinaDetection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -55,6 +55,7 @@
            permittedArrowDirections:(UIPopoverArrowDirectionUp|UIPopoverArrowDirectionDown)
                            animated:YES];
         [self setPopoverController:poc];
+        [[poc view] setClipsToBounds:YES];
         
 	} else {
         [[self popoverController] dismissPopoverAnimated:YES];

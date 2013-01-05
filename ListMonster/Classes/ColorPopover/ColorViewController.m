@@ -7,6 +7,7 @@
 //
 
 #import "ColorViewController.h"
+#import "UIDevice+RetinaDetection.h"
 
 @interface ColorViewController ()
 
@@ -30,6 +31,7 @@
     [super viewDidLoad];
     [self createSimplyfiedOrdenatedColorsArray];
     [self loadColorButtons];
+    [[self view] setClipsToBounds:YES];
 	// Do any additional setup after loading the view.
 }
 
@@ -107,9 +109,8 @@
 
 -(void)loadColorButtons{
     
-    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 240,250)];
-    
-    scroll.contentSize = CGSizeMake(200, 360);
+    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 240,250)];    
+    scroll.contentSize = CGSizeMake(200, 400);
     [self.view addSubview:scroll];
     
 	if (self.buttonCollection != nil) {
