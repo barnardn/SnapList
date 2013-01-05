@@ -92,6 +92,7 @@
 
 - (BOOL)allItemsFinished
 {
+    if ([[self items] count] == 0) return NO;
     return ([self countOfItemsCompleted:YES] == [[self items] count]);
 }
 

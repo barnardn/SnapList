@@ -255,7 +255,8 @@
         [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
     } else {
         NSInteger countIncomplete = [list countOfItemsCompleted:NO];
-        [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+        if (countIncomplete > 0)
+            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
     }
 }
 
