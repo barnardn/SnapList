@@ -8,14 +8,13 @@
 
 #import <objc/objc-runtime.h>
 
-#import "MetaList.h"
 #import "TextViewTableCell.h"
 #import "TextViewTableCellController.h"
 #import "ThemeManager.h"
 
 
 static const CGFloat kEditCellTextViewLeftMargin = 10.0f;
-static const CGFloat kEditCellTextViewTopMargin = 5.0f;
+static const CGFloat kEditCellTextViewTopMargin = 10.0f;
 static const CGFloat kItemCellContentWidth = 250.0f;
 
 static char editCellKey;
@@ -32,26 +31,24 @@ static char editCellKey;
 - (TextViewTableCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"--editcell--";
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
+    NSString *text = [[self delegate] textViewTableCellController:self textForRowAtIndexPath:indexPath];
     
     TextViewTableCell *cell = (TextViewTableCell *)[tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[TextViewTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell setDelegate:self];
     }
-    [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];
-    if ([[list note] length] == 0)
-        [[cell textView] setText:NSLocalizedString(@"Add a new note...", nil)];
-    else
-        [[cell textView] setText:[list note]];
+    [cell setBackgroundColor:[self backgroundColor]];
+    [[cell textView] setTextColor:[self textColor]];
+    [[cell textView] setText:text];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
-    if ([[list note] length] == 0) return [tableView rowHeight];
-    CGSize textSize = [self sizeForText:[list note]];
+    NSString *text = [[self delegate] textViewTableCellController:self textForRowAtIndexPath:indexPath];
+    if ([text length] == 0) return [tableView rowHeight];
+    CGSize textSize = [self sizeForText:text];
     CGFloat height =  MAX([tableView rowHeight], textSize.height + 2 * kEditCellTextViewTopMargin);
     return height;
 }
@@ -67,8 +64,8 @@ static char editCellKey;
 {
     UITableViewCell *cell = objc_getAssociatedObject(textView, &editCellKey);
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:cell];
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
-    if ([[list note] length] == 0)
+    NSString *text = [[self delegate] textViewTableCellController:self textForRowAtIndexPath:indexPath];
+    if ([text length] == 0)
         [textView setText:@""];
 }
 
@@ -82,9 +79,7 @@ static char editCellKey;
     NSString *newText =  [currentText stringByReplacingCharactersInRange:range withString:text];
     UITableViewCell *cell = objc_getAssociatedObject(textView, &editCellKey);
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:cell];
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
-    [list setNote:newText];
-
+    [[self delegate] textViewTableCellController:self didChangeText:newText forItemAtIndexPath:indexPath];
     [[self tableView] beginUpdates];
     [[self tableView] endUpdates];
     return YES;
@@ -99,8 +94,7 @@ static char editCellKey;
     editCell = nil;
     if (indexPath)
         [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    MetaList *list = [[self delegate] cellController:self itemAtIndexPath:indexPath];
-    [list save];
+    [[self delegate] textViewTableCellController:self didEndEdittingText:[textView text] forItemAtIndexPath:indexPath];
     [[self tableView] beginUpdates];
     [[self tableView] endUpdates];
     
