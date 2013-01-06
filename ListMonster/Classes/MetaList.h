@@ -28,6 +28,7 @@
 - (BOOL)deleteAllItems;
 - (void)setItemsMatching:(NSPredicate *)predicate toCheckedState:(NSInteger)state;
 - (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted;
+- (UIColor *)listTintColor;
 
 + (NSArray *)allListsInContext:(NSManagedObjectContext *)moc;
 + (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc;

@@ -75,6 +75,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[[self navigationController] navigationBar] setTintColor:nil];
     NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
     if (selectedIndexPath)
         [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -257,6 +258,8 @@
         NSInteger countIncomplete = [list countOfItemsCompleted:NO];
         if (countIncomplete > 0)
             [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+        else
+            [[cell detailTextLabel] setText:@""];
     }
 }
 

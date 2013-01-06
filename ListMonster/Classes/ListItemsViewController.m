@@ -81,7 +81,9 @@ static char editCellKey;
     [[self navigationItem] setTitle:[[self theList] name]];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonTapped:)];
     [self setAddButton:btn];
-    
+    if ([[self theList] tintColor])
+        [[[self navigationController] navigationBar] setTintColor:[[self theList] listTintColor]];
+
     [[self navigationItem] setRightBarButtonItem:[self addButton]];
     
     if ([[self theList] allItemsFinished]) {

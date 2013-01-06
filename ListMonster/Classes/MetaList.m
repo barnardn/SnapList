@@ -8,6 +8,7 @@
 
 #import "DataManager.h"
 #import "ListCategory.h"
+#import "GzColors.h"
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
@@ -111,6 +112,12 @@
     if (includeCompleted) return sorted;
     NSPredicate *onlyIncomplete = [NSPredicate predicateWithFormat:@"isChecked == 0"];
     return [sorted filteredArrayUsingPredicate:onlyIncomplete];
+}
+
+- (UIColor *)listTintColor
+{
+    if ([[self tintColor] length] == 0) return nil;
+    return [GzColors colorFromHex:[self tintColor]];
 }
 
 

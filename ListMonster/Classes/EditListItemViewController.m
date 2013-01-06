@@ -83,12 +83,18 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
     [[self navigationItem] setTitle:@"Snap!list"];
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
                                                                 style:UIBarButtonItemStylePlain
                                                                target:nil
                                                                action:nil];
-    [[self navigationItem] setBackBarButtonItem:backBtn];    
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    MetaList *list = [[self item] list];
+    if ([list listTintColor])
+        [[self toolBar] setTintColor:[list listTintColor]];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated 
