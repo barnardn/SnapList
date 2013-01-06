@@ -21,6 +21,7 @@
 {
     self = [super initWithTableView:tableView];
     if (!self) return nil;
+    _keyboardType = UIKeyboardTypeDefault;
     return self;
 }
 
@@ -33,9 +34,11 @@
         [[cell textField] setClearsOnBeginEditing:[self clearTextOnBeginEdit]];
         [cell setDelegate:self];
     }
-    [cell setDefaultText:[[self delegate] defaultTextForItemAtIndexPath:indexPath]];
+    [[cell textField] setKeyboardType:[self keyboardType]];
+    if ([[self delegate] respondsToSelector:@selector(defaultTextForItemAtIndexPath:)])
+        [cell setDefaultText:[[self delegate] defaultTextForItemAtIndexPath:indexPath]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
-    [cell setBackgroundColor:[ThemeManager backgroundColorForListManager]];
+    [cell setBackgroundColor:[self backgroundColor]];
     [[cell textField] setTextColor:[self textfieldTextColor]];
     [cell setSelected:NO];
     return cell;

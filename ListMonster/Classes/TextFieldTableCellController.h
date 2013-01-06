@@ -13,8 +13,11 @@
 
 @protocol TextFieldTableCellControllerDelegate <NSObject>
 
-- (NSString *)defaultTextForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+
+- (NSString *)defaultTextForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -23,7 +26,9 @@
 
 @property (nonatomic, weak) id<TableCellControllerDelegate,TextFieldTableCellControllerDelegate> delegate;
 @property (nonatomic, strong) UIColor *textfieldTextColor;
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, assign) BOOL clearTextOnBeginEdit;
+@property (nonatomic, assign) UIKeyboardType keyboardType;
 
 - (id)initWithTableView:(UITableView *)tableView;
 
