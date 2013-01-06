@@ -19,7 +19,7 @@
 #import "TextViewTableCellController.h"
 #import "ThemeManager.h"
 
-@interface EditListViewController() <TableCellControllerDelegate, TextFieldTableCellControllerDelegate>
+@interface EditListViewController() <TableCellControllerDelegate, TextFieldTableCellControllerDelegate, TextViewTableCellControllerDelegate>
 
 @property (nonatomic, strong) MetaList *list;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -76,6 +76,8 @@
     [ccTf setTextfieldTextColor:[UIColor whiteColor]];
     
     TextViewTableCellController *ccTv = [[TextViewTableCellController alloc] initWithTableView:[self tableView]];
+    [ccTv setBackgroundColor:[ThemeManager backgroundColorForListManager]];
+    [ccTv setTextColor:[UIColor whiteColor]];
     [ccTv setDelegate:self];
     
     ListCategoryCellController *ccLc = [[ListCategoryCellController alloc] initWithTableView:[self tableView]];
@@ -176,8 +178,26 @@
     }
 }
 
+#pragma mark - textview table cell controller delegate
 
-#pragma mark - keyboard notification handlers
+- (void)textViewTableCellController:(TextViewTableCellController *)controller didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self list] setNote:text];
+    [[self list] save];
+}
+
+- (void)textViewTableCellController:(TextViewTableCellController *)controller didChangeText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self list] setNote:text];
+}
+
+- (NSString *)textViewTableCellController:(TextViewTableCellController *)controller textForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([[[self list] note] length] == 0)
+        return NSLocalizedString(@"Add a new note...", nil);
+    return [[self list] note];
+}
+
 
 #pragma mark - keyboard notification handlers
 
