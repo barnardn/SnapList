@@ -21,11 +21,14 @@
 #import "NSNumberExtensions.h"
 #import "ReminderViewController.h"
 #import "ThemeManager.h"
+#import "TextViewTableCellController.h"
 
 #define ROW_HEIGHT      44.0f
 #define COUNT_PROPERTY_SECTIONS 4
 
-@interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate>
+@interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate,
+                                            TableCellControllerDelegate, TextViewTableCellControllerDelegate,
+                                            UIAlertViewDelegate>
 
 - (UITableView *)tableView;
 
@@ -33,6 +36,8 @@
 @property (nonatomic,strong) IBOutlet UIToolbar *toolBar;
 @property (nonatomic,strong) MetaListItem *item;
 @property (nonatomic, strong) NSArray *editViewControllers;
+@property (nonatomic, strong) NSArray *tableCellControllers;
+@property (nonatomic, strong) UIAlertView *alertView;
 
 @end
 
@@ -47,7 +52,7 @@
     self = [super init];
     if (!self) return nil;
     _item = item;
-    _editViewControllers = @[[EditTextViewController class], [EditNumberViewController class], [EditMeasureViewController class], [ReminderViewController class]];
+    _editViewControllers = @[[EditNumberViewController class], [EditMeasureViewController class], [ReminderViewController class]];
     return self;
 }
 
@@ -94,7 +99,12 @@
     if ([list listTintColor])
         [[self toolBar] setTintColor:[list listTintColor]];
     
+    TextViewTableCellController *tvc = [[TextViewTableCellController alloc] initWithTableView:[self tableView]];
+    [tvc setDelegate:self];
+    [tvc setBackgroundColor:[UIColor whiteColor]];
+    [tvc setTextColor:[UIColor darkTextColor]];
     
+    [self setTableCellControllers:@[tvc]];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -122,10 +132,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath section] == 0) {
-        NSString *text = [[self item] name];
-        CGSize constraint = CGSizeMake(300.0f, 20000.0f);
-        CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-        return size.height + TABLECELL_VERTICAL_MARGIN;
+        BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
+        return [cellController tableView:[self tableView] heightForRowAtIndexPath:indexPath];
     } else if ([indexPath section] == COUNT_PROPERTY_SECTIONS) {
         return 100;
     }
@@ -134,7 +142,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return COUNT_PROPERTY_SECTIONS + 1;;
+    return COUNT_PROPERTY_SECTIONS + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
@@ -144,23 +152,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *NameCellId = @"NameCell";
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *cellID = @"Cell";
     
-    NSString *cellID = ([indexPath section] == 0) ? NameCellId : CellIdentifier;
+    if ([indexPath section] == 0) {
+        BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
+        return [cellController tableView:[self tableView] cellForRowAtIndexPath:indexPath];
+    }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (cell == nil) {
-        if ([indexPath section] == 0)
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        else
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     switch ([indexPath section]) {
-        case 0:
-            [self configureItemNameCell:cell];
-            break;
         case 1:
             [self configureQuantityCell:cell];
             break;
@@ -174,7 +178,6 @@
             [self configureActionsCell:cell];
             break;
     }
-
     return cell;
 }
 
@@ -183,8 +186,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    if ([indexPath section] == 0) {
+        BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
+        return [cellController tableView:[self tableView] didSelectRowAtIndexPath:indexPath];
+    }
     if ([indexPath section] == COUNT_PROPERTY_SECTIONS) return;
-    Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section]];
+    Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section] - 1];
     UIViewController<EditItemViewProtocol> *vc = [[editControllerClass alloc] initWithTitle:@"Snap!list" listItem:[self item]];
     [vc setDelegate:self];
     [[self navigationController] pushViewController:vc animated:YES];
@@ -193,21 +200,12 @@
 
 #pragma mark - cell configuration methods
 
-- (void)configureItemNameCell:(UITableViewCell *)cell
-{
-    [[cell textLabel] setNumberOfLines:0];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    [[cell textLabel] setFont:[ThemeManager fontForStandardListText]];
-    [[cell textLabel] setLineBreakMode:NSLineBreakByWordWrapping];
-    [[cell textLabel] setText:[[self item] name]];
-}
-
 - (void)configureQuantityCell:(UITableViewCell *)cell
 {
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     
-    [[cell textLabel] setText:NSLocalizedString(@"Quantity", nil)];    
+    [[cell textLabel] setText:NSLocalizedString(@"Quantity", nil)];
     if ([[self item] quantity] == 0) {
         [[cell detailTextLabel] setText:@"1"];
         return;
@@ -273,10 +271,26 @@
 
 - (void)deleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
 {
-    // inform the parent view controller (listitems view in this case) to actually delete, it can find the index path
     [[[self item] list] deleteItem:[self item]];
     [[self navigationController] popViewControllerAnimated:YES];
-    
+}
+
+#pragma mark - textviewtablecell controller delegate methods
+
+- (void)textViewTableCellController:(TextViewTableCellController *)controller didChangeText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self item] setName:text];
+}
+
+- (void)textViewTableCellController:(TextViewTableCellController *)controller didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self item] setName:text];
+    [[self item] save];
+}
+
+- (NSString *)textViewTableCellController:(TextViewTableCellController *)controller textForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [[self item] name];
 }
 
 

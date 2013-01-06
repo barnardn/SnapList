@@ -74,6 +74,7 @@
     TextFieldTableCellController *ccTf = [[TextFieldTableCellController alloc] initWithTableView:[self tableView]];
     [ccTf setDelegate:self];
     [ccTf setTextfieldTextColor:[UIColor whiteColor]];
+    [ccTf setBackgroundColor:[ThemeManager backgroundColorForListManager]];
     
     TextViewTableCellController *ccTv = [[TextViewTableCellController alloc] initWithTableView:[self tableView]];
     [ccTv setBackgroundColor:[ThemeManager backgroundColorForListManager]];
