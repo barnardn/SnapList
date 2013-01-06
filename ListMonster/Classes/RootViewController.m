@@ -336,18 +336,21 @@
 
 - (NSMutableDictionary *)loadAllLists
 {
-    NSArray *lists =  [MetaList allListsInContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
+    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
+    NSArray *categories = [ListCategory allCategoriesInContext:moc];
     NSMutableDictionary *listDict = [NSMutableDictionary dictionary];
-    for (MetaList *l in lists) {
-        NSString *key = ([l category]) ? [[l category] name] : @"";
-        if (!listDict[key])
-            listDict[key] = [NSMutableArray arrayWithObject:l];
-        else {
-            NSMutableArray *listArr = listDict[key];
-            [listArr addObject:l];
-        }
+    NSMutableArray *listKeys = [NSMutableArray array];
+    for (ListCategory *category in categories) {
+        NSMutableArray *lists = [[category sortedLists] mutableCopy];
+        if ([lists count] == 0) continue;
+        [listDict setValue:lists forKey:[category name]];
+        [listKeys addObject:[category name]];
     }
-    NSMutableArray *listKeys = [[[listDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
+    NSArray *noCategoryLists = [MetaList allUncategorizedListsInContext:moc];
+    if ([noCategoryLists count] > 0) {
+        [listDict setValue:[noCategoryLists mutableCopy] forKey:NSLocalizedString(@"Uncategorized", nil)];
+        [listKeys addObject:NSLocalizedString(@"Uncategorized", nil)];
+    }
     NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
     if ([overdue count] > 0) {
         [listKeys insertObject:KEY_OVERDUE atIndex:0];

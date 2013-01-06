@@ -30,7 +30,6 @@
 - (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted;
 - (UIColor *)listTintColor;
 
-+ (NSArray *)allListsInContext:(NSManagedObjectContext *)moc;
 + (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc;
 
 @end

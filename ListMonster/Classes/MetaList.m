@@ -25,19 +25,12 @@
 
 #pragma mark - class methods
 
-+ (NSArray *)allListsInContext:(NSManagedObjectContext *)moc
-{
-    NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    NSSortDescriptor *byCategory = [[NSSortDescriptor alloc] initWithKey:@"category.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSArray *lists =  [DataManager fetchAllInstancesOf:LIST_ENTITY_NAME sortDescriptors:@[byCategory, byName] inContext:moc];
-    return lists;
-}
-
 + (NSArray *)allUncategorizedListsInContext:(NSManagedObjectContext *)moc
 {
+    NSSortDescriptor *byOrder = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
     NSSortDescriptor *byName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
     NSPredicate *emptyCategory = [NSPredicate predicateWithFormat:@"self.category == nil"];
-    NSArray *lists = [DataManager fetchAllInstancesOf:LIST_ENTITY_NAME sortDescriptors:@[byName] filteredBy:emptyCategory inContext:moc];
+    NSArray *lists = [DataManager fetchAllInstancesOf:LIST_ENTITY_NAME sortDescriptors:@[byOrder, byName] filteredBy:emptyCategory inContext:moc];
     return lists;
 }
 
