@@ -6,6 +6,8 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "Alerts.h"
 #import "datetime_utils.h"
 #import "EditItemActionsView.h"
@@ -28,7 +30,7 @@
 
 @interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate,
                                             TableCellControllerDelegate, TextViewTableCellControllerDelegate,
-                                            UIAlertViewDelegate>
+                                            UIAlertViewDelegate, UIScrollViewDelegate>
 
 - (UITableView *)tableView;
 
@@ -38,6 +40,8 @@
 @property (nonatomic, strong) NSArray *editViewControllers;
 @property (nonatomic, strong) NSArray *tableCellControllers;
 @property (nonatomic, strong) UIAlertView *alertView;
+
+@property (nonatomic, strong) CAGradientLayer *tableGradient;
 
 @end
 
@@ -112,6 +116,20 @@
     [super viewWillAppear:animated];
     if ([[self tableView] indexPathForSelectedRow])
         [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    if (![self tableGradient]) {
+        _tableGradient = [CAGradientLayer layer];
+        
+        CGColorRef outerColor = [UIColor colorWithWhite:0.84 alpha:1.0].CGColor;
+        CGColorRef innerColor = [UIColor colorWithWhite:0.84 alpha:0.0].CGColor;
+        
+        [[self tableGradient] setColors:@[(__bridge id)(outerColor), (__bridge id)innerColor, (__bridge id)innerColor, (__bridge id)outerColor]];
+        [[self tableGradient] setLocations:@[@(0.0f), @(0.05f), @(0.95f), @(1.0f)]];
+        
+        CGRect gradBounds = CGRectMake(0, 0,CGRectGetWidth([[self tableView] frame]),CGRectGetHeight([[self tableView] frame]));
+        [[self tableGradient] setBounds:gradBounds];
+        [[self tableGradient] setAnchorPoint:CGPointZero];
+    }
 }
 
 
@@ -125,6 +143,25 @@
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [[[self view] layer] addSublayer:[self tableGradient]];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [[self tableGradient] removeFromSuperlayer];
+}
+
+/*
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    _tableGradient.position = CGPointMake(0, scrollView.contentOffset.y);
+    [CATransaction commit];
+}
+*/
 
 #pragma mark -
 #pragma mark Table view data source
