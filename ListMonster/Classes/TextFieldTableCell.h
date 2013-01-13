@@ -17,6 +17,9 @@
 @property (nonatomic, weak) id<TextFieldTableCellDelegate> delegate;
 @property (nonatomic, strong) NSString *defaultText;
 
+
+- (void)stopEditting;
+
 @end
 
 @protocol TextFieldTableCellDelegate <NSObject>

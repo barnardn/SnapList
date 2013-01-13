@@ -144,6 +144,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // force text view to resign...
+    TextViewTableCellController *tvtc = [[self cellViewControllers] objectAtIndex:3];
+    [tvtc stopEditingCellAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+    
     BaseTableCellController *cellController = [[self cellViewControllers] objectAtIndex:[indexPath section]];
     [cellController tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
@@ -198,7 +202,6 @@
         return NSLocalizedString(@"Add a new note...", nil);
     return [[self list] note];
 }
-
 
 #pragma mark - keyboard notification handlers
 

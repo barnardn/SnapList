@@ -52,13 +52,10 @@ static const CGFloat kTopTextMargin = 4.0f;
 {
     [super setSelected:selected animated:animated];
     if (selected) {
-//        [[self textField] setText:@""];
         [[self textField] setEnabled:YES];
         [[self textField] becomeFirstResponder];
         return;
     }
-    //[[self textField] setEnabled:NO];
-    //[[self textField] setText:[self defaultText]];
 }
 - (void)layoutSubviews
 {
@@ -80,6 +77,14 @@ static const CGFloat kTopTextMargin = 4.0f;
     [[self textField] setEnabled:NO];
 }
 
+#pragma mark - methods
+
+
+- (void)stopEditting
+{
+    [[self textField] resignFirstResponder];
+}
+
 #pragma mark - text field delegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -91,13 +96,16 @@ static const CGFloat kTopTextMargin = 4.0f;
     return (maybeSize.width > CGRectGetWidth([textField frame])) ? NO : YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [[self delegate] textFieldTableCell:self didEndEdittingText:[[self textField] text]];
+    [[self textField] setEnabled:NO];    
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
-    [[self delegate] textFieldTableCell:self didEndEdittingText:[textField text]];
-    //[[self textField] setText:[self text]];
-    [[self textField] setEnabled:NO];    
+    [[self textField] resignFirstResponder];
     return NO;
 }
 

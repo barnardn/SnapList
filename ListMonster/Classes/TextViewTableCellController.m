@@ -59,6 +59,14 @@ static char editCellKey;
     return;
 }
 
+
+- (void)stopEditingCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    TextViewTableCell *cell = (TextViewTableCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
+    [[cell textView] resignFirstResponder];
+}
+
+
 #pragma mark - textview delegate methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -90,7 +98,6 @@ static char editCellKey;
 {
     UITableViewCell *editCell = objc_getAssociatedObject(textView, &editCellKey);
     objc_removeAssociatedObjects(textView);
-    [textView resignFirstResponder];
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:editCell];
     editCell = nil;
     if (indexPath)
@@ -98,7 +105,6 @@ static char editCellKey;
     [[self delegate] textViewTableCellController:self didEndEdittingText:[textView text] forItemAtIndexPath:indexPath];
     [[self tableView] beginUpdates];
     [[self tableView] endUpdates];
-    
 }
 
 #pragma mark - private methods

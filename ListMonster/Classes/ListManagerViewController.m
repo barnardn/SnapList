@@ -30,6 +30,8 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 @property (nonatomic, strong) NSMutableDictionary *categoriesByName;
 @property (nonatomic, assign) BOOL checkCategoryReorder;
 
+@property (nonatomic, strong) UITapGestureRecognizer *finishTextEditTap;
+
 @end
 
 @implementation ListManagerViewController
@@ -152,6 +154,17 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [[self tableView] setScrollIndicatorInsets:UIEdgeInsetsZero];
 }
 
+#pragma mark - tap gesture recognizer
+
+- (void)confirmEditTapGestureHandler:(UITapGestureRecognizer *)gr
+{
+    NSIndexPath *selectedPath = [[self tableView] indexPathForSelectedRow];
+    if (selectedPath) {
+        TextFieldTableCell *cell = (TextFieldTableCell *)[[self tableView] cellForRowAtIndexPath:selectedPath];
+        [cell stopEditting];
+    }
+}
+
 
 #pragma mark - table view methods
 
@@ -212,8 +225,14 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DLog(@"deselecting: %@", indexPath);
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DLog(@"selecting: %@", indexPath);
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     if (!list) return;
     EditListViewController *edVC = [[EditListViewController alloc] initWithList:list];

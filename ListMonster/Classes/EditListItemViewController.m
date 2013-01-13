@@ -6,6 +6,8 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "Alerts.h"
 #import "datetime_utils.h"
 #import "EditItemActionsView.h"
@@ -28,7 +30,7 @@
 
 @interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate,
                                             TableCellControllerDelegate, TextViewTableCellControllerDelegate,
-                                            UIAlertViewDelegate>
+                                            UIAlertViewDelegate, UIScrollViewDelegate>
 
 - (UITableView *)tableView;
 
@@ -184,11 +186,15 @@
 #pragma mark -
 #pragma mark Table view delegate
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     if ([indexPath section] == 0) {
         BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
         return [cellController tableView:[self tableView] didSelectRowAtIndexPath:indexPath];
+    } else {
+        TextViewTableCellController *cellController = [[self tableCellControllers] objectAtIndex:0];
+        [cellController stopEditingCellAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     }
     if ([indexPath section] == COUNT_PROPERTY_SECTIONS) return;
     Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section] - 1];

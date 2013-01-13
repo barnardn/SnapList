@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, weak) id<TableCellControllerDelegate, TextViewTableCellControllerDelegate> delegate;
 
+- (void)stopEditingCellAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @protocol TextViewTableCellControllerDelegate <NSObject>
