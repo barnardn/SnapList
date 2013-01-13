@@ -42,6 +42,7 @@ typedef enum  {
 + (UIColor *)ghostedTextColorForListManager;
 
 + (CGFloat)heightForHeaderview;
++ (CGFloat)defaultHeightForTableRow;
 
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text;
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor;

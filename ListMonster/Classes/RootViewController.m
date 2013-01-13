@@ -30,7 +30,7 @@
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForList:(MetaList *)list;
+//- (NSIndexPath *)indexPathForList:(MetaList *)list;
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
@@ -71,6 +71,35 @@
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
+}
+
+
+
+- (void)dealloc 
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark -
+#pragma mark View lifecycle
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
+- (void)viewDidLoad 
+{
+    [super viewDidLoad];
+    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
+                                                                            target:self 
+                                                                            action:@selector(addList:)];
+    [[self navigationItem] setLeftBarButtonItem:addBtn];
+    [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
+    
+    [[self tableView] setRowHeight:[ThemeManager defaultHeightForTableRow]];
+    
+    [self setAllLists:[self loadAllLists]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -121,42 +150,13 @@
             }];
             [[self allLists] setObject:overdue forKey:KEY_OVERDUE];
             [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-         }
+        }
     }
     [[self tableView] endUpdates];
 }
 
-- (void)dealloc 
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark -
-#pragma mark View lifecycle
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
-}
-
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                                                            target:self 
-                                                                            action:@selector(addList:)];
-    [[self navigationItem] setLeftBarButtonItem:addBtn];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
-    
-    CGSize cellSize = [[UIImage imageNamed:@"bg-cell"] size];
-    [[self tableView] setRowHeight:cellSize.height];
-    
-    [self setAllLists:[self loadAllLists]];
-}
-
 - (void)addList:(id)sender 
 {
-
     ListManagerViewController *vclm = [[ListManagerViewController alloc] initWithManagedObjectContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
     [vclm setDelegate:self];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vclm];
@@ -165,7 +165,7 @@
     [self presentModalViewController:navController animated:YES];
 }
 
-
+/*
 - (NSIndexPath *)indexPathForList:(MetaList *)list 
 {
     NSString *categoryName = [[list category] name];
@@ -176,6 +176,7 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
     return indexPath;
 }
+ */
 
 #pragma mark -
 #pragma mark Error handler routine
@@ -194,14 +195,15 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
     NSInteger sectionCount = [[self allLists] count];
-    return (sectionCount == 0) ? 1 : sectionCount;
+    return sectionCount;
+    //return (sectionCount == 0) ? 1 : sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
     NSInteger sectionCount = [[self allLists] count];
     if (sectionCount == 0)
-        return 1;
+        return 0;
     NSArray *listArr = [self allLists][[self categoryNameKeys][section]];
     return [listArr count];
 }
@@ -228,7 +230,6 @@
         UITableViewCellStyle cellStyle = (isListCell) ? UITableViewCellStyleValue1 : UITableViewCellStyleSubtitle;
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellId];
     }
-    
     [[cell textLabel] setFont:[ThemeManager fontForListName]];
     [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
     [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];

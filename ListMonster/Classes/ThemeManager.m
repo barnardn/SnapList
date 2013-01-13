@@ -8,8 +8,10 @@
 
 #import "CDOGeometry.h"
 #import "ThemeManager.h"
-
 #define TO_PERCENT_WHITE(A)    ((A)/255.0f)
+
+static const CGFloat kDefaultTablerowHeight = 44.0f;
+
 
 @implementation ThemeManager
 
@@ -130,5 +132,11 @@
     });
     return staticHeight;
 }
+
++ (CGFloat)defaultHeightForTableRow
+{
+    return kDefaultTablerowHeight;
+}
+
 
 @end
