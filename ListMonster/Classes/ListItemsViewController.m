@@ -6,7 +6,8 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import <objc/objc-runtime.h>
+#import <objc/runtime.h>
+#import <objc/message.h>
 
 #import "Alerts.h"
 #import "CDOGeometry.h"
