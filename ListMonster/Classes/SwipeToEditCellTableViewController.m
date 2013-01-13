@@ -20,6 +20,8 @@
 @property (nonatomic,strong) UITableViewCell *cellForDeletionCancel;
 @property (nonatomic,strong) NSArray *deleteCancelRegions;
 
+@property (nonatomic, strong) UITapGestureRecognizer *confirmDeleteGesture;
+
 @end
 
 @implementation SwipeToEditCellTableViewController
@@ -157,7 +159,7 @@
     }];
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deletionConfirmed:)];
     [[self tableView] addGestureRecognizer:tgr];
-    
+    [self setConfirmDeleteGesture:tgr];
 }
 
 
@@ -172,7 +174,8 @@
     }];
     [self setDeleteCancelRegions:nil];
     [self setCellForDeletionCancel:nil];
-    
+    [[self tableView] removeGestureRecognizer:[self confirmDeleteGesture]];
+
     [[self tableView] beginUpdates];
     [self leftSwipeDeleteItemAtIndexPath:indexPath];
     
@@ -194,7 +197,7 @@
         [btn removeFromSuperview];
     }];
     [self setDeleteCancelRegions:nil];
-    
+    [[self tableView] removeGestureRecognizer:[self confirmDeleteGesture]];
     [UIView animateWithDuration:0.25f animations:^{
         [lbl setAlpha:0.0f];
         [iv setAlpha:0.0f];
