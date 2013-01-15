@@ -65,16 +65,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [[self navigationItem] setLeftBarButtonItem:btnDone];
     [[self navigationItem] setTitle:@"snap!List"];
     
-    NSArray *categories = [ListCategory allCategoriesInContext:[self managedObjectContext]];
-    NSArray *uncategorizedLists = [MetaList allUncategorizedListsInContext:[self managedObjectContext]];
-    
-    [categories forEach:^(ListCategory *lc) {
-        [[self categoryListMap] setObject:[[lc sortedLists] mutableCopy] forKey:[lc name]];
-        [[self categoryNames] addObject:[lc name]];
-        [[self categoriesByName] setObject:lc forKey:[lc name]];
-    }];
-    [[self categoryListMap] setObject:[uncategorizedLists mutableCopy] forKey:kUncategorizedListsKey];
-    [[self categoryNames] addObject:kUncategorizedListsKey];
+    [self reloadTableSource];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];
@@ -90,10 +81,10 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 {
     [super viewWillAppear:animated];
     [[[self navigationController] navigationBar] setTintColor:[UIColor darkGrayColor]];
-    if ([[self tableView] indexPathForSelectedRow]) {
-        [self adjustCategoryChangeForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-    }
-    [self adjustCateogryRenamesWhenReordered];
+
+    [self reloadTableSource];
+    [[self tableView] reloadData];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidDisappear:) name:UIKeyboardDidHideNotification object:nil];    
 }
@@ -104,6 +95,29 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     [self setCheckCategoryReorder:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - build list table source
+
+- (void)reloadTableSource
+{
+    NSArray *categories = [ListCategory allCategoriesInContext:[self managedObjectContext]];
+    NSArray *uncategorizedLists = [MetaList allUncategorizedListsInContext:[self managedObjectContext]];
+    
+    [[self categoriesByName] removeAllObjects];
+    [[self categoryListMap] removeAllObjects];
+    [[self categoryNames] removeAllObjects];
+    
+    
+    [categories forEach:^(ListCategory *lc) {
+        [[self categoryListMap] setObject:[[lc sortedLists] mutableCopy] forKey:[lc name]];
+        [[self categoryNames] addObject:[lc name]];
+        [[self categoriesByName] setObject:lc forKey:[lc name]];
+    }];
+    [[self categoryListMap] setObject:[uncategorizedLists mutableCopy] forKey:kUncategorizedListsKey];
+    [[self categoryNames] addObject:kUncategorizedListsKey];
+
+}
+
 
 #pragma mark - actions
 
@@ -345,73 +359,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     if ([indexPath row] >= [arr count]) return nil;
     return [arr objectAtIndex:[indexPath row]];
 }
-
-- (void)adjustCategoryChangeForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
-    NSString *destinationCategoryName = (![list category]) ? kUncategorizedListsKey : [[list category] name];
-    NSString *categoryName = [[self categoryNames] objectAtIndex:[indexPath section]];
-    if ([categoryName isEqualToString:destinationCategoryName]) return;
-    NSMutableArray *oldList = [[self categoryListMap] objectForKey:categoryName];
-    NSMutableArray *newList = [[self categoryListMap] objectForKey:destinationCategoryName];
-    
-    [[self tableView] beginUpdates];
-    
-    BOOL categoryAdded = NO;
-    if (!newList) { // we must have been added to a newly created category
-        [[self categoryNames] insertObject:destinationCategoryName atIndex:[[[list category] order] integerValue]];
-        [[self categoriesByName] setObject:[list category] forKey:destinationCategoryName];
-        newList = [[[list category] sortedLists] mutableCopy];
-        [[self categoryListMap] setObject:newList  forKey:destinationCategoryName];
-        categoryAdded = YES;
-    }    
-    
-    NSInteger toSection = [[self categoryNames] indexOfObject:destinationCategoryName];
-    NSInteger toRow = [newList count] - 1;
-    if ([newList count] == 0)
-        toRow = 0;
-
-    [list setOrderValue:toRow];
-    NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:toRow inSection:toSection];
-
-    [oldList removeObject:list];
-    if (![newList containsObject:list])
-        [newList addObject:list];
-    if (categoryAdded) {
-        [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [[self tableView] insertSections:[NSIndexSet indexSetWithIndex:toSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [[self tableView] insertRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else
-        [[self tableView] moveRowAtIndexPath:indexPath toIndexPath:toIndexPath];
-    [[self tableView] endUpdates];
-    [list save];
-}
-
-- (void)adjustCateogryRenamesWhenReordered
-{
-    if (![self checkCategoryReorder]) return;
-    
-    [self setCheckCategoryReorder:NO];
-    NSArray *reorderedCategories = [ListCategory allCategoriesInContext:[self managedObjectContext]];
-    __block BOOL adjustOrder = NO;
-    [reorderedCategories enumerateObjectsUsingBlock:^(ListCategory *category, NSUInteger idx, BOOL *stop) {
-        NSString *name = [[self categoryNames] objectAtIndex:idx];
-        if (![name isEqualToString:[category name]]) {
-            *stop = YES;
-            adjustOrder = YES;
-        }
-    }];
-    if (adjustOrder) {
-        NSArray *updatedNames = [reorderedCategories map:^id(ListCategory *category) {
-            return [category name];
-        }];
-        [self setCategoryNames:[updatedNames mutableCopy]];
-        [[self categoryNames] addObject:kUncategorizedListsKey];
-        [[self tableView] reloadData];
-    }
-}
-
 
 
 #pragma mark - swipe to edit table view overrides
