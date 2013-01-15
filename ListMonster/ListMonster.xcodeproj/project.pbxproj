@@ -98,6 +98,10 @@
 		499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 499306A2135FB07300ECBE16 /* ReminderViewController.m */; };
 		499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 499306A3135FB07300ECBE16 /* ReminderView.xib */; };
 		499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 499306AD135FB82C00ECBE16 /* days-en_US.plist */; };
+		499AF6B216A4DF4D001281ED /* icon-checkmark-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 499AF6B016A4DF4D001281ED /* icon-checkmark-white.png */; };
+		499AF6B316A4DF4D001281ED /* icon-checkmark-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499AF6B116A4DF4D001281ED /* icon-checkmark-white@2x.png */; };
+		499AF6B616A4E02E001281ED /* icon-checkmark-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 499AF6B416A4E02E001281ED /* icon-checkmark-black.png */; };
+		499AF6B716A4E02E001281ED /* icon-checkmark-black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 499AF6B516A4E02E001281ED /* icon-checkmark-black@2x.png */; };
 		499B27CD13663AA700C4500C /* datetime_utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 499B27CC13663AA700C4500C /* datetime_utils.m */; };
 		499CDAED13356AA00099F3C9 /* redButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEB13356AA00099F3C9 /* redButton.png */; };
 		499CDAEE13356AA00099F3C9 /* whiteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 499CDAEC13356AA00099F3C9 /* whiteButton.png */; };
@@ -297,6 +301,10 @@
 		499306A2135FB07300ECBE16 /* ReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReminderViewController.m; sourceTree = "<group>"; };
 		499306A3135FB07300ECBE16 /* ReminderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ReminderView.xib; path = Classes/ReminderView.xib; sourceTree = "<group>"; };
 		499306AD135FB82C00ECBE16 /* days-en_US.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "days-en_US.plist"; sourceTree = "<group>"; };
+		499AF6B016A4DF4D001281ED /* icon-checkmark-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-white.png"; sourceTree = "<group>"; };
+		499AF6B116A4DF4D001281ED /* icon-checkmark-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-white@2x.png"; sourceTree = "<group>"; };
+		499AF6B416A4E02E001281ED /* icon-checkmark-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-black.png"; sourceTree = "<group>"; };
+		499AF6B516A4E02E001281ED /* icon-checkmark-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-black@2x.png"; sourceTree = "<group>"; };
 		499B27CB13663AA700C4500C /* datetime_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datetime_utils.h; sourceTree = "<group>"; };
 		499B27CC13663AA700C4500C /* datetime_utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = datetime_utils.m; sourceTree = "<group>"; };
 		499CDAEB13356AA00099F3C9 /* redButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = redButton.png; path = ../redButton.png; sourceTree = "<group>"; };
@@ -663,6 +671,10 @@
 		49AD71841664173A001897D3 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				499AF6B416A4E02E001281ED /* icon-checkmark-black.png */,
+				499AF6B516A4E02E001281ED /* icon-checkmark-black@2x.png */,
+				499AF6B016A4DF4D001281ED /* icon-checkmark-white.png */,
+				499AF6B116A4DF4D001281ED /* icon-checkmark-white@2x.png */,
 				49C56BC91665A4A400BCFAD3 /* icon-hide-completed.png */,
 				49C56BCA1665A4A400BCFAD3 /* icon-hide-completed@2x.png */,
 				49C56BCB1665A4A400BCFAD3 /* icon-show-all.png */,
@@ -896,6 +908,10 @@
 				498EBBFC168790460037DA65 /* README in Resources */,
 				498EBC01168793560037DA65 /* SelectColorView.xib in Resources */,
 				498EBC0A168B955E0037DA65 /* ListCategoryView.xib in Resources */,
+				499AF6B216A4DF4D001281ED /* icon-checkmark-white.png in Resources */,
+				499AF6B316A4DF4D001281ED /* icon-checkmark-white@2x.png in Resources */,
+				499AF6B616A4E02E001281ED /* icon-checkmark-black.png in Resources */,
+				499AF6B716A4E02E001281ED /* icon-checkmark-black@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -122,11 +122,13 @@ static const CGFloat kRowHeight = 44.0f;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     [[cell textLabel] setText:[category name]];
+    [[cell textLabel] setTextColor:[ThemeManager textColorForListManagerList]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     [cell setShowsReorderControl:YES];
     if (category == [[self list] category]) {
         [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+        UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-checkmark-white"]];
+        [cell setAccessoryView:checkmark];
     }
     return cell;
 }
@@ -149,7 +151,8 @@ static const CGFloat kRowHeight = 44.0f;
     if ([category isNewValue])
         return [[self textFieldCellController] tableView:tableView didSelectRowAtIndexPath:indexPath];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+    UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-checkmark-white"]];
+    [cell setAccessoryView:checkmark];
     [[self list] setCategory:category];
     [[self list] save];
 }
@@ -157,7 +160,7 @@ static const CGFloat kRowHeight = 44.0f;
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
+    [cell setAccessoryView:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
