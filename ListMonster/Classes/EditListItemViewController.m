@@ -35,7 +35,6 @@
 - (UITableView *)tableView;
 
 @property (nonatomic,strong) IBOutlet UITableView *listItemTableView;
-@property (nonatomic,strong) IBOutlet UIToolbar *toolBar;
 @property (nonatomic,strong) MetaListItem *item;
 @property (nonatomic, strong) NSArray *editViewControllers;
 @property (nonatomic, strong) NSArray *tableCellControllers;
@@ -97,10 +96,6 @@
                                                                target:nil
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
-    MetaList *list = [[self item] list];
-    if ([list listTintColor])
-        [[self toolBar] setTintColor:[list listTintColor]];
-    
     TextViewTableCellController *tvc = [[TextViewTableCellController alloc] initWithTableView:[self tableView]];
     [tvc setDelegate:self];
     [tvc setBackgroundColor:[UIColor whiteColor]];
