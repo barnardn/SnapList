@@ -34,7 +34,6 @@
     NSString *backgroundImageFilename;
     NSString *viewTitle;
     Tuple *selectedSimpleDate;
-    NSIndexPath *lastSelectedIndexPath;
 }
 
 @property(nonatomic,strong) IBOutlet UISegmentedControl *dateSelectionMode;
@@ -45,7 +44,6 @@
 @property(nonatomic,strong) NSDate *selectedReminderDate;  // for picker only!?!?!?
 @property(nonatomic,strong) NSString *viewTitle;
 @property(nonatomic,strong) Tuple *selectedSimpleDate;
-@property(nonatomic,strong) NSIndexPath *lastSelectedIndexPath;
 
 @property (nonatomic, weak) id<EditItemViewDelegate> delegate;
 
