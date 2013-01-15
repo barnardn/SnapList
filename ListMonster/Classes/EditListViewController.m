@@ -203,6 +203,12 @@
     return [[self list] note];
 }
 
+- (BOOL)shouldClearTextForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ([[[self list] note] length] == 0);
+}
+
+
 #pragma mark - keyboard notification handlers
 
 - (void)keyboardDidAppear:(NSNotification *)notification

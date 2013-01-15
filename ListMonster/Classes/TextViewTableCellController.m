@@ -37,11 +37,16 @@ static char editCellKey;
     TextViewTableCell *cell = (TextViewTableCell *)[tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[TextViewTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [cell setDelegate:self];
     }
     [cell setBackgroundColor:[self backgroundColor]];
     [[cell textView] setTextColor:[self textColor]];
     [[cell textView] setText:text];
+    
+    [[cell textView] setEditable:NO];
+    [[cell textView] setUserInteractionEnabled:NO];
+    
     return cell;
 }
 
@@ -56,14 +61,27 @@ static char editCellKey;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    TextViewTableCell *cell = (TextViewTableCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
+    [[cell textView] setEditable:YES];
+    [[cell textView] setUserInteractionEnabled:YES];
+    [[cell textView] becomeFirstResponder];
+    
+    if (![[self delegate] respondsToSelector:@selector(shouldClearTextForRowAtIndexPath:)]) return;
+    
+    if (![[self delegate] shouldClearTextForRowAtIndexPath:indexPath]) return;
+    
+    [[cell textView] setText:@""];
     return;
 }
+
 
 
 - (void)stopEditingCellAtIndexPath:(NSIndexPath *)indexPath
 {
     TextViewTableCell *cell = (TextViewTableCell *)[[self tableView] cellForRowAtIndexPath:indexPath];
     [[cell textView] resignFirstResponder];
+    [[cell textView] setEditable:NO];
+    [[cell textView] setUserInteractionEnabled:NO];
 }
 
 

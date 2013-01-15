@@ -28,4 +28,7 @@
 - (void)textViewTableCellController:(TextViewTableCellController *)controller didChangeText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)textViewTableCellController:(TextViewTableCellController *)controller didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath;
 
+@optional
+- (BOOL)shouldClearTextForRowAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
