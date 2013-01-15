@@ -225,11 +225,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DLog(@"deselecting: %@", indexPath);
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DLog(@"selecting: %@", indexPath);
@@ -263,8 +258,6 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     NSIndexPath *addNewPath = [NSIndexPath indexPathForRow:[indexPath row] + 1 inSection:[indexPath section]];
     [[self tableView] reloadRowsAtIndexPaths:@[indexPath, addNewPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
-
-#pragma - TODO clean up the header views for this section.  they look crappy!
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
