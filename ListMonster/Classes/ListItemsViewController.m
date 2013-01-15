@@ -39,6 +39,7 @@ static char editCellKey;
 @property (nonatomic,strong) NSMutableArray *listItems;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, assign) BOOL showAllItems;
 
 @end
 
@@ -91,11 +92,11 @@ static char editCellKey;
     [[self navigationItem] setRightBarButtonItem:[self addButton]];
     
     if ([[self theList] allItemsFinished]) {
-        [[self btnViewAll] setTag:1];
+        [self setShowAllItems:YES];
         [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:YES] mutableCopy]];
     } else {
-        [[self btnViewAll] setTag:0];
+        [self setShowAllItems:NO];
         [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-all"]];
         [self setListItems:[[[self theList] sortedItemsIncludingComplete:NO] mutableCopy]];
     }
@@ -127,7 +128,7 @@ static char editCellKey;
 {
     if ([item wasDeleted]) return YES;    
     // remove the item if were hiding completed and our item is now marked complete
-    return ([[self btnViewAll] tag] == 0 && [item isComplete]);
+    return (![self showAllItems] && [item isComplete]);
 }
 
 
@@ -183,7 +184,7 @@ static char editCellKey;
 - (IBAction)btnViewAllTapped:(UIBarButtonItem *)btn
 {
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:0];
-    if ([btn tag] == 1) {       // we're viewing all currently
+    if ([self showAllItems]) {
         [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
             if ([item isComplete])
                 [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
@@ -193,7 +194,7 @@ static char editCellKey;
         [self setListItems:filtered];
         [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         [[self tableView] endUpdates];
-        [btn setTag:0];
+        [self setShowAllItems:NO];
         [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-all"]];
         return;
     }
@@ -207,7 +208,7 @@ static char editCellKey;
     [self setListItems:allItems];
     [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [[self tableView] endUpdates];
-    [btn setTag:1];
+    [self setShowAllItems:YES];
     [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
 }
 
@@ -451,7 +452,7 @@ static char editCellKey;
 - (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    return ([item isComplete]);
+    return ([item isComplete] && ![self showAllItems]);
 }
 
 - (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
