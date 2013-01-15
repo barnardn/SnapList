@@ -24,7 +24,7 @@
 
 @synthesize selectedReminderDate, dateSelectionMode, datePicker, simpleDateTable; 
 @synthesize simpleDates, reminderItem, viewTitle;
-@synthesize selectedSimpleDate, lastSelectedIndexPath;
+@synthesize selectedSimpleDate;
 
 - (id)initWithTitle:(id)aTitle listItem:(id<ReminderItemProtocol>)item;
 {
@@ -241,12 +241,17 @@
 {
     static NSString *cellId = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell)
+    if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
     Tuple *dow = [self simpleDates][[indexPath row]];
-    if (dow == [self selectedSimpleDate] && ![self lastSelectedIndexPath]) {
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        [self setLastSelectedIndexPath:indexPath];
+    if (dow == [self selectedSimpleDate]) {
+        UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-checkmark-black"]];
+        [cell setAccessoryView:checkmark];
+        [tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    } else {
+        [cell setAccessoryView:nil];
     }
     [[cell textLabel] setText:[dow first]];
     return cell;
@@ -258,17 +263,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"didSelectRow");
-    if ([indexPath row] == [[self lastSelectedIndexPath] row]) return;
     Tuple *selected = [self simpleDates][[indexPath row]];
     [self setSelectedSimpleDate:selected];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UITableViewCell *lastCell = [tableView cellForRowAtIndexPath:[self lastSelectedIndexPath]];
-    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    [lastCell setAccessoryType:UITableViewCellAccessoryNone];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self setLastSelectedIndexPath:indexPath];
+    UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-checkmark-black"]];
+    [cell setAccessoryView:checkmark];    
 }
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setAccessoryView:nil];
+}
+
 
 @end
 
