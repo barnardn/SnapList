@@ -78,6 +78,8 @@
     [ivBg setImage:imgBackground];
     [ivBg setTag:TAG_COMPLETEVIEW];
     [swipedCell addSubview:ivBg];
+    
+    __weak SwipeToEditCellTableViewController *weakSelf = self;
     [UIView animateWithDuration:0.25f animations:^{
         [[swipedCell textLabel] setTransform:xlation];
         [[swipedCell detailTextLabel] setTransform:xlation];
@@ -85,18 +87,18 @@
     } completion:^(BOOL finished) {
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
         NSString *actionTitle = [self rightSwipeActionTitleForItemItemAtIndexPath:indexPath];
-        [self rightSwipeUpdateAtIndexPath:indexPath];
+        [weakSelf rightSwipeUpdateAtIndexPath:indexPath];
         [swipedCell addSubview:[self swipeActionLabelWithText:actionTitle centeredAt:center]];
         [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
         [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
-        [[self tableView] beginUpdates];
-        if ([self rightSwipeShouldDeleteRowAtIndexPath:indexPath]) {
-            [self rightSwipeRemoveItemAtIndexPath:indexPath];
-            [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        //[[weakSelf tableView] beginUpdates];
+        if ([weakSelf rightSwipeShouldDeleteRowAtIndexPath:indexPath]) {
+            [weakSelf rightSwipeRemoveItemAtIndexPath:indexPath];
+            [[weakSelf tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } else {
-            [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [[weakSelf tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-        [[self tableView] endUpdates];
+        //[[weakSelf tableView] endUpdates];
     }];
 }
 
