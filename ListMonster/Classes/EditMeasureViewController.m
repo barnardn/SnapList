@@ -474,7 +474,7 @@
         NSArray *unsorted = [self currentMeasures][[measure measure]];
         units = [unsorted sortedOnKey:@"unit" ascending:YES];
     } else {
-        measures = [[self currentMeasures] allKeys];
+        measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
         units = [self currentMeasures][[measure measure]];
     }
     NSInteger measureRow = [measures indexOfObject:[measure measure]];
