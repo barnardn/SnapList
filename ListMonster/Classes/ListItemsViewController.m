@@ -11,6 +11,7 @@
 
 #import "Alerts.h"
 #import "CDOGeometry.h"
+#import "datetime_utils.h"
 #import "DisplayListNoteViewController.h"
 #import "EditListItemViewController.h"
 #import "ListMonsterAppDelegate.h"
@@ -19,6 +20,7 @@
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
+#import "NSString+EmptyString.h"
 #import "ThemeManager.h"
 
 #define ROW_HEIGHT  44.0f
@@ -330,7 +332,10 @@ static char editCellKey;
     }
     else
         qtyString = [item quantityDescription];
-    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@", qtyString, unitString]];
+    NSString *reminderString = @"";
+    if ([item reminderDate])
+        reminderString = [NSString stringWithFormat:@"%@%@", @"⏰", formatted_date([item reminderDate])];
+    [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@%@  %@", qtyString, unitString, reminderString]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 }
 
