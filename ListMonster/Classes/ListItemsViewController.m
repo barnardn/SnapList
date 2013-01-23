@@ -110,7 +110,8 @@ static char editCellKey;
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:YES];
     if ([[self tableView] indexPathForSelectedRow]) {
         NSInteger row = [[[self tableView] indexPathForSelectedRow] row];
@@ -183,33 +184,18 @@ static char editCellKey;
 
 - (IBAction)btnViewAllTapped:(UIBarButtonItem *)btn
 {
-    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:0];
     if ([self showAllItems]) {
-        [[self listItems] enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
-            if ([item isComplete])
-                [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
-        }];
-        [[self tableView] beginUpdates];
         NSMutableArray *filtered = [[[self theList] sortedItemsIncludingComplete:NO] mutableCopy];
         [self setListItems:filtered];
-        [[self tableView] deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-        [[self tableView] endUpdates];
         [self setShowAllItems:NO];
         [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-show-all"]];
-        return;
+    } else {
+        NSMutableArray *allItems = [[[self theList] sortedItemsIncludingComplete:YES] mutableCopy];    
+        [self setListItems:allItems];
+        [self setShowAllItems:YES];
+        [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
     }
-    NSMutableArray *allItems = [[[self theList] sortedItemsIncludingComplete:YES] mutableCopy];
-    [allItems enumerateObjectsUsingBlock:^(MetaListItem *item, NSUInteger idx, BOOL *stop) {
-        DLog(@"is complete %d", [item isComplete]);
-        if ([item isComplete])
-            [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
-    }];
-    [[self tableView] beginUpdates];
-    [self setListItems:allItems];
-    [[self tableView] insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    [[self tableView] endUpdates];
-    [self setShowAllItems:YES];
-    [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
+    [[self tableView] reloadData];
 }
 
 
@@ -451,8 +437,34 @@ static char editCellKey;
 
 - (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger toRowIndex;    
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    return ([item isComplete] && ![self showAllItems]);
+    if (![self showAllItems] && [item isComplete]) {
+        return YES;
+    }
+    if ([item isComplete]) {
+        toRowIndex = [[self listItems] count] - 1;
+        [item setOrderValue:toRowIndex];
+    } else {
+        for (toRowIndex = 0; toRowIndex < [[self listItems] count] - 1; toRowIndex++) {
+            MetaListItem *li = [[self listItems] objectAtIndex:toRowIndex];
+            if ([li isComplete]) break;
+        }
+        toRowIndex = MAX(0, toRowIndex - 1);
+        [item setOrderValue:toRowIndex];
+    }
+    [item save];
+    if ([indexPath row] == toRowIndex) return NO;
+    
+    int64_t delayInSeconds = 0.5f;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    __weak ListItemsViewController *weakSelf = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [[weakSelf listItems] removeObject:item];
+        [[weakSelf listItems] insertObject:item atIndex:toRowIndex];
+        [[weakSelf tableView] moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:toRowIndex inSection:0]];
+    });
+    return NO;
 }
 
 - (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
