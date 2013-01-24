@@ -226,7 +226,6 @@ static char editCellKey;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    DLog(@"cell count: %d", [[self listItems] count]);
     return [[self listItems] count];
 }
 
@@ -442,23 +441,23 @@ static char editCellKey;
 
 - (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger toRowIndex;    
+    NSInteger toRowIndex, toOrderValue;
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    if (![self showAllItems] && [item isComplete]) {
-        return YES;
-    }
     if ([item isComplete]) {
-        toRowIndex = [[self listItems] count] - 1;
-        [item setOrderValue:toRowIndex];
+        toOrderValue = [[[self theList] items] count];
+        toRowIndex = toOrderValue - 1;
     } else {
         for (toRowIndex = 0; toRowIndex < [[self listItems] count] - 1; toRowIndex++) {
             MetaListItem *li = [[self listItems] objectAtIndex:toRowIndex];
             if ([li isComplete]) break;
         }
         toRowIndex = MAX(0, toRowIndex - 1);
-        [item setOrderValue:toRowIndex];
+        toOrderValue = toRowIndex;
     }
+    [item setOrderValue:toOrderValue];
     [item save];
+    
+    if (![self showAllItems]) return YES;
     if ([indexPath row] == toRowIndex) return NO;
     
     int64_t delayInSeconds = 0.5f;
