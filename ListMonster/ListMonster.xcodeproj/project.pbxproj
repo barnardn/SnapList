@@ -123,7 +123,6 @@
 		49AD719B16641855001897D3 /* icon-ok-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD719916641855001897D3 /* icon-ok-small.png */; };
 		49AD719C16641855001897D3 /* icon-ok-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD719A16641855001897D3 /* icon-ok-small@2x.png */; };
 		49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* ListCategory.m */; };
-		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9AF2616742547000447E7 /* ListManagerViewController.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C3D0C8167FFBA300B1FF16 /* EditListView.xib */; };
@@ -335,8 +334,6 @@
 		49AD719A16641855001897D3 /* icon-ok-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-ok-small@2x.png"; sourceTree = "<group>"; };
 		49AD7A4C12E380D9006E6AC6 /* ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategory.h; sourceTree = "<group>"; };
 		49AD7A4D12E380D9006E6AC6 /* ListCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategory.m; sourceTree = "<group>"; };
-		49AD7B1912E3DB45006E6AC6 /* Alerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alerts.h; sourceTree = "<group>"; };
-		49AD7B1A12E3DB45006E6AC6 /* Alerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alerts.m; sourceTree = "<group>"; };
 		49B9AF2616742547000447E7 /* ListManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListManagerViewController.m; sourceTree = "<group>"; };
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49C3D0C8167FFBA300B1FF16 /* EditListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditListView.xib; sourceTree = "<group>"; };
@@ -414,8 +411,6 @@
 			children = (
 				491EEC9E167EAC8D0058AF2F /* Table Cell Controllers */,
 				49748DCE16703169006BE3C2 /* Views */,
-				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
-				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
 				49F1810F12C935FB0066B454 /* Categories */,
 				49F180EA12C91C800066B454 /* CoreData */,
 				4955B038132302BC00722C3F /* Custom Table Cells */,
@@ -951,7 +946,6 @@
 				49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */,
 				49F1814B12C958F20066B454 /* RootViewController.m in Sources */,
 				49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */,
-				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,

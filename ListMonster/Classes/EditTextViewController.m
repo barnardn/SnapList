@@ -6,7 +6,6 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import "Alerts.h"
 #import "EditTextViewController.h"
 #import "NSNumberExtensions.h"
 #import "MetaListItem.h"

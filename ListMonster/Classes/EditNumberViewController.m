@@ -6,7 +6,6 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-#import "Alerts.h"
 #import "EditNumberViewController.h"
 #import "MetaListItem.h"
 #import "NSNumberExtensions.h"
@@ -70,6 +69,7 @@
     firstDigitEntered = NO;
 }
 
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -77,15 +77,17 @@
     NSString *enteredText = [[self numericTextField] text];
     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:enteredText];
     if ([number compare:INT_OBJ(0)] == NSOrderedAscending) {
-        NSString *errorMessage = NSLocalizedString(@"Enter a number greater than 0", @">0 error message");
-        NSString *errorTitle = NSLocalizedString(@"Bad Value", @"error title");
-        [ErrorAlert showWithTitle:errorTitle andMessage:errorMessage];
-        [[self numericTextField] becomeFirstResponder];
         return;
     }
     [[self item] setQuantity:number];
     [[self delegate] editItemViewController:self didChangeValue:number forItem:[self item]];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [[self numericTextField] becomeFirstResponder];
+}
+
 
 #pragma mark -
 #pragma mark UITextField delegate methods

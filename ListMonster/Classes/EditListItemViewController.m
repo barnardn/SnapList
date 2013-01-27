@@ -8,7 +8,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "Alerts.h"
 #import "datetime_utils.h"
 #import "EditItemActionsView.h"
 #import "EditListItemViewController.h"

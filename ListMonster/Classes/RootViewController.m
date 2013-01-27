@@ -6,7 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import "Alerts.h"
+//#import "Alerts.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
 #import "EditListViewController.h"
@@ -25,12 +25,11 @@
 
 #define KEY_OVERDUE     @"--overdue--"
 
-@interface RootViewController() <ListManagerDelegate>
+@interface RootViewController() <ListManagerDelegate, UIAlertViewDelegate>
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (NSMutableDictionary *)loadAllLists;
 - (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
-//- (NSIndexPath *)indexPathForList:(MetaList *)list;
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
@@ -175,7 +174,8 @@
     NSString *errMessage = [NSString stringWithFormat:@"%@: %@", message, [error localizedDescription]];
     DLog(errMessage);
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
-    [ErrorAlert showWithTitle:alertTitle andMessage: errMessage];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:[error localizedDescription] delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Table view datasource methods

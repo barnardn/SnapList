@@ -11,7 +11,7 @@
 
 @class MetaListItem;
 
-@interface EditNumberViewController : UIViewController <UITextFieldDelegate,
+@interface EditNumberViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate,
                                                         EditItemViewProtocol> 
 {
 
