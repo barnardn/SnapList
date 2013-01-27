@@ -9,7 +9,6 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import "Alerts.h"
 #import "CDOGeometry.h"
 #import "datetime_utils.h"
 #import "DisplayListNoteViewController.h"

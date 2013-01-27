@@ -14,7 +14,6 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		491703B9145786750034437B /* Measure.m in Sources */ = {isa = PBXBuildFile; fileRef = 491703B8145786750034437B /* Measure.m */; };
-		491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EBE4F12EB744D0084BFCB /* ListNameViewController.m */; };
 		491EBE5212EB744D0084BFCB /* ListNameView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491EBE5012EB744D0084BFCB /* ListNameView.xib */; };
 		491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */; };
 		491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 491EECA3167EB1920058AF2F /* BaseTableCellController.m */; };
@@ -34,7 +33,6 @@
 		494844BE13F85F3A00445ED7 /* blueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 494844BD13F85F3A00445ED7 /* blueButton.png */; };
 		4955B03C1323031500722C3F /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4955B03B1323031500722C3F /* ListCell.m */; };
 		4955B03E1323033E00722C3F /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4955B03D1323033E00722C3F /* ListCell.xib */; };
-		4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4959AB0413104B460039ACAC /* EditTextViewController.m */; };
 		4959AB0713104B460039ACAC /* EditTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4959AB0513104B460039ACAC /* EditTextView.xib */; };
 		495D8413130E088800933720 /* EditListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D8412130E088800933720 /* EditListItemViewController.m */; };
 		495DB43F1647425C001CD749 /* bg-complete.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DB43D1647425C001CD749 /* bg-complete.png */; };
@@ -123,7 +121,6 @@
 		49AD719B16641855001897D3 /* icon-ok-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD719916641855001897D3 /* icon-ok-small.png */; };
 		49AD719C16641855001897D3 /* icon-ok-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD719A16641855001897D3 /* icon-ok-small@2x.png */; };
 		49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7A4D12E380D9006E6AC6 /* ListCategory.m */; };
-		49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD7B1A12E3DB45006E6AC6 /* Alerts.m */; };
 		49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9AF2616742547000447E7 /* ListManagerViewController.m */; };
 		49BCF2FF134E9884009A48DC /* listmonster.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 49BCF2FE134E9884009A48DC /* listmonster.sqlite */; };
 		49C3D0C9167FFBA300B1FF16 /* EditListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C3D0C8167FFBA300B1FF16 /* EditListView.xib */; };
@@ -140,7 +137,6 @@
 		49C7BFE5136AF7ED003F3FAA /* EditNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */; };
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
 		49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */; };
-		49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C94291134FAB640045D4F6 /* EditNoteViewController.m */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
 		49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 49D225BF14C4FA09009D9769 /* iTunesArtwork */; };
 		49D225C214C5103C009D9769 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 49D225C114C5103C009D9769 /* Default.png */; };
@@ -174,8 +170,6 @@
 		32CA4F630368D1EE00C91783 /* ListMonster_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMonster_Prefix.pch; sourceTree = "<group>"; };
 		491703B7145786750034437B /* Measure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Measure.h; sourceTree = "<group>"; };
 		491703B8145786750034437B /* Measure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Measure.m; sourceTree = "<group>"; };
-		491EBE4E12EB744D0084BFCB /* ListNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListNameViewController.h; sourceTree = "<group>"; };
-		491EBE4F12EB744D0084BFCB /* ListNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListNameViewController.m; sourceTree = "<group>"; };
 		491EBE5012EB744D0084BFCB /* ListNameView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListNameView.xib; path = Classes/ListNameView.xib; sourceTree = "<group>"; };
 		491EEC9F167EACD40058AF2F /* TextFieldTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableCellController.h; sourceTree = "<group>"; };
 		491EECA0167EACD40058AF2F /* TextFieldTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTableCellController.m; sourceTree = "<group>"; };
@@ -202,8 +196,6 @@
 		4955B03A1323031500722C3F /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		4955B03B1323031500722C3F /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		4955B03D1323033E00722C3F /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
-		4959AB0313104B460039ACAC /* EditTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTextViewController.h; sourceTree = "<group>"; };
-		4959AB0413104B460039ACAC /* EditTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditTextViewController.m; sourceTree = "<group>"; };
 		4959AB0513104B460039ACAC /* EditTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditTextView.xib; path = Classes/EditTextView.xib; sourceTree = "<group>"; };
 		495D5BE114BA8DDF0028E520 /* ListMonster 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 3.xcdatamodel"; sourceTree = "<group>"; };
 		495D8411130E088800933720 /* EditListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListItemViewController.h; sourceTree = "<group>"; };
@@ -335,8 +327,6 @@
 		49AD719A16641855001897D3 /* icon-ok-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-ok-small@2x.png"; sourceTree = "<group>"; };
 		49AD7A4C12E380D9006E6AC6 /* ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCategory.h; sourceTree = "<group>"; };
 		49AD7A4D12E380D9006E6AC6 /* ListCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCategory.m; sourceTree = "<group>"; };
-		49AD7B1912E3DB45006E6AC6 /* Alerts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alerts.h; sourceTree = "<group>"; };
-		49AD7B1A12E3DB45006E6AC6 /* Alerts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alerts.m; sourceTree = "<group>"; };
 		49B9AF2616742547000447E7 /* ListManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListManagerViewController.m; sourceTree = "<group>"; };
 		49BCF2FE134E9884009A48DC /* listmonster.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = listmonster.sqlite; sourceTree = "<group>"; };
 		49C3D0C8167FFBA300B1FF16 /* EditListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditListView.xib; sourceTree = "<group>"; };
@@ -359,8 +349,6 @@
 		49C7C00D136B0ADE003F3FAA /* EditItemViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemViewProtocol.h; sourceTree = "<group>"; };
 		49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 2.xcdatamodel"; sourceTree = "<group>"; };
 		49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListMonster.xcdatamodel; sourceTree = "<group>"; };
-		49C94290134FAB640045D4F6 /* EditNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNoteViewController.h; sourceTree = "<group>"; };
-		49C94291134FAB640045D4F6 /* EditNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNoteViewController.m; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
 		49D225BF14C4FA09009D9769 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		49D225C114C5103C009D9769 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -414,8 +402,6 @@
 			children = (
 				491EEC9E167EAC8D0058AF2F /* Table Cell Controllers */,
 				49748DCE16703169006BE3C2 /* Views */,
-				49AD7B1912E3DB45006E6AC6 /* Alerts.h */,
-				49AD7B1A12E3DB45006E6AC6 /* Alerts.m */,
 				49F1810F12C935FB0066B454 /* Categories */,
 				49F180EA12C91C800066B454 /* CoreData */,
 				4955B038132302BC00722C3F /* Custom Table Cells */,
@@ -768,20 +754,14 @@
 				49A0205412E5256A005B1D0E /* EditListViewController.m */,
 				498885411458D42600FC3294 /* EditMeasureViewController.h */,
 				498885421458D42600FC3294 /* EditMeasureViewController.m */,
-				49C94290134FAB640045D4F6 /* EditNoteViewController.h */,
-				49C94291134FAB640045D4F6 /* EditNoteViewController.m */,
 				49C7BFE2136AF7ED003F3FAA /* EditNumberViewController.h */,
 				49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */,
-				4959AB0313104B460039ACAC /* EditTextViewController.h */,
-				4959AB0413104B460039ACAC /* EditTextViewController.m */,
 				498EBC06168B955D0037DA65 /* ListCategoryViewController.h */,
 				498EBC07168B955D0037DA65 /* ListCategoryViewController.m */,
 				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
 				495EABF713083F5700F4A64E /* ListItemsViewController.m */,
 				4988A2B01673E32D00AA1BA6 /* ListManagerViewController.h */,
 				49B9AF2616742547000447E7 /* ListManagerViewController.m */,
-				491EBE4E12EB744D0084BFCB /* ListNameViewController.h */,
-				491EBE4F12EB744D0084BFCB /* ListNameViewController.m */,
 				499306A1135FB07300ECBE16 /* ReminderViewController.h */,
 				499306A2135FB07300ECBE16 /* ReminderViewController.m */,
 				49F1814812C958F20066B454 /* RootViewController.h */,
@@ -951,15 +931,11 @@
 				49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */,
 				49F1814B12C958F20066B454 /* RootViewController.m in Sources */,
 				49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */,
-				49AD7B1B12E3DB45006E6AC6 /* Alerts.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
-				491EBE5112EB744D0084BFCB /* ListNameViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
 				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
-				4959AB0613104B460039ACAC /* EditTextViewController.m in Sources */,
 				4955B03C1323031500722C3F /* ListCell.m in Sources */,
-				49C94293134FAB640045D4F6 /* EditNoteViewController.m in Sources */,
 				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,
 				499306A4135FB07300ECBE16 /* ReminderViewController.m in Sources */,
 				49DE1AF31362563C00D27543 /* Tuple.m in Sources */,

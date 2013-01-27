@@ -6,7 +6,6 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-#import "Alerts.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
 #import "ListMonsterAppDelegate.h"
