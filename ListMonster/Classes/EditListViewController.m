@@ -6,7 +6,8 @@
 //  Copyright 2011 clamdango.com. All rights reserved.
 //
 
-
+#import "ButtonTableCellController.h"
+#import "EditItemActionsView.h"
 #import "ListCategory.h"
 #import "ListCategoryCellController.h"
 #import "ColorPickerCellController.h"
@@ -19,7 +20,10 @@
 #import "TextViewTableCellController.h"
 #import "ThemeManager.h"
 
-@interface EditListViewController() <TableCellControllerDelegate, TextFieldTableCellControllerDelegate, TextViewTableCellControllerDelegate>
+@interface EditListViewController() <
+    TableCellControllerDelegate, TextFieldTableCellControllerDelegate,
+    TextViewTableCellControllerDelegate, ButtonTableCellControllerDelegate,
+    UIAlertViewDelegate>
 
 @property (nonatomic, strong) MetaList *list;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -93,8 +97,11 @@
     [ccLc setCategory:[[self list] category]];
     [ccLc setNavController:[self navigationController]];
     
+    ButtonTableCellController *ccBc = [[ButtonTableCellController alloc] initWithTableView:[self tableView]];
+    [ccBc setDelegate:self];
+    
     NSArray *cellControllers = @[
-        ccTf, ccLc, ccColorPicker, ccTv
+        ccTf, ccLc, ccColorPicker, ccTv, ccBc
     ];
     [self setCellViewControllers:cellControllers];
 }
@@ -213,6 +220,26 @@
 - (BOOL)shouldClearTextForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return ([[[self list] note] length] == 0);
+}
+
+#pragma mark - button cell view controller delegate
+
+- (void)buttonCellController:(ButtonTableCellController *)cellController buttonTappedForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *title = NSLocalizedString(@"Delete List", nil);
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"Delete %@ and all the items in it?", nil), [[self list] name]];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) return;
+    NSManagedObjectContext *moc = [[self list] managedObjectContext];
+    [moc deleteObject:[self list]];
+    NSError *error = nil;
+    ZAssert([moc save:&error], @"Whoa! Could not delete list: %@", [error localizedDescription]);
+    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 

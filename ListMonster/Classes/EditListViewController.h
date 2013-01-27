@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-#define elvNUM_SECTIONS     4
+#define elvNUM_SECTIONS     5
 
 @class MetaList;
 

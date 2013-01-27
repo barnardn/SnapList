@@ -50,6 +50,7 @@
 		496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 496B7B331623A73C00EBE286 /* ThemeManager.m */; };
 		49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49700A5A1638BD43004DC7C4 /* _ListCategory.m */; };
 		49739F7616B4AAC900F063CA /* nav-title.png in Resources */ = {isa = PBXBuildFile; fileRef = 49739F7516B4AAC900F063CA /* nav-title.png */; };
+		49739F7F16B4B09500F063CA /* ButtonTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49739F7E16B4B09500F063CA /* ButtonTableCellController.m */; };
 		49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49748DD01670319E006BE3C2 /* EditItemActionsView.m */; };
 		49748DD416703347006BE3C2 /* EditItemActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49748DD316703347006BE3C2 /* EditItemActionsView.xib */; };
 		497EB48716755E130086DF17 /* TextFieldTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 497EB48616755E130086DF17 /* TextFieldTableCell.m */; };
@@ -225,6 +226,8 @@
 		49700A591638BD43004DC7C4 /* _ListCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ListCategory.h; sourceTree = "<group>"; };
 		49700A5A1638BD43004DC7C4 /* _ListCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ListCategory.m; sourceTree = "<group>"; };
 		49739F7516B4AAC900F063CA /* nav-title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title.png"; sourceTree = "<group>"; };
+		49739F7D16B4B09500F063CA /* ButtonTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonTableCellController.h; sourceTree = "<group>"; };
+		49739F7E16B4B09500F063CA /* ButtonTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonTableCellController.m; sourceTree = "<group>"; };
 		49748DCF1670319E006BE3C2 /* EditItemActionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemActionsView.h; sourceTree = "<group>"; };
 		49748DD01670319E006BE3C2 /* EditItemActionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemActionsView.m; sourceTree = "<group>"; };
 		49748DD316703347006BE3C2 /* EditItemActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditItemActionsView.xib; sourceTree = "<group>"; };
@@ -507,6 +510,8 @@
 				498EBBB616878DF70037DA65 /* ColorPickerCellController.m */,
 				498EBC0F168BAC230037DA65 /* ListCategoryCellController.h */,
 				498EBC10168BAC230037DA65 /* ListCategoryCellController.m */,
+				49739F7D16B4B09500F063CA /* ButtonTableCellController.h */,
+				49739F7E16B4B09500F063CA /* ButtonTableCellController.m */,
 			);
 			name = "Table Cell Controllers";
 			sourceTree = "<group>";
@@ -996,6 +1001,7 @@
 				498EBC09168B955E0037DA65 /* ListCategoryViewController.m in Sources */,
 				498EBC11168BAC230037DA65 /* ListCategoryCellController.m in Sources */,
 				496A17771698CCDC00A561CC /* UIDevice+RetinaDetection.m in Sources */,
+				49739F7F16B4B09500F063CA /* ButtonTableCellController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

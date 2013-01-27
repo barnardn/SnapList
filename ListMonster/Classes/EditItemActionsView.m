@@ -21,7 +21,7 @@
 
 @implementation EditItemActionsView
 
-- (id)initWithItem:(MetaListItem *)item frame:(CGRect)frame
+- (id)initWithItem:(MetaListItem *)item frame:(CGRect)frame activeButtons:(EditItemActionOptions)options
 {
     self = [super initWithFrame:frame];
     _item = item;
@@ -30,16 +30,24 @@
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"EditItemActionsView" owner:self options:nil];
     [self addSubview:nib[0]];
     
-    UIImage *deleteBg = [[UIImage imageNamed:@"redButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
-    [[self btnDelete] setBackgroundImage:deleteBg forState:UIControlStateNormal];
-    [[self btnDelete] setTitle:NSLocalizedString(@"Delete", nil) forState:UIControlStateNormal];
-    
-    UIImage *markBg = [[UIImage imageNamed:@"blueButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
-    [[self btnMarkComplete] setBackgroundImage:markBg forState:UIControlStateNormal];
-    NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As Not Done", nil) : NSLocalizedString(@"Mark As Done", nil);
-    [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];
-    
+    if (options == EditItemActionsAll || (options & EditItemActionsDelete)) {
+        UIImage *deleteBg = [[UIImage imageNamed:@"redButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
+        [[self btnDelete] setBackgroundImage:deleteBg forState:UIControlStateNormal];
+        [[self btnDelete] setTitle:NSLocalizedString(@"Delete", nil) forState:UIControlStateNormal];
+    }
+
+    if (options == EditItemActionsAll || (options & EditItemActionsMark)) {
+        UIImage *markBg = [[UIImage imageNamed:@"blueButton"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 12.0f, 20.0f, 12.0f)];
+        [[self btnMarkComplete] setBackgroundImage:markBg forState:UIControlStateNormal];
+        NSString *title = ([_item isComplete]) ? NSLocalizedString(@"Mark As Not Done", nil) : NSLocalizedString(@"Mark As Done", nil);
+        [[self btnMarkComplete] setTitle:title forState:UIControlStateNormal];
+    }
     return self;
+}
+
+- (id)initWithItem:(MetaListItem *)item frame:(CGRect)frame
+{
+    return [self initWithItem:item frame:frame activeButtons:EditItemActionsAll];
 }
 
 - (IBAction)btnMarkCompleteTapped:(UIButton *)sender
