@@ -138,6 +138,12 @@
 		49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C7BFE4136AF7ED003F3FAA /* EditNumberView.xib */; };
 		49C802F61496E5E20012C32E /* ListMonster.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 49C802F31496E5E20012C32E /* ListMonster.xcdatamodeld */; };
 		49C94294134FAB640045D4F6 /* EditNoteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C94292134FAB640045D4F6 /* EditNoteView.xib */; };
+		49CB948D16B5DD5B00F9609D /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CB948B16B5DD5B00F9609D /* HelpViewController.m */; };
+		49CB948E16B5DD5B00F9609D /* HelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49CB948C16B5DD5B00F9609D /* HelpView.xib */; };
+		49CB949116B5E04700F9609D /* swipe_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 49CB948F16B5E04700F9609D /* swipe_left.png */; };
+		49CB949216B5E04700F9609D /* swipe_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 49CB949016B5E04700F9609D /* swipe_right.png */; };
+		49CB949516B5E61E00F9609D /* swipe_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49CB949316B5E61E00F9609D /* swipe_left@2x.png */; };
+		49CB949616B5E61E00F9609D /* swipe_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49CB949416B5E61E00F9609D /* swipe_right@2x.png */; };
 		49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 49D225BF14C4FA09009D9769 /* iTunesArtwork */; };
 		49D225C214C5103C009D9769 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 49D225C114C5103C009D9769 /* Default.png */; };
 		49D225C414C512BD009D9769 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49D225C314C512BD009D9769 /* Default@2x.png */; };
@@ -350,6 +356,13 @@
 		49C802F41496E5E20012C32E /* ListMonster 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 2.xcdatamodel"; sourceTree = "<group>"; };
 		49C802F51496E5E20012C32E /* ListMonster.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ListMonster.xcdatamodel; sourceTree = "<group>"; };
 		49C94292134FAB640045D4F6 /* EditNoteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditNoteView.xib; path = Classes/EditNoteView.xib; sourceTree = "<group>"; };
+		49CB948A16B5DD5B00F9609D /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		49CB948B16B5DD5B00F9609D /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		49CB948C16B5DD5B00F9609D /* HelpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HelpView.xib; path = Classes/HelpView.xib; sourceTree = "<group>"; };
+		49CB948F16B5E04700F9609D /* swipe_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = swipe_left.png; sourceTree = "<group>"; };
+		49CB949016B5E04700F9609D /* swipe_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = swipe_right.png; sourceTree = "<group>"; };
+		49CB949316B5E61E00F9609D /* swipe_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe_left@2x.png"; sourceTree = "<group>"; };
+		49CB949416B5E61E00F9609D /* swipe_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "swipe_right@2x.png"; sourceTree = "<group>"; };
 		49D225BF14C4FA09009D9769 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		49D225C114C5103C009D9769 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		49D225C314C512BD009D9769 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -530,6 +543,7 @@
 		49748DD2167031CE006BE3C2 /* Xibs */ = {
 			isa = PBXGroup;
 			children = (
+				49CB948C16B5DD5B00F9609D /* HelpView.xib */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				49748DD316703347006BE3C2 /* EditItemActionsView.xib */,
 				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
@@ -570,6 +584,10 @@
 		4986279A162259D40040858A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				49CB949316B5E61E00F9609D /* swipe_left@2x.png */,
+				49CB949416B5E61E00F9609D /* swipe_right@2x.png */,
+				49CB948F16B5E04700F9609D /* swipe_left.png */,
+				49CB949016B5E04700F9609D /* swipe_right.png */,
 				49739F7516B4AAC900F063CA /* nav-title.png */,
 				4941A29116B0D82F001B2711 /* nav-title@2x.png */,
 				49EB7B621676B58D00AC5B33 /* bg-tableheader-light.png */,
@@ -768,6 +786,8 @@
 				49F1814912C958F20066B454 /* RootViewController.m */,
 				49248F471659B61400CD9995 /* SwipeToEditCellTableViewController.h */,
 				49248F481659B61400CD9995 /* SwipeToEditCellTableViewController.m */,
+				49CB948A16B5DD5B00F9609D /* HelpViewController.h */,
+				49CB948B16B5DD5B00F9609D /* HelpViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -913,6 +933,11 @@
 				4941A29016B0D4C4001B2711 /* icon-listmgr@2x.png in Resources */,
 				4941A29216B0D82F001B2711 /* nav-title@2x.png in Resources */,
 				49739F7616B4AAC900F063CA /* nav-title.png in Resources */,
+				49CB948E16B5DD5B00F9609D /* HelpView.xib in Resources */,
+				49CB949116B5E04700F9609D /* swipe_left.png in Resources */,
+				49CB949216B5E04700F9609D /* swipe_right.png in Resources */,
+				49CB949516B5E61E00F9609D /* swipe_left@2x.png in Resources */,
+				49CB949616B5E61E00F9609D /* swipe_right@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -978,6 +1003,7 @@
 				498EBC11168BAC230037DA65 /* ListCategoryCellController.m in Sources */,
 				496A17771698CCDC00A561CC /* UIDevice+RetinaDetection.m in Sources */,
 				49739F7F16B4B09500F063CA /* ButtonTableCellController.m in Sources */,
+				49CB948D16B5DD5B00F9609D /* HelpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
