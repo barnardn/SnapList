@@ -39,7 +39,7 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [[self navigationItem] setTitle:[self viewTitle]];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
     if (![self item] || ![[self item] name])
         [[self textView] setText:@""];        
     else 

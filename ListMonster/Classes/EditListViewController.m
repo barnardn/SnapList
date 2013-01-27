@@ -64,8 +64,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[self navigationItem] setTitle:NSLocalizedString(@"snap!List",nil)];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     [[self tableView] setRowHeight:44.0f];
+    
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:nil
+                                                               action:nil];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
+    
     
     ColorPickerCellController *ccColorPicker = [[ColorPickerCellController alloc] initWithTableView:[self tableView]];
     [ccColorPicker setDelegate:self];

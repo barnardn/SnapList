@@ -85,13 +85,18 @@ static char editCellKey;
     [[self navigationItem] setTitle:[[self theList] name]];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonTapped:)];
     [self setAddButton:btn];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:nil
+                                                               action:nil];
+    [[self navigationItem] setRightBarButtonItem:[self addButton]];
+    [[self navigationItem] setBackBarButtonItem:backBtn];
     if ([[self theList] listTintColor]) {
         UIColor *tint = [[self theList] listTintColor];
         [[[self navigationController] navigationBar] setTintColor:tint];
         [[self toolBar] setTintColor:tint];
     }
-
-    [[self navigationItem] setRightBarButtonItem:[self addButton]];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
     if ([[self theList] allItemsFinished]) {
         [self setShowAllItems:YES];

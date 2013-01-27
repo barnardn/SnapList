@@ -88,7 +88,8 @@
     else if ([[[self item] unitOfMeasure] isCustomUnit])
         measurementSet = emvCUSTOM_UNIT_INDEX;
     [self loadMeasurementSet:measurementSet];
-    [[self navigationItem] setTitle:viewTitle];       
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
+    [[self navigationItem] setPrompt:NSLocalizedString(@"Select or Edit Unit of Measure", nil)];
 }
 
 - (void)viewWillAppear:(BOOL)animated

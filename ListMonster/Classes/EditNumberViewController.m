@@ -57,7 +57,7 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [[self navigationItem] setTitle:[self viewTitle]];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
     if (![[self item] quantity] || [[[self item] quantity] compare:INT_OBJ(0)] == NSOrderedSame) {
         [[self numericTextField] setPlaceholder:NSLocalizedString(@"Value", @"numeric value placeholder")];        
     }

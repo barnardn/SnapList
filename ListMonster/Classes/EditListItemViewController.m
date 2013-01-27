@@ -90,7 +90,7 @@
 {
     [super viewDidLoad];
     
-    [[self navigationItem] setTitle:@"Snap!list"];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
                                                                 style:UIBarButtonItemStylePlain
                                                                target:nil

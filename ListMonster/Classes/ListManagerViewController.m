@@ -63,8 +63,7 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
     
     UIBarButtonItem *btnDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnDoneTapped:)];
     [[self navigationItem] setLeftBarButtonItem:btnDone];
-    [[self navigationItem] setTitle:@"snap!List"];
-    
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
     [self reloadTableSource];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidAppear:) name:UIKeyboardDidShowNotification object:nil];
