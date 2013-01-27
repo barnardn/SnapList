@@ -6,7 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
-//#import "Alerts.h"
+#import "HelpViewController.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
 #import "EditListViewController.h"
@@ -25,7 +25,7 @@
 
 #define KEY_OVERDUE     @"--overdue--"
 
-@interface RootViewController() <ListManagerDelegate, UIAlertViewDelegate>
+@interface RootViewController() <ListManagerDelegate, UIAlertViewDelegate, HelpViewDelegate>
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (NSMutableDictionary *)loadAllLists;
@@ -94,7 +94,14 @@
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(addList:)];
+    
+    UIBarButtonItem *btnHelp = [[UIBarButtonItem alloc] initWithTitle:@"?"
+                                                                style:UIBarButtonItemStyleBordered
+                                                               target:self
+                                                               action:@selector(btnHelpTapped:)];
+    
     [[self navigationItem] setLeftBarButtonItem:btnListMgr];
+    [[self navigationItem] setRightBarButtonItem:btnHelp];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
     [[self tableView] setRowHeight:[ThemeManager defaultHeightForTableRow]];
@@ -155,6 +162,10 @@
     [[self tableView] endUpdates];
 }
 
+
+#pragma mark - button actions
+
+
 - (void)addList:(id)sender 
 {
     ListManagerViewController *vclm = [[ListManagerViewController alloc] initWithManagedObjectContext:[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext]];
@@ -164,6 +175,15 @@
     [self setListManagerViewController:navController];
     [self presentModalViewController:navController animated:YES];
 }
+
+- (IBAction)btnHelpTapped:(UIBarButtonItem *)sender
+{
+    HelpViewController *vcHelp = [[HelpViewController alloc] init];
+    [vcHelp setDelegate:self];
+    [self presentViewController:vcHelp animated:YES completion:nil];
+}
+
+
 
 #pragma mark -
 #pragma mark Error handler routine
@@ -400,6 +420,12 @@
     [[self tableView] reloadData];
 }
 
+#pragma mark - help view controller delegate
+
+- (void)dismissHelpView
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 
 @end
