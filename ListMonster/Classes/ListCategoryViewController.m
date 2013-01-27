@@ -44,7 +44,8 @@ static const CGFloat kRowHeight = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Categories", nil)];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
+    [[self navigationItem] setPrompt:NSLocalizedString(@"Choose or Edit Categeories", nil)];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                             target:self
                                                                             action:@selector(addButtonTapped:)];

@@ -77,7 +77,8 @@
                                                                action:nil];
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [[self simpleDateTable] setAllowsSelection:YES];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Set Reminder", @"reminder view title")];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
+    [[self navigationItem] setPrompt:NSLocalizedString(@"Set Reminder", nil)];
 }
 
 - (void)viewWillAppear:(BOOL)animated

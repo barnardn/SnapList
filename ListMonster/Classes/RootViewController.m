@@ -91,11 +91,12 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                                                            target:self 
-                                                                            action:@selector(addList:)];
-    [[self navigationItem] setLeftBarButtonItem:addBtn];
-    [[self navigationItem] setTitle:NSLocalizedString(@"Snap Lists", "@root view title")];
+    UIBarButtonItem *btnListMgr = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-listmgr"]
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(addList:)];
+    [[self navigationItem] setLeftBarButtonItem:btnListMgr];
+    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
     [[self tableView] setRowHeight:[ThemeManager defaultHeightForTableRow]];
     
@@ -164,19 +165,6 @@
     [self setListManagerViewController:navController];
     [self presentModalViewController:navController animated:YES];
 }
-
-/*
-- (NSIndexPath *)indexPathForList:(MetaList *)list 
-{
-    NSString *categoryName = [[list category] name];
-    NSString *key = (categoryName) ? categoryName : @"";
-    NSInteger sectionIdx = [[self categoryNameKeys] indexOfObject:key];
-    NSArray *itemsForCategory = [self allLists][key];
-    NSInteger rowIdx = [itemsForCategory indexOfObject:list];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:rowIdx inSection:sectionIdx];    
-    return indexPath;
-}
- */
 
 #pragma mark -
 #pragma mark Error handler routine
