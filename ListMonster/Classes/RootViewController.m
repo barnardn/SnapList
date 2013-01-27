@@ -383,8 +383,9 @@
     MetaList *list = [self listObjectAtIndexPath:indexPath];
     ZAssert([categoryLists containsObject:list], @"Whoa! list of lists does not contain list to delete");
     [categoryLists removeObject:list];
-    //NSError *error;
-    //ZAssert([[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error], @"Unable to delete list! %@", [error localizedDescription]);
+    NSError *error;
+    [[list managedObjectContext] deleteObject:list];
+    ZAssert([[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error], @"Unable to delete list! %@", [error localizedDescription]);
     DLog(@"remaining lists: %d", [[self allLists] count]);
     
 }

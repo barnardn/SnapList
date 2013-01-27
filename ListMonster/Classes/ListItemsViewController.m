@@ -356,8 +356,6 @@ static char editCellKey;
     [tv setSpellCheckingType:UITextSpellCheckingTypeNo];
     [tv setAutocorrectionType:UITextAutocorrectionTypeNo];
     [tv setFont:[ThemeManager fontForStandardListText]];
-    [[tv layer] setBorderWidth:1.0f];
-    [[tv layer] setBorderColor:[UIColor lightGrayColor].CGColor];
     [tv setReturnKeyType:UIReturnKeyDone];
     [tv setDelegate:self];
     [tv setTag:TAG_TEXTVIEW];
