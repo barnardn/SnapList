@@ -13,7 +13,6 @@
 #import "EditListItemViewController.h"
 #import "EditMeasureViewController.h"
 #import "EditNumberViewController.h"
-#import "EditTextViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaList.h"

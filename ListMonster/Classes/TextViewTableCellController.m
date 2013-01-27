@@ -130,6 +130,8 @@ static char editCellKey;
 - (CGSize)sizeForText:(NSString *)text
 {
     CGFloat width = 300.0f;
+    if ([[self tableView] style] == UITableViewStyleGrouped)
+        width = 280.0f;
     CGSize textSize = [text sizeWithFont:[ThemeManager fontForStandardListText]
                               constrainedToSize:CGSizeMake(width - 8.0f, 20000.0f)
                                   lineBreakMode:NSLineBreakByWordWrapping];
