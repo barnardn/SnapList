@@ -12,7 +12,6 @@
 #import "ListCategoryCellController.h"
 #import "ColorPickerCellController.h"
 #import "EditListViewController.h"
-#import "EditNoteViewController.h"
 #import "ListMonsterAppDelegate.h"
 #import "MetaList.h"
 #import "TextFieldTableCell.h"
