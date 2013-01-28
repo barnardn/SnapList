@@ -7,27 +7,45 @@
 //
 
 #import "ListCell.h"
+#import "ListCellContentView.h"
 
+@interface ListCell()
+
+@property (nonatomic, weak) IBOutlet UIButton *btnShowNote;
+@property (nonatomic, weak) ListCellContentView *cellContentView;
+@end
 
 @implementation ListCell
-
-@synthesize nameLabel, categoryLabel, countsLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    CGRect cvFrame = [[self contentView] frame];
+    cvFrame.size.height = 50.0f;
+    ListCellContentView *cv = [[ListCellContentView alloc] initWithFrame:cvFrame];
+    [[self contentView] addSubview:cv];
+    [self setCellContentView:cv];
     return self;
 }
 
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state.
 }
 
+- (void)setNoteText:(NSString *)noteText
+{
+    _noteText = noteText;
+    [[self cellContentView] setNoteText:noteText];
+    [[self cellContentView] setNeedsLayout];
+    [self setNeedsLayout];
+}
 
+- (UILabel *)nameLabel
+{
+    return [[self cellContentView] nameLabel];
+}
 
 
 @end

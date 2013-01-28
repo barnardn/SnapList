@@ -40,6 +40,12 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
     return [UIFont fontWithName:kRegularFontName size:kSizeTinyFont];
 }
 
++ (UIFont *)fontForListNote
+{
+    return [UIFont fontWithName:kRegularFontName size:kSizeSmallFont];
+}
+
+
 + (UIColor *)standardTextColor
 {
     return [UIColor darkTextColor];
