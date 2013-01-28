@@ -14,13 +14,11 @@
 
 @class MetaList;
 
-@interface DisplayListNoteViewController : UITableViewController
+@interface DisplayListNoteViewController : UIViewController
 
-@property(nonatomic, strong) MetaList *list;
-@property(nonatomic,strong) NSString *backgroundImageFilename;
+@property(nonatomic, strong) NSString *noteText;
 
-- (id)initWithList:(MetaList *)aList;
-- (IBAction)dismissButtonPressed:(id)sender;
+- (id)initWithNoteText:(NSString *)noteText;
 
 @end
   

@@ -104,7 +104,7 @@
     [[self navigationItem] setRightBarButtonItem:btnHelp];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
-    [[self tableView] setRowHeight:[ThemeManager defaultHeightForTableRow]];
+    [[self tableView] setRowHeight:50.0f];
     
     [self setAllLists:[self loadAllLists]];
 }
@@ -223,44 +223,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *ListCellId = @"ListCell";
-    static NSString *ItemCellId = @"ItemCell";
-    
-
     NSManagedObject *obj = [self listObjectAtIndexPath:indexPath];
     BOOL isListCell = ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]);
-    
-    NSString *cellId = (isListCell) ? ListCellId : ItemCellId;
-    
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        UITableViewCellStyle cellStyle = (isListCell) ? UITableViewCellStyleValue1 : UITableViewCellStyleSubtitle;
-        cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellId];
-    }
-    [[cell textLabel] setFont:[ThemeManager fontForListName]];
-    [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
-    [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
-    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    
-    if (isListCell) {
-        MetaList *list = (MetaList *)obj;
-        [self configureCell:cell forList:list];
-    } else {
-        MetaListItem *item = (MetaListItem *)obj;
-        [self configureCell:cell forOverdueItem:item];
-    }
-    return cell;
+    if (isListCell)
+        return [self tableView:tableView listCellForList:(MetaList *)obj];
+    else
+        return [self tableView:tableView overdueItemCellForItem:(MetaListItem *)obj];
 }
 
-- (void)configureCell:(UITableViewCell *)cell forList:(MetaList *)list
+- (ListCell *)tableView:(UITableView *)tableView listCellForList:(MetaList *)list
 {
-    [[cell textLabel] setText:[list name]];
+    static NSString *CellId = @"ListCell";
+    ListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
+    if (!cell) {
+        cell = [[ListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
+        [[cell nameLabel] setFont:[ThemeManager fontForListName]];
+        [[cell nameLabel] setTextColor:[ThemeManager standardTextColor]];
+        [[cell nameLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+        [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
+        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
+    [[cell nameLabel] setText:[list name]];
     if ([list allItemsFinished]) {
-        [[cell textLabel] setTextColor:[ThemeManager ghostedTextColor]];
+        [[cell nameLabel] setTextColor:[ThemeManager ghostedTextColor]];
         [[cell detailTextLabel] setText:@"☑"];
         [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
     } else {
@@ -270,15 +257,27 @@
         else
             [[cell detailTextLabel] setText:@""];
     }
+    [cell setNoteText:[list note]];
+    return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell forOverdueItem:(MetaListItem *)item
+- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForItem:(MetaListItem *)item
 {
+    static NSString *CellId = @"ListCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellId];
+        [[cell textLabel] setFont:[ThemeManager fontForListName]];
+        [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
+        [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
+        [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];        
+    }
     NSString *timeDueString;
-
-    [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];
     [[cell textLabel] setText:[item name]];
-    DLog(@"reminder date: %@", [item reminderDate]);    
+    DLog(@"reminder date: %@", [item reminderDate]);
     NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
     DLog(@"numDays: %d", numDays);
     if (numDays == 0) // due today, show time
@@ -286,11 +285,12 @@
             timeDueString = NSLocalizedString(@"Today", nil);
         else
             timeDueString = [NSString stringWithFormat:@"%@ %@", [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]], NSLocalizedString(@"Today", nil)];
-    else
-        timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
+        else
+            timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
     if (numDays < 0)
         [[cell detailTextLabel] setTextColor:[ThemeManager textColorForOverdueItems]];
     [[cell detailTextLabel] setText:timeDueString];
+    return cell;
 }
 
 #pragma mark - Table view delegate

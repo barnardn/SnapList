@@ -9,15 +9,10 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ListCell : UITableViewCell {
-    UILabel *nameLabel;
-    UILabel *categoryLabel;
-    UILabel *countsLabel;
-}
+@interface ListCell : UITableViewCell 
 
-@property(nonatomic,strong) IBOutlet UILabel *nameLabel;
-@property(nonatomic,strong) IBOutlet UILabel *categoryLabel;
-@property(nonatomic,strong) IBOutlet UILabel *countsLabel;
+- (UILabel *)nameLabel;
 
+@property (nonatomic, strong) NSString *noteText;
 
 @end
