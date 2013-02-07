@@ -1040,7 +1040,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1049,7 +1049,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "ListMonster-Info.plist";
 				PRODUCT_NAME = SnapList;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
 			};
 			name = Debug;
 		};
@@ -1059,14 +1059,14 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Norman Barnard";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ListMonster_Prefix.pch;
 				INFOPLIST_FILE = "ListMonster-Info.plist";
 				PRODUCT_NAME = SnapList;
-				PROVISIONING_PROFILE = "135E23B1-4127-4499-B5CA-3EE776B59514";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4558494A-68A9-4320-877B-3C3EABEA6000";
+				PROVISIONING_PROFILE = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1075,7 +1075,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1104,7 +1104,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-licucore";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "135E23B1-4127-4499-B5CA-3EE776B59514";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
