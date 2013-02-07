@@ -90,16 +90,15 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    UIBarButtonItem *btnListMgr = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-listmgr"]
+    UIBarButtonItem *btnListMgr = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"399-list1"]
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(addList:)];
     
-    UIBarButtonItem *btnHelp = [[UIBarButtonItem alloc] initWithTitle:@"?"
+    UIBarButtonItem *btnHelp = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"451-help-symbol2"]
                                                                 style:UIBarButtonItemStyleBordered
                                                                target:self
                                                                action:@selector(btnHelpTapped:)];
-    
     [[self navigationItem] setLeftBarButtonItem:btnListMgr];
     [[self navigationItem] setRightBarButtonItem:btnHelp];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
