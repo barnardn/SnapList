@@ -75,6 +75,7 @@ static const CGFloat kRowHeight = 44.0f;
     ListCategory *category = [ListCategory insertInManagedObjectContext:[[self list] managedObjectContext]];
     [[self allCategories] insertObject:category atIndex:0];
     [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [sender setEnabled:NO];
 }
 
 - (IBAction)reorderButtonTapped:(UIBarButtonItem *)button
@@ -221,6 +222,7 @@ static const CGFloat kRowHeight = 44.0f;
     [category setName:text];
     [category save];
     [[self tableView] reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [[self btnAdd] setEnabled:YES];
 }
 
 #pragma mark - swipe cell overrides
