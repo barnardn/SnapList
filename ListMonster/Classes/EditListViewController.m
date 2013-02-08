@@ -27,6 +27,7 @@
 @property (nonatomic, strong) MetaList *list;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *cellViewControllers;
+@property (nonatomic, assign, setter = setEditingText:) BOOL isEditingText;
 
 @end
 
@@ -225,6 +226,7 @@
 
 - (void)buttonCellController:(ButtonTableCellController *)cellController buttonTappedForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self isEditingText]) return;
     NSString *title = NSLocalizedString(@"Delete List", nil);
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"Delete %@ and all the items in it?", nil), [[self list] name]];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
@@ -246,6 +248,7 @@
 
 - (void)keyboardDidAppear:(NSNotification *)notification
 {
+    [self setEditingText:YES];
     NSDictionary* info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
@@ -268,6 +271,7 @@
 {
     [[self tableView] setContentInset:UIEdgeInsetsZero];
     [[self tableView] setScrollIndicatorInsets:UIEdgeInsetsZero];
+    [self setEditingText:NO];
 }
 
 
