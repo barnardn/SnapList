@@ -111,9 +111,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[[self navigationController] navigationBar] setTintColor:nil];
-    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
-    if (selectedIndexPath)
-        [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
+//    if (selectedIndexPath)
+//        [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     
     NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
     
@@ -159,6 +159,11 @@
         }
     }
     [[self tableView] endUpdates];
+    
+    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
+    if (selectedIndexPath)
+        [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    
 }
 
 
@@ -190,8 +195,7 @@
 // TODO:  replace this with an actual error handling class!
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error 
 {
-    NSString *errMessage = [NSString stringWithFormat:@"%@: %@", message, [error localizedDescription]];
-    DLog(errMessage);
+    DLog(@"%@: %@", message, [error localizedDescription]);
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:[error localizedDescription] delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
     [alert show];
@@ -262,7 +266,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForItem:(MetaListItem *)item
 {
-    static NSString *CellId = @"ListCell";
+    static NSString *CellId = @"OverudeCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellId];
