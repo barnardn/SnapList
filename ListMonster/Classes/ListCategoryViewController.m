@@ -219,6 +219,14 @@ static const CGFloat kRowHeight = 44.0f;
 - (void)didEndEdittingText:(NSString *)text forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ListCategory *category = [[self allCategories] objectAtIndex:[indexPath row]];
+    if ([text length] == 0) {
+        [[self allCategories] removeObject:category];
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [[category managedObjectContext] deleteObject:category];
+        [[category managedObjectContext] save:nil];
+        [[self btnAdd] setEnabled:YES];
+        return;
+    }
     [category setName:text];
     [category save];
     [[self tableView] reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];

@@ -253,6 +253,11 @@ static NSString * const kUncategorizedListsKey  = @"--uncategorized--";
 - (void)textFieldTableCell:(TextFieldTableCell *)tableCell didEndEdittingText:(NSString *)text
 {
     NSIndexPath *indexPath = [[self tableView] indexPathForCell:tableCell];
+    if ([text length] == 0) {
+        [tableCell setDefaultText:NSLocalizedString(@"Add New List...", nil)];
+        [[self tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        return;
+    }
     NSString *categoryKey = [[self categoryNames] objectAtIndex:[indexPath section]];
     ListCategory *category = [[self categoriesByName] objectForKey:categoryKey];
     MetaList *newList = [MetaList insertInManagedObjectContext:[self managedObjectContext]];
