@@ -1104,6 +1104,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
+				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1112,6 +1113,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-licucore";
+				PROVISIONING_PROFILE = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "54AF1E80-48FD-4A92-88AA-46C7E9956355";
 				SDKROOT = iphoneos;
 			};
