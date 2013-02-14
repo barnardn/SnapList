@@ -181,7 +181,12 @@
     [[self tableView] beginUpdates];
     [self leftSwipeDeleteItemAtIndexPath:indexPath];
     
-    [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    NSInteger nSections = [[self tableView] numberOfSections];
+    NSInteger nItemsForSection = [[self tableView] numberOfRowsInSection:[indexPath section]];
+    if ((nItemsForSection == 1) && (nSections > 1))
+        [[self tableView] deleteSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    else
+        [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [[self tableView] endUpdates];
         
 }
