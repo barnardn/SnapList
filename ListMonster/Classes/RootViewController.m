@@ -238,16 +238,17 @@
 {
     static NSString *CellId = @"ListCell";
     ListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell) {
+    if (!cell)
         cell = [[ListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
-        [[cell nameLabel] setFont:[ThemeManager fontForListName]];
-        [[cell nameLabel] setTextColor:[ThemeManager standardTextColor]];
-        [[cell nameLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-        [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
-        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    }
+    
+    [[cell nameLabel] setFont:[ThemeManager fontForListName]];
+    [[cell nameLabel] setTextColor:[ThemeManager standardTextColor]];
+    [[cell nameLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
+    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
     [[cell nameLabel] setText:[list name]];
     if ([list allItemsFinished]) {
         [[cell nameLabel] setTextColor:[ThemeManager ghostedTextColor]];
