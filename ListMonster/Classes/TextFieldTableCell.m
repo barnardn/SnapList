@@ -25,7 +25,7 @@ static const CGFloat kTopTextMargin = 4.0f;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (!self) return nil;
-    [self setSelectionStyle:UITableViewCellEditingStyleNone];
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self setAccessoryType:UITableViewCellAccessoryNone];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];

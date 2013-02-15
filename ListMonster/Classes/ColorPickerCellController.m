@@ -33,7 +33,7 @@
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     
-    [cell setSelectionStyle:UITableViewCellEditingStyleNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     SelectColorView *scv = [[SelectColorView alloc] initWithFrame:[[cell contentView] bounds]];
     [scv setDelegate:self];
     if (![[self list] tintColor]) {
