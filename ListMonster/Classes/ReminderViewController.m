@@ -114,6 +114,7 @@
     } else {
         [[self reminderItem] setReminderDate:[self selectedReminderDate]];
     }
+    [[self reminderItem] scheduleReminder];
     [[self delegate] editItemViewController:self didChangeValue:[self selectedReminderDate] forItem:[self reminderItem]];
 }
 

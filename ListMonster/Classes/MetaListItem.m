@@ -57,10 +57,6 @@
     ZAssert([[self managedObjectContext] save:&error], @"Unable to save list item %@: %@", [self name], [error localizedDescription]);
 }
 
-// NOTE: some date checks are required.
-// if the previous reminder date is prior to "right now" then the notification was fired, and bumped up 
-// the badge number, so we have to decrement the badge number since were effectively completing this 
-// entry by pushing it into the future.
 - (void)setReminderDate:(NSDate *)date
 {
     NSDate *oldDate = [self primitiveValueForKey:@"reminderDate"];
@@ -137,6 +133,7 @@
 - (void)scheduleReminder
 {
     if (![self reminderDate]) return;
+    if (![[self changedValues] valueForKey:@"reminderDate"]) return;
     [self cancelReminder];
     UILocalNotification *localNotice = [[UILocalNotification alloc] init];
     [localNotice setFireDate:[self reminderDate]];
