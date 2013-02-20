@@ -248,7 +248,7 @@ static char editCellKey;
         }
         UITextView *tv = [self textViewForCell:editCell];
         [[editCell contentView] addSubview:tv];
-        [tv becomeFirstResponder];
+        [tv performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.0f];  // flaky resign responder bug?? see http://bit.ly/13cxcmL
         return editCell;
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
