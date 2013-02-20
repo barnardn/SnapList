@@ -426,9 +426,11 @@
         [[self categoryNameKeys] removeObject:categoryName];
         [[self allLists] removeObjectForKey:categoryName];
     }
-    NSError *error;
-    [[mo managedObjectContext] deleteObject:mo];
-    ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    if ([mo isKindOfClass:[MetaList class]]) {
+        NSError *error;
+        [[mo managedObjectContext] deleteObject:mo];
+        ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    }
     DLog(@"remaining lists: %d", [[self allLists] count]);    
 }
 
