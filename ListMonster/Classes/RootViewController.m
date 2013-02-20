@@ -29,7 +29,7 @@
 
 - (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
 - (NSMutableDictionary *)loadAllLists;
-- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath;
+- (NSManagedObject *)managedObjectAtIndexPath:(NSIndexPath *)indexPath;
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
@@ -111,10 +111,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[[self navigationController] navigationBar] setTintColor:nil];
-//    NSIndexPath *selectedIndexPath = [[self tableView] indexPathForSelectedRow];
-//    if (selectedIndexPath)
-//        [[self tableView] reloadRowsAtIndexPaths:@[selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    
     NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
     
     [[self tableView] beginUpdates];
@@ -226,7 +222,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    NSManagedObject *obj = [self listObjectAtIndexPath:indexPath];
+    NSManagedObject *obj = [self managedObjectAtIndexPath:indexPath];
     BOOL isListCell = ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]);
     if (isListCell)
         return [self tableView:tableView listCellForList:(MetaList *)obj];
@@ -302,7 +298,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     UIViewController *vcToPush;
-    NSManagedObject *listObject = [self listObjectAtIndexPath:indexPath];
+    NSManagedObject *listObject = [self managedObjectAtIndexPath:indexPath];
     if ([[[listObject entity] name] isEqualToString:LIST_ENTITY_NAME]) {
         MetaList *list = (MetaList *)listObject;
         vcToPush = [[ListItemsViewController alloc] initWithList:list];
@@ -331,7 +327,7 @@
 
 #pragma mark - list for index path methods
 
-- (MetaList *)listObjectAtIndexPath:(NSIndexPath *)indexPath
+- (MetaList *)managedObjectAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *listArr = [self listAtIndexPath:indexPath];
     return listArr[[indexPath row]];
@@ -377,7 +373,14 @@
 
 - (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
 {
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
+    if ([mo isKindOfClass:[MetaListItem class]]) {
+        MetaListItem *item = (MetaListItem *)mo;
+        [item setIsComplete:YES];
+        [item save];
+        return;
+    }
+    MetaList *list = (MetaList *)mo;
     BOOL checkAll =  ([list allItemsFinished]) ? NO : YES;
     [[list itemsSet] enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
         [item setIsComplete:checkAll];
@@ -387,37 +390,46 @@
 
 - (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
+    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
+    if ([mo isKindOfClass:[MetaListItem class]])
+        return NSLocalizedString(@"Complete!", nil);
+    MetaList *list = (MetaList *)mo;
     return ([list allItemsFinished]) ? @"List Reset" : @"All Done!";
 }
 
 - (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NO;
+    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
+    return ([mo isKindOfClass:[MetaListItem class]]);
 }
 
 - (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return;
+    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
+    if ([mo isKindOfClass:[MetaList class]]) return;
+    [self removeManagedObjectAtIndexPath:indexPath];
 }
 
 - (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self removeManagedObjectAtIndexPath:indexPath];
+}
+
+- (void)removeManagedObjectAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
     NSMutableArray *categoryLists = [self listAtIndexPath:indexPath];
-    MetaList *list = [self listObjectAtIndexPath:indexPath];
-    ZAssert([categoryLists containsObject:list], @"Whoa! list of lists does not contain list to delete");
-    [categoryLists removeObject:list];
+    ZAssert([categoryLists containsObject:mo], @"Whoa! list of lists does not contain object to delete");
+    [categoryLists removeObject:mo];
     if ([categoryLists count] == 0) {
         NSString *categoryName = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
         [[self categoryNameKeys] removeObject:categoryName];
         [[self allLists] removeObjectForKey:categoryName];
     }
-        
     NSError *error;
-    [[list managedObjectContext] deleteObject:list];
-    ZAssert([[[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext] save:&error], @"Unable to delete list! %@", [error localizedDescription]);
-    DLog(@"remaining lists: %d", [[self allLists] count]);
-    
+    [[mo managedObjectContext] deleteObject:mo];
+    ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    DLog(@"remaining lists: %d", [[self allLists] count]);    
 }
 
 
