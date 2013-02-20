@@ -86,19 +86,22 @@
         [ivBg setTransform:xlation];
     } completion:^(BOOL finished) {
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
-        NSString *actionTitle = [self rightSwipeActionTitleForItemItemAtIndexPath:indexPath];
+        NSString *actionTitle = [weakSelf rightSwipeActionTitleForItemItemAtIndexPath:indexPath];
         [weakSelf rightSwipeUpdateAtIndexPath:indexPath];
-        [swipedCell addSubview:[self swipeActionLabelWithText:actionTitle centeredAt:center]];
+        [swipedCell addSubview:[weakSelf swipeActionLabelWithText:actionTitle centeredAt:center]];
         [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
         [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
-        //[[weakSelf tableView] beginUpdates];
         if ([weakSelf rightSwipeShouldDeleteRowAtIndexPath:indexPath]) {
             [weakSelf rightSwipeRemoveItemAtIndexPath:indexPath];
-            [[weakSelf tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            NSInteger nSections = [[weakSelf tableView] numberOfSections];
+            NSInteger nItemsForSection = [[weakSelf tableView] numberOfRowsInSection:[indexPath section]];
+            if ((nItemsForSection == 1) && (nSections > 1))
+                [[weakSelf tableView] deleteSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            else
+                [[weakSelf tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             [[weakSelf tableView] reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-        //[[weakSelf tableView] endUpdates];
     }];
 }
 
@@ -134,27 +137,28 @@
     [ivBg setTag:TAG_COMPLETEVIEW];
     [swipedCell addSubview:ivBg];
     
+    __weak SwipeToEditCellTableViewController *weakSelf = self;
     [UIView animateWithDuration:0.25f animations:^{
         [[swipedCell textLabel] setTransform:xlation];
         [[swipedCell detailTextLabel] setTransform:xlation];
         [ivBg setTransform:xlation];
     } completion:^(BOOL finished) {
         CGPoint center = CDO_CGPointIntegral([[swipedCell contentView] center]);
-        [swipedCell addSubview:[self swipeActionLabelWithText:@"Delete" centeredAt:center]];
+        [swipedCell addSubview:[weakSelf swipeActionLabelWithText:@"Delete" centeredAt:center]];
 
-        CGRect converted = [[self view] convertRect:[swipedCell frame] fromView:[self tableView]];
+        CGRect converted = [[weakSelf view] convertRect:[swipedCell frame] fromView:[weakSelf tableView]];
         UIButton *top = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetMinY(converted))];
         [top setBackgroundColor:[UIColor clearColor]];
 
-        CGRect bottomFrame = CGRectMake(0.0f, CGRectGetMaxY(converted), 320.0f, CGRectGetHeight([[self view] bounds]) - CGRectGetMaxY(converted));
+        CGRect bottomFrame = CGRectMake(0.0f, CGRectGetMaxY(converted), 320.0f, CGRectGetHeight([[weakSelf view] bounds]) - CGRectGetMaxY(converted));
         UIButton *btm = [[UIButton alloc] initWithFrame:bottomFrame];
         [btm setBackgroundColor:[UIColor clearColor]];
-        [top addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [btm addTarget:self action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [[self view] addSubview:top];
-        [[self view] addSubview:btm];
-        [self setDeleteCancelRegions:@[top, btm]];
-        [self setCellForDeletionCancel:swipedCell];
+        [top addTarget:weakSelf action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [btm addTarget:weakSelf action:@selector(deleteCancelRegionTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [[weakSelf view] addSubview:top];
+        [[weakSelf view] addSubview:btm];
+        [weakSelf setDeleteCancelRegions:@[top, btm]];
+        [weakSelf setCellForDeletionCancel:swipedCell];
         [[swipedCell textLabel] setTransform:CGAffineTransformIdentity];
         [[swipedCell detailTextLabel] setTransform:CGAffineTransformIdentity];
         
