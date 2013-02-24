@@ -102,8 +102,6 @@
 - (void)didSave
 {
     [super didSave];
-    if (!reminderDateChanged) return;
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:self];
 }
 
 - (void)prepareForDeletion

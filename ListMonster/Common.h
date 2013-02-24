@@ -29,4 +29,3 @@
 
 #define NOTICE_LIST_UPDATE  @"updatelist"
 #define NOTICE_LIST_COUNTS  @"countchange"
-#define NOTICE_OVERDUE_ITEM @"overdueitem"

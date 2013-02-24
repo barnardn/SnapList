@@ -43,7 +43,7 @@
     [self setCachedItems:[NSMutableDictionary dictionaryWithCapacity:0]];
     UILocalNotification *launchNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (launchNotification) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     RootViewController *rvc = [[RootViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:rvc];
@@ -57,8 +57,6 @@
 // EditListItemView for that item
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
-
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -88,7 +86,6 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTICE_OVERDUE_ITEM object:nil];
 }
 
 
