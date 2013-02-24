@@ -1070,15 +1070,15 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Norman Barnard";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Norman Barnard";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ListMonster_Prefix.pch;
 				INFOPLIST_FILE = "ListMonster-Info.plist";
 				PRODUCT_NAME = SnapList;
-				PROVISIONING_PROFILE = "93037D93-FBAC-4B3A-A0EB-2D4DF6E2BBA3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "93037D93-FBAC-4B3A-A0EB-2D4DF6E2BBA3";
+				PROVISIONING_PROFILE = "B8EA684E-8E0A-4BF3-BB58-4DDD4EDF85C5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B8EA684E-8E0A-4BF3-BB58-4DDD4EDF85C5";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1117,8 +1117,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Norm Barnard (49A67976WA)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Norm Barnard (49A67976WA)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Norman Barnard";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Norman Barnard";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1127,8 +1127,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-licucore";
-				PROVISIONING_PROFILE = "93037D93-FBAC-4B3A-A0EB-2D4DF6E2BBA3";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "93037D93-FBAC-4B3A-A0EB-2D4DF6E2BBA3";
+				PROVISIONING_PROFILE = "B8EA684E-8E0A-4BF3-BB58-4DDD4EDF85C5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B8EA684E-8E0A-4BF3-BB58-4DDD4EDF85C5";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
