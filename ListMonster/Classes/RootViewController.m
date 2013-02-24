@@ -267,14 +267,15 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellId];
-        [[cell textLabel] setFont:[ThemeManager fontForListName]];
-        [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
-        [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
-        [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];        
     }
+    [[cell textLabel] setFont:[ThemeManager fontForListName]];
+    [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
+    [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
+    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
+    [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
+    
     NSString *timeDueString;
     [[cell textLabel] setText:[item name]];
     DLog(@"reminder date: %@", [item reminderDate]);
@@ -426,12 +427,17 @@
         [[self categoryNameKeys] removeObject:categoryName];
         [[self allLists] removeObjectForKey:categoryName];
     }
+    NSError *error;
     if ([mo isKindOfClass:[MetaList class]]) {
-        NSError *error;
         [[mo managedObjectContext] deleteObject:mo];
-        ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    } else {
+        MetaListItem *item = (MetaListItem *)mo;
+        NSInteger order = [[[item list] items] count];
+        [item setOrderValue:(order + 1)];
+        [item setIsComplete:YES];
     }
-    DLog(@"remaining lists: %d", [[self allLists] count]);    
+    ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    DLog(@"remaining lists: %d", [[self allLists] count]);
 }
 
 
