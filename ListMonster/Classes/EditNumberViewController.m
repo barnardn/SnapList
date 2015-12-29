@@ -8,8 +8,6 @@
 
 #import "EditNumberViewController.h"
 #import "MetaListItem.h"
-#import "NSNumberExtensions.h"
-
 
 @implementation EditNumberViewController
 
@@ -25,11 +23,6 @@
     numFormatter = [[NSNumberFormatter alloc] init];
     [numFormatter setPositiveFormat:@"#0.00"];
     return self;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
-{
-    return nil;
 }
 
 - (void)viewDidUnload 
@@ -82,12 +75,6 @@
     [[self item] setQuantity:number];
     [[self delegate] editItemViewController:self didChangeValue:number forItem:[self item]];
 }
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    [[self numericTextField] becomeFirstResponder];
-}
-
 
 #pragma mark -
 #pragma mark UITextField delegate methods

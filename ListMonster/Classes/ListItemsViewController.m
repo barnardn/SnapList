@@ -219,7 +219,7 @@ static char editCellKey;
     }
     NSString *text = [item name];
     CGSize constraint = CGSizeMake(ITEM_CELL_CONTENT_WIDTH, 20000.0f);
-    CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     return size.height + CELL_VMARGIN;
 
 }

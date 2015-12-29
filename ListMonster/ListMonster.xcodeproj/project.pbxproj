@@ -43,7 +43,6 @@
 		495DB44416475357001CD749 /* bg-deletion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 495DB44216475357001CD749 /* bg-deletion@2x.png */; };
 		495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EABF713083F5700F4A64E /* ListItemsViewController.m */; };
 		495EABFA13083F5700F4A64E /* ListItemsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 495EABF813083F5700F4A64E /* ListItemsView.xib */; };
-		495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 495EAC30130882E900F4A64E /* NSNumberExtensions.m */; };
 		4965E0221625070300631E13 /* btn-checkbox-checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0201625070300631E13 /* btn-checkbox-checked.png */; };
 		4965E0231625070300631E13 /* btn-checkbox-checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */; };
 		496A17771698CCDC00A561CC /* UIDevice+RetinaDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 496A17761698CCDC00A561CC /* UIDevice+RetinaDetection.m */; };
@@ -221,8 +220,6 @@
 		495EABF613083F5700F4A64E /* ListItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListItemsViewController.h; sourceTree = "<group>"; };
 		495EABF713083F5700F4A64E /* ListItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListItemsViewController.m; sourceTree = "<group>"; };
 		495EABF813083F5700F4A64E /* ListItemsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListItemsView.xib; path = Classes/ListItemsView.xib; sourceTree = "<group>"; };
-		495EAC2F130882E900F4A64E /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
-		495EAC30130882E900F4A64E /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		4965E0201625070300631E13 /* btn-checkbox-checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-checkbox-checked.png"; sourceTree = "<group>"; };
 		4965E0211625070300631E13 /* btn-checkbox-checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-checkbox-checked@2x.png"; sourceTree = "<group>"; };
 		496A17751698CCDC00A561CC /* UIDevice+RetinaDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+RetinaDetection.h"; sourceTree = "<group>"; };
@@ -767,8 +764,6 @@
 				49F1812212C9364E0066B454 /* NSArrayExtensions.m */,
 				49F1812412C9366A0066B454 /* NSStringExtensions.h */,
 				49F1812512C9366A0066B454 /* NSStringExtensions.m */,
-				495EAC2F130882E900F4A64E /* NSNumberExtensions.h */,
-				495EAC30130882E900F4A64E /* NSNumberExtensions.m */,
 				4941A8571572FCD100EF158B /* NSString+EmptyString.h */,
 				4941A8581572FCD100EF158B /* NSString+EmptyString.m */,
 				498432AF166BF253003C624F /* NSDate+FormattedDates.h */,
@@ -987,7 +982,6 @@
 				49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
-				495EAC31130882E900F4A64E /* NSNumberExtensions.m in Sources */,
 				495D8413130E088800933720 /* EditListItemViewController.m in Sources */,
 				4955B03C1323031500722C3F /* ListCell.m in Sources */,
 				49FDFF3E135233A400F6A3DA /* ItemStash.m in Sources */,

@@ -43,11 +43,6 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
-{
-    return nil;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -213,9 +208,7 @@
 
     // figure out which picker components we need to select after the deletion.
     NSUInteger nextMeasureRow = [self calculateMeasurementIndexAfterDeletionOfUnit:[self selectedMeasure]];
-    DLog(@"nextMeasureRow: %d", nextMeasureRow);
     NSUInteger nextUnitRow = [self calculateUnitIndexAtMeasurementIndex:nextMeasureRow afterDeletionOfUnit:[self selectedMeasure]];
-    DLog(@"nextUnitRow: %d", nextUnitRow);
     
     NSManagedObjectContext *moc = [[self selectedMeasure] managedObjectContext];
     [moc deleteObject:[self selectedMeasure]];
@@ -480,7 +473,6 @@
     }
     NSInteger measureRow = [measures indexOfObject:[measure measure]];
     NSInteger unitRow = [units indexOfObject:measure];
-    DLog(@"defaults (%d,%d)", measureRow,unitRow);
     [self setSelectedMeasureKey:[measure measure]];    
     [[self measurePicker] reloadAllComponents];
     [[self measurePicker] selectRow:measureRow inComponent:emvMEASURE_COMPONENT_INDEX animated:NO];

@@ -36,11 +36,6 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil 
-{
-    return nil;
-}
-
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
@@ -209,7 +204,7 @@
         if (dayOffset == 0)
             [t setSecond:INT_OBJ(7)];       // for one week from today
         NSInteger replacePoint = (weekDayIdx % 7) + 3;
-        DLog(@"%@ at %d", t, replacePoint);
+        DLog(@"%@ at %@", t, @(replacePoint));
         dow[replacePoint] = t;
     }
     [self setSimpleDates:dow];

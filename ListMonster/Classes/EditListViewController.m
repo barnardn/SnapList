@@ -229,18 +229,21 @@
     if ([self isEditingText]) return;
     NSString *title = NSLocalizedString(@"Delete List", nil);
     NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"Delete %@ and all the items in it?", nil), [[self list] name]];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) return;
-    NSManagedObjectContext *moc = [[self list] managedObjectContext];
-    [moc deleteObject:[self list]];
-    NSError *error = nil;
-    ZAssert([moc save:&error], @"Whoa! Could not delete list: %@", [error localizedDescription]);
-    [[self navigationController] popViewControllerAnimated:YES];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleCancel handler:nil]];
+    
+    EditListViewController __weak *weakSelf = self;
+    [alert addAction:[UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        EditListViewController *strSelf = weakSelf;
+        NSManagedObjectContext *moc = [[strSelf list] managedObjectContext];
+        [moc deleteObject:[strSelf list]];
+        NSError *error = nil;
+        ZAssert([moc save:&error], @"Whoa! Could not delete list: %@", [error localizedDescription]);
+        [[strSelf navigationController] popViewControllerAnimated:YES];
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 

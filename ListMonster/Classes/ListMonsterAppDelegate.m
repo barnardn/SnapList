@@ -47,10 +47,20 @@
     }
     RootViewController *rvc = [[RootViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rvc];
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self appearanceProxies];
     [self.window setRootViewController:navController];
     [[self window] makeKeyAndVisible];
     return YES;
+}
+
+
+- (void)appearanceProxies {
+    [[UINavigationBar appearance] setBarTintColor:[UIColor lightGrayColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
+    [[UINavigationBar appearance] setTranslucent:NO];
 }
 
 

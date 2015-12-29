@@ -11,8 +11,6 @@
 
 const NSInteger kTextViewTag    = 1002;
 
-static const CGFloat kItemCellContentWidth = 250.0f;
-
 @implementation TextViewTableCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

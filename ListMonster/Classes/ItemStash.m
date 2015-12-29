@@ -21,7 +21,7 @@
 //
 + (void)addToStash:(MetaListItem *)anItem
 {
-    NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
+    NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     [ctx setPersistentStoreCoordinator:[[ListMonsterAppDelegate sharedAppDelegate] persistentStoreCoordinator]];
     NSFetchRequest *fetchStashItems = [[NSFetchRequest alloc] init];
     NSEntityDescription *ed = [NSEntityDescription entityForName:@"ItemStash" inManagedObjectContext:ctx];

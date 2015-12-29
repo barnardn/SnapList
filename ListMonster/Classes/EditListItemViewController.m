@@ -18,7 +18,6 @@
 #import "MetaList.h"
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
-#import "NSNumberExtensions.h"
 #import "ReminderViewController.h"
 #import "ThemeManager.h"
 #import "TextViewTableCellController.h"
@@ -36,7 +35,6 @@
 @property (nonatomic,strong) MetaListItem *item;
 @property (nonatomic, strong) NSArray *editViewControllers;
 @property (nonatomic, strong) NSArray *tableCellControllers;
-@property (nonatomic, strong) UIAlertView *alertView;
 
 @end
 

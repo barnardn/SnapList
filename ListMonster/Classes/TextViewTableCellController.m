@@ -14,9 +14,7 @@
 #import "ThemeManager.h"
 
 
-static const CGFloat kEditCellTextViewLeftMargin = 10.0f;
 static const CGFloat kEditCellTextViewTopMargin = 10.0f;
-static const CGFloat kItemCellContentWidth = 250.0f;
 
 static char editCellKey;
 
