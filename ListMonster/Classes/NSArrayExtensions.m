@@ -58,7 +58,7 @@
     
     if (start > ([self count] - 1)) return nil;
     NSMutableArray *newArr = [NSMutableArray arrayWithCapacity:length];
-    for (int idx = start; idx < (start + length); idx++)
+    for (NSInteger idx = start; idx < (start + length); idx++)
         [newArr addObject:self[idx]];
 
     return newArr;

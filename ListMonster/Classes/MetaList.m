@@ -94,7 +94,7 @@
     
     NSArray *allItems = [[self items] allObjects];
     NSArray *filteredItems = [allItems filteredArrayUsingPredicate:predicate];
-    [filteredItems setValue:INT_OBJ(state) forKey:@"isChecked"];
+    [filteredItems setValue:@(state) forKey:@"isChecked"];
 }
 
 - (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted

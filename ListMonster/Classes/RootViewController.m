@@ -91,12 +91,12 @@
 {
     [super viewDidLoad];
     UIBarButtonItem *btnListMgr = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"399-list1"]
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(addList:)];
     
     UIBarButtonItem *btnHelp = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"451-help-symbol2"]
-                                                                style:UIBarButtonItemStyleBordered
+                                                                style:UIBarButtonItemStylePlain
                                                                target:self
                                                                action:@selector(btnHelpTapped:)];
     [[self navigationItem] setLeftBarButtonItem:btnListMgr];
@@ -173,7 +173,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vclm];
     [[navController navigationBar] setTintColor:[UIColor darkGrayColor]];
     [self setListManagerViewController:navController];
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (IBAction)btnHelpTapped:(UIBarButtonItem *)sender
@@ -193,8 +193,9 @@
 {
     DLog(@"%@: %@", message, [error localizedDescription]);
     NSString *alertTitle = NSLocalizedString(@"Error during save", @"save list error title");
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:alertTitle message:[error localizedDescription] delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertTitle message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", "dismiss button title") style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Table view datasource methods
@@ -253,7 +254,7 @@
     } else {
         NSInteger countIncomplete = [list countOfItemsCompleted:NO];
         if (countIncomplete > 0)
-            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%d", countIncomplete]];
+            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@", @(countIncomplete)]];
         else
             [[cell detailTextLabel] setText:@""];
     }
@@ -280,7 +281,7 @@
     [[cell textLabel] setText:[item name]];
     DLog(@"reminder date: %@", [item reminderDate]);
     NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
-    DLog(@"numDays: %d", numDays);
+    DLog(@"numDays: %@", @(numDays));
     if (numDays == 0) // due today, show time
         if (has_midnight_timecomponent([item reminderDate]))
             timeDueString = NSLocalizedString(@"Today", nil);
@@ -437,7 +438,6 @@
         [item setIsComplete:YES];
     }
     ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
-    DLog(@"remaining lists: %d", [[self allLists] count]);
 }
 
 
@@ -445,7 +445,7 @@
 
 - (void)dismissListManagerView
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     [self setAllLists:[self loadAllLists]];
     [[self tableView] reloadData];
 }
@@ -454,7 +454,7 @@
 
 - (void)dismissHelpView
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

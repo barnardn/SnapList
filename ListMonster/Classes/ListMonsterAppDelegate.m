@@ -16,13 +16,14 @@
 
 @interface ListMonsterAppDelegate()
 
-- (void)cancelRogueLocalNotifications;
+
+@property (strong, nonatomic,readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic,readwrite) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic,readwrite) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation ListMonsterAppDelegate
-
-@synthesize window, navController, allColors, cachedItems;
 
 + (ListMonsterAppDelegate *)sharedAppDelegate
 {
@@ -39,61 +40,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
-//    [self cancelRogueLocalNotifications];
     [self setCachedItems:[NSMutableDictionary dictionaryWithCapacity:0]];
     UILocalNotification *launchNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (launchNotification) {
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     RootViewController *rvc = [[RootViewController alloc] init];
-    navController = [[UINavigationController alloc] initWithRootViewController:rvc];
-      // profiler reccomendation
-    [[self window] addSubview:[navController view]];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rvc];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.window setRootViewController:navController];
     [[self window] makeKeyAndVisible];
     return YES;
-}
-
-// TODO: alert should have a "view details" button and take the user to the 
-// EditListItemView for that item
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    /*
-     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-     */
-}
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-     If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
-     */
-}
-
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    /*
-     Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
-     */
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     */
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    /*
-     Called when the application is about to terminate.
-     See also applicationDidEnterBackground:.
-     */
 }
 
 
@@ -132,7 +89,7 @@
 
 - (NSManagedObjectModel *)managedObjectModel 
 {
-    if (managedObjectModel) return managedObjectModel;
+    if (_managedObjectModel) return _managedObjectModel;
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ListMonster" ofType:@"momd"];
     if (!path) {
@@ -140,13 +97,13 @@
     }
     ZAssert(path != nil, @"Unable to find data model in main bundle");
     NSURL *url = [NSURL fileURLWithPath:path];
-    managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:url];
-    return managedObjectModel;
+    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:url];
+    return _managedObjectModel;
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
 {
-    if (persistentStoreCoordinator) return persistentStoreCoordinator;
+    if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
     
     NSFileManager *fileMan = [NSFileManager defaultManager];
     NSString *docFolder = [self documentsFolder];
@@ -162,13 +119,13 @@
    NSDictionary *storeOptions = @{NSMigratePersistentStoresAutomaticallyOption: BOOL_OBJ(YES),
                                   NSInferMappingModelAutomaticallyOption: BOOL_OBJ(YES)};
     NSManagedObjectModel *mom = [self managedObjectModel];
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
     
     NSError *error = nil;
-    if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:storeOptions error:&error]) {
-        return persistentStoreCoordinator;
+    if ([self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:storeOptions error:&error]) {
+        return _persistentStoreCoordinator;
     }
-    persistentStoreCoordinator = nil;
+    _persistentStoreCoordinator = nil;
     ZAssert(NO, @"Failed to initialize persistent store.");
     return nil;
 
@@ -176,14 +133,14 @@
 
 - (NSManagedObjectContext *)managedObjectContext 
 {
-    if (managedObjectContext) return managedObjectContext;
+    if (_managedObjectContext) return _managedObjectContext;
     NSPersistentStoreCoordinator *psc = [self persistentStoreCoordinator];
     if (!psc) return nil;
-    managedObjectContext = [[NSManagedObjectContext alloc] init];
-    [managedObjectContext setPersistentStoreCoordinator:psc];
+    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [_managedObjectContext setPersistentStoreCoordinator:psc];
     NSUndoManager *undoManager = [[NSUndoManager alloc] init];
-    [managedObjectContext setUndoManager:undoManager];
-    return managedObjectContext;
+    [_managedObjectContext setUndoManager:undoManager];
+    return _managedObjectContext;
 }
 #pragma mark - Cache methods
 

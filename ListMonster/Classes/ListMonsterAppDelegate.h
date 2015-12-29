@@ -9,25 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface ListMonsterAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    UINavigationController *navController;
-    NSManagedObjectContext *managedObjectContext;
-    NSManagedObjectModel *managedObjectModel;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator;
-    NSArray *allColors;
-    NSMutableDictionary *cachedItems;
-    
-}
+@interface ListMonsterAppDelegate : NSObject <UIApplicationDelegate> 
 
-@property(nonatomic, strong) IBOutlet UIWindow *window;
+@property(nonatomic, strong) UIWindow *window;
 @property(nonatomic,strong) UINavigationController *navController;
 @property(nonatomic,strong) NSArray *allColors;
 @property(nonatomic,strong) NSMutableDictionary *cachedItems;
+@property (strong, nonatomic,readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic,readonly) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic,readonly) NSManagedObjectContext *managedObjectContext;
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
-- (NSManagedObjectModel *)managedObjectModel;
-- (NSManagedObjectContext *)managedObjectContext;
 - (NSString *)documentsFolder;
 
 - (void)addCacheObject:(id)object withKey:(NSString *)key;

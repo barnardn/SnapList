@@ -20,11 +20,13 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.contentSizeForViewInPopover = CGSizeMake(240,250);
-    }
     return self;
 }
+
+- (CGSize)preferredContentSize {
+    return CGSizeMake(240,250);
+}
+
 
 - (void)viewDidLoad
 {
@@ -186,7 +188,6 @@
             [scroll addSubview:noColorButton];
         });//end block
     });//end block
-    dispatch_release(myQueue);
 }
 
 
