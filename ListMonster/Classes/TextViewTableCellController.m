@@ -130,10 +130,8 @@ static char editCellKey;
     CGFloat width = 300.0f;
     if ([[self tableView] style] == UITableViewStyleGrouped)
         width = 280.0f;
-    CGSize textSize = [text sizeWithFont:[ThemeManager fontForStandardListText]
-                              constrainedToSize:CGSizeMake(width - 8.0f, 20000.0f)
-                                  lineBreakMode:NSLineBreakByWordWrapping];
-    return textSize;
+    CGRect boundingRect = [text boundingRectWithSize:CGSizeMake(width - 8.0f, INT16_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : [ThemeManager fontForStandardListText]} context:nil];
+    return boundingRect.size;
 }
 
 

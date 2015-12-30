@@ -30,34 +30,24 @@ const NSInteger kTextViewTag    = 1002;
     return self;
 }
 
-- (void)setDelegate:(id<UITextViewDelegate>)delegate
-{
+- (void)setDelegate:(id<UITextViewDelegate>)delegate {
     [[self textView] setDelegate:delegate];
 }
 
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     CGRect contentFrame = [[self contentView] bounds];    
     CGRect tvFrame = CGRectInset(contentFrame, 2.0f, 2.0f);
     [[self textView] setFrame:tvFrame];
 }
 
-- (CGSize)sizeForString:(NSString *)string withFont:(UIFont *)font inFrame:(CGRect)frame
-{
-    CGSize textSize = [string sizeWithFont:font
-                       constrainedToSize:CGSizeMake(frame.size.width - 8.0f, 20000.0f)
-                           lineBreakMode:NSLineBreakByWordWrapping];
-
-    return textSize;
+- (CGSize)sizeForString:(NSString *)string withFont:(UIFont *)font inFrame:(CGRect)frame {
+    CGRect boundRect = [string boundingRectWithSize:CGSizeMake(frame.size.width - 8.0f, INT16_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:nil];
+    return boundRect.size;
 }
-
-
 
 @end

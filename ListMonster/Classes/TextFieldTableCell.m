@@ -37,7 +37,7 @@ static const CGFloat kTopTextMargin = 4.0f;
     [_textField setReturnKeyType:UIReturnKeyDone];
     [[self contentView] addSubview:_textField];
     
-    CGSize txtSize = [@"XX" sizeWithFont:[ThemeManager fontForListName]];
+    CGSize txtSize = [@"XX" sizeWithAttributes:@{NSFontAttributeName : [ThemeManager fontForListName]}];
     _textHeight = txtSize.height;
     return self;
 }
@@ -71,7 +71,6 @@ static const CGFloat kTopTextMargin = 4.0f;
 {
     [[self textField] setText:[self defaultText]];
     [[self textField] setAdjustsFontSizeToFitWidth:YES];
-    [[self textLabel] setMinimumFontSize:kSizeListNameFont];
     [[self textField] setFont:[ThemeManager fontForListName]];
     [[self textField] setTextColor:[UIColor whiteColor]];
     [[self textField] setEnabled:NO];
@@ -92,7 +91,7 @@ static const CGFloat kTopTextMargin = 4.0f;
     if ([string length] == 0) return YES;
     NSMutableString *maybeText = [NSMutableString stringWithString:[textField text]];
     [maybeText replaceCharactersInRange:range withString:string];
-    CGSize maybeSize = [maybeText sizeWithFont:[textField font]];
+    CGSize maybeSize = [maybeText sizeWithAttributes:@{NSFontAttributeName : textField.font}];
     return (maybeSize.width > CGRectGetWidth([textField frame])) ? NO : YES;
 }
 
