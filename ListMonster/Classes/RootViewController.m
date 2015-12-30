@@ -48,12 +48,6 @@
     return self;
 }
 
-
-- (NSString *)nibName
-{
-    return @"RootView";
-}
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
@@ -191,10 +185,6 @@
     return [listArr count];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self removeSwipeActionIndicatorViewsFromCell:cell];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -212,11 +202,12 @@
     cell.name = list.name;
     cell.listCompleted = [list allItemsFinished];
     if ([list allItemsFinished]) {
-        [[cell detailTextLabel] setText:@"☑"];
+        cell.detailText = @"☑";
     } else {
         NSInteger countIncomplete = [list countOfItemsCompleted:NO];
         cell.detailText = (countIncomplete > 0) ? [@(countIncomplete) stringValue] : @"";
     }
+    cell.accessoryType = (list.note.length > 0) ? UITableViewCellAccessoryDetailDisclosureButton : UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -254,6 +245,35 @@
     }
     [[self navigationController] pushViewController:vcToPush animated:YES];
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSManagedObject *obj = [self managedObjectAtIndexPath:indexPath];
+    BOOL isListCell = ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]);
+    if (isListCell) {
+        MetaList *list = (MetaList *)obj;
+        NSString *title = ([list allItemsFinished]) ? NSLocalizedString(@"Reset", @"reset list items action") : NSLocalizedString(@"Done", @"complete list action title");
+        
+        UITableViewRowAction *completeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self _completeActionWithList:list atIndexPath:indexPath];
+        }];
+        completeAction.backgroundColor = [UIColor colorWithRed:0.0 green:0.7 blue:0 alpha:1.0];
+        UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Delete" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+            [self _deleteActionForListAtIndexPath:indexPath];
+        }];
+        return @[deleteAction, completeAction];
+    }
+    UITableViewRowAction *completeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"Done", @"complete list action title") handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [self _completeActionWithListItemAtIndexPath:indexPath];
+    }];
+    completeAction.backgroundColor = [UIColor colorWithRed:0.0 green:0.7 blue:0 alpha:1.0];
+    return @[completeAction];
+}
+
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -324,75 +344,66 @@
     return listDict;
 }
 
-#pragma mark - swipe to edit cell view controller overrides
+#pragma mark - list edit actions
 
-- (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
-    if ([mo isKindOfClass:[MetaListItem class]]) {
-        MetaListItem *item = (MetaListItem *)mo;
-        [item setIsComplete:YES];
-        [item save];
-        return;
-    }
-    MetaList *list = (MetaList *)mo;
+- (void)_completeActionWithList:(MetaList *)list atIndexPath:(NSIndexPath *)indexPath {
     BOOL checkAll =  ([list allItemsFinished]) ? NO : YES;
     [[list itemsSet] enumerateObjectsUsingBlock:^(MetaListItem *item, BOOL *stop) {
         [item setIsComplete:checkAll];
     }];
     [list save];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
-    if ([mo isKindOfClass:[MetaListItem class]])
-        return NSLocalizedString(@"Complete!", nil);
-    MetaList *list = (MetaList *)mo;
-    return ([list allItemsFinished]) ? @"List Reset" : @"All Done!";
+- (void)_completeActionWithListItemAtIndexPath:(NSIndexPath *)indexPath {
+    MetaListItem *item = (MetaListItem *)[self managedObjectAtIndexPath:indexPath];
+    [item setIsComplete:YES];
+    [item save];
+    
+    NSIndexPath __block *containingListPath = nil;
+    [self.categoryNameKeys enumerateObjectsUsingBlock:^(NSString * _Nonnull categoryName, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSMutableArray *lists = self.allLists[categoryName];
+        NSInteger rowIdx = [lists indexOfObject:item.list];
+        if (rowIdx != NSNotFound) {
+            *stop = YES;
+            containingListPath = [NSIndexPath indexPathForRow:rowIdx inSection:idx];
+        }
+    }];
+    
+    NSMutableArray *itemsList = self.allLists[KEY_OVERDUE];
+    [self.tableView beginUpdates];
+    if (itemsList.count == 1) {
+        [self.categoryNameKeys removeObjectsAtIndexes:[NSIndexSet indexSetWithIndex:0]];
+        [self.allLists removeObjectForKey:KEY_OVERDUE];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        [itemsList removeObjectAtIndex:indexPath.row];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    [self.tableView reloadRowsAtIndexPaths:@[containingListPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
-- (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
-    return ([mo isKindOfClass:[MetaListItem class]]);
-}
-
-- (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
-    if ([mo isKindOfClass:[MetaList class]]) return;
-    [self removeManagedObjectAtIndexPath:indexPath];
-}
-
-- (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self removeManagedObjectAtIndexPath:indexPath];
-}
-
-- (void)removeManagedObjectAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *mo = [self managedObjectAtIndexPath:indexPath];
+- (void)_deleteActionForListAtIndexPath:(NSIndexPath *)indexPath {
+    
+    MetaList *list = (MetaList *)[self managedObjectAtIndexPath:indexPath];
     NSMutableArray *categoryLists = [self listAtIndexPath:indexPath];
-    ZAssert([categoryLists containsObject:mo], @"Whoa! list of lists does not contain object to delete");
-    [categoryLists removeObject:mo];
+    ZAssert([categoryLists containsObject:list], @"Whoa! list of lists does not contain object to delete");
+    [categoryLists removeObject:list];
+    
     if ([categoryLists count] == 0) {
         NSString *categoryName = [[self categoryNameKeys] objectAtIndex:[indexPath section]];
         [[self categoryNameKeys] removeObject:categoryName];
         [[self allLists] removeObjectForKey:categoryName];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     NSError *error;
-    if ([mo isKindOfClass:[MetaList class]]) {
-        [[mo managedObjectContext] deleteObject:mo];
-    } else {
-        MetaListItem *item = (MetaListItem *)mo;
-        NSInteger order = [[[item list] items] count];
-        [item setOrderValue:(order + 1)];
-        [item setIsComplete:YES];
-    }
-    ZAssert([[mo managedObjectContext] save:&error], @"Unable to delete object! %@", [error localizedDescription]);
+    NSManagedObjectContext *moc = list.managedObjectContext;
+    [moc deleteObject:list];
+    ZAssert([moc save:&error], @"Unable to delete object! %@", [error localizedDescription]);
 }
-
 
 #pragma mark - list manager view delegate
 
