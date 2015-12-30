@@ -14,10 +14,7 @@
 #import "RootViewController.h"
 #import "ThemeManager.h"
 
-//static ListMonsterAppDelegate *appDelegateInstance;
-
 @interface ListMonsterAppDelegate()
-
 
 @property (strong, nonatomic,readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic,readwrite) NSManagedObjectModel *managedObjectModel;
