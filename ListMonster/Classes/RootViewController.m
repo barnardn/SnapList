@@ -21,6 +21,7 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSDate+FormattedDates.h"
+#import "OverdueItemTableViewCell.h"
 #import "RootViewController.h"
 #import "TableHeaderView.h"
 #import "ThemeManager.h"
@@ -94,6 +95,8 @@
     [self setAllLists:[self loadAllLists]];
     
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ListCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([ListCell class])];
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([OverdueItemTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([OverdueItemTableViewCell class])];
+    
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.0f;
@@ -218,7 +221,7 @@
     if (isListCell)
         return [self tableView:tableView listCellForList:(MetaList *)obj atIndexPath:indexPath];
     else
-        return [self tableView:tableView overdueItemCellForItem:(MetaListItem *)obj];
+        return [self tableView:tableView overdueItemCellForItem:(MetaListItem *)obj atIndexPath:indexPath];
 }
 
 - (ListCell *)tableView:(UITableView *)tableView listCellForList:(MetaList *)list atIndexPath:(NSIndexPath *)indexPath; {
@@ -235,34 +238,21 @@
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForItem:(MetaListItem *)item
-{
-    static NSString *CellId = @"OverudeCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellId];
-    }
-    [[cell textLabel] setFont:[ThemeManager fontForListName]];
-    [[cell textLabel] setTextColor:[ThemeManager standardTextColor]];
-    [[cell textLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
-    [[cell detailTextLabel] setFont:[ThemeManager fontForDueDateDetails]];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];    
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView overdueItemCellForItem:(MetaListItem *)item atIndexPath:(NSIndexPath *)indexPath {
+    OverdueItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([OverdueItemTableViewCell class]) forIndexPath:indexPath];
     NSString *timeDueString;
-    [[cell textLabel] setText:[item name]];
+    cell.name = item.name;
     NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
-    if (numDays == 0) // due today, show time
+    if (numDays == 0) { // due today, show time
         if (has_midnight_timecomponent([item reminderDate]))
             timeDueString = NSLocalizedString(@"Today", nil);
         else
             timeDueString = [NSString stringWithFormat:@"%@ %@", [[item reminderDate] formattedTimeForLocale:[NSLocale currentLocale]], NSLocalizedString(@"Today", nil)];
-        else
-            timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
-    if (numDays < 0)
-        [[cell detailTextLabel] setTextColor:[ThemeManager textColorForOverdueItems]];
-    [[cell detailTextLabel] setText:timeDueString];
+    } else {
+        timeDueString = [[item reminderDate] formattedDateWithStyle:NSDateFormatterShortStyle];
+    }
+    cell.detailText = timeDueString;
+    cell.overdue = (numDays < 0);
     return cell;
 }
 
@@ -298,7 +288,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-    MetaList *list = [self managedObjectAtIndexPath:indexPath];
+    MetaList *list = (MetaList *)[self managedObjectAtIndexPath:indexPath];
     BasePopoverNavigationController *viewController = [BasePopoverNavigationController popoverNavigationControllerWithRootViewController:[[DisplayListNoteViewController alloc] initWithList:list]];
     ListCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     viewController.popoverPresentationController.sourceView = cell;
@@ -310,7 +300,7 @@
 
 #pragma mark - list for index path methods
 
-- (MetaList *)managedObjectAtIndexPath:(NSIndexPath *)indexPath
+- (NSManagedObject *)managedObjectAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *listArr = [self listAtIndexPath:indexPath];
     return listArr[[indexPath row]];

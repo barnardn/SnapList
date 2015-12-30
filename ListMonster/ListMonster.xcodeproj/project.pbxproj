@@ -113,6 +113,8 @@
 		49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A0205412E5256A005B1D0E /* EditListViewController.m */; };
 		49AD281F1C344E890040B76B /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD281E1C344E890040B76B /* ListCell.xib */; };
 		49AD28241C3459AE0040B76B /* BasePopoverNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD28231C3459AE0040B76B /* BasePopoverNavigationController.m */; };
+		49AD28291C3466200040B76B /* OverdueItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */; };
+		49AD282A1C3466200040B76B /* OverdueItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */; };
 		49AD716F16640BFB001897D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AD716E16640BFB001897D3 /* QuartzCore.framework */; };
 		49AD718D1664173A001897D3 /* icon-help.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71851664173A001897D3 /* icon-help.png */; };
 		49AD718E1664173A001897D3 /* icon-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71861664173A001897D3 /* icon-help@2x.png */; };
@@ -329,6 +331,9 @@
 		49AD281E1C344E890040B76B /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 		49AD28221C3459AE0040B76B /* BasePopoverNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePopoverNavigationController.h; sourceTree = "<group>"; };
 		49AD28231C3459AE0040B76B /* BasePopoverNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePopoverNavigationController.m; sourceTree = "<group>"; };
+		49AD28261C3466200040B76B /* OverdueItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueItemTableViewCell.h; sourceTree = "<group>"; };
+		49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueItemTableViewCell.m; sourceTree = "<group>"; };
+		49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverdueItemTableViewCell.xib; sourceTree = "<group>"; };
 		49AD716E16640BFB001897D3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49AD71851664173A001897D3 /* icon-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help.png"; sourceTree = "<group>"; };
 		49AD71861664173A001897D3 /* icon-help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help@2x.png"; sourceTree = "<group>"; };
@@ -528,13 +533,16 @@
 		4955B038132302BC00722C3F /* Custom Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				49AD28251C3466050040B76B /* Xibs */,
 				4955B03A1323031500722C3F /* ListCell.h */,
 				4955B03B1323031500722C3F /* ListCell.m */,
 				497EB48516755E130086DF17 /* TextFieldTableCell.h */,
 				497EB48616755E130086DF17 /* TextFieldTableCell.m */,
 				49C3D0CD1683E5AF00B1FF16 /* TextViewTableCell.h */,
 				49C3D0CE1683E5AF00B1FF16 /* TextViewTableCell.m */,
-				49AD281E1C344E890040B76B /* ListCell.xib */,
+				49AD28261C3466200040B76B /* OverdueItemTableViewCell.h */,
+				49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */,
+				49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -715,6 +723,14 @@
 				49AD28231C3459AE0040B76B /* BasePopoverNavigationController.m */,
 			);
 			name = "Base and Common";
+			sourceTree = "<group>";
+		};
+		49AD28251C3466050040B76B /* Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				49AD281E1C344E890040B76B /* ListCell.xib */,
+			);
+			name = Xibs;
 			sourceTree = "<group>";
 		};
 		49AD71841664173A001897D3 /* icons */ = {
@@ -902,6 +918,7 @@
 				49D225C214C5103C009D9769 /* Default.png in Resources */,
 				49D225C414C512BD009D9769 /* Default@2x.png in Resources */,
 				49C68AA215279CD0007A062F /* btn-add.png in Resources */,
+				49AD282A1C3466200040B76B /* OverdueItemTableViewCell.xib in Resources */,
 				49C68AA315279CD0007A062F /* btn-add@2x.png in Resources */,
 				49C68AA415279CD0007A062F /* btn-remove.png in Resources */,
 				49C68AA515279CD0007A062F /* btn-remove@2x.png in Resources */,
@@ -1015,6 +1032,7 @@
 				496B7B341623A73C00EBE286 /* ThemeManager.m in Sources */,
 				49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */,
 				49836D8F163619EC006F8A1E /* _Measure.m in Sources */,
+				49AD28291C3466200040B76B /* OverdueItemTableViewCell.m in Sources */,
 				49836D90163619EC006F8A1E /* _MetaList.m in Sources */,
 				49836D91163619EC006F8A1E /* _MetaListItem.m in Sources */,
 				49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */,

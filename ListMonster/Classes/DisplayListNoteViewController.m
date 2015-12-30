@@ -36,6 +36,10 @@
     return CGSizeMake(240.0f, 200.0f);
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
