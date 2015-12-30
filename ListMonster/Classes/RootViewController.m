@@ -8,7 +8,6 @@
 
 #import "BasePopoverNavigationController.h"
 #import "DisplayListNoteViewController.h"
-#import "HelpViewController.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
 #import "EditListViewController.h"
@@ -28,7 +27,7 @@
 
 #define KEY_OVERDUE     @"--overdue--"
 
-@interface RootViewController() <ListManagerDelegate, HelpViewDelegate>
+@interface RootViewController() <ListManagerDelegate>
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
@@ -79,17 +78,8 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    UIBarButtonItem *btnListMgr = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"399-list1"]
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(addList:)];
-    
-    UIBarButtonItem *btnHelp = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"451-help-symbol2"]
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
-                                                               action:@selector(btnHelpTapped:)];
-    [[self navigationItem] setLeftBarButtonItem:btnListMgr];
-    [[self navigationItem] setRightBarButtonItem:btnHelp];
+    UIBarButtonItem *addListButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addList:)];
+    [[self navigationItem] setRightBarButtonItem:addListButton];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
     [self setAllLists:[self loadAllLists]];
@@ -169,14 +159,6 @@
     [self setListManagerViewController:navController];
     [self presentViewController:navController animated:YES completion:nil];
 }
-
-- (IBAction)btnHelpTapped:(UIBarButtonItem *)sender
-{
-    HelpViewController *vcHelp = [[HelpViewController alloc] init];
-    [vcHelp setDelegate:self];
-    [self presentViewController:vcHelp animated:YES completion:nil];
-}
-
 
 
 #pragma mark -
@@ -414,20 +396,11 @@
 
 #pragma mark - list manager view delegate
 
-- (void)dismissListManagerView
-{
+- (void)dismissListManagerView {
     [self dismissViewControllerAnimated:YES completion:nil];
     [self setAllLists:[self loadAllLists]];
     [[self tableView] reloadData];
 }
-
-#pragma mark - help view controller delegate
-
-- (void)dismissHelpView
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 
 @end
 
