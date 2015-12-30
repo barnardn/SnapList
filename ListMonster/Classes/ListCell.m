@@ -7,45 +7,51 @@
 //
 
 #import "ListCell.h"
-#import "ListCellContentView.h"
+#import "ThemeManager.h"
 
 @interface ListCell()
 
-@property (nonatomic, weak) IBOutlet UIButton *btnShowNote;
-@property (nonatomic, weak) ListCellContentView *cellContentView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailLabel;
+
 @end
 
 @implementation ListCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    CGRect cvFrame = [[self contentView] frame];
-    cvFrame.size.height = 50.0f;
-    ListCellContentView *cv = [[ListCellContentView alloc] initWithFrame:cvFrame];
-    [[self contentView] addSubview:cv];
-    [self setCellContentView:cv];
-    return self;
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.selectionStyle = UITableViewCellSelectionStyleGray;
+    self.nameLabel.font = [ThemeManager fontForListName];
+    self.nameLabel.textColor = [ThemeManager standardTextColor];
+    self.nameLabel.highlightedTextColor = [ThemeManager highlightedTextColor];
+    self.detailLabel.font = [ThemeManager fontForListDetails];
+    self.detailLabel.textColor = [ThemeManager textColorForListDetails];
 }
 
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
+- (void)setName:(NSString *)name {
+    self.nameLabel.text = name;
+    [self setNeedsUpdateConstraints];
 }
 
-- (void)setNoteText:(NSString *)noteText
-{
-    _noteText = noteText;
-    [[self cellContentView] setNoteText:noteText];
-    [[self cellContentView] setNeedsLayout];
-    [self setNeedsLayout];
+- (NSString *)name {
+    return self.nameLabel.text;
 }
 
-- (UILabel *)nameLabel
-{
-    return [[self cellContentView] nameLabel];
+- (NSString *)detailText {
+    return self.detailLabel.text;
 }
 
+- (void)setDetailText:(NSString *)detailText {
+    self.detailLabel.text = detailText;
+    [self setNeedsUpdateConstraints];
+}
 
+- (void)setListCompleted:(BOOL)listCompleted {
+    self.nameLabel.textColor = (listCompleted) ? [ThemeManager ghostedTextColor] : [ThemeManager standardTextColor];
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.nameLabel.textColor = [ThemeManager standardTextColor];
+}
 @end
