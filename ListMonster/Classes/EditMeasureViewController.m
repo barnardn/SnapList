@@ -28,25 +28,19 @@
 
 @implementation EditMeasureViewController
 
-@synthesize unitSelector, measurePicker, currentMeasures, defaultUnitSelection;
-@synthesize selectedMeasure, item, viewTitle;
-@synthesize customMeasureView, customMeasure, customMeasureAbbrev, customMeasureName;
-@synthesize addCustomMeasure, removeCustomMeasure;
-@synthesize selectedMeasureKey;
-
 - (id)initWithTitle:(id)aTitle listItem:(MetaListItem *)anItem;
 {
-    self = [super initWithNibName:@"EditMeasureView" bundle:nil];
+    self = [super init];
     if (!self) return nil;
     [self setItem:anItem];
     [self setViewTitle:aTitle];
     return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+- (NSString *)nibName {
+    return @"EditMeasureView";
 }
+
 
 - (NSInteger)defaultUnitSelection
 {
@@ -84,7 +78,6 @@
         measurementSet = emvCUSTOM_UNIT_INDEX;
     [self loadMeasurementSet:measurementSet];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
-    [[self navigationItem] setPrompt:NSLocalizedString(@"Select or Edit Unit of Measure", nil)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,29 +89,14 @@
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[self item] setUnitOfMeasure:[self selectedMeasure]];
     [[self delegate] editItemViewController:self didChangeValue:[self selectedMeasure] forItem:[self item]];
 }
 
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    [self setUnitSelector:nil];
-    [self setMeasurePicker:nil];
-    [self setCustomMeasureName:nil];
-    [self setCustomMeasure:nil];
-    [self setCustomMeasureAbbrev:nil];
-    [self setCustomMeasureView:nil];
-    [self setAddCustomMeasure:nil];
-    [self setRemoveCustomMeasure:nil];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
@@ -354,7 +332,7 @@
             [self setSelectedMeasureKey:k];
         }
     }
-    if ([unitSelector selectedSegmentIndex] == emvCUSTOM_UNIT_INDEX) {
+    if ([self.unitSelector selectedSegmentIndex] == emvCUSTOM_UNIT_INDEX) {
         NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
         componentList = [unsorted sortedOnKey:@"unit" ascending:YES];
     } else {

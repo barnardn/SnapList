@@ -21,20 +21,16 @@
 #define emvUNIT_COMPONENT_INDEX     1
 
 @interface EditMeasureViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, EditItemViewProtocol, UITextFieldDelegate>
-{
-    NSInteger defaultUnitSelection;
-}
-
 
 @property (strong, nonatomic) NSString *selectedMeasureKey;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *unitSelector;
-@property (strong, nonatomic) IBOutlet UIPickerView *measurePicker;
-@property (strong, nonatomic) IBOutlet UIView *customMeasureView;
-@property (strong, nonatomic) IBOutlet UITextField *customMeasure;
-@property (strong, nonatomic) IBOutlet UITextField *customMeasureName;
-@property (strong, nonatomic) IBOutlet UITextField *customMeasureAbbrev;
-@property (strong, nonatomic) IBOutlet UIButton *addCustomMeasure;
-@property (strong, nonatomic) IBOutlet UIButton *removeCustomMeasure;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *unitSelector;
+@property (weak, nonatomic) IBOutlet UIPickerView *measurePicker;
+@property (weak, nonatomic) IBOutlet UIView *customMeasureView;
+@property (weak, nonatomic) IBOutlet UITextField *customMeasure;
+@property (weak, nonatomic) IBOutlet UITextField *customMeasureName;
+@property (weak, nonatomic) IBOutlet UITextField *customMeasureAbbrev;
+@property (weak, nonatomic) IBOutlet UIButton *addCustomMeasure;
+@property (weak, nonatomic) IBOutlet UIButton *removeCustomMeasure;
 
 @property (strong, nonatomic) NSMutableDictionary *currentMeasures;
 @property (strong, nonatomic) Measure *selectedMeasure;
