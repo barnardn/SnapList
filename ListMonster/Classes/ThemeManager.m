@@ -103,12 +103,10 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     [label setTextColor:textColor];
-    [label setBackgroundColor:[UIColor clearColor]];
+    label.font = [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
     [label setText:text];
     [label sizeToFit];
-    [label setShadowColor:[UIColor darkGrayColor]];
-    [label setShadowOffset:CGSizeMake(1.0f, 1.0f)];
-    return label;    
+    return label;
 }
 
 
@@ -119,20 +117,17 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
 
 + (UIView *)headerViewWithStyle:(TableHeaderStyle)style title:(NSString *)title dimensions:(CGSize)dimensions
 {
-    NSString *bgImageName = (style == TableHeaderStyleNormal) ? @"bg-tableheader" : @"bg-tableheader-light";
-    UIImage *backgroundImage = [[UIImage imageNamed:bgImageName] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 1.0f, 3.0f, 1.0f)];
-    CGRect backgroundFrame = CGRectMake(0.0f, 0.0f, dimensions.width, dimensions.height);
-    UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:backgroundFrame];
-    [backgroundView setImage:backgroundImage];
+    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, dimensions.width, dimensions.height)];
+    backgroundView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     UILabel *lblListName;
     if (style == TableHeaderStyleNormal)
-        lblListName = [ThemeManager labelForTableHeadingsWithText:title textColor:[UIColor whiteColor]];
+        lblListName = [ThemeManager labelForTableHeadingsWithText:title textColor:[UIColor blackColor]];
     else
         lblListName = [ThemeManager labelForTableHeadingsWithText:title textColor:[UIColor blackColor]];
-    CGRect labelFrame = CDO_CGRectCenteredInRect(backgroundFrame, CGRectGetWidth([lblListName frame]), CGRectGetHeight([lblListName frame]));
+    CGRect labelFrame = CGRectMake(10.0f, 0.0f, dimensions.width - 10.0f, dimensions.height);
     [lblListName setFrame:labelFrame];
     [backgroundView addSubview:lblListName];
-    return backgroundView;    
+    return backgroundView;
 }
 
 
