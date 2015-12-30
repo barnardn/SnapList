@@ -11,8 +11,7 @@
 
 @interface ListCell : UITableViewCell 
 
-- (UILabel *)nameLabel;
-
-@property (nonatomic, strong) NSString *noteText;
-
+@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString *detailText;
+@property (assign, nonatomic, getter=isListCompleted) BOOL listCompleted;
 @end

@@ -89,9 +89,11 @@
     [[self navigationItem] setRightBarButtonItem:btnHelp];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
     
-    [[self tableView] setRowHeight:50.0f];
-    
     [self setAllLists:[self loadAllLists]];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ListCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([ListCell class])];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -211,39 +213,22 @@
     NSManagedObject *obj = [self managedObjectAtIndexPath:indexPath];
     BOOL isListCell = ([[[obj entity] name] isEqualToString:LIST_ENTITY_NAME]);
     if (isListCell)
-        return [self tableView:tableView listCellForList:(MetaList *)obj];
+        return [self tableView:tableView listCellForList:(MetaList *)obj atIndexPath:indexPath];
     else
         return [self tableView:tableView overdueItemCellForItem:(MetaListItem *)obj];
 }
 
-- (ListCell *)tableView:(UITableView *)tableView listCellForList:(MetaList *)list
-{
-    static NSString *CellId = @"ListCell";
-    ListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
-    if (!cell)
-        cell = [[ListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellId];
+- (ListCell *)tableView:(UITableView *)tableView listCellForList:(MetaList *)list atIndexPath:(NSIndexPath *)indexPath; {
     
-    [[cell nameLabel] setFont:[ThemeManager fontForListName]];
-    [[cell nameLabel] setTextColor:[ThemeManager standardTextColor]];
-    [[cell nameLabel] setHighlightedTextColor:[ThemeManager highlightedTextColor]];
-    [[cell detailTextLabel] setFont:[ThemeManager fontForListDetails]];
-    [[cell detailTextLabel] setTextColor:[ThemeManager textColorForListDetails]];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    
-    [[cell nameLabel] setText:[list name]];
+    ListCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ListCell class]) forIndexPath:indexPath];
+    cell.name = list.name;
+    cell.listCompleted = [list allItemsFinished];
     if ([list allItemsFinished]) {
-        [[cell nameLabel] setTextColor:[ThemeManager ghostedTextColor]];
         [[cell detailTextLabel] setText:@"☑"];
-        [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:18.0f]];
     } else {
         NSInteger countIncomplete = [list countOfItemsCompleted:NO];
-        if (countIncomplete > 0)
-            [[cell detailTextLabel] setText:[NSString stringWithFormat:@"%@", @(countIncomplete)]];
-        else
-            [[cell detailTextLabel] setText:@""];
+        cell.detailText = (countIncomplete > 0) ? [@(countIncomplete) stringValue] : @"";
     }
-    [cell setNoteText:[list note]];
     return cell;
 }
 
@@ -307,8 +292,7 @@
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [ThemeManager heightForHeaderview];
 }
 
