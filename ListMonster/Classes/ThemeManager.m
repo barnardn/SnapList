@@ -18,46 +18,42 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
 
 
 + (void)setupAppearanceProxies; {
-    [[UINavigationBar appearance] setBarTintColor:[UIColor lightGrayColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.00 green:0.28 blue:1.0 alpha:1.0]];
+    [[UINavigationBar appearance] setTintColor:[self brandColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [self fontForStandardListText] }];
     [[UINavigationBar appearance] setTranslucent:NO];
     
-    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearance] setTintColor:[self brandColor]];
     
 }
 
-
-+ (UIFont *)fontForListName
-{
++ (UIFont *)fontForListName {
     return [UIFont fontWithName:kBoldFontName size:kSizeListNameFont];
 }
 
-+ (UIFont *)fontForStandardListText
-{
++ (UIFont *)fontForStandardListText {
     return [UIFont fontWithName:kRegularFontName size:kSizeStandardFont];
 }
 
-+ (UIFont *)fontForListDetails
-{
++ (UIFont *)fontForListDetails {
     return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
 }
 
-+ (UIFont *)fontForListHeader
-{
++ (UIFont *)fontForListHeader {
     return [UIFont fontWithName:kBoldFontName size:kSizeSmallFont];
 }
 
-+ (UIFont *)fontForDueDateDetails
-{
++ (UIFont *)fontForDueDateDetails {
     return [UIFont fontWithName:kRegularFontName size:kSizeTinyFont];
 }
 
-+ (UIFont *)fontForListNote
-{
++ (UIFont *)fontForListNote {
     return [UIFont fontWithName:kRegularFontName size:kSizeSmallFont];
 }
 
++ (UIColor *)brandColor; {
+    return [UIColor colorWithRed:0.00 green:0.68 blue:0.94 alpha:1.0];
+}
 
 + (UIColor *)standardTextColor
 {

@@ -6,6 +6,7 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "BasePopoverNavigationController.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
 #import "ListMonsterAppDelegate.h"
@@ -47,23 +48,13 @@
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     RootViewController *rvc = [[RootViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rvc];
-    
+    BasePopoverNavigationController *navController = [BasePopoverNavigationController popoverNavigationControllerWithRootViewController:rvc];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [ThemeManager setupAppearanceProxies];
     [self.window setRootViewController:navController];
     [[self window] makeKeyAndVisible];
     return YES;
 }
-
-
-- (void)appearanceProxies {
-    [[UINavigationBar appearance] setBarTintColor:[UIColor lightGrayColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
-    [[UINavigationBar appearance] setTranslucent:NO];
-}
-
 
 #pragma mark -
 #pragma mark Memory management

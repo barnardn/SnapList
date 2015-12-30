@@ -11,47 +11,53 @@
 #import "TableHeaderView.h"
 #import "ThemeManager.h"
 
+@interface DisplayListNoteViewController()
+
+@property (weak, nonatomic) UITextView *textView;
+@property (strong, nonatomic) MetaList *list;
+
+@end
+
+
 @implementation DisplayListNoteViewController
 
-- (id)initWithNoteText:(NSString *)noteText;
-{
+- (instancetype)initWithList:(MetaList *)list; {
     self = [super init];
     if (!self) return nil;
-    _noteText = noteText;
+    _list = list;
     return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+- (NSString *)title {
+    return NSLocalizedString(@"Notes", @"list notes navigation bar title");
 }
 
-- (CGSize)contentSizeForViewInPopover
-{
+- (CGSize)contentSizeForViewInPopover {
     return CGSizeMake(240.0f, 200.0f);
 }
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    [[self view] setBackgroundColor:[UIColor colorWithRed:1.0f green:(234.0f/255.0f) blue:0 alpha:1.0f]];
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 240.0f, 200.0f)];
-    [textView setText:[self noteText]];
-    [textView setEditable:NO];
+    [[self view] setBackgroundColor:[UIColor whiteColor]];
+    UITextView *textView = [[UITextView alloc] init];
+    [textView setText:self.list.note];
     [textView setBackgroundColor:[UIColor clearColor]];
     [textView setFont:[ThemeManager fontForListNote]];
+    [textView setEditable:NO];
+    self.textView = textView;
     [[self view] addSubview:textView];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(_doneButtonTapped:)];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
+- (void)viewDidLayoutSubviews {
+    self.textView.frame = self.view.bounds;
 }
 
+- (IBAction)_doneButtonTapped:(UIBarButtonItem *)sender {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

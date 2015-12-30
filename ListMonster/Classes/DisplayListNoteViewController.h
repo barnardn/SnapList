@@ -16,9 +16,7 @@
 
 @interface DisplayListNoteViewController : UIViewController
 
-@property(nonatomic, strong) NSString *noteText;
-
-- (id)initWithNoteText:(NSString *)noteText;
+- (instancetype)initWithList:(MetaList *)list;
 
 @end
   

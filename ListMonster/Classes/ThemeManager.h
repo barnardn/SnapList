@@ -28,6 +28,7 @@ typedef enum  {
 
 + (void)setupAppearanceProxies;
 
++ (UIColor *)brandColor;
 + (UIFont *)fontForListName;
 + (UIFont *)fontForStandardListText;
 + (UIFont *)fontForListDetails;

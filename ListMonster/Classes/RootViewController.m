@@ -6,6 +6,8 @@
 //  Copyright 2010 clamdango.com. All rights reserved.
 //
 
+#import "BasePopoverNavigationController.h"
+#import "DisplayListNoteViewController.h"
 #import "HelpViewController.h"
 #import "ListCategory.h"
 #import "datetime_utils.h"
@@ -25,11 +27,7 @@
 
 #define KEY_OVERDUE     @"--overdue--"
 
-@interface RootViewController() <ListManagerDelegate, UIAlertViewDelegate, HelpViewDelegate>
-
-- (void)displayErrorMessage:(NSString *)message forError:(NSError *)error;
-- (NSMutableDictionary *)loadAllLists;
-- (NSManagedObject *)managedObjectAtIndexPath:(NSIndexPath *)indexPath;
+@interface RootViewController() <ListManagerDelegate, HelpViewDelegate>
 
 @property(nonatomic,strong) NSMutableArray *categoryNameKeys;
 @property(nonatomic,strong) NSMutableDictionary *allLists;
@@ -54,6 +52,10 @@
 - (NSString *)nibName
 {
     return @"RootView";
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark -
@@ -92,13 +94,14 @@
     [self setAllLists:[self loadAllLists]];
     
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ListCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([ListCell class])];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50.0f;
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[[self navigationController] navigationBar] setTintColor:nil];
     NSMutableArray *overdue = [[MetaListItem itemsDueOnOrBefore:tomorrow()] mutableCopy];
     
     [[self tableView] beginUpdates];
@@ -249,9 +252,7 @@
     
     NSString *timeDueString;
     [[cell textLabel] setText:[item name]];
-    DLog(@"reminder date: %@", [item reminderDate]);
     NSInteger numDays = date_diff([NSDate date], [item reminderDate]);
-    DLog(@"numDays: %@", @(numDays));
     if (numDays == 0) // due today, show time
         if (has_midnight_timecomponent([item reminderDate]))
             timeDueString = NSLocalizedString(@"Today", nil);
@@ -295,6 +296,17 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [ThemeManager heightForHeaderview];
 }
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    MetaList *list = [self managedObjectAtIndexPath:indexPath];
+    BasePopoverNavigationController *viewController = [BasePopoverNavigationController popoverNavigationControllerWithRootViewController:[[DisplayListNoteViewController alloc] initWithList:list]];
+    ListCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    viewController.popoverPresentationController.sourceView = cell;
+    viewController.popoverPresentationController.sourceRect = CGRectMake(CGRectGetMaxX(cell.contentView.frame), CGRectGetMinY(cell.contentView.frame), CGRectGetWidth(cell.frame) - CGRectGetMaxX(cell.contentView.frame), CGRectGetHeight(cell.frame));
+
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
 
 #pragma mark - list for index path methods
 

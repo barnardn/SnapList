@@ -16,11 +16,5 @@
 @class MetaList;
 
 @interface RootViewController : SwipeToEditCellTableViewController <UITableViewDataSource, UITableViewDelegate>
-{
-    UINavigationController *edListNav;
-}
-
-
-
 
 @end

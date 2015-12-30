@@ -20,12 +20,17 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    self.tintColor = [ThemeManager brandColor];
     self.selectionStyle = UITableViewCellSelectionStyleGray;
     self.nameLabel.font = [ThemeManager fontForListName];
     self.nameLabel.textColor = [ThemeManager standardTextColor];
     self.nameLabel.highlightedTextColor = [ThemeManager highlightedTextColor];
     self.detailLabel.font = [ThemeManager fontForListDetails];
     self.detailLabel.textColor = [ThemeManager textColorForListDetails];
+}
+
+- (UIEdgeInsets)layoutMargins {
+    return UIEdgeInsetsZero;
 }
 
 - (void)setName:(NSString *)name {

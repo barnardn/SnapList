@@ -48,10 +48,10 @@
     [[self tableView] addGestureRecognizer:[self rightSwipe]];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
+
 
 - (void)removeSwipeActionIndicatorViewsFromCell:(UITableViewCell *)cell
 {
