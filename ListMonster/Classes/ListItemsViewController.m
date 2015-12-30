@@ -213,14 +213,14 @@ static char editCellKey;
     if ([indexPath row] == 0) {
         MetaListItem *item = [[self listItems] objectAtIndex:0];
         if ([item isNewValue]) {
-            CGSize textSize = [[item name] sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:CGSizeMake(ITEM_CELL_CONTENT_WIDTH, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
-            return MAX(ROW_HEIGHT, textSize.height + 2 * EDITCELL_TEXTVIEW_VMARGIN);
+            CGRect textRect = [item.name boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.view.bounds) - 80.0f, INT16_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName: [ThemeManager fontForStandardListText]} context:nil];
+            return MAX(ROW_HEIGHT, CGRectGetHeight(textRect) + 2 * EDITCELL_TEXTVIEW_VMARGIN);
         }
     }
     NSString *text = [item name];
-    CGSize constraint = CGSizeMake(ITEM_CELL_CONTENT_WIDTH, 20000.0f);
-    CGSize size = [text sizeWithFont:[ThemeManager fontForStandardListText] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    return size.height + CELL_VMARGIN;
+    CGSize constraint = CGSizeMake(CGRectGetWidth(self.view.bounds) - 80.0f, INT16_MAX);
+    CGRect textRect = [text boundingRectWithSize:constraint options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [ThemeManager fontForStandardListText]} context:nil];
+    return CGRectGetHeight(textRect) + CELL_VMARGIN;
 
 }
 
@@ -239,12 +239,10 @@ static char editCellKey;
     MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
     if ([item isNewValue]) {
         UITableViewCell *editCell = [tableView dequeueReusableCellWithIdentifier:@"EditCell"];
-        if (!editCell) 
+        if (!editCell) {
             editCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EditCell"];
-        else {
+        } else {
             [[editCell textLabel] setText:nil];
-            CGRect contentFrame = [[editCell contentView] frame];
-            contentFrame.size.height = [@"X" sizeWithFont:[ThemeManager fontForStandardListText]].height;
         }
         UITextView *tv = [self textViewForCell:editCell];
         [[editCell contentView] addSubview:tv];
@@ -345,7 +343,7 @@ static char editCellKey;
 
 - (UITextView *)textViewForCell:(UITableViewCell *)cell
 {
-    CGSize textSize = [@"XX" sizeWithFont:[ThemeManager fontForStandardListText]];
+    CGSize textSize = [@"XX" sizeWithAttributes:@{ NSFontAttributeName : [ThemeManager fontForStandardListText]}];
     CGRect frame = [[cell contentView] frame];
     frame.origin.x = EDITCELL_TEXTVIEW_HMARGIN;
     frame.origin.y = EDITCELL_TEXTVIEW_VMARGIN;
@@ -377,15 +375,15 @@ static char editCellKey;
     [item setName:newText];
     CGFloat viewWidth = CGRectGetWidth([textView frame]);
     
-    CGSize textSize = [newText sizeWithFont:[textView font] constrainedToSize:CGSizeMake(viewWidth - 20.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
-    if (textSize.height <= CGRectGetHeight([textView frame])) return YES;
+    CGRect textRect = [newText boundingRectWithSize:CGSizeMake(viewWidth - 20.0f, INT16_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName : textView.font} context:nil];
+    if (textRect.size.height <= CGRectGetHeight([textView frame])) return YES;
     
     UITableViewCell *editCell = objc_getAssociatedObject(textView, &editCellKey);
     CGRect contentFrame = [[editCell contentView] frame];
-    contentFrame.size.height += [text sizeWithFont:[ThemeManager fontForStandardListText]].height;
+    contentFrame.size.height += [text sizeWithAttributes:@{NSFontAttributeName: textView.font}].height;
     [[editCell contentView] setFrame:contentFrame];
     CGRect tvFrame = [textView frame];
-    tvFrame.size.height = textSize.height;
+    tvFrame.size.height = CGRectGetHeight(textRect);
     [textView setFrame:tvFrame];
     [[self tableView] beginUpdates];
     [[self tableView] endUpdates];
