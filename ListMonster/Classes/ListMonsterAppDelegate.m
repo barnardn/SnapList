@@ -11,6 +11,7 @@
 #import "ListMonsterAppDelegate.h"
 #import "MetaListItem.h"
 #import "RootViewController.h"
+#import "ThemeManager.h"
 
 //static ListMonsterAppDelegate *appDelegateInstance;
 
@@ -49,7 +50,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rvc];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    [self appearanceProxies];
+    [ThemeManager setupAppearanceProxies];
     [self.window setRootViewController:navController];
     [[self window] makeKeyAndVisible];
     return YES;

@@ -26,6 +26,8 @@ typedef enum  {
 
 @interface ThemeManager : NSObject
 
++ (void)setupAppearanceProxies;
+
 + (UIFont *)fontForListName;
 + (UIFont *)fontForStandardListText;
 + (UIFont *)fontForListDetails;

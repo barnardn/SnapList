@@ -15,6 +15,19 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
 
 @implementation ThemeManager
 
+
+
++ (void)setupAppearanceProxies; {
+    [[UINavigationBar appearance] setBarTintColor:[UIColor lightGrayColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    
+}
+
+
 + (UIFont *)fontForListName
 {
     return [UIFont fontWithName:kBoldFontName size:kSizeListNameFont];
