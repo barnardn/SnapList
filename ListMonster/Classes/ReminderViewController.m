@@ -28,7 +28,7 @@
 
 - (id)initWithTitle:(id)aTitle listItem:(id<ReminderItemProtocol>)item;
 {
-    self = [super initWithNibName:@"ReminderView" bundle:nil];
+    self = [super init];
     if (!self) return nil;
     [self setupSimpleDateDataSource];
     [self setReminderItem:item];
@@ -36,22 +36,12 @@
     return self;
 }
 
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-    [self setSimpleDateTable:nil];
-    [self setDatePicker:nil];
-    [self setDateSelectionMode:nil];
+- (NSString *)nibName {
+    return @"ReminderView";
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
-}
-
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -73,7 +63,6 @@
     [[self navigationItem] setBackBarButtonItem:backBtn];
     [[self simpleDateTable] setAllowsSelection:YES];
     [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];
-    [[self navigationItem] setPrompt:NSLocalizedString(@"Set Reminder", nil)];
 }
 
 - (void)viewWillAppear:(BOOL)animated

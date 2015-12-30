@@ -24,21 +24,10 @@
                                                       UITableViewDelegate, 
                                                       UIPickerViewDelegate,
                                                       EditItemViewProtocol> 
-{
-    UISegmentedControl *dateSelectionMode;
-    UIDatePicker *datePicker;
-    UITableView *simpleDateTable;
-    NSArray *simpleDates;
-    id<ReminderItemProtocol> reminderItem;
-    NSDate *selectedReminderDate;
-    NSString *backgroundImageFilename;
-    NSString *viewTitle;
-    Tuple *selectedSimpleDate;
-}
 
-@property(nonatomic,strong) IBOutlet UISegmentedControl *dateSelectionMode;
-@property(nonatomic,strong) IBOutlet UIDatePicker *datePicker;
-@property(nonatomic,strong) IBOutlet UITableView *simpleDateTable;
+@property(nonatomic,weak) IBOutlet UISegmentedControl *dateSelectionMode;
+@property(nonatomic,weak) IBOutlet UIDatePicker *datePicker;
+@property(nonatomic,weak) IBOutlet UITableView *simpleDateTable;
 @property(nonatomic,strong) NSArray *simpleDates;
 @property(nonatomic,strong) id reminderItem;
 @property(nonatomic,strong) NSDate *selectedReminderDate;  // for picker only!?!?!?
