@@ -49,7 +49,6 @@
 		49700A5B1638BD43004DC7C4 /* _ListCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 49700A5A1638BD43004DC7C4 /* _ListCategory.m */; };
 		49739F7616B4AAC900F063CA /* nav-title.png in Resources */ = {isa = PBXBuildFile; fileRef = 49739F7516B4AAC900F063CA /* nav-title.png */; };
 		49739F7F16B4B09500F063CA /* ButtonTableCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49739F7E16B4B09500F063CA /* ButtonTableCellController.m */; };
-		49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49748DD01670319E006BE3C2 /* EditItemActionsView.m */; };
 		49748DD416703347006BE3C2 /* EditItemActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49748DD316703347006BE3C2 /* EditItemActionsView.xib */; };
 		497EB48716755E130086DF17 /* TextFieldTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 497EB48616755E130086DF17 /* TextFieldTableCell.m */; };
 		49836D8D163619EC006F8A1E /* _ItemStash.m in Sources */ = {isa = PBXBuildFile; fileRef = 49836D83163619EC006F8A1E /* _ItemStash.m */; };
@@ -115,6 +114,10 @@
 		49AD28241C3459AE0040B76B /* BasePopoverNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD28231C3459AE0040B76B /* BasePopoverNavigationController.m */; };
 		49AD28291C3466200040B76B /* OverdueItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */; };
 		49AD282A1C3466200040B76B /* OverdueItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */; };
+		49AD282E1C35B8680040B76B /* CellButtonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD282C1C35B8680040B76B /* CellButtonTableViewCell.m */; };
+		49AD282F1C35B8680040B76B /* CellButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD282D1C35B8680040B76B /* CellButtonTableViewCell.xib */; };
+		49AD28331C35BC820040B76B /* LeftDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AD28311C35BC820040B76B /* LeftDetailTableViewCell.m */; };
+		49AD28341C35BC820040B76B /* LeftDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49AD28321C35BC820040B76B /* LeftDetailTableViewCell.xib */; };
 		49AD716F16640BFB001897D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49AD716E16640BFB001897D3 /* QuartzCore.framework */; };
 		49AD718D1664173A001897D3 /* icon-help.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71851664173A001897D3 /* icon-help.png */; };
 		49AD718E1664173A001897D3 /* icon-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49AD71861664173A001897D3 /* icon-help@2x.png */; };
@@ -153,7 +156,6 @@
 		49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 49D225BF14C4FA09009D9769 /* iTunesArtwork */; };
 		49D225C214C5103C009D9769 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 49D225C114C5103C009D9769 /* Default.png */; };
 		49D225C414C512BD009D9769 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49D225C314C512BD009D9769 /* Default@2x.png */; };
-		49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */; };
 		49DE1AF31362563C00D27543 /* Tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 49DE1AF21362563C00D27543 /* Tuple.m */; };
 		49E75315163F401B00603F90 /* bg-btn-delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 49E75313163F401B00603F90 /* bg-btn-delete.png */; };
 		49E75316163F401B00603F90 /* bg-btn-delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 49E75314163F401B00603F90 /* bg-btn-delete@2x.png */; };
@@ -230,8 +232,6 @@
 		49739F7516B4AAC900F063CA /* nav-title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav-title.png"; sourceTree = "<group>"; };
 		49739F7D16B4B09500F063CA /* ButtonTableCellController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonTableCellController.h; sourceTree = "<group>"; };
 		49739F7E16B4B09500F063CA /* ButtonTableCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonTableCellController.m; sourceTree = "<group>"; };
-		49748DCF1670319E006BE3C2 /* EditItemActionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemActionsView.h; sourceTree = "<group>"; };
-		49748DD01670319E006BE3C2 /* EditItemActionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemActionsView.m; sourceTree = "<group>"; };
 		49748DD316703347006BE3C2 /* EditItemActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditItemActionsView.xib; sourceTree = "<group>"; };
 		497D8A591516689800FE4BAE /* ListMonster 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListMonster 4.xcdatamodel"; sourceTree = "<group>"; };
 		497EB48516755E130086DF17 /* TextFieldTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableCell.h; sourceTree = "<group>"; };
@@ -332,6 +332,12 @@
 		49AD28261C3466200040B76B /* OverdueItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueItemTableViewCell.h; sourceTree = "<group>"; };
 		49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueItemTableViewCell.m; sourceTree = "<group>"; };
 		49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverdueItemTableViewCell.xib; sourceTree = "<group>"; };
+		49AD282B1C35B8680040B76B /* CellButtonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellButtonTableViewCell.h; sourceTree = "<group>"; };
+		49AD282C1C35B8680040B76B /* CellButtonTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellButtonTableViewCell.m; sourceTree = "<group>"; };
+		49AD282D1C35B8680040B76B /* CellButtonTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CellButtonTableViewCell.xib; sourceTree = "<group>"; };
+		49AD28301C35BC820040B76B /* LeftDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftDetailTableViewCell.h; sourceTree = "<group>"; };
+		49AD28311C35BC820040B76B /* LeftDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftDetailTableViewCell.m; sourceTree = "<group>"; };
+		49AD28321C35BC820040B76B /* LeftDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftDetailTableViewCell.xib; sourceTree = "<group>"; };
 		49AD716E16640BFB001897D3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		49AD71851664173A001897D3 /* icon-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help.png"; sourceTree = "<group>"; };
 		49AD71861664173A001897D3 /* icon-help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-help@2x.png"; sourceTree = "<group>"; };
@@ -377,7 +383,6 @@
 		49D225BF14C4FA09009D9769 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		49D225C114C5103C009D9769 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		49D225C314C512BD009D9769 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditListItemView.xib; sourceTree = "<group>"; };
 		49DE1AF11362563C00D27543 /* Tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tuple.h; sourceTree = "<group>"; };
 		49DE1AF21362563C00D27543 /* Tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tuple.m; sourceTree = "<group>"; };
 		49E75313163F401B00603F90 /* bg-btn-delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-btn-delete.png"; sourceTree = "<group>"; };
@@ -538,6 +543,12 @@
 				49AD28261C3466200040B76B /* OverdueItemTableViewCell.h */,
 				49AD28271C3466200040B76B /* OverdueItemTableViewCell.m */,
 				49AD28281C3466200040B76B /* OverdueItemTableViewCell.xib */,
+				49AD282B1C35B8680040B76B /* CellButtonTableViewCell.h */,
+				49AD282C1C35B8680040B76B /* CellButtonTableViewCell.m */,
+				49AD282D1C35B8680040B76B /* CellButtonTableViewCell.xib */,
+				49AD28301C35BC820040B76B /* LeftDetailTableViewCell.h */,
+				49AD28311C35BC820040B76B /* LeftDetailTableViewCell.m */,
+				49AD28321C35BC820040B76B /* LeftDetailTableViewCell.xib */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -545,8 +556,6 @@
 		49748DCE16703169006BE3C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				49748DCF1670319E006BE3C2 /* EditItemActionsView.h */,
-				49748DD01670319E006BE3C2 /* EditItemActionsView.m */,
 				498EBBFD1687933C0037DA65 /* SelectColorView.h */,
 				498EBBFE1687933C0037DA65 /* SelectColorView.m */,
 				498EBC00168793560037DA65 /* SelectColorView.xib */,
@@ -560,7 +569,6 @@
 				49CB948C16B5DD5B00F9609D /* HelpView.xib */,
 				49EAC1D9131AED39003738FD /* EditCategoryView.xib */,
 				49748DD316703347006BE3C2 /* EditItemActionsView.xib */,
-				49D30EAC13B7CA8400CA8019 /* EditListItemView.xib */,
 				49C3D0C8167FFBA300B1FF16 /* EditListView.xib */,
 				498885431458D42600FC3294 /* EditMeasureView.xib */,
 				49C94292134FAB640045D4F6 /* EditNoteView.xib */,
@@ -902,8 +910,8 @@
 				499306A5135FB07300ECBE16 /* ReminderView.xib in Resources */,
 				499306AE135FB82C00ECBE16 /* days-en_US.plist in Resources */,
 				49C7BFE6136AF7ED003F3FAA /* EditNumberView.xib in Resources */,
-				49D30EAD13B7CA8400CA8019 /* EditListItemView.xib in Resources */,
 				494844BE13F85F3A00445ED7 /* blueButton.png in Resources */,
+				49AD282F1C35B8680040B76B /* CellButtonTableViewCell.xib in Resources */,
 				498885451458D42600FC3294 /* EditMeasureView.xib in Resources */,
 				49D225C014C4FA09009D9769 /* iTunesArtwork in Resources */,
 				49D225C214C5103C009D9769 /* Default.png in Resources */,
@@ -921,6 +929,7 @@
 				4965E0221625070300631E13 /* btn-checkbox-checked.png in Resources */,
 				4965E0231625070300631E13 /* btn-checkbox-checked@2x.png in Resources */,
 				49E75315163F401B00603F90 /* bg-btn-delete.png in Resources */,
+				49AD28341C35BC820040B76B /* LeftDetailTableViewCell.xib in Resources */,
 				49E75316163F401B00603F90 /* bg-btn-delete@2x.png in Resources */,
 				495DB43F1647425C001CD749 /* bg-complete.png in Resources */,
 				495DB4401647425C001CD749 /* bg-complete@2x.png in Resources */,
@@ -1003,6 +1012,7 @@
 				49F1812312C9364E0066B454 /* NSArrayExtensions.m in Sources */,
 				49F1812612C9366A0066B454 /* NSStringExtensions.m in Sources */,
 				49F1814B12C958F20066B454 /* RootViewController.m in Sources */,
+				49AD282E1C35B8680040B76B /* CellButtonTableViewCell.m in Sources */,
 				49AD7A4E12E380D9006E6AC6 /* ListCategory.m in Sources */,
 				49A0205512E5256A005B1D0E /* EditListViewController.m in Sources */,
 				495EABF913083F5700F4A64E /* ListItemsViewController.m in Sources */,
@@ -1031,9 +1041,9 @@
 				49248F491659B61400CD9995 /* SwipeToEditCellTableViewController.m in Sources */,
 				498432AE166BBB54003C624F /* DataManager.m in Sources */,
 				498432B1166BF253003C624F /* NSDate+FormattedDates.m in Sources */,
-				49748DD11670319E006BE3C2 /* EditItemActionsView.m in Sources */,
 				49B9AF2716742547000447E7 /* ListManagerViewController.m in Sources */,
 				497EB48716755E130086DF17 /* TextFieldTableCell.m in Sources */,
+				49AD28331C35BC820040B76B /* LeftDetailTableViewCell.m in Sources */,
 				491EECA1167EACD40058AF2F /* TextFieldTableCellController.m in Sources */,
 				491EECA4167EB1920058AF2F /* BaseTableCellController.m in Sources */,
 				49C3D0CC168149B900B1FF16 /* TextViewTableCellController.m in Sources */,

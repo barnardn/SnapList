@@ -24,20 +24,14 @@ static char editCellKey;
 {
     self = [super initWithTableView:tableView];
     if (!self) return nil;
+    [tableView registerClass:[TextViewTableCell class] forCellReuseIdentifier:NSStringFromClass([TextViewTableCell class])];
     return self;
 }
 
-- (TextViewTableCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellId = @"--editcell--";
+- (TextViewTableCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *text = [[self delegate] textViewTableCellController:self textForRowAtIndexPath:indexPath];
     
-    TextViewTableCell *cell = (TextViewTableCell *)[tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[TextViewTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [cell setDelegate:self];
-    }
+    TextViewTableCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([TextViewTableCell class]) forIndexPath:indexPath];
     [cell setBackgroundColor:[self backgroundColor]];
     [[cell textView] setTextColor:[self textColor]];
     [[cell textView] setText:text];

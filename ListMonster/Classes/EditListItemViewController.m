@@ -8,11 +8,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "CellButtonTableViewCell.h"
 #import "datetime_utils.h"
-#import "EditItemActionsView.h"
 #import "EditListItemViewController.h"
 #import "EditMeasureViewController.h"
 #import "EditNumberViewController.h"
+#import "LeftDetailTableViewCell.h"
 #import "ListMonsterAppDelegate.h"
 #import "Measure.h"
 #import "MetaList.h"
@@ -25,13 +26,8 @@
 #define ROW_HEIGHT      44.0f
 #define COUNT_PROPERTY_SECTIONS 4
 
-@interface EditListItemViewController() <EditItemViewDelegate, EditItemActionsViewDelegate,
-                                            TableCellControllerDelegate, TextViewTableCellControllerDelegate,
-                                            UIAlertViewDelegate, UIScrollViewDelegate>
+@interface EditListItemViewController() <EditItemViewDelegate, TableCellControllerDelegate, TextViewTableCellControllerDelegate,UIScrollViewDelegate>
 
-- (UITableView *)tableView;
-
-@property (nonatomic,strong) IBOutlet UITableView *listItemTableView;
 @property (nonatomic,strong) MetaListItem *item;
 @property (nonatomic, strong) NSArray *editViewControllers;
 @property (nonatomic, strong) NSArray *tableCellControllers;
@@ -46,36 +42,11 @@
 
 - (id)initWithItem:(MetaListItem *)item
 {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (!self) return nil;
     _item = item;
     _editViewControllers = @[[EditNumberViewController class], [EditMeasureViewController class], [ReminderViewController class]];
     return self;
-}
-
-
-- (NSString *)nibName
-{
-    return @"EditListItemView";
-}
-
-- (UITableView *)tableView 
-{
-    return [self listItemTableView];
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
 }
 
 
@@ -96,7 +67,10 @@
     [tvc setDelegate:self];
     [tvc setBackgroundColor:[UIColor whiteColor]];
     [tvc setTextColor:[UIColor darkTextColor]];
-    
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0f];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([LeftDetailTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([LeftDetailTableViewCell class])];
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([CellButtonTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([CellButtonTableViewCell class])];
     [self setTableCellControllers:@[tvc]];
 }
 
@@ -107,14 +81,7 @@
         [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-
-- (void)viewWillDisappear:(BOOL)animated 
-{
-    [super viewWillDisappear:animated];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
@@ -127,8 +94,6 @@
     if ([indexPath section] == 0) {
         BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
         return [cellController tableView:[self tableView] heightForRowAtIndexPath:indexPath];
-    } else if ([indexPath section] == COUNT_PROPERTY_SECTIONS) {
-        return 100;
     }
     return ROW_HEIGHT;
 }
@@ -138,48 +103,54 @@
     return COUNT_PROPERTY_SECTIONS + 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  {
+    if (section == COUNT_PROPERTY_SECTIONS) {
+        return 2;
+    }
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *cellID = @"Cell";
-    
     if ([indexPath section] == 0) {
         BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
         return [cellController tableView:[self tableView] cellForRowAtIndexPath:indexPath];
     }
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID];
+    if (indexPath.section < COUNT_PROPERTY_SECTIONS) {
+        LeftDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([LeftDetailTableViewCell class]) forIndexPath:indexPath];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+
+        switch ([indexPath section]) {
+            case 1:
+                [self configureQuantityCell:cell];
+                break;
+            case 2:
+                [self configureUnitsCell:cell];
+                break;
+            case 3:
+                [self configureReminderCell:cell];
+                break;
+        }
+        return cell;
     }
-    switch ([indexPath section]) {
-        case 1:
-            [self configureQuantityCell:cell];
-            break;
-        case 2:
-            [self configureUnitsCell:cell];
-            break;
-        case 3:
-            [self configureReminderCell:cell];
-            break;
-        case 4:
-            [self configureActionsCell:cell];
-            break;
+    
+    CellButtonTableViewCell *buttonCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([CellButtonTableViewCell class]) forIndexPath:indexPath];
+    buttonCell.destructive = NO;
+    NSString *title = (self.item.isComplete) ? @"Mark as Not Done" : @"Mark as Done";
+    if (indexPath.row == 1) {
+        title = @"Delete";
+        buttonCell.destructive = YES;
     }
-    return cell;
+    buttonCell.buttonTitle = title;
+    return buttonCell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([indexPath section] == 0) {
         BaseTableCellController *cellController = [[self tableCellControllers] objectAtIndex:[indexPath section]];
         return [cellController tableView:[self tableView] didSelectRowAtIndexPath:indexPath];
@@ -187,7 +158,10 @@
         TextViewTableCellController *cellController = [[self tableCellControllers] objectAtIndex:0];
         [cellController stopEditingCellAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     }
-    if ([indexPath section] == COUNT_PROPERTY_SECTIONS) return;
+    if ([indexPath section] == COUNT_PROPERTY_SECTIONS) {
+        [self _handleCellButtonTapAtIndexPath:indexPath];
+        return;
+    };
     Class editControllerClass = [[self editViewControllers] objectAtIndex:[indexPath section] - 1];
     UIViewController<EditItemViewProtocol> *vc = [[editControllerClass alloc] initWithTitle:@"Snap!list" listItem:[self item]];
     [vc setDelegate:self];
@@ -197,8 +171,7 @@
 
 #pragma mark - cell configuration methods
 
-- (void)configureQuantityCell:(UITableViewCell *)cell
-{
+- (void)configureQuantityCell:(UITableViewCell *)cell {
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     
@@ -214,8 +187,7 @@
     [[cell detailTextLabel] setText:qty];
 }
 
-- (void)configureUnitsCell:(UITableViewCell *)cell
-{
+- (void)configureUnitsCell:(UITableViewCell *)cell {
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     
@@ -227,8 +199,7 @@
     [[cell detailTextLabel] setText:units];
 }
 
-- (void)configureReminderCell:(UITableViewCell *)cell
-{
+- (void)configureReminderCell:(UITableViewCell *)cell {
     [[cell textLabel] setFont:[ThemeManager fontForListDetails]];
     [[cell detailTextLabel] setFont:[ThemeManager fontForStandardListText]];
     [[cell textLabel] setText:NSLocalizedString(@"Reminder",nil)];
@@ -239,14 +210,25 @@
 
 }
 
-- (void)configureActionsCell:(UITableViewCell *)cell
-{
-    EditItemActionsView *actionView = [[EditItemActionsView alloc] initWithItem:[self item] frame:CGRectMake(0.0f, 0.0f, 300.0f, 100.0f)];
-    [actionView setDelegate:self];
-    [[cell contentView] addSubview:actionView];
-    [cell setAccessoryType:UITableViewCellAccessoryNone];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+#pragma mark - cell button actions 
+
+- (void)_handleCellButtonTapAtIndexPath:(NSIndexPath *)indexPath {
+    NSManagedObjectContext *context = self.item.managedObjectContext;
+    BOOL wasDeleted = NO;
+    if (indexPath.row == 0) {
+        self.item.isComplete = !self.item.isComplete;
+    } else {
+        [self.item.list deleteItem:self.item];
+        wasDeleted = YES;
+    }
+    [context save:nil];
+    if (wasDeleted) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
+
 
 #pragma mark edit item delegate method
 
@@ -257,20 +239,20 @@
 
 #pragma mark - edit item actions delegate methods
 
-- (void)markCompleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
-{
-    if ([[self item] isComplete])
-        [[self item] setIsComplete:NO];
-    else
-        [[self item] setIsComplete:YES];
-    [[self item] save];
-}
-
-- (void)deleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
-{
-    [[[self item] list] deleteItem:[self item]];
-    [[self navigationController] popViewControllerAnimated:YES];
-}
+//- (void)markCompleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
+//{
+//    if ([[self item] isComplete])
+//        [[self item] setIsComplete:NO];
+//    else
+//        [[self item] setIsComplete:YES];
+//    [[self item] save];
+//}
+//
+//- (void)deleteRequestedFromEditItemActionsView:(EditItemActionsView *)view
+//{
+//    [[[self item] list] deleteItem:[self item]];
+//    [[self navigationController] popViewControllerAnimated:YES];
+//}
 
 #pragma mark - textviewtablecell controller delegate methods
 

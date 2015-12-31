@@ -14,7 +14,7 @@
 @class MetaListItem;
 @class EditTextViewController;
 
-@interface EditListItemViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface EditListItemViewController : UITableViewController
 
 
 @property(nonatomic,weak) id<ListItemsViewControllerProtocol> delegate;
