@@ -97,11 +97,11 @@
     [filteredItems setValue:@(state) forKey:@"isChecked"];
 }
 
-- (NSArray *)sortedItemsIncludingComplete:(BOOL)includeCompleted
+- (NSArray <MetaListItem *> *)sortedItemsIncludingComplete:(BOOL)includeCompleted
 {
-    NSArray *allItems = [[self items] allObjects];
+    NSArray <MetaListItem *> *allItems = [[self items] allObjects];
     NSSortDescriptor *byOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-    NSArray *sorted = [allItems sortedArrayUsingDescriptors:@[byOrder]];
+    NSArray <MetaListItem *> *sorted = [allItems sortedArrayUsingDescriptors:@[byOrder]];
     if (includeCompleted) return sorted;
     NSPredicate *onlyIncomplete = [NSPredicate predicateWithFormat:@"isChecked == 0"];
     return [sorted filteredArrayUsingPredicate:onlyIncomplete];
