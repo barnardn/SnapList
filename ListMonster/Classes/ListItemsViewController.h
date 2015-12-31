@@ -10,8 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreData/CoreData.h>
 
-#import "SwipeToEditCellTableViewController.h"
-
 #define livcSEGMENT_UNCHECKED   0
 #define livcSEGMENT_CHECKED     1
 #define livcSEGMENT_VIEW_TAG    1001
@@ -27,15 +25,7 @@
 
 @end
 
-
-@interface ListItemsViewController : SwipeToEditCellTableViewController <UITableViewDataSource,
-                                                       UITableViewDelegate, 
-                                                       UITextViewDelegate>
-{
-    BOOL inEditMode;
-    UINavigationController *editItemNavController;
-    NSString *backgroundImageFilename;
-}
+@interface ListItemsViewController : UIViewController <UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *editBtn;

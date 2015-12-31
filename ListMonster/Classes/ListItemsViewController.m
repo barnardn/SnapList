@@ -33,13 +33,9 @@ static char editCellKey;
 
 @interface ListItemsViewController()
 
-- (UITableViewCell *)makeItemCell;
-- (IBAction)editBtnPressed:(UIBarButtonItem *)editButton;
-- (void)configureCell:(UITableViewCell *)cell withItem:(MetaListItem *)item;
-
-@property (nonatomic,strong) NSMutableArray *listItems;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic,strong) NSMutableArray <MetaListItem *> *listItems;
 @property (nonatomic, strong) UIBarButtonItem *addButton;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) BOOL showAllItems;
 
 @end
@@ -56,20 +52,8 @@ static char editCellKey;
     return self;
 }
 
-- (NSString *)nibName
-{
+- (NSString *)nibName {
     return @"ListItemsView";
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    [self setEditBtn:nil];
 }
 
 - (void)dealloc
@@ -84,10 +68,8 @@ static char editCellKey;
     [[self navigationItem] setTitle:[[self theList] name]];
     UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonTapped:)];
     [self setAddButton:btn];
-    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button")
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:nil
-                                                               action:nil];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") style:UIBarButtonItemStylePlain target:nil action:nil];
+    
     [[self navigationItem] setRightBarButtonItem:[self addButton]];
     [[self navigationItem] setBackBarButtonItem:backBtn];
     if ([[self theList] listTintColor]) {
@@ -185,6 +167,7 @@ static char editCellKey;
         [[self tableView] setEditing:YES animated:YES];
         [[self editBtn] setImage:[UIImage imageNamed:@"icon-ok-small"]];
     }
+    [self.tableView reloadData];
 }
 
 
@@ -201,7 +184,7 @@ static char editCellKey;
         [self setShowAllItems:YES];
         [[self btnViewAll] setImage:[UIImage imageNamed:@"icon-hide-completed"]];
     }
-    [[self tableView] reloadData];
+    [self.tableView reloadData];
 }
 
 
@@ -257,13 +240,7 @@ static char editCellKey;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self removeSwipeActionIndicatorViewsFromCell:cell];
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return  YES;
 }
 
@@ -275,9 +252,11 @@ static char editCellKey;
     return ![item isNewValue];
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView.isEditing) {
+        return UITableViewCellEditingStyleNone;
+    }
+    return UITableViewCellEditingStyleDelete;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -292,8 +271,7 @@ static char editCellKey;
     [[self theList] save];
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
 }
 
@@ -422,68 +400,50 @@ static char editCellKey;
     [[self theList] save];
 }
 
-#pragma mark - swipe to edit cell view controller overrides
-
-
-
-- (void)rightSwipeUpdateAtIndexPath:(NSIndexPath *)indexPath
-{
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    BOOL complete = ![item isComplete] ? YES : NO;
-    [item setIsComplete:complete];
-    [item save];
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
-- (NSString *)rightSwipeActionTitleForItemItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    return ([item isComplete]) ? @"Not Done" : @"Complete";
-}
-
-- (BOOL)rightSwipeShouldDeleteRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger toRowIndex, toOrderValue;
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    if ([item isComplete]) {
-        toOrderValue = [[[self theList] items] count];
-        toRowIndex = toOrderValue - 1;
-    } else {
-        for (toRowIndex = 0; toRowIndex < [[self listItems] count] - 1; toRowIndex++) {
-            MetaListItem *li = [[self listItems] objectAtIndex:toRowIndex];
-            if ([li isComplete]) break;
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MetaListItem *item = self.listItems[indexPath.row];
+    NSString *actionTitle = (item.isComplete) ? @"Not Done" : @"Complete";
+    UITableViewRowAction *completeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:actionTitle handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        item.isComplete = !item.isComplete;
+        [self _adjustItemSortOrder];
+        [self.theList.managedObjectContext save:nil];
+        if (item.isComplete) {
+            item.orderValue = [self _sortOrderValueForCompletedItem];
+            [self.listItems removeObjectAtIndex:indexPath.row];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-        toRowIndex = MAX(0, toRowIndex - 1);
-        toOrderValue = toRowIndex;
-    }
-    [item setOrderValue:toOrderValue];
-    [item save];
+    }];
     
-    if (![self showAllItems]) return YES;
-    if ([indexPath row] == toRowIndex) return NO;
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Delete" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        NSManagedObjectContext *context = item.managedObjectContext;
+        [self.theList.itemsSet removeObject:item];
+        [context deleteObject:item];
+        [self _adjustItemSortOrder];
+        [self.theList.managedObjectContext save:nil];
+        [self.listItems removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
     
-    int64_t delayInSeconds = 0.5f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    __weak ListItemsViewController *weakSelf = self;
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [[weakSelf listItems] removeObject:item];
-        [[weakSelf listItems] insertObject:item atIndex:toRowIndex];
-        [[weakSelf tableView] moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:toRowIndex inSection:0]];
-    });
-    return NO;
+    return @[deleteAction, completeAction];
 }
 
-- (void)rightSwipeRemoveItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([[self listItems] count] > [indexPath row])
-        [[self listItems] removeObjectAtIndex:[indexPath row]];
+- (void)_adjustItemSortOrder {
+    [self.listItems enumerateObjectsUsingBlock:^(MetaListItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+        item.orderValue = idx;
+    }];
 }
 
-- (void)leftSwipeDeleteItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    MetaListItem *item = [[self listItems] objectAtIndex:[indexPath row]];
-    if ([[self listItems] count] > [indexPath row])
-        [[self listItems] removeObjectAtIndex:[indexPath row]];
-    [[self theList] deleteItem:item];
+- (NSUInteger)_sortOrderValueForCompletedItem {
+    NSArray *incomplete = [self.listItems filterBy:^BOOL(MetaListItem *item) {
+        return !item.isComplete;
+    }];
+    return (incomplete.count == 0) ? 0 : incomplete.count + 1;
 }
 
 
