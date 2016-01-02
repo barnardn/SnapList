@@ -814,7 +814,6 @@
 			isa = PBXGroup;
 			children = (
 				49AD28211C3459800040B76B /* Base and Common */,
-				49AD28201C34591D0040B76B /* List Notes */,
 				495D8411130E088800933720 /* EditListItemViewController.h */,
 				495D8412130E088800933720 /* EditListItemViewController.m */,
 				49A0205312E5256A005B1D0E /* EditListViewController.h */,
@@ -823,6 +822,7 @@
 				498885421458D42600FC3294 /* EditMeasureViewController.m */,
 				49C7BFE2136AF7ED003F3FAA /* EditNumberViewController.h */,
 				49C7BFE3136AF7ED003F3FAA /* EditNumberViewController.m */,
+				49AD28201C34591D0040B76B /* List Notes */,
 				498EBC06168B955D0037DA65 /* ListCategoryViewController.h */,
 				498EBC07168B955D0037DA65 /* ListCategoryViewController.m */,
 				495EABF613083F5700F4A64E /* ListItemsViewController.h */,
