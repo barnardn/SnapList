@@ -15,14 +15,17 @@ static NSString * const kCategoryEntityName = @"ListCategory";
 
 + (NSArray *)allCategoriesInContext:(NSManagedObjectContext *)moc
 {
+    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
     NSSortDescriptor *byOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
-    NSArray *categories = [DataManager fetchAllInstancesOf:kCategoryEntityName sortDescriptors:@[byOrder] inContext:moc];
+    NSArray *categories = [DataManager fetchAllInstancesOf:kCategoryEntityName sortDescriptors:@[byOrder, byName] inContext:moc];
     return categories;
 }
 
 - (NSArray *)sortedLists
 {
-    return [[self list] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+    NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    NSSortDescriptor *bySortOrder = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES];
+    return [[self list] sortedArrayUsingDescriptors:@[bySortOrder, byName]];
 }
 
 - (void)save
