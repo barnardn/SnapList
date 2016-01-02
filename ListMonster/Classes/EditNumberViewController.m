@@ -8,27 +8,31 @@
 
 #import "EditNumberViewController.h"
 #import "MetaListItem.h"
+#import "ThemeManager.h"
+
+@interface EditNumberViewController()
+
+@property (assign, nonatomic) BOOL firstDigitEntered;
+@property (strong, nonatomic) NSNumberFormatter *numFormatter;
+
+@end
 
 @implementation EditNumberViewController
-
-@synthesize numericTextField, item, viewTitle;
 
 
 - (id)initWithTitle:(NSString *)aTitle listItem:(MetaListItem *)anItem 
 {
-    self = [super initWithNibName:@"EditNumberView" bundle:nil];
+    self = [super init];
     if (!self) return nil;
     [self setViewTitle:aTitle];
     [self setItem:anItem];
-    numFormatter = [[NSNumberFormatter alloc] init];
-    [numFormatter setPositiveFormat:@"#0.00"];
+    _numFormatter = [[NSNumberFormatter alloc] init];
+    [_numFormatter setPositiveFormat:@"#0.00"];
     return self;
 }
 
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-    [self setNumericTextField:nil];
+- (NSString *)nibName {
+    return @"EditNumberView";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -37,31 +41,28 @@
             (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown));
 }
 
-
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
+    self.view.backgroundColor = [ThemeManager appBackgroundColor];
     if (![[self item] quantity] || [[[self item] quantity] compare:INT_OBJ(0)] == NSOrderedSame) {
         [[self numericTextField] setPlaceholder:NSLocalizedString(@"Value", @"numeric value placeholder")];        
     }
     else {
-        NSString *numString = [numFormatter stringFromNumber:[[self item] quantity]];
+        NSString *numString = [self.numFormatter stringFromNumber:[[self item] quantity]];
         [[self numericTextField] setText:numString];
     }
     [[self numericTextField] setKeyboardType:UIKeyboardTypeDecimalPad];
     [[self numericTextField] becomeFirstResponder];
-    firstDigitEntered = NO;
+    self.firstDigitEntered = NO;
 }
 
+- (NSString *)title {
+    return NSLocalizedString(@"Edit Quantity", @"quantity view controller title");
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {

@@ -67,7 +67,7 @@
     [tvc setDelegate:self];
     [tvc setBackgroundColor:[UIColor whiteColor]];
     [tvc setTextColor:[UIColor darkTextColor]];
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0f];
+    self.tableView.backgroundColor = [ThemeManager appBackgroundColor]; 
     self.tableView.separatorInset = UIEdgeInsetsZero;
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([LeftDetailTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([LeftDetailTableViewCell class])];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([CellButtonTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([CellButtonTableViewCell class])];

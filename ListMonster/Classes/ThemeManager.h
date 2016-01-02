@@ -35,6 +35,7 @@ typedef enum  {
 + (UIFont *)fontForListHeader;
 + (UIFont *)fontForDueDateDetails;
 + (UIFont *)fontForListNote;
++ (UIColor *)appBackgroundColor;
 
 + (UIColor *)standardTextColor;
 + (UIColor *)highlightedTextColor;

@@ -13,14 +13,6 @@
 
 @interface EditNumberViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate,
                                                         EditItemViewProtocol> 
-{
-
-    UITextField *numericTextField;
-    MetaListItem *item;
-    NSString *viewTitle;
-    NSNumberFormatter *numFormatter;
-    BOOL firstDigitEntered;
-}
 
 @property(nonatomic,strong) IBOutlet UITextField *numericTextField;
 @property(nonatomic,strong) MetaListItem *item;

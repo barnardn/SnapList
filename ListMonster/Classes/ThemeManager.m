@@ -95,6 +95,10 @@ static const CGFloat kDefaultTablerowHeight = 44.0f;
     return [UIColor colorWithWhite:0.25f alpha:1.0f];
 }
 
++ (UIColor *)appBackgroundColor {
+    return [UIColor colorWithWhite:0.97f alpha:1.0f];
+}
+
 + (UILabel *)labelForTableHeadingsWithText:(NSString *)text textColor:(UIColor *)textColor
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
