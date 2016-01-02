@@ -12,16 +12,9 @@
 #import "MetaListItem.h"
 #import "NSArrayExtensions.h"
 #import "NSString+EmptyString.h"
+#import "ThemeManager.h"
 
 @interface EditMeasureViewController()
-
-- (void)loadMeasurementSet:(NSInteger)measureSet;
-- (void)setupUIWithDefaultMeasure:(Measure *)measure; 
-- (void)populateCustomMeasureTextFields:(Measure *)measure;
-- (void)selectComponentsForMeasure:(Measure *)newMeasure;
-- (NSUInteger)calculateMeasurementIndexAfterDeletionOfUnit:(Measure *)unit;
-- (NSUInteger)calculateUnitIndexAtMeasurementIndex:(NSUInteger)measureIndex afterDeletionOfUnit:(Measure *)unit;
-- (void)selectedUnitForMeasurementIndex:(NSUInteger)measureIdx unitIndex:(NSUInteger)unitIndex;
 
 @end
 
@@ -54,30 +47,26 @@
     [[ListMonsterAppDelegate sharedAppDelegate] addCacheObject:idxObj withKey:@"defaultUnit"];
 }
 
+- (NSString *)title {
+    return NSLocalizedString(@"Select Unit of Measure", @"select units nav bar title");
+}
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") 
-                                                                style:UIBarButtonItemStylePlain 
-                                                               target:nil 
-                                                               action:nil];
-    [[self customMeasureView] setHidden:YES];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"back button") style:UIBarButtonItemStylePlain  target:nil action:nil];
+    self.view.backgroundColor = [ThemeManager appBackgroundColor];
     [[self navigationItem] setBackBarButtonItem:backBtn];
     
     [[self unitSelector] setTitle:NSLocalizedString(@"English", nil) forSegmentAtIndex:emvENGLISH_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"Metric", nil) forSegmentAtIndex:emvMETRIC_UNIT_INDEX];
-    [[self unitSelector] setTitle:NSLocalizedString(@"Custom", nil) forSegmentAtIndex:emvCUSTOM_UNIT_INDEX];
     [[self unitSelector] setTitle:NSLocalizedString(@"None", nil) forSegmentAtIndex:emvNONE_UNIT_INDEX];
     NSInteger measurementSet = [self defaultUnitSelection];
     if ([[[self item] unitOfMeasure] isMetricUnit])
         measurementSet = emvMETRIC_UNIT_INDEX;
-    else if ([[[self item] unitOfMeasure] isCustomUnit])
-        measurementSet = emvCUSTOM_UNIT_INDEX;
     [self loadMeasurementSet:measurementSet];
-    [[self navigationItem] setTitleView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav-title"]]];    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,16 +94,13 @@
 
 - (IBAction)unitSelectorTapped:(id)sender
 {
-    [self resignTextfieldsAsFirstResponders];    
     NSInteger measurementSet = [[self unitSelector] selectedSegmentIndex];
     if (measurementSet == emvNONE_UNIT_INDEX) {
         [self setSelectedMeasure:nil];
         [self setSelectedMeasureKey:nil];
         [UIView animateWithDuration:0.25f animations:^{
-            [[self customMeasureView] setAlpha:0.0f];
             [[self measurePicker] setAlpha:0.0f];
         } completion:^(BOOL finished) {
-            [[self customMeasureView] setHidden:YES];
             [[self measurePicker] setHidden:YES];
         }];
         return;
@@ -124,88 +110,11 @@
     [self setSelectedMeasure:nil];
     [UIView animateWithDuration:0.25f animations:^{
         [[self measurePicker] setAlpha:1.0f];
-        if (measurementSet == emvCUSTOM_UNIT_INDEX)
-            [[self customMeasureView] setAlpha:1.0f];        
-        else
-            [[self customMeasureView] setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [[self measurePicker] setHidden:NO];
-        if (measurementSet == emvCUSTOM_UNIT_INDEX) {
-            [[self customMeasureView] setHidden:NO];
-        }
-        else {
-            [[self customMeasureView] setHidden:YES];
-            [self populateCustomMeasureTextFields:nil];
-        }
         [[self measurePicker] reloadAllComponents];
         [self setDefaultUnitSelection:[[self unitSelector] selectedSegmentIndex]];
     }];
-}
-
-- (IBAction)addCustomMeasureTapped:(UIButton *)sender
-{
-    [self resignTextfieldsAsFirstResponders];
-    BOOL ok = YES;
-    NSString *measure = [[self customMeasure] text];
-    if (!measure || [measure isEmptyString]) {
-        [[self customMeasure] becomeFirstResponder];
-        ok = NO;
-    }
-    NSString *measureName = [[self customMeasureName] text];
-    if (!measureName || [measureName isEmptyString]) {
-        [[self customMeasureName] becomeFirstResponder];
-        ok = NO;
-    }
-    NSString *measureAbbrev = [[self customMeasureAbbrev] text];
-    if (!measureAbbrev || [measureAbbrev isEmptyString]) {
-        [[self customMeasureAbbrev] becomeFirstResponder];
-        ok = NO;
-    }
-    if (!ok) return;
-    
-    NSManagedObjectContext *moc = [[ListMonsterAppDelegate sharedAppDelegate] managedObjectContext];
-    Measure *newMeasure = [NSEntityDescription insertNewObjectForEntityForName:@"Measure" inManagedObjectContext:moc];
-    [newMeasure setMeasure:measure];
-    [newMeasure setUnit:measureName];
-    [newMeasure setUnitAbbreviation:measureAbbrev];
-    [newMeasure setIsCustom:BOOL_OBJ(YES)];
-    [newMeasure setUnitIdentifier:@([NSDate timeIntervalSinceReferenceDate])];
-    [moc save:nil];
-    [self setSelectedMeasure:newMeasure];
-    [self setSelectedMeasureKey:measure];
-    [[ListMonsterAppDelegate sharedAppDelegate] deleteCacheObjectForKey:@"measures"];
-    [self loadMeasurementSet:emvCUSTOM_UNIT_INDEX];
-    [[self measurePicker] reloadAllComponents];
-    [self selectComponentsForMeasure:newMeasure];
-}
-
-- (IBAction)removeCustomMeasureTapped:(UIButton *)sender
-{
-
-    if (![self selectedMeasure]) return;
-
-    // figure out which picker components we need to select after the deletion.
-    NSUInteger nextMeasureRow = [self calculateMeasurementIndexAfterDeletionOfUnit:[self selectedMeasure]];
-    NSUInteger nextUnitRow = [self calculateUnitIndexAtMeasurementIndex:nextMeasureRow afterDeletionOfUnit:[self selectedMeasure]];
-    
-    NSManagedObjectContext *moc = [[self selectedMeasure] managedObjectContext];
-    [moc deleteObject:[self selectedMeasure]];
-    [moc save:nil];
-    [[self customMeasure] setText:nil];
-    [[self customMeasureName] setText:nil];
-    [[self customMeasureAbbrev] setText:nil];    
-    [[ListMonsterAppDelegate sharedAppDelegate] deleteCacheObjectForKey:@"measures"];    
-    [self loadMeasurementSet:emvCUSTOM_UNIT_INDEX];
-    [[self measurePicker] reloadAllComponents];
-    if ([[self currentMeasures] count] == 0) {
-        [self setSelectedMeasureKey:nil];
-        [self setSelectedMeasure:nil];
-        return;        
-    } 
-    [self selectedUnitForMeasurementIndex:nextMeasureRow unitIndex:nextUnitRow];
-    [[self measurePicker] selectRow:nextMeasureRow inComponent:emvMEASURE_COMPONENT_INDEX animated:YES];
-    [[self measurePicker] selectRow:nextUnitRow inComponent:emvUNIT_COMPONENT_INDEX animated:YES];
-    [self populateCustomMeasureTextFields:[self selectedMeasure]];    
 }
 
 - (void)selectedUnitForMeasurementIndex:(NSUInteger)measureIdx unitIndex:(NSUInteger)unitIndex
@@ -221,7 +130,6 @@
     }
     [self setSelectedMeasure:units[unitIndex]];
 }
-
 
 - (NSUInteger)calculateMeasurementIndexAfterDeletionOfUnit:(Measure *)unit
 {
@@ -283,13 +191,6 @@
     return YES;
 }
 
-- (void)resignTextfieldsAsFirstResponders
-{
-    [[self customMeasureName] resignFirstResponder];
-    [[self customMeasure] resignFirstResponder];
-    [[self customMeasureAbbrev] resignFirstResponder];
-}
-
 
 #pragma mark - PickerView datasource
 
@@ -332,12 +233,8 @@
             [self setSelectedMeasureKey:k];
         }
     }
-    if ([self.unitSelector selectedSegmentIndex] == emvCUSTOM_UNIT_INDEX) {
-        NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
-        componentList = [unsorted sortedOnKey:@"unit" ascending:YES];
-    } else {
-        componentList = [self currentMeasures][[self selectedMeasureKey]];
-    }
+    componentList = [self currentMeasures][[self selectedMeasureKey]];
+
     Measure *m = componentList[row];
     return [m unit];
 }
@@ -345,45 +242,21 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     NSArray *units = nil;    
-    NSInteger measurementSet = [[self unitSelector] selectedSegmentIndex];       
     if (emvMEASURE_COMPONENT_INDEX == component) {
         NSArray *measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
         if ([measures count] == 0) return;
         [self setSelectedMeasureKey:measures[row]];
         DLog(@"smk: %@", [self selectedMeasureKey]);
         [[self measurePicker] reloadComponent:emvUNIT_COMPONENT_INDEX];
-        if (measurementSet == emvCUSTOM_UNIT_INDEX) {
-            NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
-            units = [unsorted sortedOnKey:@"unit" ascending:YES];
-        } else {
-            units = [self currentMeasures][[self selectedMeasureKey]];
-        }
+        units = [self currentMeasures][[self selectedMeasureKey]];
         [self setSelectedMeasure:units[0]];
-        
-        if (measurementSet == emvCUSTOM_UNIT_INDEX)
-            [self populateCustomMeasureTextFields:[self selectedMeasure]];
         return;
     }
     if (![self selectedMeasureKey]) return;
-    
-    if (measurementSet == emvCUSTOM_UNIT_INDEX) {
-        NSArray *unsorted = [self currentMeasures][[self selectedMeasureKey]];
-        units = [unsorted sortedOnKey:@"unit" ascending:YES];            
-    } else {
-        units = [self currentMeasures][[self selectedMeasureKey]];
-    }
+    units = [self currentMeasures][[self selectedMeasureKey]];
+
     [self setSelectedMeasure:units[row]];
-    if (measurementSet == emvCUSTOM_UNIT_INDEX)
-        [self populateCustomMeasureTextFields:[self selectedMeasure]];
 }
-
-- (void)populateCustomMeasureTextFields:(Measure *)measure
-{
-    [[self customMeasure] setText:[measure measure]];
-    [[self customMeasureName] setText:[measure unit]];
-    [[self customMeasureAbbrev] setText:[measure unitAbbreviation]];
-}
-
 
 #pragma mark - Methods
 
@@ -397,8 +270,6 @@
     NSPredicate *byMeasurementSet = nil;
     if (measureSet == emvMETRIC_UNIT_INDEX)
         byMeasurementSet = [NSPredicate predicateWithFormat:@"self.isMetric == 1"];
-    else if (measureSet == emvCUSTOM_UNIT_INDEX)
-        byMeasurementSet = [NSPredicate predicateWithFormat:@"self.isCustom == 1"];
     else
         byMeasurementSet = [NSPredicate predicateWithFormat:@"self.isCustom != 1 && self.isMetric != 1"];
     
@@ -421,34 +292,16 @@
 {
     if (!measure) {
         [[self unitSelector] setSelectedSegmentIndex:[self defaultUnitSelection]];
-        if ([self defaultUnitSelection] == emvCUSTOM_UNIT_INDEX) {
-            [UIView animateWithDuration:0.25f animations:^{
-                [[self customMeasure] setAlpha:1.0f];
-            } completion:^(BOOL finished) {
-                [[self customMeasureView] setHidden:NO];
-            }];            
-        }
         return;
     }
     NSArray *measures = nil;
     NSArray *units = nil;
-    if ([measure isMetricUnit])
+    if ([measure isMetricUnit]) {
         [[self unitSelector] setSelectedSegmentIndex:emvMETRIC_UNIT_INDEX];
-    if ([measure isCustomUnit]) {
-        [[self unitSelector] setSelectedSegmentIndex:emvCUSTOM_UNIT_INDEX];
-        [UIView animateWithDuration:0.25f animations:^{
-            [[self customMeasure] setAlpha:1.0f];
-        } completion:^(BOOL finished) {
-            [[self customMeasureView] setHidden:NO];
-            [self populateCustomMeasureTextFields:measure];
-        }];
-        measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        NSArray *unsorted = [self currentMeasures][[measure measure]];
-        units = [unsorted sortedOnKey:@"unit" ascending:YES];
-    } else {
-        measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        units = [self currentMeasures][[measure measure]];
     }
+    measures = [[[self currentMeasures] allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    units = [self currentMeasures][[measure measure]];
+
     NSInteger measureRow = [measures indexOfObject:[measure measure]];
     NSInteger unitRow = [units indexOfObject:measure];
     [self setSelectedMeasureKey:[measure measure]];    

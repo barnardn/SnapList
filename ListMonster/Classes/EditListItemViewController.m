@@ -67,19 +67,13 @@
     [tvc setDelegate:self];
     [tvc setBackgroundColor:[UIColor whiteColor]];
     [tvc setTextColor:[UIColor darkTextColor]];
-    self.tableView.backgroundColor = [ThemeManager appBackgroundColor]; 
+    self.tableView.backgroundColor = [ThemeManager appBackgroundColor];
     self.tableView.separatorInset = UIEdgeInsetsZero;
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([LeftDetailTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([LeftDetailTableViewCell class])];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([CellButtonTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([CellButtonTableViewCell class])];
     [self setTableCellControllers:@[tvc]];
 }
 
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:animated];
-    if ([[self tableView] indexPathForSelectedRow])
-        [[self tableView] reloadRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationAutomatic];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
@@ -235,6 +229,7 @@
 - (void)editItemViewController:(UIViewController *)editViewController didChangeValue:(id)updatedValue forItem:(MetaListItem *)item
 {
     [[self item] save];
+    [self.tableView reloadData];
 }
 
 #pragma mark - edit item actions delegate methods
